@@ -3,7 +3,7 @@ using System;
 
 using static Axis.Luna.Extensions.ObjectExtensions;
 
-namespace BitDiamond.Core.Domain
+namespace BitDiamond.Core.Models
 {
     public class SystemSetting : BaseModel<long>, IDataItem
     {

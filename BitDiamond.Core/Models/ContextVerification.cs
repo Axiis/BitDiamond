@@ -2,7 +2,7 @@
 
 using System;
 
-namespace BitDiamond.Core.Domain
+namespace BitDiamond.Core.Models
 {
     public class ContextVerification: BaseModel<long>
     {

@@ -9,7 +9,6 @@ namespace BitDiamond.Core.Services
 {
     public interface IUserContext
     {
-        User CurrentUser();
-        
+        User CurrentUser();        
     }
 }

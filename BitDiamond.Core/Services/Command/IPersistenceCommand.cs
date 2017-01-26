@@ -1,5 +1,5 @@
 ﻿using Axis.Luna;
-using BitDiamond.Core.Domain;
+using BitDiamond.Core.Models;
 using System.Collections.Generic;
 
 namespace BitDiamond.Core.Services.Command

@@ -1,6 +1,6 @@
 ﻿using Axis.Pollux.Identity.Principal;
 
-namespace BitDiamond.Core.Domain
+namespace BitDiamond.Core.Models
 {
     public class BitcoinAddress: BaseModel<long>
     {

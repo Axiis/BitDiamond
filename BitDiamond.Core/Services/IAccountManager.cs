@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BitDiamond.Core.Services.Query
+namespace BitDiamond.Core.Services
 {
-    public class IDonationManagerQuery
+    public interface IAccountManager
     {
     }
 }

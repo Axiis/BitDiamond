@@ -1,0 +1,3 @@
+
+
+1.	The Apex User must have a default donnation that points back to himself from the onset

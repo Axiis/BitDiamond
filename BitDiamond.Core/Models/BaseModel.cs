@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Axis.Luna;
+﻿using Axis.Luna;
 using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace BitDiamond.Core.Domain
+namespace BitDiamond.Core.Models
 {
     public abstract class BaseModel<IdType>
     {

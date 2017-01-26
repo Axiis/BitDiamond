@@ -1,5 +1,5 @@
 ﻿using Axis.Luna;
-using BitDiamond.Core.Domain;
+using BitDiamond.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace BitDiamond.Core.Services
 {
-    public interface IDonationManager
+    public interface IBitLevelManager
     {
-        Operation<Donation> GenerateUpgradeDonation();
+        Operation<BitLevel> GenerateUpgradeDonation();
         Operation VerifyDonation(string transactionHash);
         Operation ManualDonationVerification();
 
-        Operation<IEnumerable<Donation>> UserDonations();
-        Operation<Donation> UserDonationById(long id);
-        Operation<Donation> LatestUserDonation();
+        Operation<IEnumerable<BitLevel>> UserDonations();
+        Operation<BitLevel> UserDonationById(long id);
+        Operation<BitLevel> LatestUserDonation();
     }
 }

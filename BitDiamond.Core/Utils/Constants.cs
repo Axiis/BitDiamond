@@ -6,6 +6,8 @@ namespace BitDiamond.Core.Utils
     {
         #region Settings
         public static readonly TimeSpan DefaultContextVerificationExpirationTime = TimeSpan.FromDays(2);
+
+        public static readonly int BitLevelCount = 3;
         #endregion
     }
 }

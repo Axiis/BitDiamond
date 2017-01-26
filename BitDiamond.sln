@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitDiamond.Core", "BitDiamond.Core\BitDiamond.Core.csproj", "{EDE46227-C774-4338-A69E-97E6AB6037EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitDiamond.Core.Services", "BitDiamond.Core.Services\BitDiamond.Core.Services.csproj", "{6BAEBE53-E225-46F0-83BF-17491213B6EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitDiamond.Data.EF", "BitDiamond.Data.EF\BitDiamond.Data.EF.csproj", "{1E54BA4E-853C-4C0F-BD7C-292CA5585133}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{78A4752C-6A0B-4732-A848-0025EC6948A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{3CA8C95B-A745-4429-B510-240347777BB8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{0AA0AB5F-96A4-4211-AFA1-91050650BE26}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7706675A-4409-44F3-9049-56A9885C612A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EDE46227-C774-4338-A69E-97E6AB6037EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDE46227-C774-4338-A69E-97E6AB6037EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDE46227-C774-4338-A69E-97E6AB6037EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDE46227-C774-4338-A69E-97E6AB6037EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BAEBE53-E225-46F0-83BF-17491213B6EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BAEBE53-E225-46F0-83BF-17491213B6EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BAEBE53-E225-46F0-83BF-17491213B6EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BAEBE53-E225-46F0-83BF-17491213B6EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E54BA4E-853C-4C0F-BD7C-292CA5585133}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E54BA4E-853C-4C0F-BD7C-292CA5585133}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E54BA4E-853C-4C0F-BD7C-292CA5585133}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E54BA4E-853C-4C0F-BD7C-292CA5585133}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EDE46227-C774-4338-A69E-97E6AB6037EC} = {78A4752C-6A0B-4732-A848-0025EC6948A7}
+		{6BAEBE53-E225-46F0-83BF-17491213B6EE} = {78A4752C-6A0B-4732-A848-0025EC6948A7}
+		{1E54BA4E-853C-4C0F-BD7C-292CA5585133} = {3CA8C95B-A745-4429-B510-240347777BB8}
+	EndGlobalSection
+EndGlobal

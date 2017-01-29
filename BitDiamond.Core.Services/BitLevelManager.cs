@@ -8,14 +8,12 @@ using BitDiamond.Core.Services.Command;
 using static Axis.Luna.Extensions.ExceptionExtensions;
 using Axis.Pollux.RBAC.Services;
 using BitDiamond.Core.Utils;
-using Axis.Pollux.Identity.Principal;
 using Axis.Luna.Extensions;
 
 namespace BitDiamond.Core.Services.Services
 {
     public class BitLevelManager : IBitLevelManager, IUserContextAware
     {
-
         private IBitLevelQuery _query = null;
         private IPersistenceCommand _pcommand = null;
         private IUserAuthorization _authorizer = null;

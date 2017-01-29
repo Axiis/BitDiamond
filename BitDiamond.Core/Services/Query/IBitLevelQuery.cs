@@ -4,9 +4,10 @@ using System.Collections.Generic;
 
 namespace BitDiamond.Core.Services.Query
 {
-    public interface BitLevelQuery
+    public interface IBitLevelQuery
     {
         IEnumerable<ReferalNode> Uplines(User user);
+        ReferalNode Upline(int uplineOffset);
         IEnumerable<ReferalNode> Downlines(User user);
         ReferalNode UserRef(User user);
 

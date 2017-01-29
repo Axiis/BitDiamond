@@ -10,8 +10,8 @@ namespace BitDiamond.Core.Services
 {
     public interface IBitLevelManager
     {
-        Operation<BitLevel> GenerateUpgradeDonation();
-        Operation VerifyDonation(string transactionHash);
+        Operation<BitLevel> RequestUpgrade();
+        Operation<BitLevel> ConfirmUpgrade(string transactionHash);
         Operation ManualDonationVerification();
 
         Operation<IEnumerable<BitLevel>> UserDonations();

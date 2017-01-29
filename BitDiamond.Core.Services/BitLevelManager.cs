@@ -14,13 +14,14 @@ namespace BitDiamond.Core.Services.Services
 {
     public class BitLevelManager : IBitLevelManager, IUserContextAware
     {
-        private BitLevelQuery _query = null;
+
+        private IBitLevelQuery _query = null;
         private IPersistenceCommand _pcommand = null;
         private IUserAuthorization _authorizer = null;
 
         public IUserContext UserContext { get; private set; }
 
-        public BitLevelManager(IUserAuthorization authorizer, IUserContext userContext, BitLevelQuery query, IPersistenceCommand pcommand)
+        public BitLevelManager(IUserAuthorization authorizer, IUserContext userContext, IBitLevelQuery query, IPersistenceCommand pcommand)
         {
             ThrowNullArguments(() => userContext,
                                () => query,
@@ -32,14 +33,19 @@ namespace BitDiamond.Core.Services.Services
             UserContext = userContext;
         }
 
-        public Operation<BitLevel> GenerateUpgradeDonation()
+        public Operation<BitLevel> ConfirmUpgrade(string transactionHash)
+        {
+        
+        }
+
+        public Operation<BitLevel> RequestUpgrade()
             => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
             {
                 var currentUser = UserContext.CurrentUser();
                 var currentLevel = _query.CurrentBitLevel(currentUser);
-                var lastDonation = _query.CurrentBitLevel(currentUser);
-                User receiver = lastDonation?.Reciever.Owner ??
-                                _query.UserRef(currentUser).Referee.User;
+
+                //get the ideal upgrade receiver
+                var receiver = _query.Upline(currentLevel.Level + 1);
 
                 while(DonationShouldSkip(receiver))
                     receiver = _query.UserRef(receiver).Referee.User;

@@ -9,6 +9,6 @@ namespace BitDiamond.Core.Services
 {
     public interface IBlockChainService
     {
-        BlockChainTransaction GetTransactionDetails(string transactionStatus);
+        BlockChainTransaction GetTransactionDetails(string transactionHash);
     }
 }

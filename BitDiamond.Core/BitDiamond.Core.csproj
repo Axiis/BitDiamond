@@ -62,6 +62,7 @@
     <Compile Include="Models\BlockChainTransaction.cs" />
     <Compile Include="Models\ContextVerification.cs" />
     <Compile Include="Models\BitLevel.cs" />
+    <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\ReferalNode.cs" />
     <Compile Include="Models\SystemSetting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Services\IAccountManager.cs" />
     <Compile Include="Services\IUserContext.cs" />
     <Compile Include="Services\IUserContextAware.cs" />
+    <Compile Include="Services\IUserNotifier.cs" />
     <Compile Include="Services\Query\IContextVerifierQuery.cs" />
     <Compile Include="Services\Query\IBitLevelQuery.cs" />
     <Compile Include="Services\Query\ISettingsQuery.cs" />

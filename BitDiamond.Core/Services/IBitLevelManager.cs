@@ -8,7 +8,6 @@ namespace BitDiamond.Core.Services
     {
         Operation<BitLevel> RequestUpgrade();
         Operation<BitLevel> ConfirmUpgrade(string transactionHash);
-        Operation ManualDonationVerification();
         Operation<BitLevel> RecycleAccount();
 
         Operation<IEnumerable<BitLevel>> UserUpgradeHistory();

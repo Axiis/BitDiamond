@@ -14,6 +14,7 @@ namespace BitDiamond.Core.Services.Query
         IEnumerable<BitLevel> GetBitLevelHistory(User user);
         BitLevel CurrentBitLevel(User user);
         BitLevel GetClosestValidAncestorLevel(int level);
+        BitLevel GetBitLevelById(long id);
 
         BitcoinAddress GetBitcoinAddress(User user);
     }

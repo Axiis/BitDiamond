@@ -13,5 +13,14 @@ namespace BitDiamond.Core.Models
         public decimal Amount { get; set; }
 
         public DateTime CreatedOn { get; set; }
+
+        public BlockChainTransactionStatus Status { get; set; } = BlockChainTransactionStatus.Unverified;
+    }
+
+    public enum BlockChainTransactionStatus
+    {
+        Unverified,
+        Invalid,
+        Valid
     }
 }

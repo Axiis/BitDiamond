@@ -11,7 +11,10 @@ namespace BitDiamond.Core.Services.Query
         IEnumerable<ReferalNode> Downlines(User user);
         ReferalNode UserRef(User user);
 
-        IEnumerable<BitLevel> BitLevelHistory(User user);
+        IEnumerable<BitLevel> GetBitLevelHistory(User user);
         BitLevel CurrentBitLevel(User user);
+        BitLevel GetClosestValidAncestorLevel(int level);
+
+        BitcoinAddress GetBitcoinAddress(User user);
     }
 }

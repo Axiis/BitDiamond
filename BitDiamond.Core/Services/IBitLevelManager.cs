@@ -1,10 +1,6 @@
 ﻿using Axis.Luna;
 using BitDiamond.Core.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BitDiamond.Core.Services
 {
@@ -13,9 +9,10 @@ namespace BitDiamond.Core.Services
         Operation<BitLevel> RequestUpgrade();
         Operation<BitLevel> ConfirmUpgrade(string transactionHash);
         Operation ManualDonationVerification();
+        Operation<BitLevel> RecycleAccount();
 
-        Operation<IEnumerable<BitLevel>> UserDonations();
-        Operation<BitLevel> UserDonationById(long id);
-        Operation<BitLevel> LatestUserDonation();
+        Operation<IEnumerable<BitLevel>> UserUpgradeHistory();
+        Operation<BitLevel> GetBitLevelById(long id);
+        Operation<BitLevel> CurrentUserLevel();
     }
 }

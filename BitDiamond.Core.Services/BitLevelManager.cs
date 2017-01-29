@@ -9,6 +9,7 @@ using static Axis.Luna.Extensions.ExceptionExtensions;
 using Axis.Pollux.RBAC.Services;
 using BitDiamond.Core.Utils;
 using Axis.Pollux.Identity.Principal;
+using Axis.Luna.Extensions;
 
 namespace BitDiamond.Core.Services.Services
 {
@@ -44,19 +45,41 @@ namespace BitDiamond.Core.Services.Services
                 var currentUser = UserContext.CurrentUser();
                 var currentLevel = _query.CurrentBitLevel(currentUser);
 
+                if (currentLevel.Level == Constants.MaxBitLevel) throw new Exception("cannot upgrade from max level");
+
                 //get the ideal upgrade receiver
                 var receiver = _query.Upline(currentLevel.Level + 1);
+                var receiverLevel = _query.CurrentBitLevel(receiver.User);
+                if (receiverLevel.Donation.Status != BlockChainTransactionStatus.Valid)
+                {
+                    //increment the skip count and persist
+                    receiverLevel.SkipCount++;
+                    _pcommand.Persist(receiverLevel);
 
-                while(DonationShouldSkip(receiver))
-                    receiver = _query.UserRef(receiver).Referee.User;
+                    //find the next best receiver
+                    receiverLevel = _query.GetClosestValidAncestorLevel(currentLevel.Level + 1);
+                }
 
                 return new BitLevel
                 {
-
-                };
+                    Cycle = currentLevel.Cycle,
+                    Donation = new BlockChainTransaction
+                    {
+                        Amount = GetUpgradeAmount(currentLevel.Level + 1),
+                        LedgerCount = 0,
+                        Reciever = _query.GetBitcoinAddress(receiverLevel.User),
+                        Sender = _query.GetBitcoinAddress(currentUser),
+                        CreatedOn = DateTime.Now
+                    },
+                    DonationCount = 0,
+                    Level = currentLevel.Level + 1,
+                    SkipCount = 0,
+                    User = currentUser
+                }
+                .Pipe(_bl => _pcommand.Persist(_bl));
             });
 
-        public Operation<BitLevel> LatestUserDonation()
+        public Operation<BitLevel> CurrentUserLevel()
         {
             throw new NotImplementedException();
         }
@@ -66,12 +89,12 @@ namespace BitDiamond.Core.Services.Services
             throw new NotImplementedException();
         }
 
-        public Operation<BitLevel> UserDonationById(long id)
+        public Operation<BitLevel> GetBitLevelById(long id)
         {
             throw new NotImplementedException();
         }
 
-        public Operation<IEnumerable<BitLevel>> UserDonations()
+        public Operation<IEnumerable<BitLevel>> UserUpgradeHistory()
         {
             throw new NotImplementedException();
         }
@@ -81,9 +104,15 @@ namespace BitDiamond.Core.Services.Services
             throw new NotImplementedException();
         }
 
-        private bool DonationShouldSkip(User user)
+        private decimal GetUpgradeAmount(int level)
         {
-
+            switch(level)
+            {
+                case 1: return Constants.UpgradeCostLevel1;
+                case 2: return Constants.UpgradeCostLevel2;
+                case 3: return Constants.UpgradeCostLevel3;
+                default: throw new Exception("invalid level");
+            }
         }
     }
 }

@@ -1,6 +1,4 @@
 ﻿using BitDiamond.Core.Services.Command;
-using System;
-using System.Linq;
 using System.Collections.Generic;
 using Axis.Luna;
 using Axis.Jupiter.Europa;
@@ -8,39 +6,51 @@ using Axis.Jupiter.Europa;
 using static Axis.Luna.Extensions.ExceptionExtensions;
 using BitDiamond.Core.Models;
 using BitDiamond.Data.EF.Utils;
-using Axis.Luna.Extensions;
 
 namespace BitDiamond.Data.EF.Command
 {
     public class EuropaPersistenceCommand : IPersistenceCommand
     {
         private EuropaContext _context = null;
-        private DomainConverter _converter = null;
+        private PersistenceProvider _persistenceProvider = null;
 
-        public EuropaPersistenceCommand(EuropaContext context, DomainConverter converter)
+        public EuropaPersistenceCommand(EuropaContext context, PersistenceProvider persistenceProvider)
         {
             ThrowNullArguments(() => context,
-                               () => converter);
+                               () => persistenceProvider);
 
             _context = context;
-            _converter = converter;
+            _persistenceProvider = persistenceProvider;
         }
 
         public Operation BulkPersist<Domain>(IEnumerable<Domain> sequence)
-        where Domain : BaseModel  => Operation.Try(() => sequence.Select(_d => _converter.Convert(_d))
-                                                                 .Pipe(_es => _context.BulkInsert(_es).Wait()));
+        where Domain : BaseModel => Operation.Fail("Bulk additions are not supported at the moment");
 
         public Operation<Domain> Delete<Domain>(Domain d)
         where Domain : BaseModel => Operation.Try(() =>
-         {
-             _context.Store<Domain>().Delete(d, true);
-             return d;
-         });
-
-        public Operation<Domain> Persist<Domain>(Domain d)
-        where Domain: BaseModel
         {
-            throw new NotImplementedException();
-        }
+            if (_persistenceProvider.CanDelete<Domain>()) return _persistenceProvider.Delete(d);
+
+            _context.Store<Domain>().Delete(d, true);
+            return d;
+        });
+
+        public Operation<Domain> Add<Domain>(Domain d)
+        where Domain : BaseModel => Operation.Try(() =>
+        {
+            if (_persistenceProvider.CanInsert<Domain>()) return _persistenceProvider.Insert(d);
+
+            _context.Add(d).Context.CommitChanges();
+            return d;
+        });
+
+        public Operation<Domain> Update<Domain>(Domain d)
+        where Domain : BaseModel => Operation.Try(() =>
+        {
+            if (_persistenceProvider.CanUpdate<Domain>()) return _persistenceProvider.Update(d);
+
+            _context.Store<Domain>().Modify(d, true);
+            return d;
+        });
     }
 }

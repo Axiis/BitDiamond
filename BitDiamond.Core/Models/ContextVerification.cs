@@ -7,7 +7,6 @@ namespace BitDiamond.Core.Models
     public class ContextVerification: BaseModel<long>
     {
         public virtual User Target { get; set; }
-        public virtual string UserId { get; set; }
 
         public virtual string VerificationToken { get; set; }
 

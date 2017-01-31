@@ -76,11 +76,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseModelMap.cs" />
     <Compile Include="Command\EuropaPersistenceCommand.cs" />
-    <Compile Include="JupiterOAM.cs" />
+    <Compile Include="EuropaConfig.cs" />
+    <Compile Include="Mappings\BitcoinAddressMapping.cs" />
+    <Compile Include="Mappings\BitLevelMapping.cs" />
+    <Compile Include="Mappings\BlockChainTransactionMapping.cs" />
+    <Compile Include="Mappings\ContextVerificationMapping.cs" />
+    <Compile Include="Mappings\NotificationMapping.cs" />
+    <Compile Include="Mappings\ReferalNodeMapping.cs" />
+    <Compile Include="Mappings\SystemSettingsMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\ConversionContext.cs" />
-    <Compile Include="Utils\Converter.cs" />
+    <Compile Include="Utils\PersistenceProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BitDiamond.Core\BitDiamond.Core.csproj">

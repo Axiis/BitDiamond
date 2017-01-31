@@ -52,12 +52,12 @@ namespace BitDiamond.Core.Services.Services
                     currentLevel.Donation.LedgerCount = blockChainTransaction.LedgerCount;
                     //if the ledger count is  < 3, queue this transaction for verification polling till the ledger
                     //count is greater than 3
-                    _pcommand.Persist(currentLevel);
+                    _pcommand.Update(currentLevel);
 
                     //increment receiver's donnation count
-                    var receiverLevel = _query.CurrentBitLevel(blockChainTransaction.Reciever.Owner);
+                    var receiverLevel = _query.CurrentBitLevel(blockChainTransaction.Receiver.Owner);
                     receiverLevel.DonationCount++;
-                    _pcommand.Persist(receiverLevel);
+                    _pcommand.Update(receiverLevel);
 
                     return currentLevel;
                 }
@@ -81,7 +81,7 @@ namespace BitDiamond.Core.Services.Services
                 {
                     //increment the skip count and persist
                     receiverLevel.SkipCount++;
-                    _pcommand.Persist(receiverLevel);
+                    _pcommand.Update(receiverLevel);
 
                     _notifier.NotifyUser(new Notification
                     {
@@ -105,12 +105,12 @@ namespace BitDiamond.Core.Services.Services
                     {
                         Amount = GetUpgradeAmount(currentLevel.Level + 1),
                         LedgerCount = 0,
-                        Reciever = _query.GetBitcoinAddress(receiverLevel.User),
+                        Receiver = _query.GetBitcoinAddress(receiverLevel.User),
                         Sender = _query.GetBitcoinAddress(currentUser),
                         CreatedOn = DateTime.Now
                     }
                 }
-                .Pipe(_bl => _pcommand.Persist(_bl));
+                .Pipe(_bl => _pcommand.Add(_bl));
             });
 
         public Operation<BitLevel> RecycleAccount()
@@ -137,12 +137,12 @@ namespace BitDiamond.Core.Services.Services
                         Amount = 0,
                         LedgerCount = int.MaxValue,
                         CreatedOn = DateTime.Now,
-                        Reciever = btcAddress,
+                        Receiver = btcAddress,
                         Sender = btcAddress,
                         Status = BlockChainTransactionStatus.Valid
                     }
                 }
-                .Pipe(_bl => _pcommand.Persist(_bl));
+                .Pipe(_bl => _pcommand.Add(_bl));
             });
 
 
@@ -172,7 +172,7 @@ namespace BitDiamond.Core.Services.Services
         {
             if (tnx1 == null || tnx2 == null) return false;
             return tnx1.Amount == tnx2.Amount &&
-                   (tnx1.Reciever?.Equals(tnx2.Reciever) ?? false) &&
+                   (tnx1.Receiver?.Equals(tnx2.Receiver) ?? false) &&
                    (tnx1.Sender?.Equals(tnx2.Sender) ?? false);
         }
     }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BitDiamond.Data.EF
+namespace BitDiamond.Core.Services
 {
-    class JupiterOAM
+    public interface IEmailSender
     {
     }
 }

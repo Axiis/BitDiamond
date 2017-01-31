@@ -1,3 +1,14 @@
 
 
-1.	The Apex User must have a default donnation that points back to himself from the onset
+2017-02-01 ==================================================================================================================
+1.	The Apex User will have a single BitLevel object with the highest level, highest cycle, 0 skip-count, and highest
+    donation count.
+
+2.	The BitLevel object will need to register an Updater and an Inserter with the persistence provider - this is because it
+    references a BlockChainTransaction object, using a "ContextualReference", and not a "NavigationReference".
+	A ContextualReference is a reference that relies on a loose foreign key that can point to any table (model) in the
+	database (domain).
+
+3. Contextual References: these are made of "ContextType" and "ContextId". The context id is a string that holds the string
+   version of the id of the model it is bound to. the ContextType is a fully qualified CLR name of the domain object it is
+   associated to.

@@ -14,32 +14,7 @@ namespace BitDiamond.Core.Models
 
         public virtual CommonDataType Type { get; set; }
 
-        public override string ToString() => $"[{Name}: {DisplayData()}]";
-
-        private string DisplayData()
-        {
-            switch (Type)
-            {
-                case CommonDataType.Boolean:
-                case CommonDataType.Real:
-                case CommonDataType.Integer:
-                case CommonDataType.String:
-                case CommonDataType.Url:
-                case CommonDataType.TimeSpan:
-                case CommonDataType.Email:
-                case CommonDataType.Location:
-                case CommonDataType.Phone:
-                case CommonDataType.IPV4:
-                case CommonDataType.IPV6:
-                case CommonDataType.JsonObject: return Data;
-                case CommonDataType.DateTime: return Eval(() => DateTime.Parse(Data).ToString(), ex => "");
-
-                case CommonDataType.Binary: return "Binary-Data";
-
-                case CommonDataType.UnknownType:
-                default: return "Unknown-Type";
-            }
-        }
+        public override string ToString() => $"[{Name}: {this.DisplayData()}]";
 
 
         public SystemSetting()

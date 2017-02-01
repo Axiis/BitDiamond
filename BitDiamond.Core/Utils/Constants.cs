@@ -5,14 +5,22 @@ namespace BitDiamond.Core.Utils
     public static class Constants
     {
         #region Settings
-        public static readonly TimeSpan DefaultContextVerificationExpirationTime = TimeSpan.FromDays(2);
+        public static readonly string Settings_DefaultContextVerificationExpirationTime = "System.ContextVerification.ValidPeriod";
+        public static readonly string Settings_DefaultPasswordExpirationTime = "System.Credential.Password.ValidPeriod";
+        public static readonly string Settings_MaxBitLevel = "System.BitLevel.MaxLevel";
+        public static readonly string Settings_UpgradeCostVector = "system.BitLevel.UpgradeCostVector";
         #endregion
 
+        #region Verification Contexts
+        public static readonly string VerificationContext_UserActivation = "Context.UserActivation";
+        #endregion
 
+        #region Roles
+        public static readonly string Roles_RootRole = "#root";
+        public static readonly string Roles_AdminRole = "#admin";
+        public static readonly string Roles_GuestRole = "#guest";
+        public static readonly string Roles_BitMemberRole = "#bit-member";
+        #endregion
 
-        public static readonly int MaxBitLevel = 3;
-        public static readonly decimal UpgradeCostLevel1 = 0.11m;
-        public static readonly decimal UpgradeCostLevel2 = 0.1826m;
-        public static readonly decimal UpgradeCostLevel3 = 0.3652m;
     }
 }

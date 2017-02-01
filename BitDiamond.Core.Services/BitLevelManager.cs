@@ -9,34 +9,39 @@ using static Axis.Luna.Extensions.ExceptionExtensions;
 using Axis.Pollux.RBAC.Services;
 using BitDiamond.Core.Utils;
 using Axis.Luna.Extensions;
+using Newtonsoft.Json;
 
 namespace BitDiamond.Core.Services.Services
 {
     public class BitLevelManager : IBitLevelManager, IUserContextAware
     {
         private IBitLevelQuery _query = null;
-        private IPersistenceCommand _pcommand = null;
+        private IPersistenceCommands _pcommand = null;
         private IUserAuthorization _authorizer = null;
         private IUserNotifier _notifier = null;
         private IBlockChainService _blockChain = null;
+        private ISettingsManager _settingsManager = null;
 
         public IUserContext UserContext { get; private set; }
 
         public BitLevelManager(IUserAuthorization authorizer, IUserContext userContext, IBitLevelQuery query, 
-                               IPersistenceCommand pcommand, IUserNotifier notifier, IBlockChainService blockChain)
+                               IPersistenceCommands pcommand, IUserNotifier notifier, IBlockChainService blockChain,
+                               ISettingsManager settingsManager)
         {
             ThrowNullArguments(() => userContext,
                                () => query,
                                () => pcommand,
                                () => notifier,
-                               () => blockChain);
+                               () => blockChain,
+                               () => settingsManager);
 
             _query = query;
             _pcommand = pcommand;
             _authorizer = authorizer;
-            UserContext = userContext;
             _notifier = notifier;
             _blockChain = blockChain;
+
+            UserContext = userContext;
         }
 
         public Operation<BitLevel> ConfirmUpgrade(string transactionHash)
@@ -68,9 +73,12 @@ namespace BitDiamond.Core.Services.Services
             => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
             {
                 var currentUser = UserContext.CurrentUser();
-                var currentLevel = _query.CurrentBitLevel(currentUser);
+                var currentLevel = _query.CurrentBitLevel(currentUser);                
+                var maxLevel = _settingsManager.GetSetting(Constants.Settings_MaxBitLevel)
+                                               .Resolve()
+                                               .ParseData<int>();
 
-                if (currentLevel.Level == Constants.MaxBitLevel) throw new Exception("cannot upgrade from max level");
+                if (currentLevel.Level == maxLevel) throw new Exception("cannot upgrade from max level");
 
                 //get the ideal upgrade receiver
                 var receiver = _query.Upline(currentLevel.Level + 1);
@@ -119,10 +127,13 @@ namespace BitDiamond.Core.Services.Services
 
                 var currentUser = UserContext.CurrentUser();
                 var currentLevel = _query.CurrentBitLevel(currentUser);
+                var maxLevel = _settingsManager.GetSetting(Constants.Settings_MaxBitLevel)
+                                               .Resolve()
+                                               .ParseData<int>();
 
                 if (currentLevel != null &&
-                    currentLevel.Level < Constants.MaxBitLevel)
-                    throw new Exception($"only level {Constants.MaxBitLevel} accounts can be recycled");
+                    currentLevel.Level < maxLevel)
+                    throw new Exception($"only level {Constants.Settings_MaxBitLevel} accounts can be recycled");
 
                 var btcAddress = _query.GetBitcoinAddress(currentUser);
                 return new BitLevel
@@ -159,15 +170,11 @@ namespace BitDiamond.Core.Services.Services
                                            () => _query.GetBitLevelHistory(UserContext.CurrentUser()));
 
         private decimal GetUpgradeAmount(int level)
-        {
-            switch(level)
-            {
-                case 1: return Constants.UpgradeCostLevel1;
-                case 2: return Constants.UpgradeCostLevel2;
-                case 3: return Constants.UpgradeCostLevel3;
-                default: throw new Exception("invalid level");
-            }
-        }
+            => _settingsManager.GetSetting(Constants.Settings_UpgradeCostVector)
+                               .Resolve()
+                               .ParseData(_d => JsonConvert.DeserializeObject<decimal[]>(_d))
+                               [level];
+
         private bool IsSameTransaction(BlockChainTransaction tnx1, BlockChainTransaction tnx2)
         {
             if (tnx1 == null || tnx2 == null) return false;

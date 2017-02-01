@@ -16,11 +16,11 @@ namespace BitDiamond.Core.Services.Services
     {
         private IUserAuthorization _authorizer = null;
         private IContextVerifierQuery _query = null;
-        private IPersistenceCommand _pcommand = null;
+        private IPersistenceCommands _pcommand = null;
 
         public IUserContext UserContext { get; private set; }
 
-        public ContextVerifier(IUserContext userContext, IUserAuthorization authorizer, IContextVerifierQuery query, IPersistenceCommand pcommand)
+        public ContextVerifier(IUserContext userContext, IUserAuthorization authorizer, IContextVerifierQuery query, IPersistenceCommands pcommand)
         {
             ThrowNullArguments(() => authorizer,
                                () => userContext,
@@ -39,7 +39,7 @@ namespace BitDiamond.Core.Services.Services
                 var user = _query.GetUserById(userId).ThrowIfNull("user not found");
                 var _cv = new ContextVerification();
                 _cv.Context = verificationContext;
-                _cv.ExpiresOn = expiryDate ?? (DateTime.Now + Constants.DefaultContextVerificationExpirationTime);
+                _cv.ExpiresOn = expiryDate ?? (DateTime.Now + Constants.Settings_DefaultContextVerificationExpirationTime);
                 _cv.UserId = userId;
                 _cv.VerificationToken = GenerateToken();
                 _cv.Verified = false;

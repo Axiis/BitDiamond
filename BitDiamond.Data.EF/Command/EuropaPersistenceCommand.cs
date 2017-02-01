@@ -9,7 +9,7 @@ using BitDiamond.Data.EF.Utils;
 
 namespace BitDiamond.Data.EF.Command
 {
-    public class EuropaPersistenceCommand : IPersistenceCommand
+    public class EuropaPersistenceCommand : IPersistenceCommands
     {
         private EuropaContext _context = null;
         private PersistenceProvider _persistenceProvider = null;
@@ -24,10 +24,10 @@ namespace BitDiamond.Data.EF.Command
         }
 
         public Operation BulkPersist<Domain>(IEnumerable<Domain> sequence)
-        where Domain : BaseModel => Operation.Fail("Bulk additions are not supported at the moment");
+        where Domain : class => Operation.Fail("Bulk additions are not supported at the moment");
 
         public Operation<Domain> Delete<Domain>(Domain d)
-        where Domain : BaseModel => Operation.Try(() =>
+        where Domain : class => Operation.Try(() =>
         {
             if (_persistenceProvider.CanDelete<Domain>()) return _persistenceProvider.Delete(d);
 
@@ -36,7 +36,7 @@ namespace BitDiamond.Data.EF.Command
         });
 
         public Operation<Domain> Add<Domain>(Domain d)
-        where Domain : BaseModel => Operation.Try(() =>
+        where Domain : class => Operation.Try(() =>
         {
             if (_persistenceProvider.CanInsert<Domain>()) return _persistenceProvider.Insert(d);
 
@@ -45,7 +45,7 @@ namespace BitDiamond.Data.EF.Command
         });
 
         public Operation<Domain> Update<Domain>(Domain d)
-        where Domain : BaseModel => Operation.Try(() =>
+        where Domain : class => Operation.Try(() =>
         {
             if (_persistenceProvider.CanUpdate<Domain>()) return _persistenceProvider.Update(d);
 

@@ -22,5 +22,14 @@ namespace BitDiamond.Core.Utils
         public static readonly string Roles_BitMemberRole = "#bit-member";
         #endregion
 
+        #region System Users
+        public static readonly string SystemUsers_Root = "@root";
+        public static readonly string SystemUsers_Guest = "@guest";
+        #endregion
+
+        #region UserData
+        public static readonly string UserData_ProfileImage = "Profile.Image";
+        #endregion
+
     }
 }

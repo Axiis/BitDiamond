@@ -33,14 +33,13 @@ namespace BitDiamond.Core.Services
         
         Operation<ContactData> ModifyContactData(ContactData data);
         
-        Operation<IEnumerable<ContactData>> RemoveContactData(long[] ids);
-        
-        Operation<IEnumerable<ContactData>> GetContactData();
+        Operation<ContactData> GetContactData();
         #endregion
 
         #region User data
         Operation<IEnumerable<UserData>> AddData(UserData[] data);
-        
+        Operation<IEnumerable<UserData>> ModifyData(UserData[] data);
+
         Operation<IEnumerable<UserData>> RemoveData(string[] names);
         
         Operation<IEnumerable<UserData>> GetUserData();

@@ -311,60 +311,153 @@ namespace BitDiamond.Core.Services
         #endregion
 
         #region Biodata
-        public Operation<BioData> ModifyBioData(BioData data)
-        {
+        public Operation<BioData> ModifyBioData(BioData data) 
+            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+            {
+                var user = UserContext.CurrentUser();
+                var persisted = _query.GetBioData(user);
 
-        }
+                if (persisted != null)
+                {
+                    data.CopyTo(persisted,
+                                nameof(BioData.OwnerId),
+                                nameof(BioData.Owner),
+                                nameof(BioData.CreatedOn),
+                                nameof(BioData.ModifiedOn));
+
+                    return _pcommand.Update(persisted);
+                }
+                else return _pcommand.Add(persisted);
+            });
 
         public Operation<BioData> GetBioData()
-        {
-
-        }
+            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+            {
+                return _query.GetBioData(UserContext.CurrentUser());
+            });
         #endregion
 
         #region Contact data
-
         public Operation<ContactData> ModifyContactData(ContactData data)
-        {
+            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+            {
+                var user = UserContext.CurrentUser();
+                var persisted = _query.GetContactData(user);
 
-        }
+                if (persisted != null)
+                {
+                    data.CopyTo(persisted,
+                                nameof(ContactData.OwnerId),
+                                nameof(ContactData.Owner),
+                                nameof(ContactData.CreatedOn),
+                                nameof(ContactData.ModifiedOn));
 
-        public Operation<IEnumerable<ContactData>> RemoveContactData(long[] ids)
-        {
+                    return _pcommand.Update(persisted);
+                }
+                else return _pcommand.Add(persisted);
+            });
 
-        }
-
-        public Operation<IEnumerable<ContactData>> GetContactData()
-        {
-
-        }
+        public Operation<ContactData> GetContactData()
+            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+            {
+                return _query.GetContactData(UserContext.CurrentUser());
+            });
         #endregion
 
         #region User data
         public Operation<IEnumerable<UserData>> AddData(UserData[] data)
-        {
+            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+            {
+                var user = UserContext.CurrentUser();
+                return data.Select(_data =>
+                {
+                    if (_query.GetUserData(user, _data.Name) != null) return null;
 
-        }
+                    _data.EntityId = 0;
+                    _data.Owner = user;
+                    _data.OwnerId = user.UserId;
+
+                    return _pcommand.Add(_data).Resolve();
+                })
+                .Where(_data => _data != null)
+                .ToArray()
+                .AsEnumerable();
+            });
+        public Operation<IEnumerable<UserData>> ModifyData(UserData[] data)
+            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+            {
+                var user = UserContext.CurrentUser();
+                return data.Select(_data =>
+                {
+                    var persisted = _query.GetUserData(user, _data.Name);
+                    if (persisted == null) return null;
+
+                    _data.CopyTo(persisted,
+                                 nameof(UserData.Owner),
+                                 nameof(UserData.OwnerId),
+                                 nameof(UserData.CreatedOn),
+                                 nameof(UserData.ModifiedOn));
+
+                    return _pcommand.Update(_data).Resolve();
+                })
+                .Where(_data => _data != null)
+                .ToArray()
+                .AsEnumerable();
+            });
 
         public Operation<IEnumerable<UserData>> RemoveData(string[] names)
-        {
-
-        }
+            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+            {
+                var user = UserContext.CurrentUser();
+                return names.Select(_name =>
+                {
+                    var data = _query.GetUserData(user, _name);
+                    if (data == null) return null;
+                    else return _pcommand.Delete(data).Resolve();
+                })
+                .Where(_data => _data != null)
+                .ToArray()
+                .AsEnumerable();
+            });
 
         public Operation<IEnumerable<UserData>> GetUserData()
-        {
-
-        }
+            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+            {
+                return _query.GetUserData(UserContext.CurrentUser());
+            });
 
         public Operation<UserData> GetUserData(string name)
-        {
-
-        }
+            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+            {
+                return _query.GetUserData(UserContext.CurrentUser(), name);
+            });
 
         public Operation<string> UpdateProfileImage(EncodedBinaryData image, string oldImageUrl)
-        {
+            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+            {
+                var user = UserContext.CurrentUser();
 
-        }
+                var url = _blobStore.Delete(oldImageUrl) //shouldnt fail even if oldImageUrl is null
+                                    .Then(opr => _blobStore.Persist(image))
+                                    .Resolve();
+
+                //create the ProfileImage UserData and store the url
+                var userData = _query.GetUserData(user, Constants.UserData_ProfileImage) ?? new UserData
+                {
+                    Name = Constants.UserData_ProfileImage,
+                    Owner = user,
+                    Type = CommonDataType.Url
+                };
+
+                //set the data
+                userData.Data = url;
+
+                if (userData.EntityId > 0)
+                    return _pcommand.Update(userData).Resolve().Data;
+
+                else
+                    return _pcommand.Add(userData).Resolve().Data;
+            });
         #endregion
     }
 }

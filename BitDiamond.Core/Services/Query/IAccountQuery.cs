@@ -15,5 +15,9 @@ namespace BitDiamond.Core.Services.Query
         IEnumerable<ContextVerification> GetContextVerifications(User user);
         ContextVerification GetLatestContextVerification(User user, string context);
         ContextVerification GetContextVerification(User user, string token);
+        BioData GetBioData(User user);
+        ContactData GetContactData(User user);
+        IEnumerable<UserData> GetUserData(User user);
+        UserData GetUserData(User user, string name);
     }
 }

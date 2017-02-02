@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		NOTES.txt = NOTES.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitDiamond.Test", "BitDiamond.Test\BitDiamond.Test.csproj", "{A0E10CBF-06EE-4FA9-A0C3-26E65AD58BC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{1E54BA4E-853C-4C0F-BD7C-292CA5585133}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E54BA4E-853C-4C0F-BD7C-292CA5585133}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E54BA4E-853C-4C0F-BD7C-292CA5585133}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0E10CBF-06EE-4FA9-A0C3-26E65AD58BC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0E10CBF-06EE-4FA9-A0C3-26E65AD58BC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0E10CBF-06EE-4FA9-A0C3-26E65AD58BC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0E10CBF-06EE-4FA9-A0C3-26E65AD58BC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,5 +54,6 @@ Global
 		{EDE46227-C774-4338-A69E-97E6AB6037EC} = {78A4752C-6A0B-4732-A848-0025EC6948A7}
 		{6BAEBE53-E225-46F0-83BF-17491213B6EE} = {78A4752C-6A0B-4732-A848-0025EC6948A7}
 		{1E54BA4E-853C-4C0F-BD7C-292CA5585133} = {3CA8C95B-A745-4429-B510-240347777BB8}
+		{A0E10CBF-06EE-4FA9-A0C3-26E65AD58BC3} = {7706675A-4409-44F3-9049-56A9885C612A}
 	EndGlobalSection
 EndGlobal

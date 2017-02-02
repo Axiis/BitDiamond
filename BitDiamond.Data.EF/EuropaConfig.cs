@@ -58,6 +58,24 @@ namespace BitDiamond.Data.EF
                 cxt.CommitChanges();
             });
             #endregion
+
+            #region 2. Roles
+            #endregion
+
+            #region 3. Resources
+            #endregion
+
+            #region 4. Permissions
+            #endregion
+
+            #region 5. Default users (root and guest)
+            //dont forget to assign roles the the users
+            #endregion
+
+            #region 6. Apex User
+            //dont forget to assign roles to this user
+            #endregion
+
         }
     }
 }

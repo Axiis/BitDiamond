@@ -74,7 +74,7 @@
     <Compile Include="Models\UserLogon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Command\IPersistenceCommand.cs" />
-    <Compile Include="Services\IApiLinkProvider.cs" />
+    <Compile Include="Services\IAppUrlProvider.cs" />
     <Compile Include="Services\IBlobStore.cs" />
     <Compile Include="Services\IBlockChainService.cs" />
     <Compile Include="Services\IContextVerifier.cs" />
@@ -89,6 +89,7 @@
     <Compile Include="Services\Query\IAccountQuery.cs" />
     <Compile Include="Services\Query\IContextVerifierQuery.cs" />
     <Compile Include="Services\Query\IBitLevelQuery.cs" />
+    <Compile Include="Services\Query\IReferalQuery.cs" />
     <Compile Include="Services\Query\ISettingsQuery.cs" />
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\Extensions.cs" />

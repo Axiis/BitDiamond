@@ -1,10 +1,6 @@
 ﻿using Axis.Pollux.Identity.Principal;
 using BitDiamond.Core.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BitDiamond.Core.Services.Query
 {
@@ -19,5 +15,6 @@ namespace BitDiamond.Core.Services.Query
         ContactData GetContactData(User user);
         IEnumerable<UserData> GetUserData(User user);
         UserData GetUserData(User user, string name);
+        ReferalNode GetReferee(string refereeCode);
     }
 }

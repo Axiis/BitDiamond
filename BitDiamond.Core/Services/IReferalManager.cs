@@ -11,7 +11,7 @@ namespace BitDiamond.Core.Services
 {
     public interface IReferalManager
     {
-        Operation<ReferalNode> AffixNewUser(User user, string refereeCode);
+        Operation<ReferalNode> AffixNewUser(string userId, string refereeCode);
 
 
         Operation<IEnumerable<ReferalNode>> DirectDownlines(ReferalNode node);

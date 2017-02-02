@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace BitDiamond.Core.Services
 {
-    public interface IApiLinkProvider
+    public interface IAppUrlProvider
     {
-        Operation<string> GenerateContextVerificationLink(string verificationToken);
+        Operation<string> GenerateContextVerificationApiUrl(string verificationToken);
     }
 }

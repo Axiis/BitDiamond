@@ -1,4 +1,5 @@
-﻿using BitDiamond.Core.Models;
+﻿using Axis.Luna;
+using BitDiamond.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace BitDiamond.Core.Services
 {
     public interface IBlockChainService
     {
-        BlockChainTransaction GetTransactionDetails(string transactionHash);
+        Operation<BlockChainTransaction> GetTransactionDetails(string transactionHash);
     }
 }

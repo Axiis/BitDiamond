@@ -50,7 +50,7 @@ namespace BitDiamond.Core.Services.Services
                 var currentUser = UserContext.CurrentUser();
                 var currentLevel = _query.CurrentBitLevel(currentUser);
 
-                var blockChainTransaction = _blockChain.GetTransactionDetails(transactionHash);
+                var blockChainTransaction = _blockChain.GetTransactionDetails(transactionHash).Resolve();
                 if (IsSameTransaction(currentLevel.Donation, blockChainTransaction))
                 {
                     currentLevel.Donation.Status = blockChainTransaction.Status;

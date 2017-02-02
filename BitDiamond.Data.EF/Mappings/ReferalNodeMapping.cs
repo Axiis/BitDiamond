@@ -9,11 +9,10 @@ namespace BitDiamond.Data.EF.Mappings
             this.HasRequired(e => e.User)
                 .WithMany();
 
-            this.HasRequired(e => e.Referee)
-                .WithMany(e => e.Referals);
-
-            this.HasRequired(e => e.Upline)
-                .WithMany(e => e.DirectDownlines);
+            this.Ignore(e => e.DirectDownlines)
+                .Ignore(e => e.Referals)
+                .Ignore(e => e.Referee)
+                .Ignore(e => e.Upline);
         }
     }
 }

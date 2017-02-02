@@ -35,6 +35,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Axis.Luna">
+      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Luna\Axis.Luna\bin\Debug\Axis.Luna.dll</HintPath>
+    </Reference>
+    <Reference Include="Axis.Narvi">
+      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Narvi\Axis.Narvi\bin\Debug\Axis.Narvi.dll</HintPath>
+    </Reference>
+    <Reference Include="Axis.Pollux.Authentication">
+      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.Authentication\bin\Debug\Axis.Pollux.Authentication.dll</HintPath>
+    </Reference>
+    <Reference Include="Axis.Pollux.Identity">
+      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.Identity\bin\Debug\Axis.Pollux.Identity.dll</HintPath>
+    </Reference>
+    <Reference Include="Axis.Pollux.RBAC">
+      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.RBAC\bin\Debug\Axis.Pollux.RBAC.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.0.0\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
@@ -67,6 +82,16 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BitDiamond.Core.Services\BitDiamond.Core.Services.csproj">
+      <Project>{6baebe53-e225-46f0-83bf-17491213b6ee}</Project>
+      <Name>BitDiamond.Core.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BitDiamond.Core\BitDiamond.Core.csproj">
+      <Project>{EDE46227-C774-4338-A69E-97E6AB6037EC}</Project>
+      <Name>BitDiamond.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

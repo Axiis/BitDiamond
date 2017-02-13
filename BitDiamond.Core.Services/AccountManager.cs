@@ -82,7 +82,7 @@ namespace BitDiamond.Core.Services
             else if (secretCredentials == null || secretCredentials.Length == 0)
                 throw new Exception("user registration must contain a credential");
 
-            else if (_query.GetReferee(referee) == null)
+            else if (_query.GetRefNode(referee) == null)
                 throw new Exception("invalid referee");
 
             else
@@ -304,7 +304,7 @@ namespace BitDiamond.Core.Services
             var user = _query.GetUserById(targetUser);
             if (user == null) throw new Exception("invalid user");
 
-            var verification = _query.GetContextVerification(user, contextToken);
+            var verification = _query.GetContextVerification(user, Constants.VerificationContext_UserActivation, contextToken);
             if (verification.Verified || 
                 verification.Context != Constants.VerificationContext_UserActivation) throw new Exception("invalid verification");
             else

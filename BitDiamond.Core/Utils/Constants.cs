@@ -31,5 +31,9 @@ namespace BitDiamond.Core.Utils
         public static readonly string UserData_ProfileImage = "Profile.Image";
         #endregion
 
+        #region Mail Origins
+        public static readonly string MailOrigin_DoNotReply = "donotreply@bitdiamond.com";
+        #endregion
+
     }
 }

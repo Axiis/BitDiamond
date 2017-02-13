@@ -28,14 +28,14 @@ namespace BitDiamond.Test
             userContextMoq.Setup(e => e.CurrentUser()).Returns(apex);
 
 
-            var referalQueryMoq = new Mock<IReferalQuery>();
+            var referalQueryMoq = new Mock<IReferralQuery>();
             referalQueryMoq.Setup(e => e.AllDownlines(It.IsAny<ReferalNode>()))
                            .Returns(new ReferalNode[0]);
             referalQueryMoq.Setup(e => e.GetReferalNode(It.IsAny<string>()))
                            .Returns((string rcode) => new ReferalNode
                            {
                                ReferenceCode = rcode,
-                               RefereeCode = null,
+                               ReferrerCode = null,
                                UplineCode = null,
                                User = apex
                            });
@@ -73,14 +73,14 @@ namespace BitDiamond.Test
             userContextMoq.Setup(e => e.CurrentUser()).Returns(apex);
 
 
-            var referalQueryMoq = new Mock<IReferalQuery>();
+            var referalQueryMoq = new Mock<IReferralQuery>();
             referalQueryMoq.Setup(e => e.AllDownlines(It.IsAny<ReferalNode>()))
                            .Returns(new ReferalNode[]
                            {
                                new ReferalNode
                                {
                                    ReferenceCode = "00000-00000-0000000001",
-                                   RefereeCode = "00000-00000-0000000000",
+                                   ReferrerCode = "00000-00000-0000000000",
                                    UplineCode = "00000-00000-0000000000",
                                    User = new User
                                    {
@@ -91,7 +91,7 @@ namespace BitDiamond.Test
                                new ReferalNode
                                {
                                    ReferenceCode = "00000-00000-0000000002",
-                                   RefereeCode = "00000-00000-0000000000",
+                                   ReferrerCode = "00000-00000-0000000000",
                                    UplineCode = "00000-00000-0000000000",
                                    User = new User
                                    {
@@ -102,7 +102,7 @@ namespace BitDiamond.Test
                                new ReferalNode
                                {
                                    ReferenceCode = "00000-00000-0000000003",
-                                   RefereeCode = "00000-00000-0000000000",
+                                   ReferrerCode = "00000-00000-0000000000",
                                    UplineCode = "00000-00000-0000000002",
                                    User = new User
                                    {
@@ -113,7 +113,7 @@ namespace BitDiamond.Test
                                new ReferalNode
                                {
                                    ReferenceCode = "00000-00000-0000000004",
-                                   RefereeCode = "00000-00000-0000000003",
+                                   ReferrerCode = "00000-00000-0000000003",
                                    UplineCode = "00000-00000-0000000003",
                                    User = new User
                                    {
@@ -126,7 +126,7 @@ namespace BitDiamond.Test
                            .Returns((string rcode) => new ReferalNode
                            {
                                ReferenceCode = rcode,
-                               RefereeCode = null,
+                               ReferrerCode = null,
                                UplineCode = null,
                                User = apex
                            });

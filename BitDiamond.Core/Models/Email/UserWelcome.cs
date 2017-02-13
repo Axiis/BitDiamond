@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace BitDiamond.Core.Models.Email
 {
-    public class AccountActivation: MailModel
+    public class UserWelcome: MailModel
     {
         public string Target
         {
             get { return Recipients.FirstOrDefault(); }
             set { Recipients = new[] { value }; }
         }
-
-        public string Link { get; set; }
     }
 }

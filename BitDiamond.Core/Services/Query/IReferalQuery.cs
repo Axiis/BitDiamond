@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BitDiamond.Core.Services.Query
 {
-    public interface IReferalQuery
+    public interface IReferralQuery
     {
         ReferalNode GetReferalNode(string referenceCode);
 

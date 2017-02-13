@@ -81,7 +81,7 @@ namespace BitDiamond.Core.Services.Services
                 if (currentLevel.Level == maxLevel) throw new Exception("cannot upgrade from max level");
 
                 //get the ideal upgrade receiver
-                var receiver = _query.Upline(currentLevel.Level + 1);
+                var receiver = _query.Upline(currentUser, currentLevel.Level + 1);
                 var receiverLevel = _query.CurrentBitLevel(receiver.User);
                 if (receiverLevel.Donation.Status != BlockChainTransactionStatus.Valid ||
                     receiverLevel.Cycle < currentLevel.Cycle ||
@@ -99,7 +99,7 @@ namespace BitDiamond.Core.Services.Services
                     });
 
                     //find the next best receiver
-                    receiverLevel = _query.GetClosestValidAncestorLevel(currentLevel.Level + 1);
+                    receiverLevel = _query.GetClosestValidBeneficiary(currentUser);
                 }
 
                 return new BitLevel

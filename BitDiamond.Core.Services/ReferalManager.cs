@@ -22,14 +22,14 @@ namespace BitDiamond.Core.Services
         private string UniversalLock = "Referal.UniversalLock";
 
         private IUserAuthorization _authorizer;
-        private IReferalQuery _query;
+        private IReferralQuery _query;
         private IPersistenceCommands _pcommand;
 
         public IUserContext UserContext { get; private set; }
 
         public ReferalManager(IUserContext userContext, 
                               IUserAuthorization authorizer,
-                              IReferalQuery query,
+                              IReferralQuery query,
                               IPersistenceCommands pcommand)
         {
             ThrowNullArguments(() => userContext,
@@ -60,7 +60,7 @@ namespace BitDiamond.Core.Services
                     var @ref = new ReferalNode
                     {
                         UplineCode = refereeCode,
-                        RefereeCode = refereeCode,
+                        ReferrerCode = refereeCode,
                         ReferenceCode = GenerateReferenceCode(),
                         User = user
                     };
@@ -85,7 +85,7 @@ namespace BitDiamond.Core.Services
                         var @ref = new ReferalNode
                         {
                             UplineCode = _duo.UplineCode,
-                            RefereeCode = refereeCode,
+                            ReferrerCode = refereeCode,
                             ReferenceCode = GenerateReferenceCode(),
                             User = user
                         };

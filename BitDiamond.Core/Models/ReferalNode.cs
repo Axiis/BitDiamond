@@ -11,12 +11,13 @@ namespace BitDiamond.Core.Models
         [MaxLength(50, ErrorMessage="Reference code is too long")]
         public string ReferenceCode { get; set; }
 
-        public string RefereeCode { get; set; }
-        public ReferalNode Referee { get; set; }
+        public string ReferrerCode { get; set; }
+        public ReferalNode Referrer { get; set; }
         public List<ReferalNode> Referals { get; private set; } = new List<ReferalNode>();
 
         public string UplineCode { get; set; }
         public ReferalNode Upline { get; set; }
+
         public List<ReferalNode> DirectDownlines { get; private set; } = new List<ReferalNode>();
     }
 }

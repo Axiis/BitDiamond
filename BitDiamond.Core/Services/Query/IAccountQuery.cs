@@ -10,11 +10,11 @@ namespace BitDiamond.Core.Services.Query
         IEnumerable<UserLogon> GetUserLogins(string userId);
         IEnumerable<ContextVerification> GetContextVerifications(User user);
         ContextVerification GetLatestContextVerification(User user, string context);
-        ContextVerification GetContextVerification(User user, string token);
+        ContextVerification GetContextVerification(User user, string context, string token);
         BioData GetBioData(User user);
         ContactData GetContactData(User user);
         IEnumerable<UserData> GetUserData(User user);
         UserData GetUserData(User user, string name);
-        ReferalNode GetReferee(string refereeCode);
+        ReferalNode GetRefNode(string refereeCode);
     }
 }

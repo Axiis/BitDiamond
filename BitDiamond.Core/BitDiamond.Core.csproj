@@ -68,6 +68,7 @@
     <Compile Include="Models\BitLevel.cs" />
     <Compile Include="Models\Email\AccountActivation.cs" />
     <Compile Include="Models\Email\MailModel.cs" />
+    <Compile Include="Models\Email\UserWelcome.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\ReferalNode.cs" />
     <Compile Include="Models\SystemSetting.cs" />

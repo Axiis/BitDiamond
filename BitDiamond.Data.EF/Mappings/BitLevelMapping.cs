@@ -9,7 +9,11 @@ namespace BitDiamond.Data.EF.Mappings
             this.Ignore(e => e.Donation);
 
             this.HasRequired(e => e.User)
-                .WithMany();
+                .WithMany()
+                .Map(m =>
+                {
+                    m.MapKey($"{nameof(BitLevel.User)}Id");
+                });
         }
     }
 }

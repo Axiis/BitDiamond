@@ -92,6 +92,7 @@
     <Compile Include="Services\Query\IBitLevelQuery.cs" />
     <Compile Include="Services\Query\IReferalQuery.cs" />
     <Compile Include="Services\Query\ISettingsQuery.cs" />
+    <Compile Include="Services\Query\IUserNotifierQuery.cs" />
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\Extensions.cs" />
   </ItemGroup>

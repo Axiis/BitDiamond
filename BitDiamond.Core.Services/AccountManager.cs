@@ -33,19 +33,20 @@ namespace BitDiamond.Core.Services
 
 
         #region Init
-        public AccountManager(IUserContext userContext, IAccountQuery dataContext,
-                              ICredentialAuthentication credentialAuthentication,
+        public AccountManager(ICredentialAuthentication credentialAuthentication,
                               IContextVerifier contextVerifier,
                               ISettingsManager settingsManager,
                               IUserAuthorization accessManager,
                               IPersistenceCommands pcommands,
                               IAppUrlProvider apiProvider,
-                              IReferalManager refManager,
+                              IReferalManager refManager, 
+                              IUserContext userContext,
                               IEmailPush messagePush,
-                              IBlobStore blobStore)
+                              IBlobStore blobStore,
+                              IAccountQuery query)
         {
             ThrowNullArguments(() => userContext,
-                               () => dataContext,
+                               () => query,
                                () => credentialAuthentication,
                                () => contextVerifier,
                                () => accessManager,
@@ -57,7 +58,7 @@ namespace BitDiamond.Core.Services
                                () => refManager);
 
             UserContext = userContext;
-            _query = dataContext;
+            _query = query;
             _credentialAuth = credentialAuthentication;
             _contextVerifier = contextVerifier;
             _authorizer = accessManager;
@@ -72,7 +73,7 @@ namespace BitDiamond.Core.Services
 
         #region Account
         public Operation RegisterUser(string targetUser, string referee, Credential[] secretCredentials)
-        => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
             var user = _query.GetUserById(targetUser);
 

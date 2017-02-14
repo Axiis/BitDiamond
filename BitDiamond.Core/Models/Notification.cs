@@ -7,14 +7,14 @@ namespace BitDiamond.Core.Models
     {
         [MaxLength(500, ErrorMessage = "Title is too long")]
         public string Title { get; set; }
-        public string Message { get; set; }
 
-        [MaxLength(500, ErrorMessage = "ContextType is too long")]
-        public string ContextType { get; set; }
+        [Required]
+        public string Message { get; set; }
 
         public NotificationType Type { get; set; }
         public bool Seen { get; set; }
 
+        [Required]
         public User Target { get; set; }
     }
 

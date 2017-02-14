@@ -27,6 +27,9 @@ namespace BitDiamond.Core
             };
         }
 
+        public static PermissionProfile CurrentPPP(this IUserContext context)
+        => CurrentProcessPermissionProfile(context);
+
 
 
         private static IEnumerable<ResourceAttribute> GetFeatureAttributes(this MethodInfo method)

@@ -4,8 +4,9 @@ using Axis.Luna;
 using Axis.Jupiter.Europa;
 
 using static Axis.Luna.Extensions.ExceptionExtensions;
-using BitDiamond.Core.Models;
 using BitDiamond.Data.EF.Utils;
+using System;
+using static Axis.Luna.Extensions.ObjectExtensions;
 
 namespace BitDiamond.Data.EF.Command
 {
@@ -47,6 +48,8 @@ namespace BitDiamond.Data.EF.Command
         public Operation<Domain> Update<Domain>(Domain d)
         where Domain : class => Operation.Try(() =>
         {
+            Eval(() => d.With(new { ModifiedOn = DateTime.Now }));
+
             if (_persistenceProvider.CanUpdate<Domain>()) return _persistenceProvider.Update(d);
 
             _context.Store<Domain>().Modify(d, true);

@@ -92,6 +92,8 @@
     <Compile Include="Query\BitLevelQuery.cs" />
     <Compile Include="Query\ContextVerifierQuery.cs" />
     <Compile Include="Query\ReferralQuery.cs" />
+    <Compile Include="Query\SettingsQuery.cs" />
+    <Compile Include="Query\UserNotifierQuery.cs" />
     <Compile Include="Utils\PersistenceProvider.cs" />
   </ItemGroup>
   <ItemGroup>

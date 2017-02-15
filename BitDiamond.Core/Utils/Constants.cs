@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Linq;
+using static Axis.Luna.Extensions.EnumerableExtensions;
 
 namespace BitDiamond.Core.Utils
 {
@@ -33,6 +36,23 @@ namespace BitDiamond.Core.Utils
 
         #region Mail Origins
         public static readonly string MailOrigin_DoNotReply = "donotreply@bitdiamond.com";
+        #endregion
+
+        #region Misc
+        public static readonly JsonSerializerSettings DefaultJsonSerializerSettings = new JsonSerializerSettings
+        {
+            Converters = Enumerate<JsonConverter>()
+                .Append(new Axis.Apollo.Json.TimeSpanConverter())
+                .Append(new Axis.Apollo.Json.DateTimeConverter())
+                .ToList(),
+            MissingMemberHandling = MissingMemberHandling.Ignore,
+            NullValueHandling = NullValueHandling.Ignore,
+            ObjectCreationHandling = ObjectCreationHandling.Auto,
+            FloatFormatHandling = FloatFormatHandling.DefaultValue,
+            //PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+            StringEscapeHandling = StringEscapeHandling.Default,
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        };
         #endregion
 
     }

@@ -11,7 +11,6 @@ namespace BitDiamond.Data.EF.Mappings
 
             this.Property(e => e.Title).HasMaxLength(500);
             this.Property(e => e.Message).IsMaxLength();
-            this.Property(e => e.ContextType).HasMaxLength(500);
         }
     }
 }

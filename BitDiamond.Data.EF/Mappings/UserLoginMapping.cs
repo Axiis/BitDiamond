@@ -1,4 +1,5 @@
-﻿using BitDiamond.Core.Models;
+﻿using Axis.Jupiter.Europa.Mappings;
+using BitDiamond.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,14 @@ namespace BitDiamond.Data.EF.Mappings
                 .WithMany();
 
             this.Property(e => e.OwinToken).IsRequired();
-            this.Property(e => e.Device).IsRequired();
+        }
+    }
+
+    public class UserAgentMapping: BaseComplexMap<UserAgent>
+    {
+        public UserAgentMapping()
+        {
+            //nothing to map
         }
     }
 }

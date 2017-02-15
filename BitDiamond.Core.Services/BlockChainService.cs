@@ -7,6 +7,7 @@ using BitDiamond.Core.Models;
 
 using static Axis.Luna.Extensions.ExceptionExtensions;
 using Axis.Luna;
+using BitDiamond.Core.Utils;
 
 namespace BitDiamond.Core.Services
 {

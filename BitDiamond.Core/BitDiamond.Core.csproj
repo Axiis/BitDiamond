@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Axis.Apollo.Json">
+      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Apollo\Axis.Apollo.Json\bin\Debug\Axis.Apollo.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Axis.Luna">
       <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Luna\Axis.Luna\bin\Debug\Axis.Luna.dll</HintPath>
     </Reference>
@@ -82,10 +85,10 @@
     <Compile Include="Services\IBitLevelManager.cs" />
     <Compile Include="Services\IAccountManager.cs" />
     <Compile Include="Services\IEmailPush.cs" />
-    <Compile Include="Services\IReferalManager.cs" />
+    <Compile Include="Services\IReferralManager.cs" />
     <Compile Include="Services\ISettingsManager.cs" />
     <Compile Include="Services\IUserContext.cs" />
-    <Compile Include="Services\IUserContextAware.cs" />
+    <Compile Include="Utils\IUserContextAware.cs" />
     <Compile Include="Services\IUserNotifier.cs" />
     <Compile Include="Services\Query\IAccountQuery.cs" />
     <Compile Include="Services\Query\IContextVerifierQuery.cs" />

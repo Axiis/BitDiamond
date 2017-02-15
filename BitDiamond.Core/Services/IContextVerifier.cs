@@ -1,10 +1,7 @@
 ﻿using Axis.Luna;
 using BitDiamond.Core.Models;
+using BitDiamond.Core.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BitDiamond.Core.Services
 {

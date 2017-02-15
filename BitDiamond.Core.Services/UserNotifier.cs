@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 using Axis.Luna;
 using Axis.Pollux.RBAC.Services;
@@ -9,6 +8,7 @@ using BitDiamond.Core.Services.Query;
 
 using static Axis.Luna.Extensions.ExceptionExtensions;
 using Axis.Luna.Extensions;
+using BitDiamond.Core.Utils;
 
 namespace BitDiamond.Core.Services
 {

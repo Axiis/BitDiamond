@@ -5,7 +5,6 @@ namespace BitDiamond.Web.Infrastructure.Utils
     public static class WebConstants
     {
         #region OAuthPaths
-        public static readonly string OAuthPath_CredentialAuthorizationPath = "/login";
         public static readonly string OAuthPath_TokenPath = "/tokens";
         #endregion
 

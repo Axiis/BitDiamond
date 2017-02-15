@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Axis.Luna;
-using Axis.Pollux.Identity.Principal;
 using BitDiamond.Core.Models;
 
 using static Axis.Luna.Extensions.ExceptionExtensions;
@@ -15,9 +12,10 @@ using BitDiamond.Core.Services.Command;
 
 namespace BitDiamond.Core.Services
 {
+    using Utils;
     using RANG = RandomAlphaNumericGenerator;
 
-    public class ReferalManager : IReferalManager, IUserContextAware
+    public class ReferralManager : IReferralManager, IUserContextAware
     {
         private string UniversalLock = "Referal.UniversalLock";
 
@@ -27,7 +25,7 @@ namespace BitDiamond.Core.Services
 
         public IUserContext UserContext { get; private set; }
 
-        public ReferalManager(IUserContext userContext, 
+        public ReferralManager(IUserContext userContext, 
                               IUserAuthorization authorizer,
                               IReferralQuery query,
                               IPersistenceCommands pcommand)

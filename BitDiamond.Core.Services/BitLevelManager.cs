@@ -11,7 +11,7 @@ using BitDiamond.Core.Utils;
 using Axis.Luna.Extensions;
 using Newtonsoft.Json;
 
-namespace BitDiamond.Core.Services.Services
+namespace BitDiamond.Core.Services
 {
     public class BitLevelManager : IBitLevelManager, IUserContextAware
     {

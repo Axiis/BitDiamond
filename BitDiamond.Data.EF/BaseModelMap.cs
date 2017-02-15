@@ -12,7 +12,7 @@ namespace BitDiamond.Data.EF
         protected BaseModelMap(bool useDefaultTable) : base(useDefaultTable)
         {
             //configure the primary key
-            this.HasKey(e => e.Id)
+            this.HasKey(e => e.Id);
         }
     }
 };

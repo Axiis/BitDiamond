@@ -29,7 +29,7 @@ namespace BitDiamond.Core.Services
         private IPersistenceCommands _pcommand;
         private ISettingsManager _settingsManager;
         private IAppUrlProvider _apiProvider;
-        private IReferalManager _refManager;
+        private IReferralManager _refManager;
 
 
         #region Init
@@ -39,7 +39,7 @@ namespace BitDiamond.Core.Services
                               IUserAuthorization accessManager,
                               IPersistenceCommands pcommands,
                               IAppUrlProvider apiProvider,
-                              IReferalManager refManager, 
+                              IReferralManager refManager, 
                               IUserContext userContext,
                               IEmailPush messagePush,
                               IBlobStore blobStore,
@@ -290,7 +290,7 @@ namespace BitDiamond.Core.Services
                                 return _messagePush.SendMail(new AccountActivation
                                 {
                                     Target = user.UserId,
-                                    Link = _apiProvider.GenerateContextVerificationApiUrl(verification.VerificationToken).Result
+                                    Link = _apiProvider.GenerateContextVerificationApiUrl(verification.VerificationToken, targetUser).Result
                                 });
                             })
                             .Resolve();

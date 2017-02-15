@@ -6,6 +6,7 @@ using BitDiamond.Core.Models;
 using BitDiamond.Core.Services.Query;
 using Axis.Pollux.RBAC.Services;
 using BitDiamond.Core.Services.Command;
+using BitDiamond.Core.Utils;
 
 namespace BitDiamond.Core.Services
 {

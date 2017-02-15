@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Axis.Luna;
 using BitDiamond.Core.Models;
 using Axis.Pollux.RBAC.Services;
@@ -12,7 +11,7 @@ using Axis.Luna.Extensions;
 
 namespace BitDiamond.Core.Services.Services
 {
-    public class ContextVerifier : IContextVerifier
+    public class ContextVerifier : IContextVerifier, IUserContextAware
     {
         private IUserAuthorization _authorizer = null;
         private IContextVerifierQuery _query = null;

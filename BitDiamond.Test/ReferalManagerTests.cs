@@ -52,7 +52,7 @@ namespace BitDiamond.Test
             pcommands.Setup(e => e.Update(It.IsAny<ReferalNode>()))
                      .Returns((ReferalNode node) => Operation.Try(() => node));
 
-            var refManager = new ReferalManager(userContextMoq.Object,
+            var refManager = new ReferralManager(userContextMoq.Object,
                                                 authorizerMoq,
                                                 referalQueryMoq.Object,
                                                 pcommands.Object);
@@ -143,7 +143,7 @@ namespace BitDiamond.Test
             pcommands.Setup(e => e.Update(It.IsAny<ReferalNode>()))
                      .Returns((ReferalNode node) => Operation.Try(() => node));
 
-            var refManager = new ReferalManager(userContextMoq.Object,
+            var refManager = new ReferralManager(userContextMoq.Object,
                                                 authorizerMoq,
                                                 referalQueryMoq.Object,
                                                 pcommands.Object);

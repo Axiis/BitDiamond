@@ -78,7 +78,7 @@
   <ItemGroup>
     <Compile Include="BaseModelMap.cs" />
     <Compile Include="Command\EuropaPersistenceCommand.cs" />
-    <Compile Include="EuropaConfig.cs" />
+    <Compile Include="BitDiamondModuleConfig.cs" />
     <Compile Include="Mappings\BitcoinAddressMapping.cs" />
     <Compile Include="Mappings\BitLevelMapping.cs" />
     <Compile Include="Mappings\BlockChainTransactionMapping.cs" />

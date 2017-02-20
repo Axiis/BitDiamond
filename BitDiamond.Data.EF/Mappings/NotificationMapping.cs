@@ -7,7 +7,8 @@ namespace BitDiamond.Data.EF.Mappings
         public NotificationMapping()
         {
             this.HasRequired(e => e.Target)
-                .WithMany();
+                .WithMany()
+                .HasForeignKey(e => e.TargetId);
 
             this.Property(e => e.Title).HasMaxLength(500);
             this.Property(e => e.Message).IsMaxLength();

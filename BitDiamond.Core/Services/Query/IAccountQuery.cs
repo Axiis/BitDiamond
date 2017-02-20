@@ -1,4 +1,5 @@
-﻿using Axis.Pollux.Identity.Principal;
+﻿using Axis.Pollux.Authentication;
+using Axis.Pollux.Identity.Principal;
 using BitDiamond.Core.Models;
 using System.Collections.Generic;
 
@@ -15,6 +16,7 @@ namespace BitDiamond.Core.Services.Query
         ContactData GetContactData(User user);
         IEnumerable<UserData> GetUserData(User user);
         UserData GetUserData(User user, string name);
-        ReferalNode GetRefNode(string refereeCode);
+        ReferralNode GetRefNode(string refereeCode);
+        Credential GetCredential(User user, string name, Access credentialVisibility);
     }
 }

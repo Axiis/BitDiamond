@@ -81,3 +81,4 @@ var BitDiamond;
         Utils.StringPairCollection = StringPairCollection;
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=map.js.map

@@ -9,7 +9,7 @@ namespace BitDiamond.Web.Infrastructure.Utils
         #endregion
 
         #region Misc
-        public static readonly TimeSpan Misc_TokenValidityDuration = TimeSpan.FromDays(double.MaxValue);
+        public static readonly TimeSpan Misc_TokenValidityDuration = TimeSpan.MaxValue;
         #endregion
     }
 }

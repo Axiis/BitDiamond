@@ -13,7 +13,8 @@ namespace BitDiamond.Data.EF.Mappings
         public UserLoginMapping()
         {
             this.HasRequired(e => e.User)
-                .WithMany();
+                .WithMany()
+                .HasForeignKey(e => e.UserId);
 
             this.Property(e => e.OwinToken).IsRequired();
         }

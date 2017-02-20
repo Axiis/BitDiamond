@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using Axis.Luna;
 using Axis.Pollux.RBAC.Services;
 using BitDiamond.Core.Models;
-using BitDiamond.Core.Services.Command;
 using BitDiamond.Core.Services.Query;
 
 using static Axis.Luna.Extensions.ExceptionExtensions;
 using Axis.Luna.Extensions;
 using BitDiamond.Core.Utils;
+using Axis.Jupiter.Kore.Command;
 
 namespace BitDiamond.Core.Services
 {

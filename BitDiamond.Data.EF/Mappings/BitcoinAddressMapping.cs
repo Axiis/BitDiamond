@@ -6,8 +6,10 @@ namespace BitDiamond.Data.EF.Mappings
     {
         public BitcoinAddressMapping()
         {
+            Property(e => e.OwnerId).HasMaxLength(400);
             this.HasRequired(e => e.Owner)
-                .WithRequiredDependent()
+                .WithMany()
+                .HasForeignKey(e => e.OwnerId)
                 .WillCascadeOnDelete(false);
         }
     }

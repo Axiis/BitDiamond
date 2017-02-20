@@ -1,51 +1,74 @@
-﻿using Axis.Luna;
-using Axis.Pollux.Authentication;
+﻿using Axis.Pollux.Authentication;
 using Axis.Pollux.Identity.Principal;
 using BitDiamond.Core.Models;
 using System.Collections.Generic;
+using Axis.Pollux.RBAC.Auth;
+using Axis.Luna;
 
 namespace BitDiamond.Core.Services
 {
     public interface IAccountManager
     {
         #region Account
-        Operation RegisterUser(string targetUser, string referee, Credential[] secretCredentials);
-        
-        Operation RegisterAdminUser(string targetUser, Credential[] secretCredentials);
+        [Resource(":system/accounts/users/@register")]
+        Operation<User> RegisterUser(string targetUser, string referrer, Credential secretCredential);
 
+        [Resource(":system/accounts/admins/@register")]
+        Operation<User> RegisterAdminUser(string targetUser, Credential secretCredential);
 
+        [Resource(":system/accounts/users/@deactivate")]
         Operation<User> DeactivateUser(string targetUser);
 
+        [Resource(":system/accounts/users/@block")]
         Operation<User> BlockUser(string targetUser);
 
+        [Resource(":system/accounts/users/activations/@request")]
         Operation<ContextVerification> RequestUserActivation(string targetUser);
 
+        [Resource(":system/accounts/users/activations/@verify")]
         Operation<User> VerifyUserActivation(string targetUser, string contextToken);
+
+        [Resource(":system/accounts/users/credentials/reset-tokens/@verify")]
+        Operation ResetCredential(Credential newCredential, string verificationToken, string targetUser);
+
+        [Resource(":system/accounts/users/credentials/reset-tokens/@request")]
+        Operation RequestCredentialReset(CredentialMetadata credentialMetadata, string targetUser);
+
         #endregion
-        
+
         #region Biodata
-        Operation<BioData> ModifyBioData(BioData data);
+        [Resource(":system/accounts/biodata/@update")]
+        Operation<BioData> UpdateBioData(BioData data);
         
+        [Resource(":system/accounts/biodata/@get")]
         Operation<BioData> GetBioData();
         #endregion
 
         #region Contact data
-        
-        Operation<ContactData> ModifyContactData(ContactData data);
-        
+        [Resource(":system/accounts/contacts/@update")]
+        Operation<ContactData> UpdateContactData(ContactData data);
+
+        [Resource(":system/accounts/contacts/@get")]
         Operation<ContactData> GetContactData();
         #endregion
 
         #region User data
+        [Resource(":system/accounts/userdata/@add")]
         Operation<IEnumerable<UserData>> AddData(UserData[] data);
-        Operation<IEnumerable<UserData>> ModifyData(UserData[] data);
 
+        [Resource(":system/accounts/userdata/@update")]
+        Operation<IEnumerable<UserData>> UpdateData(UserData[] data);        
+
+        [Resource(":system/accounts/userdata/@delete")]
         Operation<IEnumerable<UserData>> RemoveData(string[] names);
         
+        [Resource(":system/accounts/userdata/@get-all")]
         Operation<IEnumerable<UserData>> GetUserData();
-        
+
+        [Resource(":system/accounts/userdata/@get-named")]
         Operation<UserData> GetUserData(string name);
-        
+
+        [Resource(":system/accounts/userdata/profile-images/@update")]
         Operation<string> UpdateProfileImage(EncodedBinaryData image, string oldImageUrl);
         #endregion
     }

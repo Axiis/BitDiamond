@@ -6,11 +6,11 @@ namespace BitDiamond.Core.Services.Query
 {
     public interface IBitLevelQuery
     {
-        IEnumerable<ReferalNode> Uplines(User user);
-        IEnumerable<ReferalNode> Downlines(User user);
-        IEnumerable<ReferalNode> Referrals(User user);
-        ReferalNode Upline(User user, int uplineOffset);
-        ReferalNode UserRef(User user);
+        IEnumerable<ReferralNode> Uplines(User user);
+        IEnumerable<ReferralNode> Downlines(User user);
+        IEnumerable<ReferralNode> Referrals(User user);
+        ReferralNode Upline(User user, int uplineOffset);
+        ReferralNode UserRef(User user);
 
         IEnumerable<BitLevel> GetBitLevelHistory(User user);
         BitLevel CurrentBitLevel(User user);

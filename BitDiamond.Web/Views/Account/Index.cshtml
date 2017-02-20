@@ -4,14 +4,100 @@
 }
 
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="/content/theme/eliteadmin/dark/../plugins/images/favicon.png">
+    <title>BitDiamond - Account</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="/content/theme/eliteadmin/dark/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- animation CSS -->
+    <link href="/content/theme/eliteadmin/dark/css/animate.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/content/theme/eliteadmin/dark/css/style.css" rel="stylesheet">
+    <!-- color CSS -->
+    <link href="/content/theme/eliteadmin/dark/css/colors/blue.css" id="theme" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js'></script>
+        <script src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js'></script>
+    <![endif]-->
+
+    <link href="~/content/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/toastr.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/Theme/eliteadmin/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
+
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css">
+
 </head>
-<body>
-    <div> 
+<body class="" ng-app="account">
+    <!-- Preloader -->
+    <div class="preloader" style="display: none;">
+        <div class="cssload-speeding-wheel"></div>
     </div>
+    <section id="wrapper" class="login-register">
+        <div class="login-box login-sidebar">
+            <div class="white-box bd-slide-in-left bd-fade-in" ui-view>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- jQuery -->
+    <script src="/content/theme/eliteadmin/dark/../plugins/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/content/theme/eliteadmin/dark/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Menu Plugin JavaScript -->
+    <script src="/content/theme/eliteadmin/dark/../plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
+
+    <!--slimscroll JavaScript -->
+    <script src="/content/theme/eliteadmin/dark/js/jquery.slimscroll.js"></script>
+    <!--Wave Effects -->
+    <script src="/content/theme/eliteadmin/dark/js/waves.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="/content/theme/eliteadmin/dark/js/custom.min.js"></script>
+    <!--Style Switcher -->
+    <script src="/content/theme/eliteadmin/dark/../plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
+
+
+    <script type="text/javascript" src="~/scripts/libs/zxcvbn.js"></script>
+    <script type="text/javascript" src="~/scripts/libs/toastr.min.js"></script>
+    <script type="text/javascript" src="~/scripts/libs/moment.min.js"></script>
+    <script type="text/javascript" src="~/Content/Theme/eliteadmin/plugins/bower_components/sweetalert/sweetalert.min.js"></script>
+    <script type="text/javascript" src="~/Content/Theme/eliteadmin/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
+
+    <script type="text/javascript" src="~/scripts/libs/angular.min.js"></script>
+    <script type="text/javascript" src="~/scripts/libs/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="~/scripts/libs/angular-animate.min.js"></script>
+    <script type="text/javascript" src="~/scripts/libs/angular-route.min.js"></script>
+    <script type="text/javascript" src="~/scripts/libs/angular-ui-router.min.js"></script>
+
+
+    <script type="text/javascript" src="~/scripts/app/utils/constants.js"></script>
+    <script type="text/javascript" src="~/scripts/app/utils/extensions.js"></script>
+    <script type="text/javascript" src="~/scripts/app/utils/tools.js"></script>
+    <script type="text/javascript" src="~/scripts/app/utils/map.js"></script>
+    <script type="text/javascript" src="~/scripts/app/utils/operation.js"></script>
+    <script type="text/javascript" src="~/scripts/app/utils/encodedBinaryData.js"></script>
+
+    <script type="text/javascript" src="~/scripts/app/models/axis-apollo.js"></script>
+    <script type="text/javascript" src="~/scripts/app/models/domain.js"></script>
+
+    <script type="text/javascript" src="~/scripts/app/directives/loaders.js"></script>
+
+    <script type="text/javascript" src="~/scripts/app/services/utility.js"></script>
+    <script type="text/javascript" src="~/scripts/app/services/bit-diamond.js"></script>
+
+    <script type="text/javascript" src="~/scripts/app/controllers/account.js"></script>
+    <script type="text/javascript" src="~/scripts/app/controllers/_shared.js"></script>
+
+    <script type="text/javascript" src="~/scripts/app/modules/account.js"></script>
+
+
 </body>
 </html>

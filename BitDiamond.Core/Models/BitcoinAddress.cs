@@ -9,8 +9,30 @@ namespace BitDiamond.Core.Models
         [MaxLength(40, ErrorMessage = "Invalid address length")]
         public string BlockChainAddress { get; set; }
 
+
+        private User _owner;
+        private string _ownerId;
         [Required(ErrorMessage = "address owner is required")]
-        public User Owner { get; set; }
+        public virtual User Owner
+        {
+            get { return _owner; }
+            set
+            {
+                _owner = value;
+                if (value != null) _ownerId = _owner.EntityId;
+                else _ownerId = null;
+            }
+        }
+        public string OwnerId
+        {
+            get { return _ownerId; }
+            set
+            {
+                _ownerId = value;
+                if (value == null) _owner = null;
+                else if (!value.Equals(_owner?.EntityId)) _owner = null;
+            }
+        }
 
         public override int GetHashCode()
             => ValueHash(new object[]{ BlockChainAddress, Owner?.EntityId });

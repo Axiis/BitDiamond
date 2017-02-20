@@ -10,10 +10,8 @@ namespace BitDiamond.Data.EF.Mappings
 
             this.HasRequired(e => e.User)
                 .WithMany()
-                .Map(m =>
-                {
-                    m.MapKey($"{nameof(BitLevel.User)}Id");
-                });
+                .HasForeignKey(e => e.UserId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

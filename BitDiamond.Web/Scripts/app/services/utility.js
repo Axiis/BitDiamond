@@ -1,97 +1,89 @@
-var Gaia;
-(function (Gaia) {
+var BitDiamond;
+(function (BitDiamond) {
     var Utils;
     (function (Utils) {
         var Services;
         (function (Services) {
             var DomainTransport = (function () {
-                function DomainTransport($http, $q) {
+                function DomainTransport($http, $q, __notify) {
                     this.$http = $http;
                     this.$q = $q;
+                    this.__notify = __notify;
                     this.http = null;
-                    var oauthtoken = window.localStorage.getItem(Gaia.Utils.OAuthTokenKey);
-                    this.$http.defaults.headers.common.Authorization = 'Bearer ' + (oauthtoken ? JSON.parse(oauthtoken).access_token : '');
+                    var oauthtoken = window.localStorage.getItem(BitDiamond.Utils.Constants.Misc_OAuthTokenKey);
+                    if (!Object.isNullOrUndefined(oauthtoken))
+                        this.$http.defaults.headers.common.Authorization = 'Bearer ' + JSON.parse(oauthtoken).access_token;
                     this.http = $http;
                 }
-                DomainTransport.prototype.accessDenied = function (callbackParam) {
-                    if (callbackParam.Message.startsWith('Access Denied'))
-                        return true;
-                    else
-                        return false;
-                };
                 DomainTransport.prototype.get = function (url, data, config) {
-                    var _this = this;
                     if (data) {
                         data = this.removeSupportProperties(data);
                         config = config || {};
                         config.params = { data: Utils.ToBase64String(Utils.ToUTF8EncodedArray(JSON.stringify(data))) };
                     }
-                    return this.http.get(url, config)
-                        .error(function (r) {
-                        if (_this.accessDenied(r))
-                            window.location.href = '/view-server/login/shell';
-                    });
+                    return this.http.get(url, config).then(function (args) { return args.data; }, this.treatError);
+                };
+                DomainTransport.prototype.getUrlEncoded = function (url, data, config) {
+                    if (Object.isNullOrUndefined(config))
+                        config = {
+                            headers: {}
+                        };
+                    config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+                    config.headers['Accept'] = 'application/json';
+                    config.data = data;
+                    config.transformRequest = function (obj) {
+                        var str = [];
+                        for (var p in obj)
+                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        return str.join("&");
+                    };
+                    return this.http.get(url, config).then(function (args) { return args.data; });
                 };
                 DomainTransport.prototype.delete = function (url, data, config) {
-                    var _this = this;
                     if (data) {
                         data = this.removeSupportProperties(data);
                         config = config || {};
                         config.params = { data: Utils.ToBase64String(Utils.ToUTF8EncodedArray(JSON.stringify(data))) };
                     }
-                    return this.http.delete(url, config)
-                        .error(function (r) {
-                        if (_this.accessDenied(r))
-                            window.location.href = '/view-server/login/shell';
-                    });
+                    return this.http.delete(url, config).then(function (args) { return args.data; }, this.treatError);
                 };
                 DomainTransport.prototype.head = function (url, config) {
-                    var _this = this;
-                    return this.http.head(url, config)
-                        .error(function (r) {
-                        if (_this.accessDenied(r))
-                            window.location.href = '/view-server/login/shell';
-                    });
+                    return this.http.head(url, config).then(function (args) { return args.data; }, this.treatError);
                 };
                 DomainTransport.prototype.jsonp = function (url, data, config) {
-                    var _this = this;
                     if (data) {
                         data = this.removeSupportProperties(data);
                         config = config || {};
                         config.data = data;
                     }
-                    return this.http.jsonp(url, config)
-                        .error(function (r) {
-                        if (_this.accessDenied(r))
-                            window.location.href = '/view-server/login/shell';
-                    });
+                    return this.http.jsonp(url, config).then(function (args) { return args.data; }, this.treatError);
                 };
                 DomainTransport.prototype.post = function (url, data, config) {
-                    var _this = this;
                     data = this.removeSupportProperties(data);
-                    return this.http.post(url, data, config)
-                        .error(function (r) {
-                        if (_this.accessDenied(r))
-                            window.location.href = '/view-server/login/shell';
-                    });
+                    return this.http.post(url, data, config).then(function (args) { return args.data; }, this.treatError);
+                };
+                DomainTransport.prototype.postUrlEncoded = function (url, data, config) {
+                    if (Object.isNullOrUndefined(config))
+                        config = {
+                            headers: {}
+                        };
+                    config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+                    config.headers['Accept'] = 'application/json';
+                    config.transformRequest = function (obj) {
+                        var str = [];
+                        for (var p in obj)
+                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                        return str.join("&");
+                    };
+                    return this.http.post(url, data, config).then(function (args) { return args.data; });
                 };
                 DomainTransport.prototype.put = function (url, data, config) {
-                    var _this = this;
                     data = this.removeSupportProperties(data);
-                    return this.http.put(url, data, config)
-                        .error(function (r) {
-                        if (_this.accessDenied(r))
-                            window.location.href = '/view-server/login/shell';
-                    });
+                    return this.http.put(url, data, config).then(function (args) { return args.data; }, this.treatError);
                 };
                 DomainTransport.prototype.patch = function (url, data, config) {
-                    var _this = this;
                     data = this.removeSupportProperties(data);
-                    return this.http.patch(url, data, config)
-                        .error(function (r) {
-                        if (_this.accessDenied(r))
-                            window.location.href = '/view-server/login/shell';
-                    });
+                    return this.http.patch(url, data, config).then(function (args) { return args.data; }, this.treatError);
                 };
                 DomainTransport.prototype.removeSupportProperties = function (data) {
                     var _this = this;
@@ -127,9 +119,18 @@ var Gaia;
                         }
                     }
                 };
+                DomainTransport.prototype.treatError = function (arg) {
+                    //access denied
+                    if (arg.status == 401)
+                        window.location.href = Utils.Constants.URL_Login;
+                    else if (arg.status == 409)
+                        this.__notify.error("A Conflict was caused by your previous request.", "Oops!");
+                    //other errors...
+                    return this.$q.reject(arg);
+                };
                 return DomainTransport;
             }());
-            DomainTransport.inject = ['$http', '$q'];
+            DomainTransport.inject = ['$http', '$q', '__notify'];
             Services.DomainTransport = DomainTransport;
             var DomModelService = (function () {
                 function DomModelService() {
@@ -139,7 +140,7 @@ var Gaia;
                     var $element = angular.element('#local-models');
                     //simple model
                     $element.attr('simple-models')
-                        .project(function (v) { return Gaia.Utils.StringPair.ParseStringPairs(v); })
+                        .project(function (v) { return BitDiamond.Utils.StringPair.ParseStringPairs(v); })
                         .forEach(function (v) {
                         _this.simpleModel[v.Key] = v.Value;
                     });
@@ -187,5 +188,6 @@ var Gaia;
             }());
             Services.NotifyService = NotifyService;
         })(Services = Utils.Services || (Utils.Services = {}));
-    })(Utils = Gaia.Utils || (Gaia.Utils = {}));
-})(Gaia || (Gaia = {}));
+    })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
+})(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=utility.js.map

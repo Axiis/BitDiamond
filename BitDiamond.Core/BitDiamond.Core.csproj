@@ -33,7 +33,8 @@
     <Reference Include="Axis.Apollo.Json">
       <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Apollo\Axis.Apollo.Json\bin\Debug\Axis.Apollo.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Luna">
+    <Reference Include="Axis.Luna, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Luna\Axis.Luna\bin\Debug\Axis.Luna.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Narvi">
@@ -71,13 +72,13 @@
     <Compile Include="Models\BitLevel.cs" />
     <Compile Include="Models\Email\AccountActivation.cs" />
     <Compile Include="Models\Email\MailModel.cs" />
+    <Compile Include="Models\Email\PasswordRecovery.cs" />
     <Compile Include="Models\Email\UserWelcome.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\ReferalNode.cs" />
     <Compile Include="Models\SystemSetting.cs" />
     <Compile Include="Models\UserLogon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\Command\IPersistenceCommand.cs" />
     <Compile Include="Services\IAppUrlProvider.cs" />
     <Compile Include="Services\IBlobStore.cs" />
     <Compile Include="Services\IBlockChainService.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Services\IReferralManager.cs" />
     <Compile Include="Services\ISettingsManager.cs" />
     <Compile Include="Services\IUserContext.cs" />
+    <Compile Include="Services\Query\IUserContextQuery.cs" />
     <Compile Include="Utils\IUserContextAware.cs" />
     <Compile Include="Services\IUserNotifier.cs" />
     <Compile Include="Services\Query\IAccountQuery.cs" />
@@ -98,9 +100,13 @@
     <Compile Include="Services\Query\IUserNotifierQuery.cs" />
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="Utils\ReferralHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\Command\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

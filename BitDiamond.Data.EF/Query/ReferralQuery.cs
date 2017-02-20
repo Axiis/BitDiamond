@@ -26,7 +26,7 @@ namespace BitDiamond.Data.EF.Query
             _europa = context;
         }
 
-        public IEnumerable<ReferalNode> AllDownlines(ReferalNode node)
+        public IEnumerable<ReferralNode> AllDownlines(ReferralNode node)
         {
             var query =
 @"
@@ -66,11 +66,11 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
 
                 using (var row = qcommand.ExecuteReader())
                 {
-                    var refnodes = new List<ReferalNode>();
+                    var refnodes = new List<ReferralNode>();
                     var userCache = new Dictionary<string, User>();
                     while (row.Read())
                     {
-                        refnodes.Add(new ReferalNode
+                        refnodes.Add(new ReferralNode
                         {
                             ReferenceCode = row.GetString(0),
                             ReferrerCode = row.GetString(1),
@@ -93,17 +93,17 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
             }
         }
 
-        public IEnumerable<ReferalNode> DirectDownlines(ReferalNode node)
-        => _europa.Store<ReferalNode>()
+        public IEnumerable<ReferralNode> DirectDownlines(ReferralNode node)
+        => _europa.Store<ReferralNode>()
                   .QueryWith(_r => _r.User)
                   .Where(_r => _r.UplineCode == node.ReferenceCode)
                   .AsEnumerable();
 
         public IEnumerable<string> GetAllReferenceCodes()
-        => _europa.Store<ReferalNode>().Query.Select(_r => _r.ReferenceCode).AsEnumerable();
+        => _europa.Store<ReferralNode>().Query.Select(_r => _r.ReferenceCode).AsEnumerable();
 
-        public ReferalNode GetReferalNode(string referenceCode)
-        => _europa.Store<ReferalNode>()
+        public ReferralNode GetReferalNode(string referenceCode)
+        => _europa.Store<ReferralNode>()
                   .QueryWith(_r => _r.User)
                   .Where(_r => _r.ReferenceCode == referenceCode)
                   .FirstOrDefault();
@@ -111,7 +111,7 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
         public User GetUserById(string userId)
         => _europa.Store<User>().Query.FirstOrDefault(_u => _u.EntityId == userId);
 
-        public IEnumerable<ReferalNode> Uplines(ReferalNode node)
+        public IEnumerable<ReferralNode> Uplines(ReferralNode node)
         {
             var query =
 @"
@@ -151,11 +151,11 @@ JOIN DownLinesCTE AS ul ON ul.ReferenceCode = r.ReferenceCode
 
                 using (var row = qcommand.ExecuteReader())
                 {
-                    var refnodes = new List<ReferalNode>();
+                    var refnodes = new List<ReferralNode>();
                     var userCache = new Dictionary<string, User>();
                     while (row.Read())
                     {
-                        refnodes.Add(new ReferalNode
+                        refnodes.Add(new ReferralNode
                         {
                             ReferenceCode = row.GetString(0),
                             ReferrerCode = row.GetString(1),

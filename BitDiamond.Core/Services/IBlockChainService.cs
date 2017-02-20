@@ -11,5 +11,7 @@ namespace BitDiamond.Core.Services
     public interface IBlockChainService
     {
         Operation<BlockChainTransaction> GetTransactionDetails(string transactionHash);
+
+        Operation<BitcoinAddress> UpdateBitcoinAddress(BitcoinAddress bitcoinAddress);
     }
 }

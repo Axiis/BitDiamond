@@ -34,7 +34,7 @@ namespace BitDiamond.Data.EF.Query
                   .ThenByDescending(_bl => _bl.Level)
                   .FirstOrDefault();
 
-        public IEnumerable<ReferalNode> Downlines(User user)
+        public IEnumerable<ReferralNode> Downlines(User user)
         => UserRef(user).Pipe(_ur => _refQuery.AllDownlines(_ur));
 
         public BitcoinAddress GetBitcoinAddress(User user)
@@ -66,7 +66,7 @@ namespace BitDiamond.Data.EF.Query
                           .FirstOrDefault();
         }
 
-        public IEnumerable<ReferalNode> Referrals(User user)
+        public IEnumerable<ReferralNode> Referrals(User user)
         {
             var query =
 @"
@@ -106,11 +106,11 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
 
                 using (var row = qcommand.ExecuteReader())
                 {
-                    var refnodes = new List<ReferalNode>();
+                    var refnodes = new List<ReferralNode>();
                     var userCache = new Dictionary<string, User>();
                     while (row.Read())
                     {
-                        refnodes.Add(new ReferalNode
+                        refnodes.Add(new ReferralNode
                         {
                             ReferenceCode = row.GetString(0),
                             ReferrerCode = row.GetString(1),
@@ -133,14 +133,14 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
             }
         }
 
-        public ReferalNode Upline(User user, int uplineOffset)
+        public ReferralNode Upline(User user, int uplineOffset)
         => Uplines(user).Skip(uplineOffset).FirstOrDefault();
 
-        public IEnumerable<ReferalNode> Uplines(User user)
+        public IEnumerable<ReferralNode> Uplines(User user)
         => UserRef(user).Pipe(_ur => _refQuery.Uplines(_ur));
 
-        public ReferalNode UserRef(User user)
-        => _europa.Store<ReferalNode>()
+        public ReferralNode UserRef(User user)
+        => _europa.Store<ReferralNode>()
                   .QueryWith(_r => _r.User)
                   .Where(_r => _r.User.EntityId == user.EntityId)
                   .FirstOrDefault();

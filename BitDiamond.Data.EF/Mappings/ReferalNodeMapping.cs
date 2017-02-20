@@ -2,19 +2,16 @@
 
 namespace BitDiamond.Data.EF.Mappings
 {
-    public class ReferalNodeMapping : BaseModelMap<ReferalNode, long>
+    public class ReferalNodeMapping : BaseModelMap<ReferralNode, long>
     {
         public ReferalNodeMapping()
         {
             this.HasRequired(e => e.User)
                 .WithMany()
-                .Map(m =>
-                {
-                    m.MapKey($"{nameof(ReferalNode.User)}Id");
-                });
+                .HasForeignKey(e => e.UserId);
 
             this.Ignore(e => e.DirectDownlines)
-                .Ignore(e => e.Referals)
+                .Ignore(e => e.Referrals)
                 .Ignore(e => e.Referrer)
                 .Ignore(e => e.Upline);
         }

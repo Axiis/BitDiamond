@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using Axis.Luna;
 using BitDiamond.Core.Models;
 using BitDiamond.Core.Services.Query;
-using BitDiamond.Core.Services.Command;
 
 using static Axis.Luna.Extensions.ExceptionExtensions;
 using Axis.Pollux.RBAC.Services;
 using BitDiamond.Core.Utils;
 using Axis.Luna.Extensions;
 using Newtonsoft.Json;
+using Axis.Jupiter.Kore.Command;
 
 namespace BitDiamond.Core.Services
 {

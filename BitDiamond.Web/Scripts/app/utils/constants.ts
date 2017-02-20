@@ -584,7 +584,7 @@ module BitDiamond.Utils.Constants {
             else return null;
         },
 
-        toMimeMaps(): Gaia.Utils.Map<string, string>[] {
+        toMimeMaps(): BitDiamond.Utils.Map<string, string>[] {
             return (this as Object)
                 .keyValuePairs()
                 .filter(_kvp => _kvp.Key.startsWith('.'));
@@ -603,8 +603,12 @@ module BitDiamond.Utils.Constants {
     export const UserData_ProfileImage = "ProfileImage";
 
 
-    //Misc
-    export const Misc_DefaultProfileImageUrl = '/content/images/default-user.png';    
+    //URLs
+    export const URL_DefaultProfileImage = '/content/images/default-user.png';
+    export const URL_Login = '/account/signin';
+
+
+    //MISC
     export const Misc_OAuthTokenKey = 'BitDiamonds.Security.OAuth.BearerToken'; //bearer token localstorage key
 
 }

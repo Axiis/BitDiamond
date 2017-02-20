@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitDiamond.Test", "BitDiamo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitDiamond.Web", "BitDiamond.Web\BitDiamond.Web.csproj", "{4B3A4D89-0B27-4DA0-9FC3-8FB116E93241}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playground", "Playground\Playground.csproj", "{628F0A4E-AADD-4A3C-8B19-E241F13540B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{4B3A4D89-0B27-4DA0-9FC3-8FB116E93241}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B3A4D89-0B27-4DA0-9FC3-8FB116E93241}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B3A4D89-0B27-4DA0-9FC3-8FB116E93241}.Release|Any CPU.Build.0 = Release|Any CPU
+		{628F0A4E-AADD-4A3C-8B19-E241F13540B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{628F0A4E-AADD-4A3C-8B19-E241F13540B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{628F0A4E-AADD-4A3C-8B19-E241F13540B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{628F0A4E-AADD-4A3C-8B19-E241F13540B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,5 +68,6 @@ Global
 		{1E54BA4E-853C-4C0F-BD7C-292CA5585133} = {3CA8C95B-A745-4429-B510-240347777BB8}
 		{A0E10CBF-06EE-4FA9-A0C3-26E65AD58BC3} = {7706675A-4409-44F3-9049-56A9885C612A}
 		{4B3A4D89-0B27-4DA0-9FC3-8FB116E93241} = {0AA0AB5F-96A4-4211-AFA1-91050650BE26}
+		{628F0A4E-AADD-4A3C-8B19-E241F13540B4} = {7706675A-4409-44F3-9049-56A9885C612A}
 	EndGlobalSection
 EndGlobal

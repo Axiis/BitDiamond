@@ -16,6 +16,7 @@ namespace BitDiamond.Core.Utils
 
         #region Verification Contexts
         public static readonly string VerificationContext_UserActivation = "Context.UserActivation";
+        public static readonly string VerificationContext_CredentialReset = "Context.CredentialUpdate";
         #endregion
 
         #region Roles
@@ -28,6 +29,7 @@ namespace BitDiamond.Core.Utils
         #region System Users
         public static readonly string SystemUsers_Root = "@root";
         public static readonly string SystemUsers_Guest = "@guest";
+        public static readonly string SystemUsers_Apex = "@apex";
         #endregion
 
         #region UserData

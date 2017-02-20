@@ -6,10 +6,10 @@ namespace BitDiamond.Core.Services
 {
     public interface IReferralManager
     {
-        Operation<ReferalNode> AffixNewUser(string userId, string refereeCode);
+        Operation<ReferralNode> AffixNewUser(string userId, string refereeCode);
 
-        Operation<IEnumerable<ReferalNode>> DirectDownlines(ReferalNode node);
-        Operation<IEnumerable<ReferalNode>> AllDownlines(ReferalNode node);
-        Operation<IEnumerable<ReferalNode>> Uplines(ReferalNode node);
+        Operation<IEnumerable<ReferralNode>> DirectDownlines(ReferralNode node);
+        Operation<IEnumerable<ReferralNode>> AllDownlines(ReferralNode node);
+        Operation<IEnumerable<ReferralNode>> Uplines(ReferralNode node);
     }
 }

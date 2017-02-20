@@ -1,5 +1,6 @@
 ﻿using Axis.Jupiter;
 using Axis.Jupiter.Europa;
+using Axis.Jupiter.Kore.Command;
 using Axis.Luna.Extensions;
 using Axis.Pollux.Authentication;
 using Axis.Pollux.Authentication.OAModule;
@@ -16,6 +17,7 @@ using BitDiamond.Core.Models;
 using BitDiamond.Core.Services;
 using BitDiamond.Core.Services.Services;
 using BitDiamond.Data.EF;
+using BitDiamond.Data.EF.Command;
 using BitDiamond.Web.Infrastructure.Security;
 using BitDiamond.Web.Infrastructure.Services;
 using Microsoft.Owin.Security.OAuth;
@@ -65,8 +67,10 @@ namespace BitDiamond.Web.Infrastructure.DI
             c.Register<ICredentialHasher, DefaultHasher>(Lifestyle.Scoped);            
             c.Register<OwinContextProvider, OwinContextProvider>(Lifestyle.Scoped);            
             c.Register<IBlobStore, FileSystemBlobStore>(Lifestyle.Scoped);
-            c.Register<IEmailPush, ElasticMailPushService>();
+            c.Register<IEmailPush, ElasticMailPushService>(Lifestyle.Singleton);
             c.Register<IAppUrlProvider, UrlProvider>(Lifestyle.Scoped);
+            c.Register<IPersistenceCommands, SimplePersistenceCommands>(Lifestyle.Scoped);
+            c.Register<IUserContext, UserContext>(Lifestyle.Scoped);
             #endregion
 
 
@@ -92,6 +96,16 @@ namespace BitDiamond.Web.Infrastructure.DI
             //scoped europa context
             c.Register<IDataContext, EuropaContext>(Lifestyle.Scoped);
 
+            #endregion
+
+            #region queries
+            c.Register<Core.Services.Query.IAccountQuery, Data.EF.Query.AccountQuery>(Lifestyle.Scoped);
+            c.Register<Core.Services.Query.IBitLevelQuery, Data.EF.Query.BitLevelQuery>(Lifestyle.Scoped);
+            c.Register<Core.Services.Query.IContextVerifierQuery, Data.EF.Query.ContextVerifierQuery>(Lifestyle.Scoped);
+            c.Register<Core.Services.Query.IReferralQuery, Data.EF.Query.ReferralQuery>(Lifestyle.Scoped);
+            c.Register<Core.Services.Query.ISettingsQuery, Data.EF.Query.SettingsQuery>(Lifestyle.Scoped);
+            c.Register<Core.Services.Query.IUserContextQuery, Data.EF.Query.UserContextQuery>(Lifestyle.Scoped);
+            c.Register<Core.Services.Query.IUserNotifierQuery, Data.EF.Query.UserNotifierQuery>(Lifestyle.Scoped);
             #endregion
 
             #region Axis.Pollux.Identity

@@ -8,7 +8,8 @@ namespace BitDiamond.Data.EF.Mappings
         public ContextVerificationMapping()
         {
             this.HasRequired(e => e.Target)
-                .WithMany();
+                .WithMany()
+                .HasForeignKey(e => e.TargetId);
 
 
             this.Property(e => e.VerificationToken)

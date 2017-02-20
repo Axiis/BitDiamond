@@ -1,4 +1,5 @@
 ﻿using Axis.Pollux.Identity.Principal;
+using System.ComponentModel.DataAnnotations;
 
 namespace BitDiamond.Core.Models
 {
@@ -13,7 +14,29 @@ namespace BitDiamond.Core.Models
 
         //note: implement "LastActive" using the "ModifiedOn" property
 
-        public User User { get; set; }
+        private User _user;
+        private string _userId;
+        [Required(ErrorMessage = "User is Required")]
+        public virtual User User
+        {
+            get { return _user; }
+            set
+            {
+                _user = value;
+                if (value != null) _userId = _user.EntityId;
+                else _userId = null;
+            }
+        }
+        public string UserId
+        {
+            get { return _userId; }
+            set
+            {
+                _userId = value;
+                if (value == null) _user = null;
+                else if (!value.Equals(_user?.EntityId)) _user = null;
+            }
+        }
     }
 
     public class UserAgent

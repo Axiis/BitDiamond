@@ -1,1 +1,58 @@
 ﻿
+/**Loaded Content Animations**/
+.bd-slide-in-left.ng-enter {
+    transition: .3s ease-out;
+    margin-right:-40px;
+    margin-left:40px;
+}
+.bd-slide-in-left.ng-enter-active {
+    margin-right:0;
+    margin-left:0;
+}
+
+.bd-slide-out-left.ng-leave {
+    transition: .3s ease-out;
+    margin-right:0;
+    margin-left:0;
+}
+.bd-slide-out-left.ng-leave-active {
+    margin-right:40px;
+    margin-left:-40px;
+}
+
+
+.bd-slide-in-right.ng-enter {
+    transition: .3s ease-out;
+    margin-left:-40px;
+    margin-right:40px;
+}
+.bd-slide-in-right.ng-enter-active {
+    margin-right:0;
+    margin-left:0;
+}
+
+.bd-slide-out-right.ng-leave {
+    transition: .3s ease-out;
+    margin-left:0;
+    margin-right:0;
+}
+.bd-slide-out-right.ng-leave-active {
+    margin-right:40px;
+    margin-left:-40px;
+}
+
+.bd-fade-in.ng-enter {
+    transition: .5s;
+    opacity: 0;
+} 
+.bd-fade-in.ng-enter-active {
+    opacity: 1;
+}
+
+.bd-fade-out.ng-enter {
+    transition: .5s;
+    opacity: 1;
+} 
+.bd-fade-out.ng-enter-active {
+    opacity: 0;
+}

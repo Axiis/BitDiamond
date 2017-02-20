@@ -31,5 +31,10 @@ namespace BitDiamond.Core.Services
 
                 return ((BlockChainTransaction)null).ThrowIf(_t => true, "");
             });
+
+        public Operation<BitcoinAddress> UpdateBitcoinAddress(BitcoinAddress bitcoinAddress)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

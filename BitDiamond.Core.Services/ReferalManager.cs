@@ -8,10 +8,11 @@ using static Axis.Luna.Extensions.ExceptionExtensions;
 using Axis.Pollux.RBAC.Services;
 using BitDiamond.Core.Services.Query;
 using Axis.Luna.Extensions;
-using BitDiamond.Core.Services.Command;
+using BitDiamond.Core.Utils;
 
 namespace BitDiamond.Core.Services
 {
+    using Axis.Jupiter.Kore.Command;
     using Utils;
     using RANG = RandomAlphaNumericGenerator;
 
@@ -42,7 +43,7 @@ namespace BitDiamond.Core.Services
         }
 
 
-        public Operation<ReferalNode> AffixNewUser(string userId, string refereeCode)
+        public Operation<ReferralNode> AffixNewUser(string userId, string refereeCode)
         => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
         {
             //lock because referal placement is not thread safe!
@@ -52,14 +53,16 @@ namespace BitDiamond.Core.Services
                 var downlines = _query.AllDownlines(referee);
                 var user = _query.GetUserById(userId);
 
+                var codes = _query.GetAllReferenceCodes();
+
                 //affix to the referee if he has no downlines
                 if (downlines.Count() == 0)
                 {
-                    var @ref = new ReferalNode
+                    var @ref = new ReferralNode
                     {
                         UplineCode = refereeCode,
                         ReferrerCode = refereeCode,
-                        ReferenceCode = GenerateReferenceCode(),
+                        ReferenceCode = ReferralHelper.GenerateReferenceCode(codes),
                         User = user
                     };
 
@@ -80,11 +83,11 @@ namespace BitDiamond.Core.Services
                     .FirstOrDefault(_duo => _duo.Count < 2)
                     .Pipe(_duo =>
                     {
-                        var @ref = new ReferalNode
+                        var @ref = new ReferralNode
                         {
                             UplineCode = _duo.UplineCode,
                             ReferrerCode = refereeCode,
-                            ReferenceCode = GenerateReferenceCode(),
+                            ReferenceCode = ReferralHelper.GenerateReferenceCode(codes),
                             User = user
                         };
 
@@ -93,41 +96,25 @@ namespace BitDiamond.Core.Services
             }
         });
 
-        public Operation<IEnumerable<ReferalNode>> AllDownlines(ReferalNode node)
+        public Operation<IEnumerable<ReferralNode>> AllDownlines(ReferralNode node)
         => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
         {
             return _query.AllDownlines(node);
         });
 
-        public Operation<IEnumerable<ReferalNode>> DirectDownlines(ReferalNode node)
+        public Operation<IEnumerable<ReferralNode>> DirectDownlines(ReferralNode node)
         => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
         {
             return _query.DirectDownlines(node);
         });
 
-        public Operation<IEnumerable<ReferalNode>> Uplines(ReferalNode node)
+        public Operation<IEnumerable<ReferralNode>> Uplines(ReferralNode node)
         => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
         {
             return _query.Uplines(node);
         });
 
-        private string GenerateReferenceCode()
-        {
-            var codes = _query.GetAllReferenceCodes();
-            string newCode = null;
-            do
-            {
-                newCode = $"{RANG.RandomAlphaNumeric(5)}-{RANG.RandomAlphaNumeric(5)}-{RANG.RandomAlphaNumeric(10)}";
-                newCode = newCode.ToUpper()
-                                 .Replace("I", "A").Replace("1", "A")
-                                 .Replace("O", "B").Replace("0", "B");
-            }
-            while (codes.Contains(newCode));
-
-            return newCode;
-        }
-
-        private Dictionary<string, DownlineDuo> GenerateHierarchyMap(IEnumerable<ReferalNode> nodes)
+        private Dictionary<string, DownlineDuo> GenerateHierarchyMap(IEnumerable<ReferralNode> nodes)
         {
             var dict = new Dictionary<string, DownlineDuo>();
             nodes.ForAll((cnt, next) =>
@@ -144,7 +131,7 @@ namespace BitDiamond.Core.Services
             return dict;
         }
         
-        private int DistanceFromReferee(ReferalNode referee, string referenceCode, Dictionary<string, DownlineDuo> map)
+        private int DistanceFromReferee(ReferralNode referee, string referenceCode, Dictionary<string, DownlineDuo> map)
         {
             var count = 1;
             if (referenceCode == referee.ReferenceCode) return count;
@@ -171,9 +158,9 @@ namespace BitDiamond.Core.Services
 
         public int Level { get; set; }
 
-        private ReferalNode[] _nodes = new ReferalNode[2];
-        public ReferalNode Left { get  { return _nodes[0]; } set { _nodes[0] = value; } }
-        public ReferalNode Right { get { return _nodes[1]; } set { _nodes[1] = value; } }
+        private ReferralNode[] _nodes = new ReferralNode[2];
+        public ReferralNode Left { get  { return _nodes[0]; } set { _nodes[0] = value; } }
+        public ReferralNode Right { get { return _nodes[1]; } set { _nodes[1] = value; } }
 
         public int Count => _nodes.Count(_n => _n != null);
 

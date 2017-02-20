@@ -20,19 +20,19 @@ namespace BitDiamond.Web.Infrastructure.Config.WebApi
         {
             var config = new HttpConfiguration();
 
-            ConfigureDI(app);
             ConfigureAuth(app);
+            ConfigureRequestDI(app);
             ConfigureWebApi(app, config);
         }
 
-        private void ConfigureDI(IAppBuilder app)
+        private void ConfigureRequestDI(IAppBuilder app)
         {
             app.UseSimpleInjectorResolver(new WebApiRequestLifestyle(), DIRegistrations.RegisterTypes);
         }
 
         private void ConfigureAuth(IAppBuilder app)
         {
-            app.GetSimpleInjectorResolver().ResolutionScope().UsingValue(resolver =>
+            new SimpleInjectorOwinResolutionContext(new WebApiRequestLifestyle(), DIRegistrations.RegisterTypes).UsingValue(resolver =>
             {
                 app.Properties["$_AuthorizationResolutionScoppe"] = resolver; //<-- so it doesnt get garbage collected
                 
@@ -52,14 +52,14 @@ namespace BitDiamond.Web.Infrastructure.Config.WebApi
 #endif
 
                     // Authorization server provider which controls the lifecycle of Authorization Server
-                    Provider = resolver.Resolve<IOAuthAuthorizationServerProvider>()
+                    Provider = resolver.GetService<IOAuthAuthorizationServerProvider>()
                 });
 
                 //configure bearer authentication. This creates a claims-user from the info found in the bearer token
                 //user logon is also implemented here
                 app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions
                 {
-                    Provider = resolver.Resolve<IOAuthBearerAuthenticationProvider>()
+                    Provider = resolver.GetService<IOAuthBearerAuthenticationProvider>()
                 });
 
                 //app.UseCors(CorsOptions.AllowAll); //<-- will configure this appropriately when it is needed

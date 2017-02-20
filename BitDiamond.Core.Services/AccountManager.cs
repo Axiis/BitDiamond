@@ -10,10 +10,10 @@ using Axis.Pollux.RBAC.Services;
 using static Axis.Luna.Extensions.ExceptionExtensions;
 using Axis.Pollux.Authentication;
 using BitDiamond.Core.Utils;
-using BitDiamond.Core.Services.Command;
 using System.Linq;
 using Axis.Luna.Extensions;
 using BitDiamond.Core.Models.Email;
+using Axis.Jupiter.Kore.Command;
 
 namespace BitDiamond.Core.Services
 {
@@ -72,7 +72,7 @@ namespace BitDiamond.Core.Services
         #endregion
 
         #region Account
-        public Operation RegisterUser(string targetUser, string referee, Credential[] secretCredentials)
+        public Operation<User> RegisterUser(string targetUser, string referrer, Credential secretCredential)
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
             var user = _query.GetUserById(targetUser);
@@ -80,10 +80,10 @@ namespace BitDiamond.Core.Services
             if (user != null)
                 throw new Exception($"{targetUser} already exists");
 
-            else if (secretCredentials == null || secretCredentials.Length == 0)
+            else if (secretCredential == null)
                 throw new Exception("user registration must contain a credential");
 
-            else if (_query.GetRefNode(referee) == null)
+            else if (_query.GetRefNode(referrer) == null)
                 throw new Exception("invalid referee");
 
             else
@@ -106,18 +106,9 @@ namespace BitDiamond.Core.Services
                                                                     .Resolve()
                                                                     .ParseData<TimeSpan>();
 
-                        secretCredentials.Where(scred => scred.Metadata == CredentialMetadata.Password)
-                                            .ForAll((cnt, cred) =>
-                                            {
-                                                //cred.ExpiresIn = passwordExpiration.Ticks;
-                                                cred.ExpiresIn = null; //<-- never expires
-                                            });
+                        secretCredential.ExpiresIn = null; //<-- never expires
 
-                        secretCredentials.ForAll((cnt, cred) =>
-                        {
-                            _credentialAuth.AssignCredential(targetUser, cred)
-                                .ThrowIf(op => !op.Succeeded, op => new Exception("failed to assign credential"));
-                        });
+                        return _credentialAuth.AssignCredential(targetUser, secretCredential);
                         #endregion
                     })
                     .Then(opr =>
@@ -143,25 +134,26 @@ namespace BitDiamond.Core.Services
                     .Then(opr =>
                     {
                         #region Place the user in the referal hierarchy
-                        return _refManager.AffixNewUser(user.UserId, referee);
+                        return _refManager.AffixNewUser(user.UserId, referrer);
                         #endregion
                     })
                     .Then(opr =>
                     {
                         #region Request context verification
-                        RequestUserActivation(user.UserId).Resolve();
+                        return RequestUserActivation(user.UserId);
                         #endregion
-                    });
+                    })
+                    .Then(opr => user);
             }
         });
 
-        public Operation RegisterAdminUser(string targetUser, Credential[] secretCredentials)
+        public Operation<User> RegisterAdminUser(string targetUser, Credential secretCredential)
         => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
         {
             var user = _query.GetUserById(targetUser);
             if (user != null) throw new Exception($"{targetUser} already exists");
 
-            else if (secretCredentials == null || secretCredentials.Length == 0)
+            else if (secretCredential == null)
                 throw new Exception("user registration must contain a credential");
 
             else
@@ -184,18 +176,9 @@ namespace BitDiamond.Core.Services
                                                                     .Resolve()
                                                                     .ParseData<TimeSpan>();
 
-                        secretCredentials.Where(scred => scred.Metadata == CredentialMetadata.Password)
-                                            .ForAll((cnt, cred) =>
-                                            {
-                                                //cred.ExpiresIn = passwordExpiration.Ticks;
-                                                cred.ExpiresIn = null; //<-- never expires
-                                            });
+                        secretCredential.ExpiresIn = null; //<-- never expires
 
-                        secretCredentials.ForAll((cnt, cred) =>
-                        {
-                            _credentialAuth.AssignCredential(targetUser, cred)
-                                .ThrowIf(op => !op.Succeeded, op => new Exception("failed to assign credential"));
-                        });
+                        return _credentialAuth.AssignCredential(targetUser, secretCredential);
                         #endregion
                     })
                     .Then(opr =>
@@ -207,9 +190,10 @@ namespace BitDiamond.Core.Services
                     .Then(opr =>
                     {
                         #region Request context verification
-                        RequestUserActivation(user.UserId).Resolve();
+                        return RequestUserActivation(user.UserId);
                         #endregion
-                    });
+                    })
+                    .Then(opr => user);
             }
         });
 
@@ -285,15 +269,15 @@ namespace BitDiamond.Core.Services
                 };
 
                 _pcommand.Add(verification)
-                            .Then(opr =>
-                            {
-                                return _messagePush.SendMail(new AccountActivation
-                                {
-                                    Target = user.UserId,
-                                    Link = _apiProvider.GenerateContextVerificationApiUrl(verification.VerificationToken, targetUser).Result
-                                });
-                            })
-                            .Resolve();
+                         .Then(opr =>
+                         {
+                             return _messagePush.SendMail(new AccountActivation
+                             {
+                                 Target = user.UserId,
+                                 Link = _apiProvider.GenerateUserActivationVerificationUrl(verification.VerificationToken, targetUser).Result
+                             });
+                         })
+                         .Resolve();
 
                 return verification;
             }
@@ -315,10 +299,50 @@ namespace BitDiamond.Core.Services
                 return user;
             }
         });
+
+
+        public Operation ResetCredential(Credential @new, string token, string targetUser)
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            return _contextVerifier.VerifyContext(targetUser, Constants.VerificationContext_CredentialReset, token)
+                                   .Then(opr => _credentialAuth.AssignCredential(targetUser, @new));
+        });
+
+        public Operation RequestCredentialReset(CredentialMetadata metadata, string targetUser)
+        => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+        {
+            var user = _query.GetUserById(targetUser);
+            if (user.Status != (int)AccountStatus.Active) throw new Exception("invalid account state");
+
+            var verification = _query.GetLatestContextVerification(user, Constants.VerificationContext_CredentialReset);
+
+            //if no unverified context still exists in the db, create a new one
+            if (verification == null || verification.Verified) 
+            {
+                var expiry = _settingsManager.GetSetting(Constants.Settings_DefaultContextVerificationExpirationTime)
+                                             .Resolve()
+                                             .ParseData<TimeSpan>();
+                verification = new ContextVerification
+                {
+                    Context = Constants.VerificationContext_CredentialReset,
+                    Target = user,
+                    ExpiresOn = DateTime.Now + expiry,
+                    VerificationToken = RandomAlphaNumericGenerator.RandomAlphaNumeric(50)
+                };
+
+                _pcommand.Add(verification).Resolve();
+            }
+
+            return _messagePush.SendMail(new AccountActivation
+            {
+                Target = user.UserId,
+                Link = _apiProvider.GenerateUserActivationVerificationUrl(verification.VerificationToken, targetUser).Result
+            });
+        });
         #endregion
 
         #region Biodata
-        public Operation<BioData> ModifyBioData(BioData data) 
+        public Operation<BioData> UpdateBioData(BioData data) 
         => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
         {
             var user = UserContext.CurrentUser();
@@ -345,7 +369,7 @@ namespace BitDiamond.Core.Services
         #endregion
 
         #region Contact data
-        public Operation<ContactData> ModifyContactData(ContactData data)
+        public Operation<ContactData> UpdateContactData(ContactData data)
         => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
         {
             var user = UserContext.CurrentUser();
@@ -390,7 +414,7 @@ namespace BitDiamond.Core.Services
             .ToArray()
             .AsEnumerable();
         });
-        public Operation<IEnumerable<UserData>> ModifyData(UserData[] data)
+        public Operation<IEnumerable<UserData>> UpdateData(UserData[] data)
         => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
         {
             var user = UserContext.CurrentUser();
@@ -400,10 +424,10 @@ namespace BitDiamond.Core.Services
                 if (persisted == null) return null;
 
                 _data.CopyTo(persisted,
-                                nameof(UserData.Owner),
-                                nameof(UserData.OwnerId),
-                                nameof(UserData.CreatedOn),
-                                nameof(UserData.ModifiedOn));
+                             nameof(UserData.Owner),
+                             nameof(UserData.OwnerId),
+                             nameof(UserData.CreatedOn),
+                             nameof(UserData.ModifiedOn));
 
                 return _pcommand.Update(_data).Resolve();
             })

@@ -39,6 +39,46 @@ var BitDiamond;
             return utf8;
         }
         Utils.ToUTF8EncodedArray = ToUTF8EncodedArray;
+        //http://stackoverflow.com/a/22373135/4137383
+        function FromUTF8EncodedArray(array) {
+            var out, i, len, c;
+            var char2, char3;
+            out = "";
+            len = array.length;
+            i = 0;
+            while (i < len) {
+                c = array[i++];
+                switch (c >> 4) {
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                        // 0xxxxxxx
+                        out += String.fromCharCode(c);
+                        break;
+                    case 12:
+                    case 13:
+                        // 110x xxxx   10xx xxxx
+                        char2 = array[i++];
+                        out += String.fromCharCode(((c & 0x1F) << 6) | (char2 & 0x3F));
+                        break;
+                    case 14:
+                        // 1110 xxxx  10xx xxxx  10xx xxxx
+                        char2 = array[i++];
+                        char3 = array[i++];
+                        out += String.fromCharCode(((c & 0x0F) << 12) |
+                            ((char2 & 0x3F) << 6) |
+                            ((char3 & 0x3F) << 0));
+                        break;
+                }
+            }
+            return out;
+        }
+        Utils.FromUTF8EncodedArray = FromUTF8EncodedArray;
         //https://gist.github.com/jonleighton/958841
         var _b64Encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
         function ToBase64String(arrayBuffer) {
@@ -155,3 +195,4 @@ var BitDiamond;
         Utils.MimeMap = MimeMap;
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=tools.js.map

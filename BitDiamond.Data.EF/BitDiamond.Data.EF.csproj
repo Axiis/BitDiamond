@@ -36,14 +36,23 @@
     <Reference Include="Axis.Jupiter.Europa">
       <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Jupiter\Axis.Jupiter.Europa\bin\Debug\Axis.Jupiter.Europa.dll</HintPath>
     </Reference>
+    <Reference Include="Axis.Jupiter.Kore">
+      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Jupiter\Axis.Jupiter.Kore\bin\Debug\Axis.Jupiter.Kore.dll</HintPath>
+    </Reference>
     <Reference Include="Axis.Luna">
       <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Luna\Axis.Luna\bin\Debug\Axis.Luna.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Narvi">
       <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Narvi\Axis.Narvi\bin\Debug\Axis.Narvi.dll</HintPath>
     </Reference>
+    <Reference Include="Axis.Pollux.Authentication">
+      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.Authentication\bin\Debug\Axis.Pollux.Authentication.dll</HintPath>
+    </Reference>
     <Reference Include="Axis.Pollux.Authentication.OAModule">
       <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.Authentication.OAModule\bin\Debug\Axis.Pollux.Authentication.OAModule.dll</HintPath>
+    </Reference>
+    <Reference Include="Axis.Pollux.CoreAuthentication">
+      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.CoreAuthentication\bin\Debug\Axis.Pollux.CoreAuthentication.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Pollux.Identity">
       <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.Identity\bin\Debug\Axis.Pollux.Identity.dll</HintPath>
@@ -77,8 +86,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseModelMap.cs" />
-    <Compile Include="Command\EuropaPersistenceCommand.cs" />
     <Compile Include="BitDiamondModuleConfig.cs" />
+    <Compile Include="Command\SimplePersistenceCommands.cs" />
     <Compile Include="Mappings\BitcoinAddressMapping.cs" />
     <Compile Include="Mappings\BitLevelMapping.cs" />
     <Compile Include="Mappings\BlockChainTransactionMapping.cs" />
@@ -93,8 +102,8 @@
     <Compile Include="Query\ContextVerifierQuery.cs" />
     <Compile Include="Query\ReferralQuery.cs" />
     <Compile Include="Query\SettingsQuery.cs" />
+    <Compile Include="Query\UserContextQuery.cs" />
     <Compile Include="Query\UserNotifierQuery.cs" />
-    <Compile Include="Utils\PersistenceProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BitDiamond.Core\BitDiamond.Core.csproj">
@@ -107,7 +116,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Entities\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

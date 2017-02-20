@@ -598,9 +598,12 @@ var BitDiamond;
             Constants.Roles_BitMemberRole = "#bit-member";
             //user data
             Constants.UserData_ProfileImage = "ProfileImage";
-            //Misc
-            Constants.Misc_DefaultProfileImageUrl = '/content/images/default-user.png';
+            //URLs
+            Constants.URL_DefaultProfileImage = '/content/images/default-user.png';
+            Constants.URL_Login = '/account/signin';
+            //MISC
             Constants.Misc_OAuthTokenKey = 'BitDiamonds.Security.OAuth.BearerToken'; //bearer token localstorage key
         })(Constants = Utils.Constants || (Utils.Constants = {}));
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=constants.js.map

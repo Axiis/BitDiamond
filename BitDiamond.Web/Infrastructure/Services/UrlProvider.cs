@@ -1,4 +1,5 @@
 ﻿using Axis.Luna;
+using Axis.Luna.Extensions;
 using BitDiamond.Core.Services;
 using BitDiamond.Web.Infrastructure.Services;
 using System;
@@ -17,12 +18,13 @@ namespace BitDiamond.Web.Infrastructure.Services
             _owinProvider = owinProvider;
         }
 
-        public Operation<string> GenerateContextVerificationApiUrl(string verificationToken, string targetUser)
+        public Operation<string> GenerateUserActivationVerificationUrl(string verificationToken, string targetUser)
         => Operation.Try(() =>
         {
             var ruri = _owinProvider.Owin.Request.Uri;
             var email = targetUser.Split('@');
-            return new Uri($"{ruri.Scheme}://{ruri.Authority}/Account/login#/verify-registration/{verificationToken}/{email[0]}/{email[1]}").ToString();
+            //return new Uri($"{ruri.Scheme}://{ruri.Authority}/Account/login#/verify-registration/{verificationToken}/{email[0]}/{email[1]}").ToString();
+            return ((string)null).ThrowIfNull();
         });
 
         public Operation<string> GenerateBlobUrl(string blobName)
@@ -31,5 +33,10 @@ namespace BitDiamond.Web.Infrastructure.Services
             var ruri = _owinProvider.Owin.Request.Uri;
             return new Uri($"{ruri.Scheme}://{ruri.Authority}/Content/Blob/{blobName}").ToString();
         });
+
+        public Operation<string> GenerateCredentialUpdateVerificationUrl(string verificationToken, string user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

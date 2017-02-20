@@ -1,87 +1,97 @@
 ﻿
-module Gaia.Utils.Services {
+module BitDiamond.Utils.Services {
 
     export class DomainTransport {
 
         http: angular.IHttpService = null;
 
-        static inject = ['$http', '$q'];
-        constructor(private $http: angular.IHttpService, private $q: angular.IQService) {
-            var oauthtoken = window.localStorage.getItem(Gaia.Utils.OAuthTokenKey);
-            this.$http.defaults.headers.common.Authorization = 'Bearer ' + (oauthtoken ? JSON.parse(oauthtoken).access_token : '');
+        static inject = ['$http', '$q', '__notify'];
+        constructor(private $http: angular.IHttpService, private $q: angular.IQService, private __notify: BitDiamond.Utils.Services.NotifyService) {
+            var oauthtoken = window.localStorage.getItem(BitDiamond.Utils.Constants.Misc_OAuthTokenKey);
+            if (!Object.isNullOrUndefined(oauthtoken))
+                this.$http.defaults.headers.common.Authorization = 'Bearer ' + JSON.parse(oauthtoken).access_token;
             this.http = $http;
         }
+        
+        get<T>(url: string, data?: any, config?: angular.IRequestShortcutConfig): ng.IPromise<T> {    
+            if (data) {
+                data = this.removeSupportProperties(data);
+                config = config || {};
+                config.params = { data: Utils.ToBase64String(Utils.ToUTF8EncodedArray(JSON.stringify(data))) };
+            }
+            return this.http.get<T>(url, config).then(args => args.data, this.treatError);
+        }
+        getUrlEncoded<T>(url: string, data: any, config?: ng.IRequestShortcutConfig): ng.IPromise<T> {
 
-        private accessDenied(callbackParam: any): boolean {
-            if ((callbackParam.Message as string).startsWith('Access Denied')) return true;
-            else return false;
+            if (Object.isNullOrUndefined(config)) config = {
+                headers: {}
+            };
+
+            config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+            config.headers['Accept'] = 'application/json';
+            config.data = data;
+            config.transformRequest = obj => {
+                var str = [];
+                for (var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            }
+
+            return this.http.get<T>(url, config).then(args => args.data);
         }
         
-        get<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): angular.IHttpPromise<T> {    
+        delete<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): ng.IPromise<T> {
             if (data) {
                 data = this.removeSupportProperties(data);
                 config = config || {};
                 config.params = { data: Utils.ToBase64String(Utils.ToUTF8EncodedArray(JSON.stringify(data))) };
-            }         
-            return this.http.get<T>(url, config)
-                .error(r => {
-                    if (this.accessDenied(r)) window.location.href = '/view-server/login/shell';
-                });
+            }
+            return this.http.delete<T>(url, config).then(args => args.data, this.treatError);
         }
         
-        delete<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): angular.IHttpPromise<T> {
-            if (data) {
-                data = this.removeSupportProperties(data);
-                config = config || {};
-                config.params = { data: Utils.ToBase64String(Utils.ToUTF8EncodedArray(JSON.stringify(data))) };
-            }         
-            return this.http.delete(url, config)
-                .error(r => {
-                    if (this.accessDenied(r)) window.location.href = '/view-server/login/shell';
-                });
+        head<T>(url: string, config?: angular.IRequestShortcutConfig): ng.IPromise<T> {
+            return this.http.head<T>(url, config).then(args => args.data, this.treatError);
         }
         
-        head<T>(url: string, config?: angular.IRequestShortcutConfig): angular.IHttpPromise<T> {
-            return this.http.head(url, config)
-                .error(r => {
-                    if (this.accessDenied(r)) window.location.href = '/view-server/login/shell';
-                });
-        }
-        
-        jsonp<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): angular.IHttpPromise<T> {
+        jsonp<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): ng.IPromise<T> {
             if (data) {
                 data = this.removeSupportProperties(data);
                 config = config || {};
                 config.data = data;
             }         
-            return this.http.jsonp(url, config)
-                .error(r => {
-                    if (this.accessDenied(r)) window.location.href = '/view-server/login/shell';
-                });
+            return this.http.jsonp<T>(url, config).then(args => args.data, this.treatError);
         }
         
-        post<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): angular.IHttpPromise<T> {
+        post<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): ng.IPromise<T> {
             data = this.removeSupportProperties(data);
-            return this.http.post(url, data, config)
-                .error(r => {
-                    if (this.accessDenied(r)) window.location.href = '/view-server/login/shell';
-                });
+            return this.http.post<T>(url, data, config).then(args => args.data, this.treatError);
+        }
+        postUrlEncoded<T>(url: string, data: any, config?: ng.IRequestShortcutConfig): ng.IPromise<T> {
+
+            if (Object.isNullOrUndefined(config)) config = {
+                headers: {}
+            };
+
+            config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+            config.headers['Accept'] = 'application/json';
+            config.transformRequest = obj => {
+                var str = [];
+                for (var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            }
+
+            return this.http.post<T>(url, data, config).then(args => args.data);
         }
         
-        put<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): angular.IHttpPromise<T> {
+        put<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): ng.IPromise<T> {
             data = this.removeSupportProperties(data);
-            return this.http.put(url, data, config)
-                .error(r => {
-                    if (this.accessDenied(r)) window.location.href = '/view-server/login/shell';
-                });
+            return this.http.put<T>(url, data, config).then(args => args.data, this.treatError);
         }
         
-        patch<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): angular.IHttpPromise<T> {
+        patch<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): ng.IPromise<T> {
             data = this.removeSupportProperties(data);
-            return this.http.patch(url, data, config)
-                .error(r => {
-                    if (this.accessDenied(r)) window.location.href = '/view-server/login/shell';
-                });
+            return this.http.patch<T>(url, data, config).then(args => args.data, this.treatError);
         }
 
         private removeSupportProperties(data: any): any {
@@ -100,8 +110,7 @@ module Gaia.Utils.Services {
                 _data[key] = _val;
             }
             return _data;
-        }
-        
+        }        
 
         private removeRecurrsion(data: any, _cache?: any[]) {
             if (Object.isNullOrUndefined(data)) return data;
@@ -119,6 +128,20 @@ module Gaia.Utils.Services {
                 }
             }
         }
+
+        private treatError<T>(arg: ng.IHttpPromiseCallbackArg<T>): ng.IPromise<ng.IHttpPromiseCallbackArg<T>> {
+
+            //access denied
+            if (arg.status == 401) window.location.href = Constants.URL_Login;
+
+            //conflict
+            else if (arg.status == 409) this.__notify.error("A Conflict was caused by your previous request.", "Oops!");
+
+            //other errors...
+
+
+            return this.$q.reject(arg) as ng.IPromise<ng.IHttpPromiseCallbackArg<T>>;
+        }
     }
 
 
@@ -132,7 +155,7 @@ module Gaia.Utils.Services {
 
             //simple model
             $element.attr('simple-models')
-                .project((v: string) => Gaia.Utils.StringPair.ParseStringPairs(v))
+                .project((v: string) => BitDiamond.Utils.StringPair.ParseStringPairs(v))
                 .forEach(v => {
                     this.simpleModel[v.Key] = v.Value;
                 });

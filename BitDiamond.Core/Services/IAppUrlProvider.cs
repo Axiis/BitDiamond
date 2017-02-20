@@ -9,7 +9,8 @@ namespace BitDiamond.Core.Services
 {
     public interface IAppUrlProvider
     {
-        Operation<string> GenerateContextVerificationApiUrl(string verificationToken, string user);
+        Operation<string> GenerateCredentialUpdateVerificationUrl(string verificationToken, string user);
+        Operation<string> GenerateUserActivationVerificationUrl(string verificationToken, string user);
         Operation<string> GenerateBlobUrl(string blobName);
     }
 }

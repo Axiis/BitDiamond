@@ -22,6 +22,8 @@
         private Container _container = null;
 
         public Container Container => _container;
+        public SimpleInjectorOwinResolutionScope NewResolutionScope()
+            => new SimpleInjectorOwinResolutionScope(_container.BeginExecutionContextScope());
 
         public IDependencyScope BeginScope() => new SimpleInjectorOwinResolutionScope(Lifestyle.Scoped.GetCurrentScope(_container));
 
@@ -32,8 +34,10 @@
 
 
         public object GetService(Type serviceType) => Eval(() => _container.GetInstance(serviceType));
+        public Service GetService<Service>() => GetService(typeof(Service)).As<Service>();
 
         public IEnumerable<object> GetServices(Type serviceType) => Eval(() => _container.GetAllInstances(serviceType)) ?? new object[0];
+        public IEnumerable<Service> GetServices<Service>() => GetServices(typeof(Service)).Cast<Service>();
 
 
         #region Dispose
@@ -143,6 +147,14 @@
                 var token = new AppProperties(app.Properties).OnAppDisposing;
                 if (token != CancellationToken.None)
                     token.Register(() => app.GetSimpleInjectorResolver().Dispose());
+
+                app.Use(async (cxt, next) =>
+                {
+                    using (app.GetSimpleInjectorResolver().NewResolutionScope())
+                    {
+                        await next();
+                    }
+                });
             }
 
             return app;

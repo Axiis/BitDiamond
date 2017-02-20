@@ -121,3 +121,4 @@ var BitDiamond;
         Directives.BoxLoader = BoxLoader;
     })(Directives = BitDiamond.Directives || (BitDiamond.Directives = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=loaders.js.map

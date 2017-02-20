@@ -17,6 +17,7 @@ using System.Web.Hosting;
 namespace BitDiamond.Web.Infrastructure.Services
 {
     public class ElasticMailPushService: IEmailPush
+
     {        
         private static bool _cached;
 

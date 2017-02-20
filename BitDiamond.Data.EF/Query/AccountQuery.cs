@@ -6,6 +6,8 @@ using BitDiamond.Core.Models;
 using Axis.Jupiter;
 
 using static Axis.Luna.Extensions.ExceptionExtensions;
+using Axis.Pollux.Authentication;
+using System;
 
 namespace BitDiamond.Data.EF.Query
 {
@@ -44,6 +46,14 @@ namespace BitDiamond.Data.EF.Query
                   .Where(_cv => _cv.Target.EntityId == user.EntityId)
                   .AsEnumerable();
 
+        public Credential GetCredential(User user, string name, Access credentialVisibility)
+        => _europa.Store<Credential>()
+                  .QueryWith(_cr => _cr.Owner)
+                  .Where(_cr => _cr.OwnerId == user.EntityId)
+                  .Where(_cr => _cr.Metadata.Name == name)
+                  .Where(_cr => _cr.Metadata.Access == credentialVisibility)
+                  .FirstOrDefault();
+
         public ContextVerification GetLatestContextVerification(User user, string context)
         => _europa.Store<ContextVerification>()
                   .QueryWith(_cv => _cv.Target)
@@ -52,8 +62,8 @@ namespace BitDiamond.Data.EF.Query
                   .OrderByDescending(_cv => _cv.CreatedOn)
                   .FirstOrDefault();
 
-        public ReferalNode GetRefNode(string code)
-        => _europa.Store<ReferalNode>()
+        public ReferralNode GetRefNode(string code)
+        => _europa.Store<ReferralNode>()
                   .QueryWith(_rn => _rn.Referrer)
                   .Where(_rn => _rn.ReferenceCode == code)
                   .FirstOrDefault();

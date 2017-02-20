@@ -6,6 +6,9 @@ namespace BitDiamond.Core.Models
 {
     public class BaseModel
     {
+        public DateTime CreatedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
+
         public virtual Operation Validate()
             => Operation.Try(() => Validator.ValidateObject(this, new ValidationContext(this, null, null)));
 
@@ -15,10 +18,7 @@ namespace BitDiamond.Core.Models
 
     public class BaseModel<IdType>: BaseModel
     {
-        public IdType Id { get; set; }
-
-        public DateTime CreatedOn { get; set; }
-        public DateTime ModifiedOn { get; set; }    
+        public IdType Id { get; set; } 
 
 
         protected BaseModel()

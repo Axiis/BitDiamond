@@ -6,8 +6,8 @@ using Axis.Pollux.RBAC.Services;
 using static Axis.Luna.Extensions.ExceptionExtensions;
 using BitDiamond.Core.Utils;
 using BitDiamond.Core.Services.Query;
-using BitDiamond.Core.Services.Command;
 using Axis.Luna.Extensions;
+using Axis.Jupiter.Kore.Command;
 
 namespace BitDiamond.Core.Services.Services
 {

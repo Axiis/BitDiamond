@@ -28,7 +28,16 @@ namespace BitDiamond.Core
         }
 
         public static PermissionProfile CurrentPPP(this IUserContext context)
-        => CurrentProcessPermissionProfile(context);
+        {
+            var frame = new StackFrame(1);
+            var resources = CachedDescriptors.GetOrAdd(frame.GetMethod().As<MethodInfo>(),
+                                                       mi => mi.GetFeatureAttributes().SelectMany(ratt => ratt.Resources).ToList());
+            return new PermissionProfile
+            {
+                Principal = context.CurrentUser(),
+                ResourcePaths = resources
+            };
+        }
 
 
 

@@ -1,0 +1,34 @@
+﻿
+@{
+    Layout = null;
+}
+
+<form class="form-horizontal form-material" id="loginform" action="index.html">
+    <a href='javascript:void(0)' class="text-center db"><img src="/content/theme/eliteadmin/dark/../plugins/images/eliteadmin-logo.png" alt="Home"><br><img src="/content/theme/eliteadmin/dark/../plugins/images/eliteadmin-text.png" alt="Home"></a>
+
+    <div class="form-group m-t-40">
+        <div class="col-xs-12">
+            <input class="form-control" type="email" required="" placeholder="Username" ng-model="vm.email">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-xs-12">
+            <input class="form-control" type="password" required="" placeholder="Password" ng-model="vm.password">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            <a href ui-sref="passwordRecoveryRequest" id="to-recover" class="text-dark pull-left"><i class="fa fa-lock m-r-5"></i> Forgot password?</a>
+        </div>
+    </div>
+    <div class="form-group text-center m-t-20">
+        <div class="col-xs-12">
+            <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="button" ng-click="vm.signin()">Log In</button>
+        </div>
+    </div>
+    <div class="form-group m-b-0">
+        <div class="col-sm-12 text-center">
+            <p>Don't have an account? <a ui-sref="signup" class="text-primary m-l-5"><b>Sign Up</b></a></p>
+        </div>
+    </div>
+</form>

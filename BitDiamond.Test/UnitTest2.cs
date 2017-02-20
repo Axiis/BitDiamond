@@ -36,5 +36,16 @@ namespace BitDiamond.Test
 
             Console.WriteLine(result);
         }
+
+
+        [TestMethod]
+        public void TestMethod2()
+        {
+        }
+    }
+
+    public class SomeClass
+    {
+        public string Name { get; set; }
     }
 }

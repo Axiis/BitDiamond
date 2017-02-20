@@ -1,5 +1,4 @@
 
-
 2017-02-01 ==================================================================================================================
 1.	The Apex User will have a single BitLevel object with the highest level, highest cycle, 0 skip-count, and highest
     donation count.
@@ -12,3 +11,14 @@
 3. Contextual References: these are made of "ContextType" and "ContextId". The context id is a string that holds the string
    version of the id of the model it is bound to. the ContextType is a fully qualified CLR name of the domain object it is
    associated to.
+
+
+
+2017-02-17 =================================================================================================================
+1.	Fix Navigation property issues that occur from trying to add an entity that has "unattached" persisted navigation 
+	properties. The solution is to find and attach all such properties before sending the data off to be persisted.
+
+
+
+2017-02-20 =================================================================================================================
+1.	Manually add the supporting classes needed to complete the Pollux Models as well as BitDiamond Models.

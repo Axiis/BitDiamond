@@ -10,13 +10,13 @@ namespace BitDiamond.Core.Services.Query
 {
     public interface IReferralQuery
     {
-        ReferalNode GetReferalNode(string referenceCode);
+        ReferralNode GetReferalNode(string referenceCode);
 
-        IEnumerable<ReferalNode> AllDownlines(ReferalNode node);
+        IEnumerable<ReferralNode> AllDownlines(ReferralNode node);
 
-        IEnumerable<ReferalNode> DirectDownlines(ReferalNode node);
+        IEnumerable<ReferralNode> DirectDownlines(ReferralNode node);
 
-        IEnumerable<ReferalNode> Uplines(ReferalNode node);
+        IEnumerable<ReferralNode> Uplines(ReferralNode node);
 
         IEnumerable<string> GetAllReferenceCodes();
 

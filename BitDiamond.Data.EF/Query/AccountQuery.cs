@@ -64,7 +64,7 @@ namespace BitDiamond.Data.EF.Query
 
         public ReferralNode GetRefNode(string code)
         => _europa.Store<ReferralNode>()
-                  .QueryWith(_rn => _rn.Referrer)
+                  .QueryWith()
                   .Where(_rn => _rn.ReferenceCode == code)
                   .FirstOrDefault();
 

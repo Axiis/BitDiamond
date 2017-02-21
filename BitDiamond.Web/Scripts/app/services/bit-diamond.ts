@@ -31,13 +31,13 @@ module BitDiamond.Services {
         }
 
         requestUserActivation(targetUser: string): ng.IPromise<Utils.Operation<void>> {
-            return this.__transport.put<Utils.Operation<void>>('/api/accounts/users/activate', {
+            return this.__transport.put<Utils.Operation<void>>('/api/accounts/users/activations', {
                 TargetUser: targetUser
             });
         }
 
         verifyUserActivation(targetUser: string, token: string): ng.IPromise<Utils.Operation<Pollux.Models.IUser>> {
-            return this.__transport.put<Utils.Operation<Pollux.Models.IUser>>('/api/accounts/users/verify-activation', {
+            return this.__transport.put<Utils.Operation<Pollux.Models.IUser>>('/api/accounts/users/activations/verify', {
                 TargetUser: targetUser,
                 Token: token
             });

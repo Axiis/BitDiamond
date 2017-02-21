@@ -1160,6 +1160,7 @@
     <Content Include="Views\Email\UserWelcome.cshtml" />
     <Content Include="Views\Email\PasswordRecovery.cshtml" />
     <Content Include="Views\Account\VerifyRegistration.cshtml" />
+    <Content Include="Views\Account\RecoverPassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

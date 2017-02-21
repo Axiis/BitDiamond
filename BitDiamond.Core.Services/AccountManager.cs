@@ -273,6 +273,8 @@ namespace BitDiamond.Core.Services
                          {
                              return _messagePush.SendMail(new AccountActivation
                              {
+                                 From = "donotreply@bitdiamond.com",
+                                 Subject = "Account - Email Verification",
                                  Target = user.UserId,
                                  Link = _apiProvider.GenerateUserActivationVerificationUrl(verification.VerificationToken, targetUser).Result
                              });

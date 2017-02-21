@@ -32,6 +32,14 @@ var BitDiamond;
                 return Signin;
             }());
             Account.Signin = Signin;
+        })(Account = Controllers.Account || (Controllers.Account = {}));
+    })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
+})(BitDiamond || (BitDiamond = {}));
+(function (BitDiamond) {
+    var Controllers;
+    (function (Controllers) {
+        var Account;
+        (function (Account) {
             var Signup = (function () {
                 function Signup(__account, __notify, $stateParams, $state) {
                     this.__account = __account;
@@ -137,6 +145,40 @@ var BitDiamond;
                 return Signup;
             }());
             Account.Signup = Signup;
+            var VerifyRegistration = (function () {
+                function VerifyRegistration(__account, __notify, $state, $stateParams) {
+                    var _this = this;
+                    this.__account = __account;
+                    this.__notify = __notify;
+                    this.$state = $state;
+                    this.$stateParams = $stateParams;
+                    //get the email and tokens
+                    var data = JSON.parse(BitDiamond.Utils.FromUTF8EncodedArray(BitDiamond.Utils.FromBase64String($stateParams['data'])));
+                    this.email = data.Email;
+                    this.token = data.Token;
+                    this.isVerifying = true;
+                    this.isSuccessfull = this.isError = false;
+                    this.__account
+                        .verifyUserActivation(this.email, this.token)
+                        .then(function (opr) {
+                        _this.isVerifying = false;
+                        _this.isSuccessfull = true;
+                    }, function (err) {
+                        _this.isVerifying = false;
+                        _this.isError = true;
+                    });
+                }
+                return VerifyRegistration;
+            }());
+            Account.VerifyRegistration = VerifyRegistration;
+        })(Account = Controllers.Account || (Controllers.Account = {}));
+    })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
+})(BitDiamond || (BitDiamond = {}));
+(function (BitDiamond) {
+    var Controllers;
+    (function (Controllers) {
+        var Account;
+        (function (Account) {
             var RecoveryRequest = (function () {
                 function RecoveryRequest(__account, __notify, $state) {
                     this.__account = __account;
@@ -213,31 +255,14 @@ var BitDiamond;
                 return RecoverPassword;
             }());
             Account.RecoverPassword = RecoverPassword;
-            var VerifyRegistration = (function () {
-                function VerifyRegistration(__account, __notify, $state, $stateParams) {
-                    var _this = this;
-                    this.__account = __account;
-                    this.__notify = __notify;
-                    this.$state = $state;
-                    this.$stateParams = $stateParams;
-                    //get the email and tokens
-                    var data = JSON.parse(BitDiamond.Utils.FromUTF8EncodedArray(BitDiamond.Utils.FromBase64String($stateParams['data'])));
-                    this.email = data.Email;
-                    this.token = data.Token;
-                    this.isVerifying = true;
-                    this.__account
-                        .verifyUserActivation(this.email, this.token)
-                        .then(function (opr) {
-                        _this.isVerifying = false;
-                        _this.$state.go('message', { action: 'signin', actionTitle: 'Signin', title: 'Done!', message: 'Your account has been verified.' });
-                    }, function (err) {
-                        _this.isVerifying = false;
-                        _this.__notify.error('Something went wrong...', 'Oops!');
-                    });
-                }
-                return VerifyRegistration;
-            }());
-            Account.VerifyRegistration = VerifyRegistration;
+        })(Account = Controllers.Account || (Controllers.Account = {}));
+    })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
+})(BitDiamond || (BitDiamond = {}));
+(function (BitDiamond) {
+    var Controllers;
+    (function (Controllers) {
+        var Account;
+        (function (Account) {
             var Terms = (function () {
                 function Terms($state) {
                     this.$state = $state;

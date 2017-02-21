@@ -34,13 +34,16 @@ module BitDiamond.Controllers.Account {
                     });
             }
         }
-        
+
         constructor(__account, __notify, $stateParams) {
             this.__account = __account;
             this.__notify = __notify;
             this.$stateParams = $stateParams;
         }
     }
+}
+
+module BitDiamond.Controllers.Account {
 
     export class Signup {
 
@@ -145,9 +148,9 @@ module BitDiamond.Controllers.Account {
                 }).then(opr => {
                     this.isSigningUp = false;
                     this.$state.go('message', { back: 'signin', title: 'Congratulations!', message: 'An email has been sent to you with further instructions.' });
-                    }, err => {
-                        this.isSigningUp = false;
-                        this.__notify.error('Something went wrong...', 'Oops!');
+                }, err => {
+                    this.isSigningUp = false;
+                    this.__notify.error('Something went wrong...', 'Oops!');
                 });
             }
         }
@@ -161,6 +164,48 @@ module BitDiamond.Controllers.Account {
         }
 
     }
+
+    export class VerifyRegistration {
+
+        isVerifying: boolean;
+        isSuccessfull: boolean;
+        isError: boolean;
+        email: string;
+        token: string;
+
+        __account: BitDiamond.Services.Account;
+        __notify: BitDiamond.Utils.Services.NotifyService;
+        $state: ng.ui.IStateService;
+        $stateParams: ng.ui.IStateParamsService;
+
+        constructor(__account, __notify, $state, $stateParams) {
+            this.__account = __account;
+            this.__notify = __notify;
+            this.$state = $state;
+            this.$stateParams = $stateParams;
+
+            //get the email and tokens
+            var data = JSON.parse(Utils.FromUTF8EncodedArray(Utils.FromBase64String($stateParams['data'])));
+            this.email = data.Email;
+            this.token = data.Token;
+
+            this.isVerifying = true;
+            this.isSuccessfull = this.isError = false;
+            this.__account
+                .verifyUserActivation(this.email, this.token)
+                .then(opr => {
+                    this.isVerifying = false;
+                    this.isSuccessfull = true;
+                }, err => {
+                    this.isVerifying = false;
+                    this.isError = true;
+                });
+        }
+    }
+}
+
+
+module BitDiamond.Controllers.Account {
 
     export class RecoveryRequest {
 
@@ -208,7 +253,7 @@ module BitDiamond.Controllers.Account {
 
     export class RecoverPassword {
 
-        isVerifying: boolean;        
+        isVerifying: boolean;
         password: string;
         email: string;
         token: string;
@@ -259,41 +304,10 @@ module BitDiamond.Controllers.Account {
             this.token = data.Token;
         }
     }
+}
 
-    export class VerifyRegistration {
 
-        isVerifying: boolean;
-        email: string;
-        token: string;
-
-        __account: BitDiamond.Services.Account;
-        __notify: BitDiamond.Utils.Services.NotifyService;
-        $state: ng.ui.IStateService;
-        $stateParams: ng.ui.IStateParamsService;
-
-        constructor(__account, __notify, $state, $stateParams) {
-            this.__account = __account;
-            this.__notify = __notify;
-            this.$state = $state;
-            this.$stateParams = $stateParams;
-
-            //get the email and tokens
-            var data = JSON.parse(Utils.FromUTF8EncodedArray(Utils.FromBase64String($stateParams['data'])));
-            this.email = data.Email;
-            this.token = data.Token;
-
-            this.isVerifying = true;
-            this.__account
-                .verifyUserActivation(this.email, this.token)
-                .then(opr => {
-                    this.isVerifying = false;
-                    this.$state.go('message', { action: 'signin', actionTitle: 'Signin', title: 'Done!', message: 'Your account has been verified.' })
-                }, err => {
-                    this.isVerifying = false;
-                    this.__notify.error('Something went wrong...', 'Oops!');
-                });
-        }
-    }
+module BitDiamond.Controllers.Account {
 
     export class Terms {
         message: "[Terms and conditions here...]";

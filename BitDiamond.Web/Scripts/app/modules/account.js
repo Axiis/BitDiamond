@@ -50,7 +50,7 @@ var BitDiamond;
                 controllerAs: 'vm'
             })
                 .state('recoverPassword', {
-                url: '/recover/:data',
+                url: '/recover-password/:data',
                 templateUrl: '/account/recover-password',
                 controller: 'RecoverPassword',
                 controllerAs: 'vm'

@@ -9,7 +9,7 @@ namespace BitDiamond.Core.Services
 {
     public interface IAppUrlProvider
     {
-        Operation<string> GenerateCredentialUpdateVerificationUrl(string verificationToken, string user);
+        Operation<string> GeneratePasswordUpdateVerificationUrl(string verificationToken, string user);
         Operation<string> GenerateUserActivationVerificationUrl(string verificationToken, string user);
         Operation<string> GenerateBlobUrl(string blobName);
     }

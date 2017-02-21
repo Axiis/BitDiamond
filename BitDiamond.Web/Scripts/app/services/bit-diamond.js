@@ -31,12 +31,12 @@ var BitDiamond;
                 });
             };
             Account.prototype.requestUserActivation = function (targetUser) {
-                return this.__transport.put('/api/accounts/users/activate', {
+                return this.__transport.put('/api/accounts/users/activations', {
                     TargetUser: targetUser
                 });
             };
             Account.prototype.verifyUserActivation = function (targetUser, token) {
-                return this.__transport.put('/api/accounts/users/verify-activation', {
+                return this.__transport.put('/api/accounts/users/activations/verify', {
                     TargetUser: targetUser,
                     Token: token
                 });

@@ -3,3 +3,41 @@
     Layout = null;
 }
 
+
+
+
+<form class="form-horizontal">
+    <a href class="text-center db">
+        <img src="/content/theme/eliteadmin/dark/../plugins/images/eliteadmin-logo.png" alt="Home"><br />
+        <img src="/content/theme/eliteadmin/dark/../plugins/images/eliteadmin-text.png" alt="Home" style="margin-bottom:20px;">
+    </a>
+
+    <h3 style="text-align:center;" ng-show="vm.isVerifying">
+        Verifying
+        <br /><br />
+        <box-loader size="38" color="white" show="true"></box-loader>
+    </h3>
+
+    <div ng-show="vm.isSuccessfull" style="text-align:center;">
+        <p><h3 class="text-success">Congratulations!</h3></p>
+        <br /><br />
+        <p>Your email has been verified.</p>
+        <br /><br />
+        <button class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light"
+                ui-sref="signin"
+                type="button">
+            Sign in
+        </button>
+    </div>
+
+    <div ng-show="vm.isError" style="text-align:center;">
+        <p><h3 class="text-danger">Oops!</h3></p>
+        <br /><br />
+        <p>Your email could not be verified for some reason. Try again later...</p>
+        <br /><br />
+        <a href="~/Index.html" 
+           class="btn btn-default btn-lg btn-block text-uppercase waves-effect waves-light">
+            <i class="icon-home"></i> Home
+        </a>
+    </div>
+</form>

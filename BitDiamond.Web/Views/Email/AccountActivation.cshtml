@@ -1,6 +1,21 @@
-﻿
+﻿@model BitDiamond.Core.Models.Email.AccountActivation
 @{
     Layout = null;
 }
+<!DOCTYPE html>
 
-User activation mail
+<html>
+<head>
+</head>
+
+<body>
+    <strong>Greetings!</strong>
+    One more step to go, and then you can become a member of the <strong>Bit Diamond</strong> family!!
+    <br/>
+    Kindly verify that this is indeed your intention by clicking the link below. Once done, log in
+    and complete your registration process.
+    <br/><br/>
+    <a href="@Model.Link">Verify Email</a>
+</body>
+
+</html>

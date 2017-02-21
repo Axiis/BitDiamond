@@ -13,13 +13,13 @@ namespace BitDiamond.Web.Controllers.Mvc
         [Route("index")]
         public ActionResult Index() => View();
 
+
+
         [HttpGet]
         [Route("signin")]
         public ActionResult Signin() => View();
 
-        [HttpGet]
-        [Route("recovery-request")]
-        public ActionResult RecoveryRequest() => View();
+
 
         [HttpGet]
         [Route("signup")]
@@ -28,5 +28,15 @@ namespace BitDiamond.Web.Controllers.Mvc
         [HttpGet]
         [Route("verify-registration")]
         public ActionResult VerifyRegistration() => View();
+
+
+
+        [HttpGet]
+        [Route("recovery-request")]
+        public ActionResult RecoveryRequest() => View();
+
+        [HttpGet]
+        [Route("recover-password")]
+        public ActionResult RecoverPassword() => View();
     }
 }

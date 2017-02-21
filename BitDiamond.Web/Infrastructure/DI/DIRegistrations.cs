@@ -1,6 +1,7 @@
 ﻿using Axis.Jupiter;
 using Axis.Jupiter.Europa;
 using Axis.Jupiter.Kore.Command;
+using Axis.Luna;
 using Axis.Luna.Extensions;
 using Axis.Pollux.Authentication;
 using Axis.Pollux.Authentication.OAModule;
@@ -37,8 +38,7 @@ namespace BitDiamond.Web.Infrastructure.DI
     {
         public static void RegisterTypes(Container c)
         {
-            //var gen = new ProxyGenerator();
-
+            var gen = new ProxyGenerator(); //proxy generator that enables lazy service loading
 
             var coreAssembly = typeof(BaseModel<>).Assembly;
 
@@ -68,13 +68,13 @@ namespace BitDiamond.Web.Infrastructure.DI
             }, Lifestyle.Singleton);
 
 
-            c.Register<ICredentialHasher, DefaultHasher>(Lifestyle.Scoped);            
-            c.Register<OwinContextProvider, OwinContextProvider>(Lifestyle.Scoped);            
-            c.Register<IBlobStore, FileSystemBlobStore>(Lifestyle.Scoped);
-            c.Register<IEmailPush, ElasticMailPushService>(Lifestyle.Singleton);
-            c.Register<IAppUrlProvider, UrlProvider>(Lifestyle.Scoped);
-            c.Register<IPersistenceCommands, SimplePersistenceCommands>(Lifestyle.Scoped);
-            c.Register<IUserContext, UserContext>(Lifestyle.Scoped);
+            c.Register<OwinContextProvider, OwinContextProvider>(Lifestyle.Scoped);
+            c.RegisterLazyService<ICredentialHasher, DefaultHasher>(gen, Lifestyle.Scoped);                   
+            c.RegisterLazyService<IBlobStore, FileSystemBlobStore>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<IEmailPush, ElasticMailPushService>(gen, Lifestyle.Singleton);
+            c.RegisterLazyService<IAppUrlProvider, UrlProvider>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<IPersistenceCommands, SimplePersistenceCommands>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<IUserContext, UserContext>(gen, Lifestyle.Scoped);
             #endregion
 
 
@@ -98,18 +98,18 @@ namespace BitDiamond.Web.Infrastructure.DI
             c.Register(() => config, Lifestyle.Singleton);
 
             //scoped europa context
-            c.Register<IDataContext, EuropaContext>(Lifestyle.Scoped);
+            c.Register<IDataContext, EuropaContext>(Lifestyle.Scoped); //doesnt need lazy initialization
 
             #endregion
 
             #region queries
-            c.Register<Core.Services.Query.IAccountQuery, Data.EF.Query.AccountQuery>(Lifestyle.Scoped);
-            c.Register<Core.Services.Query.IBitLevelQuery, Data.EF.Query.BitLevelQuery>(Lifestyle.Scoped);
-            c.Register<Core.Services.Query.IContextVerifierQuery, Data.EF.Query.ContextVerifierQuery>(Lifestyle.Scoped);
-            c.Register<Core.Services.Query.IReferralQuery, Data.EF.Query.ReferralQuery>(Lifestyle.Scoped);
-            c.Register<Core.Services.Query.ISettingsQuery, Data.EF.Query.SettingsQuery>(Lifestyle.Scoped);
-            c.Register<Core.Services.Query.IUserContextQuery, Data.EF.Query.UserContextQuery>(Lifestyle.Scoped);
-            c.Register<Core.Services.Query.IUserNotifierQuery, Data.EF.Query.UserNotifierQuery>(Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IAccountQuery, Data.EF.Query.AccountQuery>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IBitLevelQuery, Data.EF.Query.BitLevelQuery>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IContextVerifierQuery, Data.EF.Query.ContextVerifierQuery>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IReferralQuery, Data.EF.Query.ReferralQuery>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.ISettingsQuery, Data.EF.Query.SettingsQuery>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IUserContextQuery, Data.EF.Query.UserContextQuery>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IUserNotifierQuery, Data.EF.Query.UserNotifierQuery>(gen, Lifestyle.Scoped);
             #endregion
 
             #region Axis.Pollux.Identity
@@ -118,7 +118,7 @@ namespace BitDiamond.Web.Infrastructure.DI
 
             #region Axis.Pollux.Authentication
 
-            c.Register<ICredentialAuthentication, CredentialAuthentication>(Lifestyle.Scoped);
+            c.RegisterLazyService<ICredentialAuthentication, CredentialAuthentication>(gen, Lifestyle.Scoped);
             #endregion
 
             #region Axis.Pollux.RBAC
@@ -132,13 +132,13 @@ namespace BitDiamond.Web.Infrastructure.DI
 
             #region BitDiamond.Core.Models/BitDiamond.Core.Services
 
-            c.Register<IAccountManager, AccountManager>(Lifestyle.Scoped);
-            c.Register<IBitLevelManager, BitLevelManager>(Lifestyle.Scoped);
-            c.Register<IBlockChainService, BlockChainService>(Lifestyle.Scoped);
-            c.Register<IContextVerifier, ContextVerifier>(Lifestyle.Scoped);
-            c.Register<IReferralManager, ReferralManager>(Lifestyle.Scoped);
-            c.Register<ISettingsManager, SettingsManager>(Lifestyle.Scoped);
-            c.Register<IUserNotifier, UserNotifier>(Lifestyle.Scoped);
+            c.RegisterLazyService<IAccountManager, AccountManager>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<IBitLevelManager, BitLevelManager>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<IBlockChainService, BlockChainService>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<IContextVerifier, ContextVerifier>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<IReferralManager, ReferralManager>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<ISettingsManager, SettingsManager>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<IUserNotifier, UserNotifier>(gen, Lifestyle.Scoped);
             #endregion
             
             #endregion

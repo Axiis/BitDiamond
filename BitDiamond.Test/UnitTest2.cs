@@ -44,12 +44,15 @@ namespace BitDiamond.Test
         public void TestMethod2()
         {
             var gen = new ProxyGenerator();
-            var somethingProxy = gen.CreateInterfaceProxyWithoutTarget<ISomething>(new Interceptor());
+            var proxy = gen.CreateInterfaceProxyWithTargetInterface(typeof(IFake), new[] { typeof(ISomething) }, new XFake(), new Interceptor());
 
-            var t = somethingProxy.Property;
-            var u = somethingProxy.Method();
+            var something = proxy.As<ISomething>();
+            Console.WriteLine(something.Method());
         }
     }
+
+    public interface IFake { }
+    public class XFake : IFake { }
 
     public class SomeClass
     {
@@ -62,11 +65,28 @@ namespace BitDiamond.Test
         int Property { get; }
     }
 
+    public class XSomething : ISomething
+    {
+        public int Property
+        {
+            get
+            {
+                return DateTime.Now.Second;
+            }
+        }
+
+        public string Method()
+        {
+            return DateTime.Now.ToString();
+        }
+    }
+
     public class Interceptor : IInterceptor
     {
         public void Intercept(IInvocation invocation)
         {
-            invocation.ReturnValue = invocation.Method.ReturnType.DefaultValue();
+            var t = invocation.As<IChangeProxyTarget>();
+            t.ChangeInvocationTarget(new XSomething());
             invocation.Proceed();
         }
     }

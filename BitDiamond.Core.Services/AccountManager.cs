@@ -298,6 +298,8 @@ namespace BitDiamond.Core.Services
             {
                 verification.Verified = true;
                 _pcommand.Update(verification).Resolve();
+
+                user.Status = AccountStatus.Active.As<int>();
                 return user;
             }
         });

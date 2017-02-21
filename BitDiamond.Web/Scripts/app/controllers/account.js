@@ -153,20 +153,32 @@ var BitDiamond;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
                     //get the email and tokens
-                    var data = JSON.parse(BitDiamond.Utils.FromUTF8EncodedArray(BitDiamond.Utils.FromBase64String($stateParams['data'])));
-                    this.email = data.Email;
-                    this.token = data.Token;
-                    this.isVerifying = true;
-                    this.isSuccessfull = this.isError = false;
-                    this.__account
-                        .verifyUserActivation(this.email, this.token)
-                        .then(function (opr) {
-                        _this.isVerifying = false;
-                        _this.isSuccessfull = true;
-                    }, function (err) {
-                        _this.isVerifying = false;
-                        _this.isError = true;
-                    });
+                    try {
+                        var data = JSON.parse(BitDiamond.Utils.FromUTF8EncodedArray(BitDiamond.Utils.FromBase64String($stateParams['data'])));
+                        this.email = data.Email;
+                        this.token = data.Token;
+                    }
+                    catch (_e) {
+                        //couldnt parse the data
+                        swal({
+                            title: 'Oops!',
+                            text: 'An error occured while processing your request. Please contact the system administrator.',
+                            type: 'error'
+                        });
+                    }
+                    if (!Object.isNullOrUndefined(data)) {
+                        this.isVerifying = true;
+                        this.isSuccessfull = this.isError = false;
+                        this.__account
+                            .verifyUserActivation(this.email, this.token)
+                            .then(function (opr) {
+                            _this.isVerifying = false;
+                            _this.isSuccessfull = true;
+                        }, function (err) {
+                            _this.isVerifying = false;
+                            _this.isError = true;
+                        });
+                    }
                 }
                 return VerifyRegistration;
             }());
@@ -185,7 +197,7 @@ var BitDiamond;
                     this.__notify = __notify;
                     this.$state = $state;
                 }
-                RecoveryRequest.prototype.recoverPassword = function () {
+                RecoveryRequest.prototype.requestRecovery = function () {
                     var _this = this;
                     if (this.isRecovering)
                         return;
@@ -215,39 +227,82 @@ var BitDiamond;
             }());
             Account.RecoveryRequest = RecoveryRequest;
             var RecoverPassword = (function () {
-                function RecoverPassword(__account, __notify, $state, $stateParams) {
+                function RecoverPassword(__account, __notify, $stateParams, $state) {
                     this.__account = __account;
                     this.__notify = __notify;
-                    this.$state = $state;
                     this.$stateParams = $stateParams;
-                    //get the email and tokens
-                    var data = JSON.parse(BitDiamond.Utils.FromUTF8EncodedArray(BitDiamond.Utils.FromBase64String($stateParams['data'])));
-                    this.email = data.Email;
-                    this.token = data.Token;
+                    this.$state = $state;
+                    try {
+                        var data = JSON.parse(BitDiamond.Utils.FromUTF8EncodedArray(BitDiamond.Utils.FromBase64String($stateParams['data'])));
+                        this.email = data.Email;
+                        this.token = data.Token;
+                    }
+                    catch (_e) {
+                        //couldnt parse the data
+                        this.hasInvalidData = true;
+                    }
                 }
                 RecoverPassword.prototype.passwordStrength = function () {
-                    return zxcvbn(this.password).score;
+                    if (!Object.isNullOrUndefined(this.password))
+                        return zxcvbn(this.password).score;
+                    else
+                        return -1;
+                };
+                RecoverPassword.prototype.strengthPercent = function () {
+                    var score = this.passwordStrength() + 1;
+                    return {
+                        width: (score * 20) + '%'
+                    };
+                };
+                RecoverPassword.prototype.strengthClass = function () {
+                    switch (this.passwordStrength()) {
+                        case 2:
+                        case 3: return { 'progress-bar-warning': true };
+                        case 4: return { 'progress-bar-success': true };
+                        case 0:
+                        case 1: return { 'progress-bar-danger': true };
+                        case -1:
+                        default: return {};
+                    }
+                };
+                RecoverPassword.prototype.strengthMessage = function () {
+                    switch (this.passwordStrength()) {
+                        case 0: return 'easily guessable';
+                        case 1: return 'very weak';
+                        case 2: return 'weak';
+                        case 3: return 'strong';
+                        case 4: return 'very strong! Recommended.';
+                        case -1:
+                        default: return '';
+                    }
                 };
                 RecoverPassword.prototype.recover = function () {
                     var _this = this;
+                    if (this.isRecovering)
+                        return;
                     //validate
-                    if (Object.isNullOrUndefined(this.password)) {
-                        //alert the user that s/he must supply a referrer code, or check the "do not have referrer code" link
+                    if (Object.isNullOrUndefined(this.password) || Object.isNullOrUndefined(this.password) || this.password.trim() == '') {
+                        //alert the user that the emails must match
                         swal({
                             title: 'Oops!',
-                            text: 'You must enter a VALID password to proceed.',
-                            type: 'Warning'
+                            text: 'Your must enter a Password.',
+                            type: 'warning'
+                        });
+                    }
+                    else if (this.password != this.confirmPassword) {
+                        swal({
+                            title: 'Oops!',
+                            text: 'Your passwords do not match.',
+                            type: 'warning'
                         });
                     }
                     else {
-                        this.isVerifying = true;
-                        this.__account
-                            .verifyPasswordReset(this.email, this.token, this.password)
-                            .then(function (opr) {
-                            _this.isVerifying = false;
-                            _this.$state.go('message', { action: 'signin', actionTitle: 'Signin', title: 'Done!', message: 'Your password has been reset.' });
+                        this.isRecovering = true;
+                        this.__account.verifyPasswordReset(this.email, this.token, this.password).then(function (opr) {
+                            _this.isRecovering = false;
+                            _this.$state.go('message', { back: 'signin', title: 'Congratulations!', message: 'An email has been sent to you with further instructions.' });
                         }, function (err) {
-                            _this.isVerifying = false;
+                            _this.isRecovering = false;
                             _this.__notify.error('Something went wrong...', 'Oops!');
                         });
                     }

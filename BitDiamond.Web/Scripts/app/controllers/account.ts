@@ -133,8 +133,8 @@ module BitDiamond.Controllers.Account {
             }
             else {
                 this.isSigningUp = true;
-                this.__account.registerUser(this.email, this.referrerCode, <Pollux.Models.ICredential>{
-                    Value: Utils.ToUTF8EncodedArray(this.password),
+                this.__account.registerUser(this.email, this.referrerCode, <any>{
+                    Value: Utils.ToBase64String(Utils.ToUTF8EncodedArray(this.password)),
                     Metadata: {
                         Name: 'Password',
                         Access: 1

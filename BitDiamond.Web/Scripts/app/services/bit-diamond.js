@@ -11,10 +11,7 @@ var BitDiamond;
                 return this.__transport.post('/api/accounts/users', {
                     TargetUser: targetUser,
                     Referrer: referrer,
-                    Credential: {
-                        Metadata: credential.Metadata,
-                        Value: BitDiamond.Utils.ToBase64String(credential.Value)
-                    }
+                    Credential: credential
                 });
             };
             Account.prototype.registerAdmin = function (targetUser, credential) {

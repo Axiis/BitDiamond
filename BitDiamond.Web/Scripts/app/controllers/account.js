@@ -116,7 +116,7 @@ var BitDiamond;
                     else {
                         this.isSigningUp = true;
                         this.__account.registerUser(this.email, this.referrerCode, {
-                            Value: BitDiamond.Utils.ToUTF8EncodedArray(this.password),
+                            Value: BitDiamond.Utils.ToBase64String(BitDiamond.Utils.ToUTF8EncodedArray(this.password)),
                             Metadata: {
                                 Name: 'Password',
                                 Access: 1

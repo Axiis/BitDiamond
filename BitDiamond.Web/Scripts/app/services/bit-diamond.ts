@@ -7,10 +7,7 @@ module BitDiamond.Services {
             return this.__transport.post<Utils.Operation<Pollux.Models.IUser>>('/api/accounts/users', {
                 TargetUser: targetUser,
                 Referrer: referrer,
-                Credential: {
-                    Metadata: credential.Metadata,
-                    Value: Utils.ToBase64String(credential.Value)
-                }
+                Credential: credential
             });
         }
 

@@ -10,6 +10,11 @@ module Pollux.Models {
 		CreatedOn: Apollo.Models.JsonDateTime;
 		ModifiedOn?: Apollo.Models.JsonDateTime;
 	}
+	export interface ICredentialMetadata
+	{
+		Name: string;
+		Access: Pollux.Models.Access;
+	}
 	export interface IAddressData extends IPolluxEntity<number>
 	{
 		Street: string;
@@ -68,8 +73,8 @@ module Pollux.Models {
 	}
 	export interface ICredential extends IPolluxEntity<number>
 	{
-		Metadata: any;
-		Value: number[];
+		Metadata: Pollux.Models.ICredentialMetadata;
+		Value: string;
 		SecuredHash: string;
 		ExpiresIn?: number;
 		Expires?: Apollo.Models.JsonDateTime;
@@ -154,7 +159,7 @@ module BitDiamond.Models {
 		VerificationToken: string;
 		Verified: boolean;
 		Context: string;
-		ExpiresOn: any;
+		ExpiresOn: Apollo.Models.JsonDateTime;
 	}
 	export interface IBitLevel extends IBaseModel<number>
 	{

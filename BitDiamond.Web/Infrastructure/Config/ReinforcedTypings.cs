@@ -10,6 +10,7 @@ using System;
 using Reinforced.Typings.Fluent;
 using Axis.Pollux.Authentication;
 using Axis.Pollux.RBAC.Auth;
+using System.Collections.Generic;
 
 namespace BitDiamond.Web.Infrastructure.Config
 {
@@ -42,6 +43,11 @@ namespace BitDiamond.Web.Infrastructure.Config
                 }));
 
             //models
+            config.ExportAsInterfaces(typeof(CredentialMetadata).Enumerate(), _icb =>
+            {
+                _icb.OverrideNamespace("Pollux.Models")
+                    .WithCodeGenerator<PolluxModelGenerator>();
+            });
             polluxBase
                 .Assembly
                 .GetTypes()
@@ -191,8 +197,12 @@ namespace BitDiamond.Web.Infrastructure.Config
 
                 if (m.PropertyType == typeof(DateTime) || m.PropertyType == typeof(DateTime?))
                     member.As<RtField>().Type = new RtSimpleTypeName("Apollo.Models.JsonDateTime");
+
                 else if (m.PropertyType == typeof(TimeSpan) || m.PropertyType == typeof(TimeSpan?))
                     member.As<RtField>().Type = new RtSimpleTypeName(new RtTypeName[0], "Apollo.Models", "JsonDateTime");
+
+                else if (typeof(IEnumerable<byte>).IsAssignableFrom(m.PropertyType))
+                    member.As<RtField>().Type = new RtSimpleTypeName("string");
 
                 n.Members.Add(member);
             }
@@ -223,6 +233,15 @@ namespace BitDiamond.Web.Infrastructure.Config
             {
                 var generator = resolver.GeneratorFor(m, Context);
                 var member = generator.Generate(m, resolver);
+
+                if (m.PropertyType == typeof(DateTime) || m.PropertyType == typeof(DateTime?))
+                    member.As<RtField>().Type = new RtSimpleTypeName("Apollo.Models.JsonDateTime");
+
+                else if (m.PropertyType == typeof(TimeSpan) || m.PropertyType == typeof(TimeSpan?))
+                    member.As<RtField>().Type = new RtSimpleTypeName(new RtTypeName[0], "Apollo.Models", "JsonDateTime");
+
+                else if(typeof(IEnumerable<byte>).IsAssignableFrom(m.PropertyType))
+                    member.As<RtField>().Type = new RtSimpleTypeName("string");
 
                 n.Members.Add(member);
             }

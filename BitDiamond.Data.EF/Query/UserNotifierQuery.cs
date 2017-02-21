@@ -28,7 +28,7 @@ namespace BitDiamond.Data.EF.Query
                   .QueryWith(_n => _n.Target)
                   .Where(_n => _n.Target.EntityId == user.EntityId)
                   .OrderByDescending(_n => _n.CreatedOn)
-                  .AsEnumerable();
+                  .ToArray();
 
         public IEnumerable<Notification> UnseenNotifications(User user)
         => _europa.Store<Notification>()
@@ -36,6 +36,6 @@ namespace BitDiamond.Data.EF.Query
                   .Where(_n => _n.Target.EntityId == user.EntityId)
                   .Where(_n => _n.Seen == false)
                   .OrderByDescending(_n => _n.CreatedOn)
-                  .AsEnumerable();
+                  .ToArray();
     }
 }

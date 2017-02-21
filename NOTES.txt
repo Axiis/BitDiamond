@@ -22,3 +22,5 @@
 
 2017-02-20 =================================================================================================================
 1.	Manually add the supporting classes needed to complete the Pollux Models as well as BitDiamond Models.
+2.	Do not forget to add ":system/referrals/@affix" permission to the #guest user role because the function is called during
+    the user registration process.

@@ -8,13 +8,11 @@ using static Axis.Luna.Extensions.ExceptionExtensions;
 using Axis.Pollux.RBAC.Services;
 using BitDiamond.Core.Services.Query;
 using Axis.Luna.Extensions;
-using BitDiamond.Core.Utils;
 
 namespace BitDiamond.Core.Services
 {
     using Axis.Jupiter.Kore.Command;
     using Utils;
-    using RANG = RandomAlphaNumericGenerator;
 
     public class ReferralManager : IReferralManager, IUserContextAware
     {

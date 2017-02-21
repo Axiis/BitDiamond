@@ -44,7 +44,7 @@ namespace BitDiamond.Data.EF.Query
         => _europa.Store<ContextVerification>()
                   .QueryWith(_cv => _cv.Target)
                   .Where(_cv => _cv.Target.EntityId == user.EntityId)
-                  .AsEnumerable();
+                  .ToArray();
 
         public Credential GetCredential(User user, string name, Access credentialVisibility)
         => _europa.Store<Credential>()
@@ -77,7 +77,7 @@ namespace BitDiamond.Data.EF.Query
         => _europa.Store<UserData>()
                   .QueryWith(_ud => _ud.Owner)
                   .Where(_ud => _ud.OwnerId == user.EntityId)
-                  .AsEnumerable();
+                  .ToArray();
 
         public UserData GetUserData(User user, string name)
         => _europa.Store<UserData>()
@@ -90,6 +90,6 @@ namespace BitDiamond.Data.EF.Query
         => _europa.Store<UserLogon>()
                   .QueryWith(_ul => _ul.User)
                   .Where(_ul => _ul.User.EntityId == userId)
-                  .AsEnumerable();
+                  .ToArray();
     }
 }

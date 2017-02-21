@@ -328,6 +328,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\loaders.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
@@ -1158,6 +1159,7 @@
     <Content Include="Views\Email\AccountActivation.cshtml" />
     <Content Include="Views\Email\UserWelcome.cshtml" />
     <Content Include="Views\Email\PasswordRecovery.cshtml" />
+    <Content Include="Views\Account\VerifyRegistration.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

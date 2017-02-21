@@ -1,0 +1,81 @@
+﻿
+@keyframes uil-cube-css {
+  0% {
+    transform: scale(1.6);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.inline-center-pseudo:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.cube-loader {
+    display:inline-block;
+    background: none;
+    position: relative;
+}
+.cube-loader > div {
+  position: absolute;
+  width: 45%;
+  height: 45%;
+  animation: uil-cube-css 1s cubic-bezier(0.2, 0.8, 0.2, 0.8) infinite;
+}
+.cube-loader > div:nth-of-type(1) {
+  top: 0px;
+  left: 0px;
+  background: #000;
+  opacity: 0.9;
+  animation-delay: 0s;
+}
+.cube-loader > div:nth-of-type(2) {
+  top: 0px;
+  right: 0px;
+  background: #000;
+  opacity: 0.62;
+  animation-delay: 0.1s;
+}
+.cube-loader > div:nth-of-type(3) {
+  bottom: 0px;
+  left: 0px;
+  background: #000;
+  opacity: 0.4;
+  animation-delay: 0.3s;
+}
+.cube-loader > div:nth-of-type(4) {
+  bottom: 0px;
+  right: 0px;
+  background: #000;
+  opacity: 0.2;
+  animation-delay: 0.2s;
+}
+
+
+@keyframes uil-ring-anim {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.ring-loader {
+    display: inline-block;
+    background: none;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+}
+.ring-loader > div {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    animation: uil-ring-anim 1s linear infinite;
+}

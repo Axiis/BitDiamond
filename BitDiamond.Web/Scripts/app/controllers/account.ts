@@ -14,6 +14,7 @@ module BitDiamond.Controllers.Account {
 
 
         signin() {
+            if (this.isSigningIn) return;
 
             //validate
             if (!Object.isNullOrUndefined(this.password) &&
@@ -90,6 +91,8 @@ module BitDiamond.Controllers.Account {
         $state: ng.ui.IStateService;
 
         signup() {
+
+            if (this.isSigningUp) return;
 
             //validate
             if (Object.isNullOrUndefined(this.email) || this.email.trim() == '') {
@@ -170,6 +173,7 @@ module BitDiamond.Controllers.Account {
         $state: ng.ui.IStateService;
 
         recoverPassword() {
+            if (this.isRecovering) return;
 
             //validate
             if (Object.isNullOrUndefined(this.email)) {

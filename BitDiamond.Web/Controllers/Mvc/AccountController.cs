@@ -11,30 +11,22 @@ namespace BitDiamond.Web.Controllers.Mvc
     {
         [HttpGet]
         [Route("index")]
-        public ActionResult Index()
-        {
-            return View();
-        }
+        public ActionResult Index() => View();
 
         [HttpGet]
         [Route("signin")]
-        public ActionResult Signin()
-        {
-            return View();
-        }
+        public ActionResult Signin() => View();
 
         [HttpGet]
         [Route("recovery-request")]
-        public ActionResult RecoveryRequest()
-        {
-            return View();
-        }
+        public ActionResult RecoveryRequest() => View();
 
         [HttpGet]
         [Route("signup")]
-        public ActionResult Signup()
-        {
-            return View();
-        }
+        public ActionResult Signup() => View();
+
+        [HttpGet]
+        [Route("verify-registration")]
+        public ActionResult VerifyRegistration() => View();
     }
 }

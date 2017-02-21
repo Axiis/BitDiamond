@@ -12,6 +12,8 @@ var BitDiamond;
                 }
                 Signin.prototype.signin = function () {
                     var _this = this;
+                    if (this.isSigningIn)
+                        return;
                     //validate
                     if (!Object.isNullOrUndefined(this.password) &&
                         !Object.isNullOrUndefined(this.email)) {
@@ -73,6 +75,8 @@ var BitDiamond;
                 };
                 Signup.prototype.signup = function () {
                     var _this = this;
+                    if (this.isSigningUp)
+                        return;
                     //validate
                     if (Object.isNullOrUndefined(this.email) || this.email.trim() == '') {
                         //alert the user that the emails must match
@@ -141,6 +145,8 @@ var BitDiamond;
                 }
                 RecoveryRequest.prototype.recoverPassword = function () {
                     var _this = this;
+                    if (this.isRecovering)
+                        return;
                     //validate
                     if (Object.isNullOrUndefined(this.email)) {
                         //alert the user that s/he must supply a referrer code, or check the "do not have referrer code" link
@@ -245,4 +251,3 @@ var BitDiamond;
         })(Account = Controllers.Account || (Controllers.Account = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=account.js.map

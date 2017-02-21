@@ -103,8 +103,8 @@ namespace BitDiamond.Core.Services
                         //assign credentials
                         //load all credential expiration dates from settings
                         var passwordExpiration = _settingsManager.GetSetting(Constants.Settings_DefaultPasswordExpirationTime)
-                                                                    .Resolve()
-                                                                    .ParseData<TimeSpan>();
+                                                                 .Resolve()
+                                                                 .ParseData<TimeSpan>();
 
                         secretCredential.ExpiresIn = null; //<-- never expires
 
@@ -252,7 +252,7 @@ namespace BitDiamond.Core.Services
             var verification = _query.GetLatestContextVerification(user, Constants.VerificationContext_UserActivation);
 
             //if an unverified context still exists in the db, return that
-            if (!verification.Verified) return verification;
+            if (verification != null && !verification.Verified) return verification;
 
             //else create a new one
             else

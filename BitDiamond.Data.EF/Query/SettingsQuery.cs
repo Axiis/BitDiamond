@@ -19,7 +19,7 @@ namespace BitDiamond.Data.EF.Query
         }
 
         public IEnumerable<SystemSetting> AllSettings()
-        => _europa.Store<SystemSetting>().Query.AsEnumerable();
+        => _europa.Store<SystemSetting>().Query.ToArray();
 
         public SystemSetting GetSetting(string name)
         => _europa.Store<SystemSetting>().Query.FirstOrDefault(_ss => _ss.Name == name);

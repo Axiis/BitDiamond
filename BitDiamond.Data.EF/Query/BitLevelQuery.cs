@@ -54,7 +54,7 @@ namespace BitDiamond.Data.EF.Query
                   .QueryWith(_bca => _bca.User, _bca => _bca.Donation)
                   .Where(_bca => _bca.User.EntityId == user.EntityId)
                   .OrderByDescending(_bca => _bca.CreatedOn)
-                  .AsEnumerable();
+                  .ToArray();
 
         public BitLevel GetClosestValidBeneficiary(User user)
         {
@@ -75,27 +75,28 @@ AS
 (
 -- Anchor member definition
     SELECT r.ReferenceCode
-    FROM dbo.ReferalNode AS r
+    FROM dbo.ReferralNode AS r
     WHERE r.UserId = @userId
 
     UNION ALL
 
 -- Recursive member definition
-    SELECT r.ReferenceCode
-    FROM DownLinesCTE as pr
-    JOIN r FROM dbo.ReferalNode ON r.ReferrerCode = pr.ReferenceCode
+    SELECT referred.ReferenceCode
+    FROM DownLinesCTE as code
+    JOIN dbo.ReferralNode AS referred ON referred.ReferrerCode = code.ReferenceCode
 )
 
 -- Statement that executes the CTE
 SELECT r.ReferenceCode, r.ReferrerCode, r.UplineCode, r.CreatedOn, r.ModifiedOn, r.Id, 
        u.EntityId AS u_EntityId, u.CreatedOn AS u_CreatedOn, u.ModifiedOn AS u_ModifiedOn, u.Status as u_Status, u.UId AS u_UId
-FROM dbo.ReferalNode AS r
-JOIN dbo.User AS u ON u.EntityId = r.UserId
+FROM dbo.ReferralNode AS r
+JOIN dbo.[User] AS u ON u.EntityId = r.UserId
 JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
 ";
 
             using (var connection = new SqlConnection((_europa as EuropaContext).Database.Connection.ConnectionString))
             {
+                connection.Open();
                 var qcommand = new SqlCommand
                 {
                     Connection = connection,

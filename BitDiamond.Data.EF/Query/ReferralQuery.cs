@@ -9,9 +9,11 @@ using Axis.Pollux.Identity.Principal;
 using BitDiamond.Core.Models;
 
 using static Axis.Luna.Extensions.ExceptionExtensions;
+using static Axis.Luna.Extensions.ObjectExtensions;
 using System.Data.SqlClient;
 using Axis.Jupiter.Europa;
 using Axis.Luna.Extensions;
+using System.Configuration;
 
 namespace BitDiamond.Data.EF.Query
 {
@@ -35,27 +37,28 @@ AS
 (
 -- Anchor member definition
     SELECT r.ReferenceCode
-    FROM dbo.ReferalNode AS r
+    FROM dbo.ReferralNode AS r
     WHERE r.UplineCode = @reference
 
     UNION ALL
 
 -- Recursive member definition
-    SELECT r.ReferenceCode
-    FROM DownLinesCTE as pr
-    JOIN r FROM dbo.ReferalNode ON r.UplineCode = pr.ReferenceCode
+    SELECT downline.ReferenceCode
+    FROM DownLinesCTE as code
+    JOIN dbo.ReferralNode AS downline ON downline.UplineCode = code.ReferenceCode
 )
 
 -- Statement that executes the CTE
 SELECT r.ReferenceCode, r.ReferrerCode, r.UplineCode, r.CreatedOn, r.ModifiedOn, r.Id, 
        u.EntityId AS u_EntityId, u.CreatedOn AS u_CreatedOn, u.ModifiedOn AS u_ModifiedOn, u.Status as u_Status, u.UId AS u_UId
-FROM dbo.ReferalNode AS r
-JOIN dbo.User AS u ON u.EntityId = r.UserId
+FROM dbo.ReferralNode AS r
+JOIN dbo.[User] AS u ON u.EntityId = r.UserId
 JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
 ";
 
-            using (var connection = new SqlConnection((_europa as EuropaContext).Database.Connection.ConnectionString))
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["EuropaContext"].ConnectionString))
             {
+                connection.Open();
                 var qcommand = new SqlCommand
                 {
                     Connection = connection,
@@ -76,9 +79,9 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
                             ReferrerCode = row.GetString(1),
                             UplineCode = row.GetString(2),
                             CreatedOn = row.GetDateTime(3),
-                            ModifiedOn = row.GetDateTime(4),
+                            ModifiedOn = row.IsDBNull(4)? (DateTime?)null: row.GetDateTime(4),
                             Id = row.GetInt64(5),
-                            User = userCache.GetOrAdd(row.GetString(6), _uid => new User
+                            User = userCache.GetOrAdd(row.GetString(6), _uid => new User //<-- the UserId of the ReferralNode is also set behind the scenes
                             {
                                 EntityId = _uid,
                                 CreatedOn = row.GetDateTime(7),
@@ -97,10 +100,10 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
         => _europa.Store<ReferralNode>()
                   .QueryWith(_r => _r.User)
                   .Where(_r => _r.UplineCode == node.ReferenceCode)
-                  .AsEnumerable();
+                  .ToArray();
 
         public IEnumerable<string> GetAllReferenceCodes()
-        => _europa.Store<ReferralNode>().Query.Select(_r => _r.ReferenceCode).AsEnumerable();
+        => _europa.Store<ReferralNode>().Query.Select(_r => _r.ReferenceCode).ToArray();
 
         public ReferralNode GetReferalNode(string referenceCode)
         => _europa.Store<ReferralNode>()
@@ -115,39 +118,40 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
         {
             var query =
 @"
-WITH DownLinesCTE (ReferenceCode)
+WITH UplinesCTE (ReferenceCode)
 AS
 (
 -- Anchor member definition: statrt with the first parent/upline
-    SELECT r.ReferenceCode
-    FROM dbo.ReferalNode AS r
+    SELECT r.UplineCode
+    FROM dbo.ReferralNode AS r
     WHERE r.ReferenceCode = @referrerCode
 
     UNION ALL
 
 -- Recursive member definition
-    SELECT r.ReferenceCode
-    FROM DownLinesCTE as r
-    JOIN pr FROM dbo.ReferalNode ON pr.ReferenceCode = r.UplineCode
+    SELECT node.UplineCode
+    FROM dbo.ReferralNode as node
+    JOIN UplinesCTE AS code ON code.ReferenceCode = node.ReferenceCode
 )
 
 -- Statement that executes the CTE
 SELECT r.ReferenceCode, r.ReferrerCode, r.UplineCode, r.CreatedOn, r.ModifiedOn, r.Id, 
        u.EntityId AS u_EntityId, u.CreatedOn AS u_CreatedOn, u.ModifiedOn AS u_ModifiedOn, u.Status as u_Status, u.UId AS u_UId
-FROM dbo.ReferalNode AS r
-JOIN dbo.User AS u ON u.EntityId = r.UserId
-JOIN DownLinesCTE AS ul ON ul.ReferenceCode = r.ReferenceCode
+FROM dbo.ReferralNode AS r
+JOIN dbo.[User] AS u ON u.EntityId = r.UserId
+JOIN UplinesCTE AS ul ON ul.ReferenceCode = r.ReferenceCode
 ";
             
             using (var connection = new SqlConnection((_europa as EuropaContext).Database.Connection.ConnectionString))
             {
+                connection.Open();
                 var qcommand = new SqlCommand
                 {
                     Connection = connection,
                     CommandText = query,
                     //CommandTimeout = 
                 };
-                qcommand.Parameters.Add(new SqlParameter("referrerCode", node.UplineCode));
+                qcommand.Parameters.Add(new SqlParameter("referrerCode", node.ReferenceCode));
 
                 using (var row = qcommand.ExecuteReader())
                 {

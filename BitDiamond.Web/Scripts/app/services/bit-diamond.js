@@ -110,4 +110,3 @@ var BitDiamond;
         Services.Account = Account;
     })(Services = BitDiamond.Services || (BitDiamond.Services = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=bit-diamond.js.map

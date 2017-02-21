@@ -23,7 +23,10 @@
     </div>
     <div class="form-group text-center m-t-20">
         <div class="col-xs-12">
-            <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="button" ng-click="vm.signin()">Log In</button>
+            <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="button" ng-click="vm.signin()">
+                <span ng-hide="vm.isSigningIn">Log In</span>
+                <ring-loader size="24" color="black" show="vm.isSigningIn"></ring-loader>
+            </button>
         </div>
     </div>
     <div class="form-group m-b-0">

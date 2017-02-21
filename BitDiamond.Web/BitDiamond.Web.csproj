@@ -1181,6 +1181,7 @@
     <Compile Include="Infrastructure\Config\WebApi\WebApiStartup.cs" />
     <Compile Include="Infrastructure\DI\DIRegistrations.cs" />
     <Compile Include="Infrastructure\DI\MvcResolutionContext.cs" />
+    <Compile Include="Infrastructure\DI\ServiceInterceptor.cs" />
     <Compile Include="Infrastructure\DI\WebApiResolutionContext.cs" />
     <Compile Include="Infrastructure\Exceptions\MalformedApiArguments.cs" />
     <Compile Include="Infrastructure\Security\AuthorizationServer.cs" />

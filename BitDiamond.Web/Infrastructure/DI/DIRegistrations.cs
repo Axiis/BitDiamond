@@ -20,6 +20,7 @@ using BitDiamond.Data.EF;
 using BitDiamond.Data.EF.Command;
 using BitDiamond.Web.Infrastructure.Security;
 using BitDiamond.Web.Infrastructure.Services;
+using Castle.DynamicProxy;
 using Microsoft.Owin.Security.OAuth;
 using SimpleInjector;
 using System;
@@ -36,6 +37,9 @@ namespace BitDiamond.Web.Infrastructure.DI
     {
         public static void RegisterTypes(Container c)
         {
+            //var gen = new ProxyGenerator();
+
+
             var coreAssembly = typeof(BaseModel<>).Assembly;
 
             //register the container

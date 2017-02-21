@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UAParser;
+using Castle.DynamicProxy;
+using Axis.Luna.Extensions;
 
 namespace BitDiamond.Test
 {
@@ -41,11 +43,31 @@ namespace BitDiamond.Test
         [TestMethod]
         public void TestMethod2()
         {
+            var gen = new ProxyGenerator();
+            var somethingProxy = gen.CreateInterfaceProxyWithoutTarget<ISomething>(new Interceptor());
+
+            var t = somethingProxy.Property;
+            var u = somethingProxy.Method();
         }
     }
 
     public class SomeClass
     {
         public string Name { get; set; }
+    }
+
+    public interface ISomething
+    {
+        string Method();
+        int Property { get; }
+    }
+
+    public class Interceptor : IInterceptor
+    {
+        public void Intercept(IInvocation invocation)
+        {
+            invocation.ReturnValue = invocation.Method.ReturnType.DefaultValue();
+            invocation.Proceed();
+        }
     }
 }

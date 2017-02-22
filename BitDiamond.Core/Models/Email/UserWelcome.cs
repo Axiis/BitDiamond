@@ -13,5 +13,7 @@ namespace BitDiamond.Core.Models.Email
             get { return Recipients.FirstOrDefault(); }
             set { Recipients = new[] { value }; }
         }
+
+        public string Link { get; set; }
     }
 }

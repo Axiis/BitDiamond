@@ -11,6 +11,7 @@ namespace BitDiamond.Core.Services
     {
         Operation<string> GeneratePasswordUpdateVerificationUrl(string verificationToken, string user);
         Operation<string> GenerateUserActivationVerificationUrl(string verificationToken, string user);
+        Operation<string> GenerateWelcomeMessageUrl();
         Operation<string> GenerateBlobUrl(string blobName);
     }
 }

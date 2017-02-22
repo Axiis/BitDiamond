@@ -139,4 +139,8 @@ module BitDiamond.Services {
 
         }
     }
+
+    export class Profile {
+
+    }
 }

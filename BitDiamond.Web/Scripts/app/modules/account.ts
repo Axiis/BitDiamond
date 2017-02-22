@@ -88,5 +88,4 @@ module BitDiamond.Modules {
                 controllerAs: 'vm'
             });
     });
-
 }

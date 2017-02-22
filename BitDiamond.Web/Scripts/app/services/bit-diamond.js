@@ -114,5 +114,11 @@ var BitDiamond;
             return Account;
         }());
         Services.Account = Account;
+        var Profile = (function () {
+            function Profile() {
+            }
+            return Profile;
+        }());
+        Services.Profile = Profile;
     })(Services = BitDiamond.Services || (BitDiamond.Services = {}));
 })(BitDiamond || (BitDiamond = {}));

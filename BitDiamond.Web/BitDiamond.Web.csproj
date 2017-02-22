@@ -1163,6 +1163,9 @@
     <Content Include="Views\Account\RecoverPassword.cshtml" />
     <Content Include="Views\Account\Message.cshtml" />
     <Content Include="Views\Account\Terms.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Profile\Dashboard.cshtml" />
+    <Content Include="Views\Profile\Home.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1176,6 +1179,7 @@
   <ItemGroup>
     <Compile Include="Controllers\Api\AccountController.cs" />
     <Compile Include="Controllers\Mvc\AccountController.cs" />
+    <Compile Include="Controllers\Mvc\ProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1218,6 +1222,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\app\controllers\account.ts" />
+    <TypeScriptCompile Include="Scripts\app\controllers\profile.ts" />
     <TypeScriptCompile Include="Scripts\app\controllers\_shared.ts" />
     <TypeScriptCompile Include="Scripts\app\directives\binaryData.ts" />
     <TypeScriptCompile Include="Scripts\app\directives\enumOptions.ts" />
@@ -1226,6 +1231,7 @@
     <TypeScriptCompile Include="Scripts\app\models\axis-apollo.ts" />
     <TypeScriptCompile Include="Scripts\app\models\domain.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\account.ts" />
+    <TypeScriptCompile Include="Scripts\app\modules\profile.ts" />
     <TypeScriptCompile Include="Scripts\app\services\bit-diamond.ts" />
     <TypeScriptCompile Include="Scripts\app\services\utility.ts" />
     <TypeScriptCompile Include="Scripts\app\utils\constants.ts" />

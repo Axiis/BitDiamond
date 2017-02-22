@@ -1,12 +1,7 @@
 ﻿using Axis.Luna;
-using Axis.Luna.Extensions;
 using BitDiamond.Core.Services;
-using BitDiamond.Web.Infrastructure.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Web;
 
 namespace BitDiamond.Web.Infrastructure.Services
 {
@@ -44,6 +39,13 @@ namespace BitDiamond.Web.Infrastructure.Services
             var utf8Array = Encoding.UTF8.GetBytes(json);
             var urlB64 = Convert.ToBase64String(utf8Array).Replace("/", "_").Replace("+", "-");
             return new Uri($"{ruri.Scheme}://{ruri.Authority}/account/index#!/recover-password/{urlB64}").ToString();
+        });
+
+        public Operation<string> GenerateWelcomeMessageUrl()
+        => Operation.Try(() =>
+        {
+            var ruri = _owinProvider.Owin.Request.Uri;
+            return new Uri($"{ruri.Scheme}://{ruri.Authority}/account/index").ToString();
         });
     }
 }

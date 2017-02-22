@@ -290,10 +290,23 @@ namespace BitDiamond.Core.Services
             else
             {
                 verification.Verified = true;
-                _pcommand.Update(verification).Resolve();
+                return _pcommand.Update(verification)
+                    .Then(opr =>
+                    {
+                        user.Status = AccountStatus.Active.As<int>();
+                        return _pcommand.Update(user);
+                    })
+                    .Then(opr =>
+                    {
+                        _messagePush.SendMail(new UserWelcome
+                        {
+                            Target = user.UserId,
+                            Link = _apiProvider.GenerateWelcomeMessageUrl().Result
+                        })
+                        .Resolve();
 
-                user.Status = AccountStatus.Active.As<int>();
-                return user;
+                        return opr.Result;
+                    });
             }
         });
 

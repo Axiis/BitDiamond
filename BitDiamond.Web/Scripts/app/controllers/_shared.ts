@@ -31,4 +31,7 @@ module BitDiamond.Controllers.Shared {
         }
     }
 
+    export class NavBar {
+
+    }
 }

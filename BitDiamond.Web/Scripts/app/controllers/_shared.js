@@ -24,6 +24,12 @@ var BitDiamond;
                 return Message;
             }());
             Shared.Message = Message;
+            var NavBar = (function () {
+                function NavBar() {
+                }
+                return NavBar;
+            }());
+            Shared.NavBar = NavBar;
         })(Shared = Controllers.Shared || (Controllers.Shared = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));

@@ -1,11 +1,11 @@
 ﻿
 module BitDiamond.Modules {
 
-    export const module = angular.module('account', ['ui.router', 'ngSanitize', 'ngAnimate']);
+    export const accountModule = angular.module('account', ['ui.router', 'ngSanitize', 'ngAnimate']);
 
     //directives
-    module.directive('ringLoader', () => new BitDiamond.Directives.RingLoader());
-    module.directive('boxLoader', () => new BitDiamond.Directives.BoxLoader());
+    accountModule.directive('ringLoader', () => new BitDiamond.Directives.RingLoader());
+    accountModule.directive('boxLoader', () => new BitDiamond.Directives.BoxLoader());
     //module.directive('binaryData', Gaia.Directives.BinaryData);
     //module.directive('tagsInput', () => new Gaia.Directives.TagsInput());
     //module.directive('numberSpinner', () => new Gaia.Directives.NumberSpinner());
@@ -17,25 +17,25 @@ module BitDiamond.Modules {
 
 
     //services
-    module.service('__transport', BitDiamond.Utils.Services.DomainTransport);
-    module.service('__dom', BitDiamond.Utils.Services.DomModelService);
-    module.service('__notify', BitDiamond.Utils.Services.NotifyService);
+    accountModule.service('__transport', BitDiamond.Utils.Services.DomainTransport);
+    accountModule.service('__dom', BitDiamond.Utils.Services.DomModelService);
+    accountModule.service('__notify', BitDiamond.Utils.Services.NotifyService);
 
-    module.service('__account', BitDiamond.Services.Account);
+    accountModule.service('__account', BitDiamond.Services.Account);
 
 
     //controllers
-    module.controller('Signin', BitDiamond.Controllers.Account.Signin);
-    module.controller('Signup', BitDiamond.Controllers.Account.Signup);
-    module.controller('RecoveryRequest', BitDiamond.Controllers.Account.RecoveryRequest);
-    module.controller('RecoverPassword', BitDiamond.Controllers.Account.RecoverPassword);
-    module.controller('Message', BitDiamond.Controllers.Shared.Message);
-    module.controller('VerifyRegistration', BitDiamond.Controllers.Account.VerifyRegistration);
-    module.controller('Terms', BitDiamond.Controllers.Account.Terms);
+    accountModule.controller('Signin', BitDiamond.Controllers.Account.Signin);
+    accountModule.controller('Signup', BitDiamond.Controllers.Account.Signup);
+    accountModule.controller('RecoveryRequest', BitDiamond.Controllers.Account.RecoveryRequest);
+    accountModule.controller('RecoverPassword', BitDiamond.Controllers.Account.RecoverPassword);
+    accountModule.controller('Message', BitDiamond.Controllers.Shared.Message);
+    accountModule.controller('VerifyRegistration', BitDiamond.Controllers.Account.VerifyRegistration);
+    accountModule.controller('Terms', BitDiamond.Controllers.Account.Terms);
 
 
     //configure states
-    module.config(($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider) => {
+    accountModule.config(($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider) => {
         $urlRouterProvider.otherwise('/signin/')
 
         $stateProvider

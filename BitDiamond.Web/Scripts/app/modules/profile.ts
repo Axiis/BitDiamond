@@ -1,11 +1,11 @@
 ﻿
 module BitDiamond.Modules {
 
-    export const accountModule = angular.module('profile', ['ui.router', 'ngSanitize', 'ngAnimate']);
+    export const profileModule = angular.module('profile', ['ui.router', 'ngSanitize', 'ngAnimate']);
 
     //directives
-    accountModule.directive('ringLoader', () => new BitDiamond.Directives.RingLoader());
-    accountModule.directive('boxLoader', () => new BitDiamond.Directives.BoxLoader());
+    profileModule.directive('ringLoader', () => new BitDiamond.Directives.RingLoader());
+    profileModule.directive('boxLoader', () => new BitDiamond.Directives.BoxLoader());
     //accountModule.directive('binaryData', Gaia.Directives.BinaryData);
     //accountModule.directive('tagsInput', () => new Gaia.Directives.TagsInput());
     //accountModule.directive('numberSpinner', () => new Gaia.Directives.NumberSpinner());
@@ -17,29 +17,29 @@ module BitDiamond.Modules {
 
 
     //services
-    accountModule.service('__transport', BitDiamond.Utils.Services.DomainTransport);
-    accountModule.service('__dom', BitDiamond.Utils.Services.DomModelService);
-    accountModule.service('__notify', BitDiamond.Utils.Services.NotifyService);
+    profileModule.service('__transport', BitDiamond.Utils.Services.DomainTransport);
+    profileModule.service('__dom', BitDiamond.Utils.Services.DomModelService);
+    profileModule.service('__notify', BitDiamond.Utils.Services.NotifyService);
 
-    accountModule.service('__account', BitDiamond.Services.Account);
+    profileModule.service('__account', BitDiamond.Services.Account);
 
 
     //controllers
-    accountModule.controller('NavBar', BitDiamond.Controllers.Shared.NavBar);
-    accountModule.controller('SideBar', BitDiamond.Controllers.Shared.SideBar);
+    profileModule.controller('NavBar', BitDiamond.Controllers.Shared.NavBar);
+    profileModule.controller('SideBar', BitDiamond.Controllers.Shared.SideBar);
 
-    //accountModule.controller('Signin', BitDiamond.Controllers.Account.Signin);
+    profileModule.controller('Dashboard', BitDiamond.Controllers.Profile.Dashboard);
 
 
     //configure states
-    accountModule.config(($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider) => {
-        $urlRouterProvider.otherwise('/dashboard/')
+    profileModule.config(($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider) => {
+        $urlRouterProvider.otherwise('/dashboard')
 
         $stateProvider
             .state('dashboard', {
                 url: '/dashboard',
                 templateUrl: '/profile/dashboard', //<-- /profile/dashboard
-                controller: 'dashboard',
+                controller: 'Dashboard',
                 controllerAs: 'vm'
             });
     });

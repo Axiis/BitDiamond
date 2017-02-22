@@ -3,15 +3,119 @@
     Layout = null;
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Dashboard</title>
-</head>
-<body>
-    <div> 
+<div class="row" style="margin-top:15px;">
+    <div class="col-md-7 col-lg-9 col-sm-12 col-xs-12">
+        <div class="white-box">
+            <h3 class="box-title">Yearly Sales </h3>
+            <ul class="list-inline text-right">
+                <li>
+                    <h5><i class="fa fa-circle m-r-5" style="color: #00bfc7;"></i>iPhone</h5>
+                </li>
+                <li>
+                    <h5><i class="fa fa-circle m-r-5" style="color: #fdc006;"></i>iPad</h5>
+                </li>
+                <li>
+                    <h5><i class="fa fa-circle m-r-5" style="color: #9675ce;"></i>iPod</h5>
+                </li>
+            </ul>
+            <div id="morris-area-chart" style="height: 340px; position: relative; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                <svg height="340" version="1.1" width="724" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative;"><desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.1.2</desc><defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs><text x="33.5" y="301" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#96a2b4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal"><tspan dy="4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">0</tspan></text><path fill="none" stroke="#ffffff" d="M46,301H699" stroke-opacity="0.1" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="33.5" y="232" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#96a2b4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal"><tspan dy="4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">75</tspan></text><path fill="none" stroke="#ffffff" d="M46,232H699" stroke-opacity="0.1" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="33.5" y="163" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#96a2b4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal"><tspan dy="4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">150</tspan></text><path fill="none" stroke="#ffffff" d="M46,163H699" stroke-opacity="0.1" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="33.5" y="94" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#96a2b4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal"><tspan dy="4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">225</tspan></text><path fill="none" stroke="#ffffff" d="M46,94H699" stroke-opacity="0.1" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="33.5" y="25" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#96a2b4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal"><tspan dy="4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">300</tspan></text><path fill="none" stroke="#ffffff" d="M46,25H699" stroke-opacity="0.1" stroke-width="0.5" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><text x="699" y="313.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#96a2b4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(1,0,0,1,0,7)"><tspan dy="4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">2016</tspan></text><text x="590.2163395709722" y="313.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#96a2b4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(1,0,0,1,0,7)"><tspan dy="4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">2015</tspan></text><text x="481.43267914194433" y="313.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#96a2b4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(1,0,0,1,0,7)"><tspan dy="4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">2014</tspan></text><text x="372.6490187129165" y="313.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#96a2b4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(1,0,0,1,0,7)"><tspan dy="4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">2013</tspan></text><text x="263.56732085805567" y="313.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#96a2b4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(1,0,0,1,0,7)"><tspan dy="4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">2012</tspan></text><text x="154.78366042902783" y="313.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#96a2b4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(1,0,0,1,0,7)"><tspan dy="4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">2011</tspan></text><text x="46" y="313.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#96a2b4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" font-weight="normal" transform="matrix(1,0,0,1,0,7)"><tspan dy="4" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">2010</tspan></text><path fill="#0bdae2" stroke="none" d="M46,255C73.19591510725695,236.6,127.58774532177088,184.84999999999997,154.78366042902783,181.39999999999998C181.97957553628478,177.95,236.37140575079871,220.509439124487,263.56732085805567,227.39999999999998C290.83774532177085,234.30943912448697,345.3785942492013,248.11573187414498,372.6490187129165,236.6C399.8449338201734,225.115731874145,454.2367640346874,139.425,481.43267914194433,135.4C508.6285942492013,131.375,563.0204244637152,212.45,590.2163395709722,204.39999999999998C617.4122546782291,196.34999999999997,671.804084892743,104.35,699,71L699,301L46,301Z" fill-opacity="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 0;"></path><path fill="none" stroke="#00bfc7" d="M46,255C73.19591510725695,236.6,127.58774532177088,184.84999999999997,154.78366042902783,181.39999999999998C181.97957553628478,177.95,236.37140575079871,220.509439124487,263.56732085805567,227.39999999999998C290.83774532177085,234.30943912448697,345.3785942492013,248.11573187414498,372.6490187129165,236.6C399.8449338201734,225.115731874145,454.2367640346874,139.425,481.43267914194433,135.4C508.6285942492013,131.375,563.0204244637152,212.45,590.2163395709722,204.39999999999998C617.4122546782291,196.34999999999997,671.804084892743,104.35,699,71" stroke-width="3" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><circle cx="46" cy="255" r="3" fill="#00bfc7" stroke="#00bfc7" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="154.78366042902783" cy="181.39999999999998" r="3" fill="#00bfc7" stroke="#00bfc7" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="263.56732085805567" cy="227.39999999999998" r="3" fill="#00bfc7" stroke="#00bfc7" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="372.6490187129165" cy="236.6" r="3" fill="#00bfc7" stroke="#00bfc7" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="481.43267914194433" cy="135.4" r="3" fill="#00bfc7" stroke="#00bfc7" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="590.2163395709722" cy="204.39999999999998" r="3" fill="#00bfc7" stroke="#00bfc7" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="699" cy="71" r="3" fill="#00bfc7" stroke="#00bfc7" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><path fill="#f3c843" stroke="none" d="M46,227.39999999999998C73.19591510725695,222.79999999999998,127.58774532177088,206.7,154.78366042902783,209C181.97957553628478,211.3,236.37140575079871,257.284268125855,263.56732085805567,245.8C290.83774532177085,234.284268125855,345.3785942492013,127.3641586867305,372.6490187129165,117C399.8449338201734,106.6641586867305,454.2367640346874,151.5,481.43267914194433,163C508.6285942492013,174.5,563.0204244637152,209,590.2163395709722,209C617.4122546782291,209,671.804084892743,174.5,699,163L699,301L46,301Z" fill-opacity="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 0;"></path><path fill="none" stroke="#fdc006" d="M46,227.39999999999998C73.19591510725695,222.79999999999998,127.58774532177088,206.7,154.78366042902783,209C181.97957553628478,211.3,236.37140575079871,257.284268125855,263.56732085805567,245.8C290.83774532177085,234.284268125855,345.3785942492013,127.3641586867305,372.6490187129165,117C399.8449338201734,106.6641586867305,454.2367640346874,151.5,481.43267914194433,163C508.6285942492013,174.5,563.0204244637152,209,590.2163395709722,209C617.4122546782291,209,671.804084892743,174.5,699,163" stroke-width="3" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><circle cx="46" cy="227.39999999999998" r="3" fill="#fdc006" stroke="#fdc006" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="154.78366042902783" cy="209" r="3" fill="#fdc006" stroke="#fdc006" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="263.56732085805567" cy="245.8" r="3" fill="#fdc006" stroke="#fdc006" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="372.6490187129165" cy="117" r="3" fill="#fdc006" stroke="#fdc006" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="481.43267914194433" cy="163" r="3" fill="#fdc006" stroke="#fdc006" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="590.2163395709722" cy="209" r="3" fill="#fdc006" stroke="#fdc006" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="699" cy="163" r="3" fill="#fdc006" stroke="#fdc006" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><path fill="#bba7dc" stroke="none" d="M46,282.6C73.19591510725695,268.8,127.58774532177088,233.14999999999998,154.78366042902783,227.39999999999998C181.97957553628478,221.64999999999998,236.37140575079871,243.49056087551298,263.56732085805567,236.6C290.83774532177085,229.690560875513,345.3785942492013,180.26101231190148,372.6490187129165,172.2C399.8449338201734,164.1610123119015,454.2367640346874,165.29999999999998,481.43267914194433,172.2C508.6285942492013,179.1,563.0204244637152,234.29999999999998,590.2163395709722,227.39999999999998C617.4122546782291,220.49999999999997,671.804084892743,144.6,699,117L699,301L46,301Z" fill-opacity="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 0;"></path><path fill="none" stroke="#9675ce" d="M46,282.6C73.19591510725695,268.8,127.58774532177088,233.14999999999998,154.78366042902783,227.39999999999998C181.97957553628478,221.64999999999998,236.37140575079871,243.49056087551298,263.56732085805567,236.6C290.83774532177085,229.690560875513,345.3785942492013,180.26101231190148,372.6490187129165,172.2C399.8449338201734,164.1610123119015,454.2367640346874,165.29999999999998,481.43267914194433,172.2C508.6285942492013,179.1,563.0204244637152,234.29999999999998,590.2163395709722,227.39999999999998C617.4122546782291,220.49999999999997,671.804084892743,144.6,699,117" stroke-width="3" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><circle cx="46" cy="282.6" r="3" fill="#9675ce" stroke="#9675ce" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="154.78366042902783" cy="227.39999999999998" r="3" fill="#9675ce" stroke="#9675ce" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="263.56732085805567" cy="236.6" r="3" fill="#9675ce" stroke="#9675ce" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="372.6490187129165" cy="172.2" r="3" fill="#9675ce" stroke="#9675ce" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="481.43267914194433" cy="172.2" r="3" fill="#9675ce" stroke="#9675ce" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="590.2163395709722" cy="227.39999999999998" r="3" fill="#9675ce" stroke="#9675ce" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle><circle cx="699" cy="117" r="3" fill="#9675ce" stroke="#9675ce" stroke-width="1" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></circle></svg><div class="morris-hover morris-default-style" style="left: 201.567px; top: 124px; display: none;">
+                    <div class="morris-hover-row-label">2012</div><div class="morris-hover-point" style="color: #00bfc7">
+                        iPhone:
+                        80
+                    </div><div class="morris-hover-point" style="color: #fdc006">
+                        iPad:
+                        60
+                    </div><div class="morris-hover-point" style="color: #9675ce">
+                        iPod Touch:
+                        70
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+    <div class="col-md-5 col-lg-3 col-sm-6 col-xs-12">
+        <div class="white-box">
+            <h3 class="box-title">You have 5 new messages</h3>
+            <div class="message-center">
+                <a href="#">
+                    <div class="user-img"> <img src="../plugins/images/users/pawandeep.jpg" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span> </div>
+                    <div class="mail-contnet">
+                        <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:30 AM</span>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="user-img">
+                        <div alt="user" class="img-circle" style="width:40px; height:40px; text-align: center;">
+                            <i class="icon-bell" style="font-size:30px; color:white;"></i>
+                        </div>
+                    </div>
+                    <div class="mail-contnet">
+                        <h5>Sonu Nigam</h5> <span class="mail-desc">I've sung a song! See you at</span> <span class="time">9:10 AM</span>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="user-img"> <img src="../plugins/images/users/arijit.jpg" alt="user" class="img-circle"> <span class="profile-status away pull-right"></span> </div>
+                    <div class="mail-contnet">
+                        <h5>Arijit Sinh</h5> <span class="mail-desc">I am a singer!</span> <span class="time">9:08 AM</span>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="user-img"> <img src="../plugins/images/users/genu.jpg" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span> </div>
+                    <div class="mail-contnet">
+                        <h5>Genelia Deshmukh</h5> <span class="mail-desc">I love to do acting and dancing</span> <span class="time">9:08 AM</span>
+                    </div>
+                </a>
+                <a href="#" class="b-none">
+                    <div class="user-img"> <img src="../plugins/images/users/pawandeep.jpg" alt="user" class="img-circle"> <span class="profile-status offline pull-right"></span> </div>
+                    <div class="mail-contnet">
+                        <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 col-sm-12 col-xs-12">
+        <div class="row">
+            <div class="col-lg-6 col-sm-6 col-xs-12">
+                <div class="white-box">
+                    <h3 class="box-title">NEW CLIENTS</h3>
+                    <ul class="list-inline two-part">
+                        <li><i class="icon-people text-info"></i></li>
+                        <li class="text-right"><span class="counter">23</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-xs-12">
+                <div class="white-box">
+                    <h3 class="box-title">NEW Projects</h3>
+                    <ul class="list-inline two-part">
+                        <li><i class="icon-folder text-purple"></i></li>
+                        <li class="text-right"><span class="counter">169</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-xs-12">
+                <div class="white-box">
+                    <h3 class="box-title">Open Projects</h3>
+                    <ul class="list-inline two-part">
+                        <li><i class="icon-folder-alt text-danger"></i></li>
+                        <li class="text-right"><span class="counter">311</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-xs-12">
+                <div class="white-box">
+                    <h3 class="box-title">NEW Invoices</h3>
+                    <ul class="list-inline two-part">
+                        <li><i class="ti-wallet text-success"></i></li>
+                        <li class="text-right"><span class="counter">117</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

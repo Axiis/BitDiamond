@@ -88,7 +88,7 @@ var BitDiamond;
                         return "Member";
                 };
                 SideBar.prototype.getActiveClass = function (moduleName) {
-                    return { active: this.currentModule() };
+                    return { active: this.isCurrentModule(moduleName) };
                 };
                 SideBar.prototype.getModuleUrl = function (moduleName) {
                     if (moduleName == 'dashboard')
@@ -96,9 +96,12 @@ var BitDiamond;
                     else
                         return '/' + moduleName + '/index';
                 };
-                SideBar.prototype.currentModule = function () {
-                    this.$location.
-                    ;
+                SideBar.prototype.isCurrentModule = function (moduleName) {
+                    var m = window.location.pathname.split('/')[1];
+                    switch (m) {
+                        case 'profile': return 'dashboard' == moduleName;
+                        default: return m == moduleName;
+                    }
                 };
                 SideBar.prototype.logout = function () {
                     this.__account.signout();

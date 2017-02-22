@@ -2,10 +2,10 @@ var BitDiamond;
 (function (BitDiamond) {
     var Modules;
     (function (Modules) {
-        Modules.module = angular.module('account', ['ui.router', 'ngSanitize', 'ngAnimate']);
+        Modules.accountModule = angular.module('account', ['ui.router', 'ngSanitize', 'ngAnimate']);
         //directives
-        Modules.module.directive('ringLoader', function () { return new BitDiamond.Directives.RingLoader(); });
-        Modules.module.directive('boxLoader', function () { return new BitDiamond.Directives.BoxLoader(); });
+        Modules.accountModule.directive('ringLoader', function () { return new BitDiamond.Directives.RingLoader(); });
+        Modules.accountModule.directive('boxLoader', function () { return new BitDiamond.Directives.BoxLoader(); });
         //module.directive('binaryData', Gaia.Directives.BinaryData);
         //module.directive('tagsInput', () => new Gaia.Directives.TagsInput());
         //module.directive('numberSpinner', () => new Gaia.Directives.NumberSpinner());
@@ -15,20 +15,20 @@ var BitDiamond;
         //module.directive('largeProductCard', ['#gaia.marketPlaceService', '#gaia.utils.notify', '$compile',
         //    (mp: Services.MarketPlaceService, n: Utils.Services.NotifyService, $compile: ng.ICompileService) => new Gaia.Directives.MarketPlace.LargeProductCard(mp, n, $compile)]);
         //services
-        Modules.module.service('__transport', BitDiamond.Utils.Services.DomainTransport);
-        Modules.module.service('__dom', BitDiamond.Utils.Services.DomModelService);
-        Modules.module.service('__notify', BitDiamond.Utils.Services.NotifyService);
-        Modules.module.service('__account', BitDiamond.Services.Account);
+        Modules.accountModule.service('__transport', BitDiamond.Utils.Services.DomainTransport);
+        Modules.accountModule.service('__dom', BitDiamond.Utils.Services.DomModelService);
+        Modules.accountModule.service('__notify', BitDiamond.Utils.Services.NotifyService);
+        Modules.accountModule.service('__account', BitDiamond.Services.Account);
         //controllers
-        Modules.module.controller('Signin', BitDiamond.Controllers.Account.Signin);
-        Modules.module.controller('Signup', BitDiamond.Controllers.Account.Signup);
-        Modules.module.controller('RecoveryRequest', BitDiamond.Controllers.Account.RecoveryRequest);
-        Modules.module.controller('RecoverPassword', BitDiamond.Controllers.Account.RecoverPassword);
-        Modules.module.controller('Message', BitDiamond.Controllers.Shared.Message);
-        Modules.module.controller('VerifyRegistration', BitDiamond.Controllers.Account.VerifyRegistration);
-        Modules.module.controller('Terms', BitDiamond.Controllers.Account.Terms);
+        Modules.accountModule.controller('Signin', BitDiamond.Controllers.Account.Signin);
+        Modules.accountModule.controller('Signup', BitDiamond.Controllers.Account.Signup);
+        Modules.accountModule.controller('RecoveryRequest', BitDiamond.Controllers.Account.RecoveryRequest);
+        Modules.accountModule.controller('RecoverPassword', BitDiamond.Controllers.Account.RecoverPassword);
+        Modules.accountModule.controller('Message', BitDiamond.Controllers.Shared.Message);
+        Modules.accountModule.controller('VerifyRegistration', BitDiamond.Controllers.Account.VerifyRegistration);
+        Modules.accountModule.controller('Terms', BitDiamond.Controllers.Account.Terms);
         //configure states
-        Modules.module.config(function ($stateProvider, $urlRouterProvider) {
+        Modules.accountModule.config(function ($stateProvider, $urlRouterProvider) {
             $urlRouterProvider.otherwise('/signin/');
             $stateProvider
                 .state('signin', {

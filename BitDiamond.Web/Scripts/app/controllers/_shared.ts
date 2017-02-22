@@ -65,15 +65,19 @@ module BitDiamond.Controllers.Shared {
         }
 
         getActiveClass(moduleName: string): any {
-            return { active: this.currentModule() };
+            return { active: this.isCurrentModule(moduleName) };
         }
         getModuleUrl(moduleName: string): string {
             if (moduleName == 'dashboard') return '/profiles/index';
             else return '/' + moduleName + '/index';
         }
 
-        private currentModule(): string {
-            this.$location.
+        private isCurrentModule(moduleName: string): boolean {
+            var m = window.location.pathname.split('/')[1];
+            switch (m) {
+                case 'profile': return 'dashboard' == moduleName;
+                default: return m == moduleName;
+            }
         }
 
 

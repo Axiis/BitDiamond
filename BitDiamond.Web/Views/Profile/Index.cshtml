@@ -155,8 +155,8 @@
 
                     <ul class="nav in" id="side-menu">
 
-                        <li ng-class="vm.getActiveClass('dashboard')">
-                            <a ng-href="vm.getModuleUrl('dashboard')" class="waves-effect">
+                        <li>
+                            <a ng-href="vm.getModuleUrl('dashboard')" ng-class="vm.getActiveClass('dashboard')" class="waves-effect">
                                 <i class="icon-grid fa-fw" data-icon="v"></i>
                                 <span class="hide-menu">
                                     Dashboard
@@ -166,8 +166,8 @@
 
                         <li class="nav-small-cap"></li>
 
-                        <li ng-class="vm.getActiveClass('bit-level')">
-                            <a ng-href="vm.getModuleUrl('bit-level')" class="waves-effect">
+                        <li>
+                            <a ng-href="vm.getModuleUrl('bit-level')" ng-class="vm.getActiveClass('bit-level')" class="waves-effect">
                                 <i class="icon-diamond fa-fw" data-icon="v"></i>
                                 <span class="hide-menu">
                                     Bit Level
@@ -175,8 +175,8 @@
                             </a>
                         </li>
 
-                        <li ng-class="vm.getActiveClass('payment-history')">
-                            <a ng-href="vm.getModuleUrl('payment-history')" class="waves-effect">
+                        <li>
+                            <a ng-href="vm.getModuleUrl('payment-history')" ng-class="vm.getActiveClass('payment-history')" class="waves-effect">
                                 <i class="fa fa-btc fa-fw" data-icon="v"></i>
                                 <span class="hide-menu">
                                     Payment History
@@ -184,8 +184,8 @@
                             </a>
                         </li>
 
-                        <li ng-class="vm.getActiveClass('family-tree')">
-                            <a ng-href="vm.getModuleUrl('family-tree')" class="waves-effect">
+                        <li>
+                            <a ng-href="vm.getModuleUrl('family-tree')" ng-class="vm.getActiveClass('family-tree')" class="waves-effect">
                                 <i class="icon-people fa-fw" data-icon="v"></i>
                                 <span class="hide-menu">
                                     Family Tree
@@ -195,8 +195,8 @@
 
                         <li class="nav-small-cap"></li>
 
-                        <li ng-class="vm.getActiveClass('news')">
-                            <a ng-href="vm.getModuleUrl('news')" class="waves-effect">
+                        <li>
+                            <a ng-href="vm.getModuleUrl('news')" ng-class="vm.getActiveClass('news')" class="waves-effect">
                                 <i class="icon-book-open fa-fw" data-icon="v"></i>
                                 <span class="hide-menu">
                                     News
@@ -204,8 +204,8 @@
                             </a>
                         </li>
 
-                        <li ng-class="vm.getActiveClass('notifications')">
-                            <a ng-href="vm.getModuleUrl('notifications')" class="waves-effect">
+                        <li>
+                            <a ng-href="vm.getModuleUrl('notifications')" ng-class="vm.getActiveClass('notifications')" class="waves-effect">
                                 <i class="icon-bell fa-fw" data-icon="v"></i>
                                 <span class="hide-menu">
                                     Notifications
@@ -213,8 +213,8 @@
                             </a>
                         </li>
 
-                        <li ng-class="vm.getActiveClass('faq')">
-                            <a ng-href="vm.getModuleUrl('faq')" class="waves-effect">
+                        <li>
+                            <a ng-href="vm.getModuleUrl('faq')" ng-class="vm.getActiveClass('faq')" class="waves-effect">
                                 <i class="icon-question fa-fw" data-icon="v"></i>
                                 <span class="hide-menu">
                                     FAQ
@@ -222,8 +222,8 @@
                             </a>
                         </li>
 
-                        <li ng-class="vm.getActiveClass('contact-us')">
-                            <a ng-href="vm.getModuleUrl('contact-us')" class="waves-effect">
+                        <li>
+                            <a ng-href="vm.getModuleUrl('contact-us')" ng-class="vm.getActiveClass('contact-us')" class="waves-effect">
                                 <i class="icon-call-out fa-fw" data-icon="v"></i>
                                 <span class="hide-menu">
                                     Contact Us
@@ -238,7 +238,7 @@
         <!-- Left navbar-header end -->
         <!-- Page Content -->
         <div id="page-wrapper" style="min-height: 885px;">
-            <div class="container-fluid">
+            <div class="container-fluid" ui-view>
 
             </div>
             <!-- /.container-fluid -->

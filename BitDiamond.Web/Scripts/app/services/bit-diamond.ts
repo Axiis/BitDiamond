@@ -57,7 +57,13 @@ module BitDiamond.Services {
             return this.__transport.put<Utils.Operation<Pollux.Models.IUser>>('/api/accounts/users/credentials/reset-tokens/verify', {
                 TargetUser: targetUser,
                 Token: token,
-                New: $new
+                New: <Pollux.Models.ICredential>{
+                    Value: Utils.ToBase64String(Utils.ToUTF8EncodedArray($new)),
+                    Metadata: {
+                        Name: 'Password',
+                        Access: Pollux.Models.Access.Secret
+                    }
+                }
             });
         }
 

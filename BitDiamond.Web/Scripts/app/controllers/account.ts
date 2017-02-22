@@ -333,7 +333,7 @@ module BitDiamond.Controllers.Account {
                 this.isRecovering = true;
                 this.__account.verifyPasswordReset(this.email, this.token, this.password).then(opr => {
                     this.isRecovering = false;
-                    this.$state.go('message', { actionState: 'signin', actionTitle: 'Sign in', title: 'Congratulations!', message: 'An email has been sent to you with further instructions.' });
+                    this.$state.go('message', { actionState: 'signin', actionTitle: 'Sign in', title: 'Congratulations!', message: 'Your password has been reset.' });
                 }, err => {
                     this.isRecovering = false;
                     this.__notify.error('Something went wrong...', 'Oops!');

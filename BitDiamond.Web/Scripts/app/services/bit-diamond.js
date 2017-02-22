@@ -54,7 +54,13 @@ var BitDiamond;
                 return this.__transport.put('/api/accounts/users/credentials/reset-tokens/verify', {
                     TargetUser: targetUser,
                     Token: token,
-                    New: $new
+                    New: {
+                        Value: BitDiamond.Utils.ToBase64String(BitDiamond.Utils.ToUTF8EncodedArray($new)),
+                        Metadata: {
+                            Name: 'Password',
+                            Access: Pollux.Models.Access.Secret
+                        }
+                    }
                 });
             };
             Account.prototype.modifyBiodata = function (data) {

@@ -300,7 +300,7 @@ var BitDiamond;
                         this.isRecovering = true;
                         this.__account.verifyPasswordReset(this.email, this.token, this.password).then(function (opr) {
                             _this.isRecovering = false;
-                            _this.$state.go('message', { actionState: 'signin', actionTitle: 'Sign in', title: 'Congratulations!', message: 'An email has been sent to you with further instructions.' });
+                            _this.$state.go('message', { actionState: 'signin', actionTitle: 'Sign in', title: 'Congratulations!', message: 'Your password has been reset.' });
                         }, function (err) {
                             _this.isRecovering = false;
                             _this.__notify.error('Something went wrong...', 'Oops!');

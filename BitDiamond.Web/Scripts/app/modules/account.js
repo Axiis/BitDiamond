@@ -60,10 +60,10 @@ var BitDiamond;
                 params: {
                     message: null,
                     title: null,
-                    action: null,
+                    actionState: null,
                     actionTitle: null
                 },
-                templateUrl: '/account/login-message',
+                templateUrl: '/account/message',
                 controller: 'Message',
                 controllerAs: 'vm'
             })

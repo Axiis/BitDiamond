@@ -243,7 +243,7 @@ namespace BitDiamond.Core.Services
             }
         });
 
-        public Operation<ContextVerification> RequestUserActivation(string targetUser)
+        public Operation RequestUserActivation(string targetUser)
         => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
         {
             var user = _query.GetUserById(targetUser);
@@ -251,11 +251,9 @@ namespace BitDiamond.Core.Services
 
             var verification = _query.GetLatestContextVerification(user, Constants.VerificationContext_UserActivation);
 
-            //if an unverified context still exists in the db, return that
-            if (verification != null && !verification.Verified) return verification;
 
-            //else create a new one
-            else
+            //if no unverified context still exists in the db, create a new one
+            if (verification == null || verification.Verified || verification.ExpiresOn <= DateTime.Now)
             {
                 var expiry = _settingsManager.GetSetting(Constants.Settings_DefaultContextVerificationExpirationTime)
                                                 .Resolve()
@@ -268,21 +266,16 @@ namespace BitDiamond.Core.Services
                     VerificationToken = RandomAlphaNumericGenerator.RandomAlphaNumeric(50)
                 };
 
-                _pcommand.Add(verification)
-                         .Then(opr =>
-                         {
-                             return _messagePush.SendMail(new AccountActivation
-                             {
-                                 From = "donotreply@bitdiamond.com",
-                                 Subject = "Account - Email Verification",
-                                 Target = user.UserId,
-                                 Link = _apiProvider.GenerateUserActivationVerificationUrl(verification.VerificationToken, targetUser).Result
-                             });
-                         })
-                         .Resolve();
-
-                return verification;
+                _pcommand.Add(verification).Resolve();
             }
+
+            return _messagePush.SendMail(new AccountActivation
+            {
+                From = "donotreply@bitdiamond.com",
+                Subject = "Account - Email Verification",
+                Target = user.UserId,
+                Link = _apiProvider.GenerateUserActivationVerificationUrl(verification.VerificationToken, targetUser).Result
+            });
         });
 
         public Operation<User> VerifyUserActivation(string targetUser, string contextToken)
@@ -321,7 +314,7 @@ namespace BitDiamond.Core.Services
             var verification = _query.GetLatestContextVerification(user, Constants.VerificationContext_CredentialReset);
 
             //if no unverified context still exists in the db, create a new one
-            if (verification == null || verification.Verified) 
+            if (verification == null || verification.Verified || verification.ExpiresOn <= DateTime.Now) 
             {
                 var expiry = _settingsManager.GetSetting(Constants.Settings_DefaultContextVerificationExpirationTime)
                                              .Resolve()
@@ -339,8 +332,10 @@ namespace BitDiamond.Core.Services
 
             return _messagePush.SendMail(new AccountActivation
             {
+                From = "donotreply@bitdiamond.com",
+                Subject = "Password Reset",
                 Target = user.UserId,
-                Link = _apiProvider.GenerateUserActivationVerificationUrl(verification.VerificationToken, targetUser).Result
+                Link = _apiProvider.GeneratePasswordUpdateVerificationUrl(verification.VerificationToken, targetUser).Result
             });
         });
         #endregion

@@ -147,7 +147,7 @@ module BitDiamond.Controllers.Account {
                     }
                 }).then(opr => {
                     this.isSigningUp = false;
-                    this.$state.go('message', { back: 'signin', title: 'Congratulations!', message: 'An email has been sent to you with further instructions.' });
+                    this.$state.go('message', { actionState: 'signin', actionTitle: 'Sign in', title: 'Congratulations!', message: 'An email has been sent to you with further instructions.' });
                 }, err => {
                     this.isSigningUp = false;
                     this.__notify.error('Something went wrong...', 'Oops!');
@@ -246,7 +246,7 @@ module BitDiamond.Controllers.Account {
                     .requestPasswordReset(this.email)
                     .then(opr => {
                         this.isRecovering = false;
-                        this.$state.go('message', { action: 'signin', actionTitle: 'Signin', title: 'Done!', message: 'An email has been sent to you with further instructions.' })
+                        this.$state.go('message', { actionState: 'signin', actionTitle: 'Sign in', title: 'Done!', message: 'An email has been sent to you with further instructions.' });
                     }, err => {
                         this.isRecovering = false;
                         this.__notify.error('Something went wrong...', 'Oops!');
@@ -298,7 +298,7 @@ module BitDiamond.Controllers.Account {
                 case 1: return 'very weak';
                 case 2: return 'weak';
                 case 3: return 'strong';
-                case 4: return 'very strong! Recommended.';
+                case 4: return 'very strong (recommended)!';
                 case -1: default: return '';
             }
         }
@@ -333,7 +333,7 @@ module BitDiamond.Controllers.Account {
                 this.isRecovering = true;
                 this.__account.verifyPasswordReset(this.email, this.token, this.password).then(opr => {
                     this.isRecovering = false;
-                    this.$state.go('message', { back: 'signin', title: 'Congratulations!', message: 'An email has been sent to you with further instructions.' });
+                    this.$state.go('message', { actionState: 'signin', actionTitle: 'Sign in', title: 'Congratulations!', message: 'An email has been sent to you with further instructions.' });
                 }, err => {
                     this.isRecovering = false;
                     this.__notify.error('Something went wrong...', 'Oops!');
@@ -364,7 +364,7 @@ module BitDiamond.Controllers.Account {
 module BitDiamond.Controllers.Account {
 
     export class Terms {
-        message: "[Terms and conditions here...]";
+        termsAndConditions: string = "[Terms and conditions here...]";
 
         $state: ng.ui.IStateService;
 

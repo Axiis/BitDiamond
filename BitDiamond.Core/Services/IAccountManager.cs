@@ -23,7 +23,7 @@ namespace BitDiamond.Core.Services
         Operation<User> BlockUser(string targetUser);
 
         [Resource(":system/accounts/users/activations/@request")]
-        Operation<ContextVerification> RequestUserActivation(string targetUser);
+        Operation RequestUserActivation(string targetUser);
 
         [Resource(":system/accounts/users/activations/@verify")]
         Operation<User> VerifyUserActivation(string targetUser, string contextToken);

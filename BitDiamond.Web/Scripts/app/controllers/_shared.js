@@ -7,13 +7,19 @@ var BitDiamond;
             var Message = (function () {
                 function Message($state, $stateParams) {
                     this.$state = $state;
-                    this.$stateParams = $stateParams;
-                    this.title = this.$stateParams['title'];
-                    this.message = this.$stateParams['message'];
-                    this.actionTitle = this.$stateParams['actionTitle'];
+                    this.message = $stateParams['message'];
+                    this.title = $stateParams['title'];
+                    this.actionState = $stateParams['actionState'];
+                    this.actionTitle = $stateParams['actionTitle'];
+                    this.hasNoActionTitle = Object.isNullOrUndefined(this.actionTitle);
                 }
-                Message.prototype.back = function () {
-                    this.$state.go(this.$stateParams['action']);
+                Message.prototype.action = function () {
+                    if (Object.isNullOrUndefined(this.actionState)) {
+                        window.location.href = "/index.html";
+                    }
+                    else {
+                        this.$state.go(this.actionState);
+                    }
                 };
                 return Message;
             }());

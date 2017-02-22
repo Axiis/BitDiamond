@@ -68,10 +68,10 @@ module BitDiamond.Modules {
                 params: {
                     message: null,
                     title: null,
-                    action: null,
+                    actionState: null,
                     actionTitle: null
                 },
-                templateUrl: '/account/login-message', //<-- /account/login-message
+                templateUrl: '/account/message', //<-- /account/login-message
                 controller: 'Message',
                 controllerAs: 'vm'
             })

@@ -38,5 +38,15 @@ namespace BitDiamond.Web.Controllers.Mvc
         [HttpGet]
         [Route("recover-password")]
         public ActionResult RecoverPassword() => View();
+
+
+
+        [HttpGet]
+        [Route("message")]
+        public ActionResult Message() => View();
+
+        [HttpGet]
+        [Route("terms")]
+        public ActionResult Terms() => View();
     }
 }

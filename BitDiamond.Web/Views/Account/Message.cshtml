@@ -1,0 +1,29 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+
+<form class="form-horizontal">
+    <a href class="text-center db">
+        <img src="/content/theme/eliteadmin/dark/../plugins/images/eliteadmin-logo.png" alt="Home"><br />
+        <img src="/content/theme/eliteadmin/dark/../plugins/images/eliteadmin-text.png" alt="Home" style="margin-bottom:20px;">
+    </a>
+
+    <div class="form-group ">
+        <div class="col-xs-12 text-center">
+            <h3 class="text-center">{{vm.title}}</h3>
+            <p class="text-muted text-center" style="margin-top:15px;">{{vm.message}}</p>
+        </div>
+
+        <div class="col-xs-12" style="margin-top:20px;">
+            <button class="btn btn-default btn-lg btn-block text-uppercase waves-effect waves-light"
+                    type="button"
+                    ng-click="vm.action()">
+                <i class="icon-home" ng-show="vm.hasNoActionTitle"></i> <span>{{vm.actionTitle || 'Home'}}</span>
+            </button>
+        </div>
+    </div>
+
+</form>

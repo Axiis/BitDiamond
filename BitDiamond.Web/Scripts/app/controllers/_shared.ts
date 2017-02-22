@@ -1,26 +1,33 @@
 ﻿
 module BitDiamond.Controllers.Shared {
 
-    export class Message {
 
-        title: string;
+    export class Message {
         message: string;
+        title: string;
+        actionState: string;
         actionTitle: string;
+        hasNoActionTitle: boolean;
 
         $state: ng.ui.IStateService;
-        $stateParams: ng.ui.IStateParamsService;
 
-        back() {
-            this.$state.go(this.$stateParams['action']);
+        action() {
+            if (Object.isNullOrUndefined(this.actionState)) {
+                window.location.href = "/index.html";
+            }
+            else {
+                this.$state.go(this.actionState);
+            }
         }
 
         constructor($state, $stateParams) {
             this.$state = $state;
-            this.$stateParams = $stateParams;
 
-            this.title = this.$stateParams['title'];
-            this.message = this.$stateParams['message'];
-            this.actionTitle = this.$stateParams['actionTitle'];
+            this.message = $stateParams['message'];
+            this.title = $stateParams['title'];
+            this.actionState = $stateParams['actionState'];
+            this.actionTitle = $stateParams['actionTitle'];
+            this.hasNoActionTitle = Object.isNullOrUndefined(this.actionTitle);
         }
     }
 

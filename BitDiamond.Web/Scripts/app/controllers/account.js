@@ -135,7 +135,7 @@ var BitDiamond;
                             }
                         }).then(function (opr) {
                             _this.isSigningUp = false;
-                            _this.$state.go('message', { back: 'signin', title: 'Congratulations!', message: 'An email has been sent to you with further instructions.' });
+                            _this.$state.go('message', { actionState: 'signin', actionTitle: 'Sign in', title: 'Congratulations!', message: 'An email has been sent to you with further instructions.' });
                         }, function (err) {
                             _this.isSigningUp = false;
                             _this.__notify.error('Something went wrong...', 'Oops!');
@@ -216,7 +216,7 @@ var BitDiamond;
                             .requestPasswordReset(this.email)
                             .then(function (opr) {
                             _this.isRecovering = false;
-                            _this.$state.go('message', { action: 'signin', actionTitle: 'Signin', title: 'Done!', message: 'An email has been sent to you with further instructions.' });
+                            _this.$state.go('message', { actionState: 'signin', actionTitle: 'Sign in', title: 'Done!', message: 'An email has been sent to you with further instructions.' });
                         }, function (err) {
                             _this.isRecovering = false;
                             _this.__notify.error('Something went wrong...', 'Oops!');
@@ -271,7 +271,7 @@ var BitDiamond;
                         case 1: return 'very weak';
                         case 2: return 'weak';
                         case 3: return 'strong';
-                        case 4: return 'very strong! Recommended.';
+                        case 4: return 'very strong (recommended)!';
                         case -1:
                         default: return '';
                     }
@@ -300,7 +300,7 @@ var BitDiamond;
                         this.isRecovering = true;
                         this.__account.verifyPasswordReset(this.email, this.token, this.password).then(function (opr) {
                             _this.isRecovering = false;
-                            _this.$state.go('message', { back: 'signin', title: 'Congratulations!', message: 'An email has been sent to you with further instructions.' });
+                            _this.$state.go('message', { actionState: 'signin', actionTitle: 'Sign in', title: 'Congratulations!', message: 'An email has been sent to you with further instructions.' });
                         }, function (err) {
                             _this.isRecovering = false;
                             _this.__notify.error('Something went wrong...', 'Oops!');
@@ -320,6 +320,7 @@ var BitDiamond;
         (function (Account) {
             var Terms = (function () {
                 function Terms($state) {
+                    this.termsAndConditions = "[Terms and conditions here...]";
                     this.$state = $state;
                 }
                 Terms.prototype.ok = function () {

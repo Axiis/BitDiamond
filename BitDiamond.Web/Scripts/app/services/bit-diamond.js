@@ -66,7 +66,7 @@ var BitDiamond;
             Account.prototype.modifyBiodata = function (data) {
                 return this.__transport.put('/api/accounts/biodata', data);
             };
-            Account.prototype.getBiodata = function (data) {
+            Account.prototype.getBiodata = function () {
                 return this.__transport.get('/api/accounts/biodata');
             };
             Account.prototype.modifyContactdata = function (data) {
@@ -104,12 +104,34 @@ var BitDiamond;
                     OldImageUrl: oldUrl
                 });
             };
+            Account.prototype.getUserRoles = function () {
+                return this.__transport.get('/api/accounts/users/roles');
+            };
+            Account.prototype.getUser = function () {
+                return this.__transport.get('/api/accounts/users/current');
+            };
             Account.prototype.signin = function (email, password) {
                 return this.__transport.postUrlEncoded('/tokens', {
                     grant_type: 'password',
                     username: email,
                     password: password
+                }).then(function (opr) {
+                    window.localStorage.setItem(BitDiamond.Utils.Constants.Misc_OAuthTokenKey, JSON.stringify(opr));
+                    return {
+                        Succeeded: true
+                    };
                 });
+            };
+            Account.prototype.signout = function () {
+                var tokenObj = JSON.parse(window.localStorage.getItem(BitDiamond.Utils.Constants.Misc_OAuthTokenKey));
+                if (!Object.isNullOrUndefined(tokenObj)) {
+                    return this.__transport.post('/api/accounts/users/tokens/invalidate', {
+                        Token: tokenObj.access_token
+                    }).finally(function () {
+                        window.localStorage.removeItem(BitDiamond.Utils.Constants.Misc_OAuthTokenKey);
+                        window.location.href = '/account/index';
+                    });
+                }
             };
             return Account;
         }());
@@ -120,5 +142,11 @@ var BitDiamond;
             return Profile;
         }());
         Services.Profile = Profile;
+        var Dashboard = (function () {
+            function Dashboard() {
+            }
+            return Dashboard;
+        }());
+        Services.Dashboard = Dashboard;
     })(Services = BitDiamond.Services || (BitDiamond.Services = {}));
 })(BitDiamond || (BitDiamond = {}));

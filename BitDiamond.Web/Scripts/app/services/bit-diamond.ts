@@ -73,7 +73,7 @@ module BitDiamond.Services {
             return this.__transport.put<Utils.Operation<Pollux.Models.IBioData>>('/api/accounts/biodata', data);
         }
 
-        getBiodata(data: Pollux.Models.IBioData): ng.IPromise<Utils.Operation<Pollux.Models.IBioData>> {
+        getBiodata(): ng.IPromise<Utils.Operation<Pollux.Models.IBioData>> {
             return this.__transport.get<Utils.Operation<Pollux.Models.IBioData>>('/api/accounts/biodata');
         }
 
@@ -125,12 +125,37 @@ module BitDiamond.Services {
         }
 
 
-        signin(email: string, password: string): ng.IPromise<any> {
-            return this.__transport.postUrlEncoded<any>('/tokens', {
+        getUserRoles(): ng.IPromise<Utils.Operation<string[]>{
+            return this.__transport.get<Utils.Operation<string[]>>('/api/accounts/users/roles');
+        }
+
+        getUser(): ng.IPromise<Utils.Operation<Pollux.Models.IUser>>{
+            return this.__transport.get<Utils.Operation<Pollux.Models.IUser>>('/api/accounts/users/current');
+        }
+
+
+        signin(email: string, password: string): ng.IPromise<Utils.Operation<void>> {
+            return this.__transport.postUrlEncoded<IBearerTokenResponse>('/tokens', {
                 grant_type: 'password',
                 username: email,
                 password: password
+            }).then(opr => {
+                window.localStorage.setItem(Utils.Constants.Misc_OAuthTokenKey, JSON.stringify(opr));
+                return <Utils.Operation<void>>{
+                    Succeeded: true
+                };
             });
+        }
+        signout(): ng.IPromise<void> {
+            var tokenObj: IBearerTokenResponse = JSON.parse(window.localStorage.getItem(Utils.Constants.Misc_OAuthTokenKey));
+            if (!Object.isNullOrUndefined(tokenObj)) {
+                return this.__transport.post<void>('/api/accounts/users/tokens/invalidate', {
+                    Token: tokenObj.access_token
+                }).finally( () => {
+                    window.localStorage.removeItem(Utils.Constants.Misc_OAuthTokenKey);
+                    window.location.href = '/account/index';
+                });
+            }
         }
 
 
@@ -141,6 +166,10 @@ module BitDiamond.Services {
     }
 
     export class Profile {
+
+    }
+
+    export class Dashboard {
 
     }
 }

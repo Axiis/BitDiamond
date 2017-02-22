@@ -25,3 +25,5 @@
 2.	Do not forget to add ":system/referrals/@affix" permission to the #guest user role because the function is called during
     the user registration process.
 3.	Move all css for the loaders into the directive class so there will be no dependency on external files
+4.	Create an "invalidate logon" operation in the AccountService. See the implementation in the "bit-diamond.ts" file for
+	guidance.

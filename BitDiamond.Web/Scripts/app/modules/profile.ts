@@ -25,6 +25,9 @@ module BitDiamond.Modules {
 
 
     //controllers
+    accountModule.controller('NavBar', BitDiamond.Controllers.Shared.NavBar);
+    accountModule.controller('SideBar', BitDiamond.Controllers.Shared.SideBar);
+
     //accountModule.controller('Signin', BitDiamond.Controllers.Account.Signin);
 
 

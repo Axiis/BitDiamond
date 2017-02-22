@@ -28,3 +28,17 @@ declare interface IZxcvbnResult {
     calc_time: number;
 };
 declare function zxcvbn(password: string, userInputs?: string[]): IZxcvbnResult;
+
+//bearer token type
+declare interface IBearerTokenResponse {
+    access_token?: string,
+    token_type?: string,
+    expires_in?: number,
+    refresh_token?: string,
+    scope?: string,
+    state?: number,
+
+    error?: string,
+    error_description?: string,
+    error_uri?: string
+};

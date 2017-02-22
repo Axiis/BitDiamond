@@ -20,6 +20,8 @@ var BitDiamond;
         Modules.accountModule.service('__notify', BitDiamond.Utils.Services.NotifyService);
         Modules.accountModule.service('__account', BitDiamond.Services.Account);
         //controllers
+        Modules.accountModule.controller('NavBar', BitDiamond.Controllers.Shared.NavBar);
+        Modules.accountModule.controller('SideBar', BitDiamond.Controllers.Shared.SideBar);
         //accountModule.controller('Signin', BitDiamond.Controllers.Account.Signin);
         //configure states
         Modules.accountModule.config(function ($stateProvider, $urlRouterProvider) {

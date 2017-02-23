@@ -610,5 +610,6 @@ module BitDiamond.Utils.Constants {
 
     //MISC
     export const Misc_OAuthTokenKey = 'BitDiamonds.Security.OAuth.BearerToken'; //bearer token localstorage key
+    export const Misc_OAuthCustomHeaders_OldToken = "OAuthOldToken"; //used for sending any current tokens to the server for invalidation
 
 }

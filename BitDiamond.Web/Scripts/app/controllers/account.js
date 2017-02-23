@@ -20,8 +20,9 @@ var BitDiamond;
                         this.isSigningIn = true;
                         this.__account.signin(this.email, this.password)
                             .then(function (tokenObj) {
-                            window.localStorage.setItem(BitDiamond.Utils.Constants.Misc_OAuthTokenKey, JSON.stringify(tokenObj));
-                            window.location.href = Object.isNullOrUndefined(_this.$stateParams['returnUrl']) ? '/profile/index' : _this.$stateParams['returnUrl'];
+                            var _rurl = _this.$stateParams['returnUrl'];
+                            var _nurl = (Object.isNullOrUndefined(_rurl) || _rurl.trim() == "") ? window.location.protocol + '//' + window.location.host + '/profile/index' : _rurl;
+                            window.location.href = _nurl;
                             _this.isSigningIn = false;
                         }, function (err) {
                             _this.__notify.error('Something went wrong...', 'Oops!');

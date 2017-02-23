@@ -78,6 +78,17 @@ namespace BitDiamond.Web.Controllers.Api
         => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.ResetCredential(data.New, data.Token, data.TargetUser))
             .OperationResult(Request);
+
+        [HttpPut, Route("api/accounts/users/logons/invalidate")]
+        public IHttpActionResult InvalidateLogon([FromBody] Models.LogonArgs data)
+        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+            .Then(opr => _account.InvalidateLogon(data.Token))
+            .OperationResult(Request);
+
+        [HttpPut, Route("api/accounts/users/roles")]
+        public IHttpActionResult GetRoles()
+        => Operation.Try(() => _account.GetRoles())
+            .OperationResult(Request);
         #endregion
 
         #region Biodata
@@ -146,6 +157,11 @@ namespace BitDiamond.Web.Controllers.Api
 
     namespace Models
     {
+        public class LogonArgs
+        {
+            public string Token { get; set; }
+        }
+
         public class RegisterUserArgs
         {
             public string TargetUser { get; set; }

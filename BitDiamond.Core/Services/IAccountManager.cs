@@ -4,6 +4,7 @@ using BitDiamond.Core.Models;
 using System.Collections.Generic;
 using Axis.Pollux.RBAC.Auth;
 using Axis.Luna;
+using System;
 
 namespace BitDiamond.Core.Services
 {
@@ -70,6 +71,12 @@ namespace BitDiamond.Core.Services
 
         [Resource(":system/accounts/userdata/profile-images/@update")]
         Operation<string> UpdateProfileImage(EncodedBinaryData image, string oldImageUrl);
+
+        [Resource(":system/accounts/logons/@invalidate")]
+        Operation InvalidateLogon(string token);
+
+        [Resource(":system/accounts/users/roles")]
+        Operation<IEnumerable<string>> GetRoles();
         #endregion
     }
 }

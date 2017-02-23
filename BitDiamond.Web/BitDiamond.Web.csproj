@@ -76,7 +76,8 @@
     <Reference Include="Axis.Pollux.Authentication">
       <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.Authentication\bin\Debug\Axis.Pollux.Authentication.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.Authentication.OAModule">
+    <Reference Include="Axis.Pollux.Authentication.OAModule, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.Authentication.OAModule\bin\Debug\Axis.Pollux.Authentication.OAModule.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Pollux.CoreAuthentication">
@@ -1203,6 +1204,7 @@
     <Compile Include="Infrastructure\Utils\ApiOperationResult.cs" />
     <Compile Include="Infrastructure\Utils\Extensions.cs" />
     <Compile Include="Infrastructure\Utils\NoCacheAttribute.cs" />
+    <Compile Include="Infrastructure\Utils\PerRequest.cs" />
     <Compile Include="Infrastructure\Utils\WebConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -351,6 +351,26 @@ namespace BitDiamond.Core.Services
                 Link = _apiProvider.GeneratePasswordUpdateVerificationUrl(verification.VerificationToken, targetUser).Result
             });
         });
+
+
+
+        public Operation InvalidateLogon(string token)
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            var logon = _query.GetUserLogin(token);
+
+            if (logon != null)
+            {
+                logon.Invalidated = true;
+                _pcommand.Update(logon).Resolve();
+            }
+        });
+
+        public Operation<IEnumerable<string>> GetRoles()
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            return _query.GetUserRoles(UserContext.CurrentUser());
+        });
         #endregion
 
         #region Biodata

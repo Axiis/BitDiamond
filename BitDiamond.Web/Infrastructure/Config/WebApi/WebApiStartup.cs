@@ -1,4 +1,10 @@
-﻿using Axis.Luna.Extensions;
+﻿using Axis.Jupiter;
+using Axis.Jupiter.Europa;
+using Axis.Luna;
+using Axis.Luna.Extensions;
+using Axis.Pollux.Authentication.Service;
+using Axis.Pollux.CoreAuthentication;
+using Axis.Pollux.CoreAuthentication.Services;
 using BitDiamond.Core.Utils;
 using BitDiamond.Web.Infrastructure.DI;
 using BitDiamond.Web.Infrastructure.Services;
@@ -32,38 +38,44 @@ namespace BitDiamond.Web.Infrastructure.Config.WebApi
 
         private void ConfigureAuth(IAppBuilder app)
         {
-            new SimpleInjectorOwinResolutionContext(new WebApiRequestLifestyle(), DIRegistrations.RegisterTypes).UsingValue(resolver =>
+            ///add the run-per-request generators for the services needed for authentication and authorization
+            //1. Europa Context
+            app.RunPerRequest(nameof(IDataContext), cxt => new EuropaContext(WebConstants.Misc_UniversalEuropaConfig))
+
+            //2. Credential Authentication
+               .RunPerRequest(nameof(ICredentialAuthentication), cxt => new CredentialAuthentication(cxt.GetPerRequestValue<IDataContext>(nameof(IDataContext)), new DefaultHasher()));
+
+
+            //weak cache used for logon processing
+            var cache = new WeakCache();
+                        
+            //Authorization. In this case, it comes before authentication because bearer authentication 
+            //expects a token to be created already
+            app.UseOAuthAuthorizationServer(new OAuthAuthorizationServerOptions
             {
-                app.Properties["$_AuthorizationResolutionScoppe"] = resolver; //<-- so it doesnt get garbage collected
-                
-                //Authorization. In this case, it comes before authentication because bearer authentication 
-                //expects a token to be created already
-                app.UseOAuthAuthorizationServer(new OAuthAuthorizationServerOptions
-                {
-                    TokenEndpointPath = new PathString(WebConstants.OAuthPath_TokenPath),
-                    ApplicationCanDisplayErrors = true,
-                    AccessTokenExpireTimeSpan = WebConstants.Misc_TokenValidityDuration,
-                    AuthenticationType = OAuthDefaults.AuthenticationType,
-                    AuthenticationMode = Microsoft.Owin.Security.AuthenticationMode.Active,
-                    //AuthorizationCodeProvider = ...,
+                TokenEndpointPath = new PathString(WebConstants.OAuthPath_TokenPath),
+                ApplicationCanDisplayErrors = true,
+                AccessTokenExpireTimeSpan = WebConstants.Misc_TokenValidityDuration,
+                AuthenticationType = OAuthDefaults.AuthenticationType,
+                AuthenticationMode = Microsoft.Owin.Security.AuthenticationMode.Active,
+                //AuthorizationCodeProvider = ...,
 
 #if DEBUG
-                    AllowInsecureHttp = true,
+                AllowInsecureHttp = true,
 #endif
 
-                    // Authorization server provider which controls the lifecycle of Authorization Server
-                    Provider = resolver.GetService<IOAuthAuthorizationServerProvider>()
-                });
-
-                //configure bearer authentication. This creates a claims-user from the info found in the bearer token
-                //user logon is also implemented here
-                app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions
-                {
-                    Provider = resolver.GetService<IOAuthBearerAuthenticationProvider>()
-                });
-
-                //app.UseCors(CorsOptions.AllowAll); //<-- will configure this appropriately when it is needed
+                // Authorization server provider which controls the lifecycle of Authorization Server
+                Provider = new Security.AuthorizationServer(cache)
             });
+
+            //configure bearer authentication. This creates a claims-user from the info found in the bearer token
+            //user logon is also implemented here
+            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions
+            {
+                Provider = new Security.BearerAuthenticationProvider(cache)
+            });
+
+            //app.UseCors(CorsOptions.AllowAll); //<-- will configure this appropriately when it is needed
 
         }
 

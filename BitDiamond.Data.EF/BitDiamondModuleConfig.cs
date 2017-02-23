@@ -142,7 +142,8 @@ namespace BitDiamond.Data.EF
                     ":system/accounts/users/credentials/reset-tokens/@verify",
                     ":system/accounts/biodata/*",
                     ":system/accounts/contacts/*",
-                    ":system/accounts/userdata/*"
+                    ":system/accounts/userdata/*",
+                    ":system/accounts/logons/@invalidate"
                 }
                 .Select(_selector => new Permission
                 {
@@ -163,7 +164,8 @@ namespace BitDiamond.Data.EF
                     ":system/accounts/users/credentials/reset-tokens/@verify",
                     ":system/accounts/biodata/*",
                     ":system/accounts/contacts/*",
-                    ":system/accounts/userdata/*"
+                    ":system/accounts/userdata/*",
+                    ":system/accounts/logons/@invalidate"
                 }
                 .Select(_selector => new Permission
                 {

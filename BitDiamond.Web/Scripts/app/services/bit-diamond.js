@@ -111,11 +111,17 @@ var BitDiamond;
                 return this.__transport.get('/api/accounts/users/current');
             };
             Account.prototype.signin = function (email, password) {
+                var oldToken = JSON.parse(window.localStorage.getItem(BitDiamond.Utils.Constants.Misc_OAuthTokenKey));
+                var config = { headers: {} };
+                if (!Object.isNullOrUndefined(oldToken)) {
+                    window.localStorage.removeItem(BitDiamond.Utils.Constants.Misc_OAuthTokenKey);
+                    config.headers['OAuthOldToken'] = oldToken.access_token;
+                }
                 return this.__transport.postUrlEncoded('/tokens', {
                     grant_type: 'password',
                     username: email,
                     password: password
-                }).then(function (opr) {
+                }, config).then(function (opr) {
                     window.localStorage.setItem(BitDiamond.Utils.Constants.Misc_OAuthTokenKey, JSON.stringify(opr));
                     return {
                         Succeeded: true
@@ -125,7 +131,7 @@ var BitDiamond;
             Account.prototype.signout = function () {
                 var tokenObj = JSON.parse(window.localStorage.getItem(BitDiamond.Utils.Constants.Misc_OAuthTokenKey));
                 if (!Object.isNullOrUndefined(tokenObj)) {
-                    return this.__transport.post('/api/accounts/users/tokens/invalidate', {
+                    return this.__transport.post('/api/accounts/users/logons/invalidate', {
                         Token: tokenObj.access_token
                     }).finally(function () {
                         window.localStorage.removeItem(BitDiamond.Utils.Constants.Misc_OAuthTokenKey);

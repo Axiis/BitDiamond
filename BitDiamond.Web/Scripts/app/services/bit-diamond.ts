@@ -125,7 +125,7 @@ module BitDiamond.Services {
         }
 
 
-        getUserRoles(): ng.IPromise<Utils.Operation<string[]>{
+        getUserRoles(): ng.IPromise<Utils.Operation<string[]>>{
             return this.__transport.get<Utils.Operation<string[]>>('/api/accounts/users/roles');
         }
 
@@ -135,11 +135,18 @@ module BitDiamond.Services {
 
 
         signin(email: string, password: string): ng.IPromise<Utils.Operation<void>> {
+            var oldToken = JSON.parse(window.localStorage.getItem(Utils.Constants.Misc_OAuthTokenKey)) as IBearerTokenResponse;
+            var config: ng.IRequestShortcutConfig = { headers: {}};
+            if (!Object.isNullOrUndefined(oldToken)) {
+                window.localStorage.removeItem(Utils.Constants.Misc_OAuthTokenKey);
+                config.headers['OAuthOldToken'] = oldToken.access_token;
+            }
+
             return this.__transport.postUrlEncoded<IBearerTokenResponse>('/tokens', {
                 grant_type: 'password',
                 username: email,
                 password: password
-            }).then(opr => {
+            }, config).then(opr => {
                 window.localStorage.setItem(Utils.Constants.Misc_OAuthTokenKey, JSON.stringify(opr));
                 return <Utils.Operation<void>>{
                     Succeeded: true
@@ -149,7 +156,7 @@ module BitDiamond.Services {
         signout(): ng.IPromise<void> {
             var tokenObj: IBearerTokenResponse = JSON.parse(window.localStorage.getItem(Utils.Constants.Misc_OAuthTokenKey));
             if (!Object.isNullOrUndefined(tokenObj)) {
-                return this.__transport.post<void>('/api/accounts/users/tokens/invalidate', {
+                return this.__transport.post<void>('/api/accounts/users/logons/invalidate', {
                     Token: tokenObj.access_token
                 }).finally( () => {
                     window.localStorage.removeItem(Utils.Constants.Misc_OAuthTokenKey);

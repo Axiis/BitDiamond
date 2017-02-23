@@ -8,6 +8,8 @@ using Axis.Jupiter;
 using static Axis.Luna.Extensions.ExceptionExtensions;
 using Axis.Pollux.Authentication;
 using System;
+using Axis.Luna;
+using Axis.Pollux.RBAC.Auth;
 
 namespace BitDiamond.Data.EF.Query
 {
@@ -86,10 +88,22 @@ namespace BitDiamond.Data.EF.Query
                   .Where(_ud => _ud.Name == name)
                   .FirstOrDefault();
 
+        public UserLogon GetUserLogin(string token)
+        => _europa.Store<UserLogon>()
+                  .QueryWith(_ul => _ul.User)
+                  .Where(_ul => _ul.OwinToken == token)
+                  .FirstOrDefault();
+
         public IEnumerable<UserLogon> GetUserLogins(string userId)
         => _europa.Store<UserLogon>()
                   .QueryWith(_ul => _ul.User)
                   .Where(_ul => _ul.User.EntityId == userId)
+                  .ToArray();
+
+        public IEnumerable<string> GetUserRoles(User user)
+        => _europa.Store<UserRole>().Query
+                  .Where(_ur => _ur.UserId == user.UserId)
+                  .Select(_ur => _ur.RoleName)
                   .ToArray();
     }
 }

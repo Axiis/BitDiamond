@@ -23,8 +23,9 @@ module BitDiamond.Controllers.Account {
 
                 this.__account.signin(this.email, this.password)
                     .then(tokenObj => {
-                        window.localStorage.setItem(BitDiamond.Utils.Constants.Misc_OAuthTokenKey, JSON.stringify(tokenObj));
-                        window.location.href = Object.isNullOrUndefined(this.$stateParams['returnUrl']) ? '/profile/index' : this.$stateParams['returnUrl'];
+                        var _rurl: string = this.$stateParams['returnUrl'];
+                        var _nurl = (Object.isNullOrUndefined(_rurl) || _rurl.trim() == "") ? window.location.protocol + '//' + window.location.host + '/profile/index' : _rurl;
+                        window.location.href = _nurl;
 
                         this.isSigningIn = false;
                     }, err => {

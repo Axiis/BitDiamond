@@ -21,6 +21,7 @@ using BitDiamond.Data.EF;
 using BitDiamond.Data.EF.Command;
 using BitDiamond.Web.Infrastructure.Security;
 using BitDiamond.Web.Infrastructure.Services;
+using BitDiamond.Web.Infrastructure.Utils;
 using Castle.DynamicProxy;
 using Microsoft.Owin.Security.OAuth;
 using SimpleInjector;
@@ -48,24 +49,25 @@ namespace BitDiamond.Web.Infrastructure.DI
 
             #region infrastructure service registration
 
+            var cache = new WeakCache();
+
             //authorization server is a special case where it is created in the singleton scope, but relies on some services that are registered in ScopedLifeStyles...
             //thus we explicitly create the instance of the authorization server.
-            c.Register<IOAuthAuthorizationServerProvider>(() => c.GetInstance<AuthorizationServer>());
-            c.Register(() =>
-            {
-                var europa = new EuropaContext(c.GetInstance<ContextConfiguration<EuropaContext>>());
-                var credentialAuthenticator = new CredentialAuthentication(europa, new DefaultHasher());
-                return new AuthorizationServer(credentialAuthenticator, europa);
-            }, Lifestyle.Singleton);
+            //c.Register<IOAuthAuthorizationServerProvider>(() => c.GetInstance<AuthorizationServer>());
+            //c.Register(() =>
+            //{
+            //    var europa = new EuropaContext(c.GetInstance<ContextConfiguration<EuropaContext>>());
+            //    var credentialAuthenticator = new CredentialAuthentication(europa, new DefaultHasher());
+            //    return new AuthorizationServer(credentialAuthenticator, europa, cache);
+            //}, Lifestyle.Singleton);
 
-            //bearer authentication provider is a special case where it is created in the singleton scope, but relies on some services that are registered in ScopedLifeStyles...
-            //thus we explicitly create the instance of the authentication provider.
-            c.Register<IOAuthBearerAuthenticationProvider>(() => c.GetInstance<BearerAuthenticationProvider>());
-            c.Register(() =>
-            {
-                var europa = new EuropaContext(c.GetInstance<ContextConfiguration<EuropaContext>>());
-                return new BearerAuthenticationProvider(europa);
-            }, Lifestyle.Singleton);
+            ////bearer authentication provider is a special case where it is created in the singleton scope, but relies on some services that are registered in ScopedLifeStyles...
+            ////thus we explicitly create the instance of the authentication provider.
+            //c.Register<IOAuthBearerAuthenticationProvider>(() => c.GetInstance<BearerAuthenticationProvider>());
+            //c.Register(() =>
+            //{
+            //    return new BearerAuthenticationProvider(cache);
+            //}, Lifestyle.Singleton);
 
 
             c.Register<OwinContextProvider, OwinContextProvider>(Lifestyle.Scoped);
@@ -83,18 +85,7 @@ namespace BitDiamond.Web.Infrastructure.DI
             #region Jupiter
 
             //shared context configuration.
-            var config = new ContextConfiguration<EuropaContext>()
-                .WithConnection(ConfigurationManager.ConnectionStrings["EuropaContext"].ConnectionString)
-                .WithEFConfiguraton(_efc =>
-                {
-                    _efc.LazyLoadingEnabled = false;
-                    _efc.ProxyCreationEnabled = false;
-                })
-                .WithInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<EuropaContext>())
-                .UsingModule(new IdentityAccessModuleConfig())
-                .UsingModule(new AuthenticationAccessModuleConfig())
-                .UsingModule(new RBACAccessModuleConfig())
-                .UsingModule(new BitDiamondModuleConfig());
+            var config = WebConstants.Misc_UniversalEuropaConfig;
             c.Register(() => config, Lifestyle.Singleton);
 
             //scoped europa context

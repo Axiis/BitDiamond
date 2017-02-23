@@ -22,8 +22,9 @@ namespace BitDiamond.Web.Infrastructure.Utils
                     try
                     {
                         //run and store all generators in the owin context. Note that the order of adding these things matters, as subsequent services have access to previous services
-                        //
-                        _generators.ForAll((_cnt, _gen) => cxt.Environment[$"{PerRequestValues}{_gen.Key}"] = _gen.Value.Invoke(cxt));
+                        var list = new Dictionary<string, object>();
+                        cxt.Environment[PerRequestValues] = list;
+                        _generators.ForAll((_cnt, _gen) => list.Add(_gen.Key, _gen.Value.Invoke(cxt)));
 
                         await next();
 
@@ -31,11 +32,9 @@ namespace BitDiamond.Web.Infrastructure.Utils
                     finally
                     {
                         //dispose all disposable generators
-                        var keys = _generators.Keys.Select(_k => $"{PerRequestValues}{_k}").ToArray();
-                        cxt.Environment
-                           .Where(_kvp => keys.Contains(_kvp.Key))
-                           .Where(_kvp => _kvp.Value is IDisposable)
-                           .ForAll((_cnt, _v) => _v.As<IDisposable>().Dispose());
+                        cxt.Environment[PerRequestValues]?
+                           .As<Dictionary<string, object>>()
+                           .ForAll((_cnt, _v) => _v.As<IDisposable>()?.Dispose());
                     }
                 });
             }
@@ -45,6 +44,6 @@ namespace BitDiamond.Web.Infrastructure.Utils
         }
 
         public static Value GetPerRequestValue<Value>(this IOwinContext context, string key)
-        => context.Environment[$"{PerRequestValues}{key}"].As<Value>();
+        => context.Environment[$"{PerRequestValues}"].As<Dictionary<string, object>>()[key].As<Value>();
     }
 }

@@ -195,3 +195,4 @@ var BitDiamond;
         Utils.MimeMap = MimeMap;
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=tools.js.map

@@ -13,3 +13,4 @@ var BitDiamond;
         })(Profile = Controllers.Profile || (Controllers.Profile = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=profile.js.map

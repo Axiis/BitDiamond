@@ -143,7 +143,8 @@ namespace BitDiamond.Data.EF
                     ":system/accounts/biodata/*",
                     ":system/accounts/contacts/*",
                     ":system/accounts/userdata/*",
-                    ":system/accounts/logons/@invalidate"
+                    ":system/accounts/logons/@invalidate",
+                    ":system/accounts/users/roles/@get"
                 }
                 .Select(_selector => new Permission
                 {
@@ -165,7 +166,8 @@ namespace BitDiamond.Data.EF
                     ":system/accounts/biodata/*",
                     ":system/accounts/contacts/*",
                     ":system/accounts/userdata/*",
-                    ":system/accounts/logons/@invalidate"
+                    ":system/accounts/logons/@invalidate",
+                    ":system/accounts/users/roles/@get"
                 }
                 .Select(_selector => new Permission
                 {

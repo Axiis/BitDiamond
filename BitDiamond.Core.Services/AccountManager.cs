@@ -300,6 +300,8 @@ namespace BitDiamond.Core.Services
                     {
                         _messagePush.SendMail(new UserWelcome
                         {
+                            From = "donotreply@bitdiamond.com",
+                            Subject = "Welcome",
                             Target = user.UserId,
                             Link = _apiProvider.GenerateWelcomeMessageUrl().Result
                         })
@@ -371,6 +373,9 @@ namespace BitDiamond.Core.Services
         {
             return _query.GetUserRoles(UserContext.CurrentUser());
         });
+
+        public Operation<User> CurrentUser()
+        => Operation.Try(() => UserContext.CurrentUser());
         #endregion
 
         #region Biodata

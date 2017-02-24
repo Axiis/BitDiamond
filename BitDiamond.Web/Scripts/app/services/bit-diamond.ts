@@ -83,8 +83,8 @@ module BitDiamond.Services {
             return this.__transport.put<Utils.Operation<Pollux.Models.IContactData>>('/api/accounts/biodata', data);
         }
 
-        getContactdata(data: Pollux.Models.IBioData): ng.IPromise<Utils.Operation<Pollux.Models.IContactData>> {
-            return this.__transport.get<Utils.Operation<Pollux.Models.IContactData>>('/api/accounts/biodata');
+        getContactdata(): ng.IPromise<Utils.Operation<Pollux.Models.IContactData>> {
+            return this.__transport.get<Utils.Operation<Pollux.Models.IContactData>>('/api/accounts/contacts');
         }
 
 

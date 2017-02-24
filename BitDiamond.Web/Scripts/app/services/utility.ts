@@ -202,5 +202,54 @@ module BitDiamond.Utils.Services {
             else return message;
         }
     }
+    
+
+    export class UserContext {
+
+        user: ng.IPromise<Pollux.Models.IUser>;
+        userRoles: ng.IPromise<string[]>;
+        userBio: ng.IPromise<Pollux.Models.IBioData>;
+        userContact: ng.IPromise<Pollux.Models.IContactData>;
+        profileImageRef: ng.IPromise<Pollux.Models.IUserData>;
+
+
+        __account: BitDiamond.Services.Account;
+        __notify: BitDiamond.Utils.Services.NotifyService;
+
+        $q: ng.IQService;
+
+        constructor(__notify, __account, $q) {
+            this.__notify = __notify;
+            this.__account = __account;
+            this.$q = $q;
+
+            //load user object
+            this.user = this.__account.getUser().then(opr => {
+                return this.$q.resolve(opr.Result);
+            });
+
+            //load profile image
+            this.profileImageRef = this.__account.getUserDataByName(Utils.Constants.UserData_ProfileImage).then(opr => {
+                return this.$q.resolve(opr.Result);
+            });
+
+            //load user roles
+            this.userRoles = this.__account.getUserRoles().then(opr => {
+                return this.$q.resolve(opr.Result);
+            });
+
+            //load user biodata
+            this.userBio = this.__account.getBiodata().then(opr => {
+                return this.$q.resolve(opr.Result);
+            });
+
+            //load user contact data
+            this.userContact = this.__account.getContactdata().then(opr => {
+                return this.$q.resolve(opr.Result);
+            });
+
+            //load any other needed data
+        }
+    }
 
 }

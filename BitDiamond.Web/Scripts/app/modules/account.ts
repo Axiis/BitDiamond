@@ -20,6 +20,7 @@ module BitDiamond.Modules {
     accountModule.service('__transport', BitDiamond.Utils.Services.DomainTransport);
     accountModule.service('__dom', BitDiamond.Utils.Services.DomModelService);
     accountModule.service('__notify', BitDiamond.Utils.Services.NotifyService);
+    accountModule.service('__userContext', BitDiamond.Utils.Services.UserContext);
 
     accountModule.service('__account', BitDiamond.Services.Account);
 

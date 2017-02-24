@@ -85,9 +85,14 @@ namespace BitDiamond.Web.Controllers.Api
             .Then(opr => _account.InvalidateLogon(data.Token))
             .OperationResult(Request);
 
-        [HttpPut, Route("api/accounts/users/roles")]
+        [HttpGet, Route("api/accounts/users/roles")]
         public IHttpActionResult GetRoles()
         => Operation.Try(() => _account.GetRoles())
+            .OperationResult(Request);
+
+        [HttpGet, Route("api/accounts/users/current")]
+        public IHttpActionResult GetSignedInUser()
+        => Operation.Try(() => _account.CurrentUser())
             .OperationResult(Request);
         #endregion
 

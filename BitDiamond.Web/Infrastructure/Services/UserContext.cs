@@ -23,13 +23,13 @@ namespace BitDiamond.Web.Infrastructure.Services
         private User _user = null;
         public User CurrentUser()
         {
-            if (_owinProvider.Owin.Request.User?.Identity?.Name == null)
-                _user = _query.GetUserById(Constants.SystemUsers_Guest);
+            if (_user != null) return _user;
+
+            else if (_owinProvider.Owin.Request.User?.Identity?.Name == null)
+                return _user = _query.GetUserById(Constants.SystemUsers_Guest);
 
             else
-                _user = _query.GetUserById(_owinProvider.Owin.Request.User.Identity.Name);
-
-            return _user;
+                return _user = _query.GetUserById(_owinProvider.Owin.Request.User.Identity.Name);
         }
     }
 }

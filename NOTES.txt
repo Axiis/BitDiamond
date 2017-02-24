@@ -27,4 +27,4 @@
 3.	Move all css for the loaders into the directive class so there will be no dependency on external files
 4.	Create an "invalidate logon" operation in the AccountService. See the implementation in the "bit-diamond.ts" file for
 	guidance.
-5.  RunPerRequest MUST dispose the services in reverse order of registration
+5.  RunPerRequest MUST dispose the services in reverse order of registration [DONE]

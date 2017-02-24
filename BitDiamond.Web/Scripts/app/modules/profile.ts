@@ -6,13 +6,13 @@ module BitDiamond.Modules {
     //directives
     profileModule.directive('ringLoader', () => new BitDiamond.Directives.RingLoader());
     profileModule.directive('boxLoader', () => new BitDiamond.Directives.BoxLoader());
-    //accountModule.directive('binaryData', Gaia.Directives.BinaryData);
-    //accountModule.directive('tagsInput', () => new Gaia.Directives.TagsInput());
-    //accountModule.directive('numberSpinner', () => new Gaia.Directives.NumberSpinner());
-    //accountModule.directive('enumOptions', () => new Gaia.Directives.EnumOptions());
-    //accountModule.directive('smallProductCard', ['#gaia.marketPlaceService', '#gaia.utils.notify', '$compile',
+    profileModule.directive('binaryData', () => new BitDiamond.Directives.BinaryData());
+    //profileModule.directive('tagsInput', () => new Gaia.Directives.TagsInput());
+    //profileModule.directive('numberSpinner', () => new Gaia.Directives.NumberSpinner());
+    //profileModule.directive('enumOptions', () => new Gaia.Directives.EnumOptions());
+    //profileModule.directive('smallProductCard', ['#gaia.marketPlaceService', '#gaia.utils.notify', '$compile',
     //    (mp: Services.MarketPlaceService, n: Utils.Services.NotifyService, $compile: ng.ICompileService) => new Gaia.Directives.MarketPlace.SmallProductCard(mp, n, $compile)]);
-    //accountModule.directive('largeProductCard', ['#gaia.marketPlaceService', '#gaia.utils.notify', '$compile',
+    //profileModule.directive('largeProductCard', ['#gaia.marketPlaceService', '#gaia.utils.notify', '$compile',
     //    (mp: Services.MarketPlaceService, n: Utils.Services.NotifyService, $compile: ng.ICompileService) => new Gaia.Directives.MarketPlace.LargeProductCard(mp, n, $compile)]);
 
 
@@ -20,6 +20,7 @@ module BitDiamond.Modules {
     profileModule.service('__transport', BitDiamond.Utils.Services.DomainTransport);
     profileModule.service('__dom', BitDiamond.Utils.Services.DomModelService);
     profileModule.service('__notify', BitDiamond.Utils.Services.NotifyService);
+    profileModule.service('__userContext', BitDiamond.Utils.Services.UserContext);
 
     profileModule.service('__account', BitDiamond.Services.Account);
 
@@ -29,6 +30,7 @@ module BitDiamond.Modules {
     profileModule.controller('SideBar', BitDiamond.Controllers.Shared.SideBar);
 
     profileModule.controller('Dashboard', BitDiamond.Controllers.Profile.Dashboard);
+    profileModule.controller('Home', BitDiamond.Controllers.Profile.Home);
 
 
     //configure states
@@ -40,6 +42,12 @@ module BitDiamond.Modules {
                 url: '/dashboard',
                 templateUrl: '/profile/dashboard', //<-- /profile/dashboard
                 controller: 'Dashboard',
+                controllerAs: 'vm'
+            })
+            .state('home', {
+                url: '/home',
+                templateUrl: '/profile/home', //<-- /profile/home
+                controller: 'Home',
                 controllerAs: 'vm'
             });
     });

@@ -8,6 +8,7 @@ using Axis.Luna;
 using Axis.Jupiter;
 
 using static Axis.Luna.Extensions.ExceptionExtensions;
+using static Axis.Luna.Extensions.ObjectExtensions;
 using BitDiamond.Core.Models;
 using Axis.Luna.Extensions;
 
@@ -51,7 +52,7 @@ namespace BitDiamond.Data.EF.Command
         public Operation<Domain> Update<Domain>(Domain d)
         where Domain : class => Operation.Try(() =>
         {
-            d.As<BaseModel>().ModifiedOn = DateTime.Now;
+            Eval(() => d.AsDynamic().ModifiedOn = DateTime.Now);
 
             _context.Modify(d);
             _context.CommitChanges();

@@ -36,7 +36,7 @@ namespace BitDiamond.Web.Infrastructure.Security
             var _credentialAuthority = context.OwinContext.GetPerRequestValue<ICredentialAuthentication>(nameof(ICredentialAuthentication));
             var _dataContext = context.OwinContext.GetPerRequestValue<IDataContext>(nameof(IDataContext));
 
-            //delete old logons if they exist
+            #region delete old logons if they exist
             Operation.Try(() =>
             {
                 var oldToken = context.Request.Headers.GetValues(WebConstants.OAuthCustomHeaders_OldToken)?.FirstOrDefault() ?? null;
@@ -51,7 +51,9 @@ namespace BitDiamond.Web.Infrastructure.Security
                     }
                 }
             })
+            #endregion
 
+            #region Verify the user exists
             .Then(opr =>
             {
                 _dataContext.Store<User>().Query
@@ -60,16 +62,18 @@ namespace BitDiamond.Web.Infrastructure.Security
                     .ThrowIfNull("invalid user credential")
                     .ThrowIf(_u => _u.Status != (int)AccountStatus.Active, "inactive user account");
             })
+            #endregion
 
-            //authenticate the credential authority
+            #region verify credentials with the credential authority
             .Then(opr => _credentialAuthority.VerifyCredential(new Credential
             {
                 OwnerId = context.UserName,
                 Metadata = CredentialMetadata.Password,
                 Value = Encoding.UTF8.GetBytes(context.Password)
             }))
+            #endregion
 
-            //aggregate the claims that makeup the token
+            #region aggregate the claims that makeup the token
             .Then(opr =>
             {
                 var identity = new ClaimsIdentity(context.Options.AuthenticationType);
@@ -79,13 +83,15 @@ namespace BitDiamond.Web.Infrastructure.Security
 
                 context.Validated(new Microsoft.Owin.Security.AuthenticationTicket(identity, null));
             })
+            #endregion
 
-            //if any of the above failed...
+            #region if any of the above failed...
             .Error(opr =>
             {
                 context.SetError("invalid_grant", opr.Message);
                 context.Rejected();
             });
+            #endregion
         });
 
         public override Task TokenEndpointResponse(OAuthTokenEndpointResponseContext context)
@@ -94,6 +100,7 @@ namespace BitDiamond.Web.Infrastructure.Security
             var _credentialAuthority = context.OwinContext.GetPerRequestValue<ICredentialAuthentication>(nameof(ICredentialAuthentication));
             var _dataContext = context.OwinContext.GetPerRequestValue<IDataContext>(nameof(IDataContext));
 
+            //cache the logon associated to the given token
             _cache.GetOrAdd(context.AccessToken, _token =>
             {
                 var agent = Parser.Parse(context.Request.Headers.Get("User-Agent"));

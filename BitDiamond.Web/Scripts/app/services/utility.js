@@ -187,7 +187,37 @@ var BitDiamond;
                 return NotifyService;
             }());
             Services.NotifyService = NotifyService;
+            var UserContext = (function () {
+                function UserContext(__notify, __account, $q) {
+                    var _this = this;
+                    this.__notify = __notify;
+                    this.__account = __account;
+                    this.$q = $q;
+                    //load user object
+                    this.user = this.__account.getUser().then(function (opr) {
+                        return _this.$q.resolve(opr.Result);
+                    });
+                    //load profile image
+                    this.profileImageRef = this.__account.getUserDataByName(Utils.Constants.UserData_ProfileImage).then(function (opr) {
+                        return _this.$q.resolve(opr.Result);
+                    });
+                    //load user roles
+                    this.userRoles = this.__account.getUserRoles().then(function (opr) {
+                        return _this.$q.resolve(opr.Result);
+                    });
+                    //load user biodata
+                    this.userBio = this.__account.getBiodata().then(function (opr) {
+                        return _this.$q.resolve(opr.Result);
+                    });
+                    //load user contact data
+                    this.userContact = this.__account.getContactdata().then(function (opr) {
+                        return _this.$q.resolve(opr.Result);
+                    });
+                    //load any other needed data
+                }
+                return UserContext;
+            }());
+            Services.UserContext = UserContext;
         })(Services = Utils.Services || (Utils.Services = {}));
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=utility.js.map

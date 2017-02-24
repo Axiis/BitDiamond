@@ -31,42 +31,42 @@ var BitDiamond;
             }());
             Shared.NavBar = NavBar;
             var SideBar = (function () {
-                function SideBar(__account, __notify, $location) {
+                function SideBar(__account, __notify, __userContext, $location) {
                     var _this = this;
                     this.__account = __account;
                     this.__notify = __notify;
+                    this.__userContext = __userContext;
                     this.$location = $location;
                     //load user object
-                    this.__account.getUser().then(function (opr) {
-                        _this.user = opr.Result;
+                    this.__userContext.user.then(function (opr) {
+                        _this.user = opr;
                     }, function (err) {
                         swal({
-                            message: 'Your information could not be retrieved from the server. You will be logged out so you can try loggin in again',
+                            text: 'Your information could not be retrieved from the server. You will be logged out so you can try loggin in again',
                             title: 'Error',
                             type: 'error'
                         });
-                        _this.logout();
                     });
                     //load profile image
-                    this.__account.getUserDataByName(BitDiamond.Utils.Constants.UserData_ProfileImage).then(function (opr) {
-                        _this.profileImageRef = opr.Result;
+                    this.__userContext.profileImageRef.then(function (opr) {
+                        _this.profileImageRef = opr;
                     }, function (err) {
                         _this.__notify.warning('we couldn\'t load your profile image...', 'Hey');
                     });
                     //load user roles
-                    this.__account.getUserRoles().then(function (opr) {
-                        _this.userRoles = opr.Result;
+                    this.__userContext.userRoles.then(function (opr) {
+                        _this.userRoles = opr;
                     }, function (err) {
                         swal({
-                            message: 'Your information could not be retrieved from the server. You will be logged out so you can try loggin in again',
+                            text: 'Your information could not be retrieved from the server. You will be logged out so you can try loggin in again',
                             title: 'Error',
                             type: 'error'
                         });
                         _this.logout();
                     });
                     //load user biodata
-                    this.__account.getBiodata().then(function (opr) {
-                        _this.userBio = opr.Result;
+                    this.__userContext.userBio.then(function (opr) {
+                        _this.userBio = opr;
                     }, function (err) {
                         _this.__notify.warning('we couldn\'t load your bio...', 'Hey');
                     });
@@ -112,4 +112,3 @@ var BitDiamond;
         })(Shared = Controllers.Shared || (Controllers.Shared = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=_shared.js.map

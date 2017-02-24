@@ -21,10 +21,10 @@ namespace BitDiamond.Web.Infrastructure.Utils
                 {
                     try
                     {
-                        //run and store all generators in the owin context. Note that the order of adding these things matters, as subsequent services have access to previous services
-                        var list = new Dictionary<string, object>();
+                        //lazily run and store all generators in the owin context. Note that the order of adding these things matters, as subsequent services have access to previous services
+                        var list = new Dictionary<string, Lazy<object>>();
                         cxt.Environment[PerRequestValues] = list;
-                        _generators.ForAll((_cnt, _gen) => list.Add(_gen.Key, _gen.Value.Invoke(cxt)));
+                        _generators.ForAll((_cnt, _gen) => list.Add(_gen.Key, new Lazy<object>(() => _gen.Value.Invoke(cxt))));
 
                         await next();
 
@@ -33,8 +33,11 @@ namespace BitDiamond.Web.Infrastructure.Utils
                     {
                         //dispose all disposable generators
                         cxt.Environment[PerRequestValues]?
-                           .As<Dictionary<string, object>>()
-                           .ForAll((_cnt, _v) => _v.As<IDisposable>()?.Dispose());
+                           .As<Dictionary<string, Lazy<object>>>()
+                           .Where(_kvp => _kvp.Value.IsValueCreated)
+                           .ForAll((_cnt, _kvp) => _kvp.Value.Value.As<IDisposable>()?.Dispose());
+
+                        cxt.Environment[PerRequestValues] = null;
                     }
                 });
             }
@@ -44,6 +47,6 @@ namespace BitDiamond.Web.Infrastructure.Utils
         }
 
         public static Value GetPerRequestValue<Value>(this IOwinContext context, string key)
-        => context.Environment[$"{PerRequestValues}"].As<Dictionary<string, object>>()[key].As<Value>();
+        => context.Environment[PerRequestValues].As<Dictionary<string, Lazy<object>>>()[key].Value.As<Value>();
     }
 }

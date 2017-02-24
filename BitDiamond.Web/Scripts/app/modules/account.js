@@ -18,6 +18,7 @@ var BitDiamond;
         Modules.accountModule.service('__transport', BitDiamond.Utils.Services.DomainTransport);
         Modules.accountModule.service('__dom', BitDiamond.Utils.Services.DomModelService);
         Modules.accountModule.service('__notify', BitDiamond.Utils.Services.NotifyService);
+        Modules.accountModule.service('__userContext', BitDiamond.Utils.Services.UserContext);
         Modules.accountModule.service('__account', BitDiamond.Services.Account);
         //controllers
         Modules.accountModule.controller('Signin', BitDiamond.Controllers.Account.Signin);
@@ -82,4 +83,3 @@ var BitDiamond;
         });
     })(Modules = BitDiamond.Modules || (BitDiamond.Modules = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=account.js.map

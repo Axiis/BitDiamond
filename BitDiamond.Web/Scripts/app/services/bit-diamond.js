@@ -72,8 +72,8 @@ var BitDiamond;
             Account.prototype.modifyContactdata = function (data) {
                 return this.__transport.put('/api/accounts/biodata', data);
             };
-            Account.prototype.getContactdata = function (data) {
-                return this.__transport.get('/api/accounts/biodata');
+            Account.prototype.getContactdata = function () {
+                return this.__transport.get('/api/accounts/contacts');
             };
             Account.prototype.addData = function (data) {
                 return this.__transport.post('/api/accounts/userdata', {
@@ -156,4 +156,3 @@ var BitDiamond;
         Services.Dashboard = Dashboard;
     })(Services = BitDiamond.Services || (BitDiamond.Services = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=bit-diamond.js.map

@@ -75,8 +75,12 @@ namespace BitDiamond.Core.Services
         [Resource(":system/accounts/logons/@invalidate")]
         Operation InvalidateLogon(string token);
 
-        [Resource(":system/accounts/users/roles")]
+        [Resource(":system/accounts/users/roles/@get")]
         Operation<IEnumerable<string>> GetRoles();
+        
+        //Leaving out the Resource-Perission is on purpose: One does not need permission to get access to his/her 
+        //User object
+        Operation<User> CurrentUser();
         #endregion
     }
 }

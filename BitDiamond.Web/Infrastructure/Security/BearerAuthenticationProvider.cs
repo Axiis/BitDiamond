@@ -1,12 +1,7 @@
-﻿using Axis.Jupiter;
-using Axis.Luna;
-using Axis.Pollux.Identity.Principal;
+﻿using Axis.Luna;
 using BitDiamond.Core.Models;
 using Microsoft.Owin.Security.OAuth;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
-using UAParser;
 using static Axis.Luna.Extensions.ExceptionExtensions;
 using static Axis.Luna.Extensions.ObjectExtensions;
 
@@ -32,7 +27,10 @@ namespace BitDiamond.Web.Infrastructure.Security
                 //in future, a realtime event will notify the bearer-provider of changes to a logon, so we dont need to keep quering the database
                 var logon = _cache.GetOrRefresh<UserLogon>(token);
                 
-                if (logon.Invalidated) context.Rejected();
+                //Note that if "logon"' is null, it means that it was not found either in the cache or in the db - but the fact that this method was called
+                //means that the token was verified by the authorization server: this is an anomaly, as the source of the token is in question. What we do
+                //is reject this request.
+                if (logon?.Invalidated ?? true) context.Rejected();
                 else context.Validated();
             });
         }

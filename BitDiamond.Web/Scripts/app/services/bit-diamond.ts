@@ -80,7 +80,7 @@ module BitDiamond.Services {
 
 
         modifyContactdata(data: Pollux.Models.IContactData): ng.IPromise<Utils.Operation<Pollux.Models.IContactData>> {
-            return this.__transport.put<Utils.Operation<Pollux.Models.IContactData>>('/api/accounts/biodata', data);
+            return this.__transport.put<Utils.Operation<Pollux.Models.IContactData>>('/api/accounts/contacts', data);
         }
 
         getContactdata(): ng.IPromise<Utils.Operation<Pollux.Models.IContactData>> {

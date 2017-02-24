@@ -70,7 +70,7 @@ var BitDiamond;
                 return this.__transport.get('/api/accounts/biodata');
             };
             Account.prototype.modifyContactdata = function (data) {
-                return this.__transport.put('/api/accounts/biodata', data);
+                return this.__transport.put('/api/accounts/contacts', data);
             };
             Account.prototype.getContactdata = function () {
                 return this.__transport.get('/api/accounts/contacts');

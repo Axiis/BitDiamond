@@ -7,9 +7,9 @@ module BitDiamond.Modules {
     profileModule.directive('ringLoader', () => new BitDiamond.Directives.RingLoader());
     profileModule.directive('boxLoader', () => new BitDiamond.Directives.BoxLoader());
     profileModule.directive('binaryData', () => new BitDiamond.Directives.BinaryData());
+    profileModule.directive('enumOptions', () => new BitDiamond.Directives.EnumOptions());
     //profileModule.directive('tagsInput', () => new Gaia.Directives.TagsInput());
     //profileModule.directive('numberSpinner', () => new Gaia.Directives.NumberSpinner());
-    //profileModule.directive('enumOptions', () => new Gaia.Directives.EnumOptions());
     //profileModule.directive('smallProductCard', ['#gaia.marketPlaceService', '#gaia.utils.notify', '$compile',
     //    (mp: Services.MarketPlaceService, n: Utils.Services.NotifyService, $compile: ng.ICompileService) => new Gaia.Directives.MarketPlace.SmallProductCard(mp, n, $compile)]);
     //profileModule.directive('largeProductCard', ['#gaia.marketPlaceService', '#gaia.utils.notify', '$compile',

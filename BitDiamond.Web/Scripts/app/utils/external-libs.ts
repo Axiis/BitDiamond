@@ -1,6 +1,6 @@
 ﻿
 //Sweet alert integration
-declare function swal(config: any, callback?: (in1: boolean) => void): void;
+declare function swal(config: ISweetAlertConfig, callback?: (in1: boolean) => void): void;
 declare interface ISweetAlertConfig {    
     title: string,
     text?: string,

@@ -17,6 +17,12 @@ module BitDiamond.Controllers.Profile {
         userContact: Pollux.Models.IContactData;
         user: Pollux.Models.IUser;
 
+        tempBio: any = {};
+        tempContact: any = {};
+        isUpdatingProfile: boolean;
+        isRequestingPasswordUpdate: boolean;
+        isUpdatingProfileImage: boolean;
+
         currentTab: string;
 
         __notify: Utils.Services.NotifyService;
@@ -41,17 +47,17 @@ module BitDiamond.Controllers.Profile {
             else return this.userBio.FirstName + ' ' + this.userBio.LastName;
         }
         getFullNames() {
-            if (Object.isNullOrUndefined(this.userBio)) return '-N/A-';
+            if (Object.isNullOrUndefined(this.userBio)) return '-';
             else return (this.userBio.FirstName || '') + ' ' +
                 (this.userBio.MiddleName || '') + ' ' +
                 (this.userBio.LastName || '');
         }
         getGender() {
-            if (Object.isNullOrUndefined(this.userBio.Gender)) return '-';
+            if (Object.isNullOrUndefined(this.userBio)) return '-';
             return Pollux.Models.Gender[this.userBio.Gender];
         }
         getDateOfBirth() {
-            if (Object.isNullOrUndefined(this.userBio.Gender)) return '-';
+            if (Object.isNullOrUndefined(this.userBio)) return '-';
             return moment(this.userBio.Dob).format('MMM Do YYYY');
         }
 
@@ -65,6 +71,81 @@ module BitDiamond.Controllers.Profile {
             };
         }
 
+        private _dobField: Date;
+        set dobBinding(value: Date) {
+            if (this.tempBio) {
+                this.tempBio.Dob = new Apollo.Models.JsonDateTime().fromMoment(moment.utc(value));
+                this._dobField = value;
+            }
+        }
+        get dobBinding(): Date {
+            return this._dobField;
+        }
+
+        set previewImage(value: Utils.EncodedBinaryData) {
+            this.isUpdatingProfileImage = true;
+            var oldUrl: string = Object.isNullOrUndefined(this.profileImage) ? '' : (this.profileImage.Data || '');
+
+            this.__account.updateProfileImage(value, oldUrl).then(opr => {
+                this.profileImage.Data = opr.Result;
+            }, err => {
+                this.__notify.error('Couldn\'t update your profile image');
+            }).finally(() => {
+                this.isUpdatingProfileImage = false;
+                ($('profileImageSelector')[0] as any).clear();
+            });
+        }
+
+        updateProfile() {
+            //validate
+            this.isUpdatingProfile = true;
+            var count = 2;
+
+            //save biodata
+            this.__account.modifyBiodata(this.tempBio).then(opr => {
+                this.__notify.success('Saved successfully');
+                (<Object>this.tempBio).copyTo(this.userBio);
+
+                count--;
+                if (count == 0) this.isUpdatingProfile = false;
+            }, err => {
+                this.__notify.error('An error occured while saving your changes. Try again later...', 'Oops!');
+
+                count--;
+                if (count == 0) this.isUpdatingProfile = false;
+            });
+
+            //save contact data
+            this.__account.modifyContactdata(this.tempContact).then(opr => {
+                this.__notify.success('Saved successfully');
+                (<Object>this.tempContact).copyTo(this.userContact);
+
+                count--;
+                if (count == 0) this.isUpdatingProfile = false;
+            }, err => {
+                this.__notify.error('An error occured while saving your changes. Try again later...', 'Oops!');
+
+                count--;
+                if (count == 0) this.isUpdatingProfile = false;
+            });
+        }
+        requestPasswordUpdate() {
+
+            this.__account.requestPasswordReset(this.user.UserId).then(opr => {
+                swal({
+                    text: 'An email has been sent to you via ' + this.user.UserId+'. Follow the instructions therein to proceed.',
+                    title: 'Success',
+                    type: 'success'
+                });
+            }, err => {
+                swal({
+                    text: 'An error occured, so we are sorry but you cannot change your password at the moment.',
+                    title: 'Error',
+                    type: 'error'
+                });
+            });
+        }
+
 
         constructor(__notify, __account, __userContext) {
             this.__account = __account;
@@ -73,18 +154,31 @@ module BitDiamond.Controllers.Profile {
 
             this.__userContext.profileImageRef.then(pimg => this.profileImage = pimg);
 
-            this.__userContext.userBio.then(bio => this.userBio = bio || <Pollux.Models.IBioData>{
-                Dob: new Apollo.Models.JsonDateTime(new Date()),
-                FirstName: 'Jon',
-                Gender: Pollux.Models.Gender.Male,
-                LastName: 'Doe',
-                Nationality: 'Nigerian',
-                StateOfOrigin: 'Poly'
+            this.__userContext.userBio.then(bio => {
+                if (!Object.isNullOrUndefined(bio)) {
+                    this.userBio = bio;
+                    this.userBio.Dob = new Apollo.Models.JsonDateTime(this.userBio.Dob);
+                    (<Object>this.userBio).copyTo(this.tempBio);
+                    this._dobField = this.userBio.Dob.toMoment().toDate();
+                }
+            }, err => this.userBio = {
+            } as Pollux.Models.IBioData);
+
+            this.__userContext.userContact.then(contact => {
+                if (!Object.isNullOrUndefined(contact)) {
+                    this.userContact = contact;
+                    (<Object>this.userContact).copyTo(this.tempContact);
+                }
+            }, err => this.userContact = {
+            } as Pollux.Models.IContactData);
+
+            this.__userContext.user.then(u => {
+                this.user = u;
+                this.tempBio.OwnerId = this.user.UserId;
+                this.tempContact.OwnerId = this.user.UserId;
             });
 
-            this.__userContext.userContact.then(contact => this.userContact = contact);
-
-            this.__userContext.user.then(u => this.user = u);
+            this.currentTab = 'profile';
         }
     }
 

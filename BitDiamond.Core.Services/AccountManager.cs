@@ -395,7 +395,7 @@ namespace BitDiamond.Core.Services
 
                 return _pcommand.Update(persisted);
             }
-            else return _pcommand.Add(persisted);
+            else return _pcommand.Add(data);
         });
 
         public Operation<BioData> GetBioData()
@@ -422,7 +422,7 @@ namespace BitDiamond.Core.Services
 
                 return _pcommand.Update(persisted);
             }
-            else return _pcommand.Add(persisted);
+            else return _pcommand.Add(data);
         });
 
         public Operation<ContactData> GetContactData()

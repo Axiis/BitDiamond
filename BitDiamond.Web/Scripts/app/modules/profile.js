@@ -7,9 +7,9 @@ var BitDiamond;
         Modules.profileModule.directive('ringLoader', function () { return new BitDiamond.Directives.RingLoader(); });
         Modules.profileModule.directive('boxLoader', function () { return new BitDiamond.Directives.BoxLoader(); });
         Modules.profileModule.directive('binaryData', function () { return new BitDiamond.Directives.BinaryData(); });
+        Modules.profileModule.directive('enumOptions', function () { return new BitDiamond.Directives.EnumOptions(); });
         //profileModule.directive('tagsInput', () => new Gaia.Directives.TagsInput());
         //profileModule.directive('numberSpinner', () => new Gaia.Directives.NumberSpinner());
-        //profileModule.directive('enumOptions', () => new Gaia.Directives.EnumOptions());
         //profileModule.directive('smallProductCard', ['#gaia.marketPlaceService', '#gaia.utils.notify', '$compile',
         //    (mp: Services.MarketPlaceService, n: Utils.Services.NotifyService, $compile: ng.ICompileService) => new Gaia.Directives.MarketPlace.SmallProductCard(mp, n, $compile)]);
         //profileModule.directive('largeProductCard', ['#gaia.marketPlaceService', '#gaia.utils.notify', '$compile',

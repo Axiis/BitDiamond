@@ -15,6 +15,7 @@ module BitDiamond.Controllers.BitLevel {
         receiverCode: string;
         receiver: Models.IBitcoinAddress;
         transactionHash: string;
+        isLoadingView: boolean;
 
         isUpgrading: boolean;
         isUpdatingHash: boolean;
@@ -47,7 +48,7 @@ module BitDiamond.Controllers.BitLevel {
 
 
         upgradeLevel() {
-            if (this.isUpgrading) return;
+            if (this.isUpgrading || !this.hasActiveBitcoinAddress) return;
             else {
                 this.isUpgrading = true;
                 this.__bitlevel.upgrade().then(this.initState.bind(this), err => {
@@ -77,6 +78,7 @@ module BitDiamond.Controllers.BitLevel {
             this.bitLevel = opr.Result;
             if (!Object.isNullOrUndefined(this.bitLevel)) {
                 this.hasBitLevel = true;
+                this.hasActiveBitcoinAddress = true;
                 this.hasTransactionHash = !Object.isNullOrUndefined(this.bitLevel.Donation.TransactionHash) || this.bitLevel.Donation.TransactionHash != '';
                 this.donationsMissed = this.bitLevel.SkipCount;
                 this.donationsReceived = this.bitLevel.DonationCount;
@@ -94,7 +96,10 @@ module BitDiamond.Controllers.BitLevel {
                     this.__notify.error('Could not load upgrade donation receiver information.', 'Oops!');
                 });
             }
-            else this.hasBitLevel = false;
+            else {
+                this.hasBitLevel = false;
+                this.__bitlevel.getActiveBitcoinAddress().then(opr => this.hasActiveBitcoinAddress = true);
+            }
 
             return this.$q.resolve(<Utils.Operation<Models.IBitLevel>>{
                 Message: null,
@@ -107,11 +112,14 @@ module BitDiamond.Controllers.BitLevel {
             this.__bitlevel = __bitlevel;
             this.__usercontext = __userContext;
             this.__notify = __notify;
-
             this.$q = $q;
 
+            this.hasActiveBitcoinAddress = false;
+            this.isLoadingView = true;
             this.__bitlevel.currentLevel().then(this.initState.bind(this), err => {
                 this.__notify.error('Could not load Bit Level information.', 'Oops!');
+            }).finally(() => {
+                this.isLoadingView = false;
             });
         }
     }

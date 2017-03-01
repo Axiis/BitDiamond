@@ -9,6 +9,7 @@ using Axis.Jupiter.Europa;
 using System.Data.SqlClient;
 using Axis.Luna.Extensions;
 using System;
+using System.Configuration;
 
 namespace BitDiamond.Data.EF.Query
 {
@@ -97,7 +98,7 @@ JOIN dbo.[User] AS u ON u.EntityId = r.UserId
 JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
 ";
 
-            using (var connection = new SqlConnection((_europa as EuropaContext).Database.Connection.ConnectionString))
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["EuropaContext"].ConnectionString))
             {
                 connection.Open();
                 var qcommand = new SqlCommand

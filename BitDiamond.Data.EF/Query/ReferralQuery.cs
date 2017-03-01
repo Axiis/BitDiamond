@@ -142,7 +142,7 @@ JOIN dbo.[User] AS u ON u.EntityId = r.UserId
 JOIN UplinesCTE AS ul ON ul.ReferenceCode = r.ReferenceCode
 ";
             
-            using (var connection = new SqlConnection((_europa as EuropaContext).Database.Connection.ConnectionString))
+            using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["EuropaContext"].ConnectionString))
             {
                 connection.Open();
                 var qcommand = new SqlCommand

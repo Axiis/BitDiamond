@@ -14,8 +14,12 @@ var BitDiamond;
                     this.__usercontext = __userContext;
                     this.__notify = __notify;
                     this.$q = $q;
+                    this.hasActiveBitcoinAddress = false;
+                    this.isLoadingView = true;
                     this.__bitlevel.currentLevel().then(this.initState.bind(this), function (err) {
                         _this.__notify.error('Could not load Bit Level information.', 'Oops!');
+                    }).finally(function () {
+                        _this.isLoadingView = false;
                     });
                 }
                 Object.defineProperty(Home.prototype, "currentLevel", {
@@ -53,7 +57,7 @@ var BitDiamond;
                 };
                 Home.prototype.upgradeLevel = function () {
                     var _this = this;
-                    if (this.isUpgrading)
+                    if (this.isUpgrading || !this.hasActiveBitcoinAddress)
                         return;
                     else {
                         this.isUpgrading = true;
@@ -86,6 +90,7 @@ var BitDiamond;
                     this.bitLevel = opr.Result;
                     if (!Object.isNullOrUndefined(this.bitLevel)) {
                         this.hasBitLevel = true;
+                        this.hasActiveBitcoinAddress = true;
                         this.hasTransactionHash = !Object.isNullOrUndefined(this.bitLevel.Donation.TransactionHash) || this.bitLevel.Donation.TransactionHash != '';
                         this.donationsMissed = this.bitLevel.SkipCount;
                         this.donationsReceived = this.bitLevel.DonationCount;
@@ -102,8 +107,10 @@ var BitDiamond;
                             _this.__notify.error('Could not load upgrade donation receiver information.', 'Oops!');
                         });
                     }
-                    else
+                    else {
                         this.hasBitLevel = false;
+                        this.__bitlevel.getActiveBitcoinAddress().then(function (opr) { return _this.hasActiveBitcoinAddress = true; });
+                    }
                     return this.$q.resolve({
                         Message: null,
                         Succeeded: true,

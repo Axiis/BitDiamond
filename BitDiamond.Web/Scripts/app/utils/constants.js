@@ -596,14 +596,21 @@ var BitDiamond;
             Constants.Roles_AdminRole = "#admin";
             Constants.Roles_GuestRole = "#guest";
             Constants.Roles_BitMemberRole = "#bit-member";
+            //System users
+            Constants.SystemUsers_Root = "@root";
+            Constants.SystemUsers_Guest = "@guest";
+            Constants.SystemUsers_Apex = "@apex";
             //user data
-            Constants.UserData_ProfileImage = "ProfileImage";
+            Constants.UserData_ProfileImage = "Profile.Image";
             //URLs
             Constants.URL_DefaultProfileImage = '/content/images/default-user.png';
             Constants.URL_Login = '/account/signin';
             //MISC
             Constants.Misc_OAuthTokenKey = 'BitDiamonds.Security.OAuth.BearerToken'; //bearer token localstorage key
             Constants.Misc_OAuthCustomHeaders_OldToken = "OAuthOldToken"; //used for sending any current tokens to the server for invalidation
+            ///Settings
+            Constants.Settings_MaxBitLevel = 3;
         })(Constants = Utils.Constants || (Utils.Constants = {}));
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=constants.js.map

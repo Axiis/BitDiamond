@@ -58,7 +58,7 @@ namespace BitDiamond.Data.EF
                     },
                     new SystemSetting
                     {
-                        Name = Constants.Settings_UpgradeCostVector,
+                        Name = Constants.Settings_UpgradeFeeVector,
                         Data = "[0.11, 0.1826, 0.3652]",
                         Type = Axis.Luna.CommonDataType.JsonObject
                     }
@@ -167,7 +167,8 @@ namespace BitDiamond.Data.EF
                     ":system/accounts/contacts/*",
                     ":system/accounts/userdata/*",
                     ":system/accounts/logons/@invalidate",
-                    ":system/accounts/users/roles/@get"
+                    ":system/accounts/users/roles/@get",
+                    ":system/bit-levels/*"
                 }
                 .Select(_selector => new Permission
                 {
@@ -186,7 +187,7 @@ namespace BitDiamond.Data.EF
             });
             #endregion
 
-            #region 4. Users (root and guest)
+            #region 4. default users (root, guest and apex)
             UsingContext(cxt =>
             {
                 if (cxt.Store<User>().Query.Any()) return;
@@ -269,19 +270,22 @@ namespace BitDiamond.Data.EF
                 {
                     Amount = 0m,
                     ContextId = bitlevel.Id.ToString(),
-                    ContextType = typeof(BitLevel).FullName,
+                    ContextType = Constants.TransactionContext_UpgradeBitLevel,
                     LedgerCount = int.MaxValue,
                     SenderId = bcaddress.Id,
                     ReceiverId = bcaddress.Id,
-                    Status = BlockChainTransactionStatus.Valid,
+                    Status = BlockChainTransactionStatus.Verified,
                     TransactionHash = ""
                 };
                 cxt.Add(transaction).Context.CommitChanges();
 
+                bitlevel.DonationId = transaction.Id;
+                cxt.Modify(bitlevel).Context.CommitChanges();
+
                 //referal manager
                 var referral = new ReferralNode
                 {
-                    ReferenceCode = ReferralHelper.GenerateReferenceCode(new string[0]),
+                    ReferenceCode = ReferralHelper.GenerateCode(Constants.SystemUsers_Apex),
                     UserId = Constants.SystemUsers_Apex
                 };
                 cxt.Add(referral).Context.CommitChanges();

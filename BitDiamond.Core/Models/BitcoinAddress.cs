@@ -12,7 +12,6 @@ namespace BitDiamond.Core.Models
 
         private User _owner;
         private string _ownerId;
-        [Required(ErrorMessage = "address owner is required")]
         public virtual User Owner
         {
             get { return _owner; }
@@ -23,6 +22,7 @@ namespace BitDiamond.Core.Models
                 else _ownerId = null;
             }
         }
+        [Required(ErrorMessage = "address owner id is required")]
         public string OwnerId
         {
             get { return _ownerId; }
@@ -33,6 +33,10 @@ namespace BitDiamond.Core.Models
                 else if (!value.Equals(_owner?.EntityId)) _owner = null;
             }
         }
+
+        public bool IsVerified { get; set; }
+
+        public bool IsActive { get; set; }
 
         public override int GetHashCode()
             => ValueHash(new object[]{ BlockChainAddress, Owner?.EntityId });

@@ -68,7 +68,6 @@ namespace BitDiamond.Core.Models
     public enum BlockChainTransactionStatus
     {
         Unverified,
-        Invalid,
-        Valid
+        Verified
     }
 }

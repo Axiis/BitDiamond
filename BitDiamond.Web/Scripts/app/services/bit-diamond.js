@@ -99,8 +99,8 @@ var BitDiamond;
                 });
             };
             Account.prototype.updateProfileImage = function (data, oldUrl) {
-                return this.__transport.get('/api/accounts/userdata/filter', {
-                    Image: data,
+                return this.__transport.put('/api/accounts/profile-images', {
+                    Image: data.RawObjectForm(),
                     OldImageUrl: oldUrl
                 });
             };
@@ -142,17 +142,82 @@ var BitDiamond;
             return Account;
         }());
         Services.Account = Account;
-        var Profile = (function () {
-            function Profile() {
-            }
-            return Profile;
-        }());
-        Services.Profile = Profile;
         var Dashboard = (function () {
-            function Dashboard() {
+            function Dashboard(__transport, $q) {
+                this.__transport = __transport;
+                this.$q = $q;
             }
             return Dashboard;
         }());
         Services.Dashboard = Dashboard;
+        var BitLevel = (function () {
+            function BitLevel(__transport, $q) {
+                this.__transport = __transport;
+                this.$q = $q;
+            }
+            BitLevel.prototype.upgrade = function () {
+                return this.__transport.post('/api/bit-levels/cycles', null);
+            };
+            BitLevel.prototype.updateTransactionHash = function (hash) {
+                return this.__transport.put('/api/bit-levels/transactions/current', {
+                    Hash: hash
+                });
+            };
+            BitLevel.prototype.confirmUpgradeDonation = function () {
+                return this.__transport.put('/api/bit-levels/transactions/current/confirm', null);
+            };
+            BitLevel.prototype.getCurrentUpgradeTransaction = function () {
+                return this.__transport.get('/api/bit-levels/transactions/current');
+            };
+            BitLevel.prototype.currentLevel = function () {
+                return this.__transport.get('/api/bit-levels/cycles/current');
+            };
+            BitLevel.prototype.getBitLevelById = function (id) {
+                return this.__transport.get('/api/bit-levels/cycles');
+            };
+            BitLevel.prototype.getBitLevelHistory = function () {
+                return this.__transport.get('/api/bit-levels/cycles/history');
+            };
+            BitLevel.prototype.getUpgradeFee = function (level) {
+                return this.__transport.get('/api/bit-levels/upgrade-fees/' + level);
+            };
+            BitLevel.prototype.getUpgradeDonationReceiver = function (levelId) {
+                return this.__transport.get('/api/bit-levels/transactions/receivers', {
+                    Id: levelId
+                });
+            };
+            BitLevel.prototype.receiverConfirmation = function (hash) {
+                return this.__transport.put('/api/bit-levels/transactions/receiver-confirmation', {
+                    Hash: hash
+                });
+            };
+            BitLevel.prototype.getAllBitcoinAddresses = function () {
+                return this.__transport.get('/api/bit-levels/bitcoin-addresses');
+            };
+            BitLevel.prototype.getActiveBitcoinAddress = function () {
+                return this.__transport.get('/api/bit-levels/bitcoin-addresses/active');
+            };
+            BitLevel.prototype.addBitcoinAddress = function (address) {
+                return this.__transport.post('/api/bit-levels/bitcoin-addresses', address);
+            };
+            BitLevel.prototype.activateBitcoinAddress = function (id) {
+                return this.__transport.put('/api/bit-levels/bitcoin-addresses/activate', {
+                    Id: id
+                });
+            };
+            BitLevel.prototype.deactivateBitcoinAddress = function (id) {
+                return this.__transport.put('/api/bit-levels/bitcoin-addresses/deactivate', {
+                    Id: id
+                });
+            };
+            BitLevel.prototype.verifyBitcoinAddress = function (id) {
+                return this.__transport.put('/api/bit-levels/bitcoin-addresses/verify', {
+                    Id: id
+                });
+            };
+            return BitLevel;
+        }());
+        Services.BitLevel = BitLevel;
     })(Services = BitDiamond.Services || (BitDiamond.Services = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=bit-diamond.js.map

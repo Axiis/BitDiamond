@@ -590,7 +590,7 @@ module BitDiamond.Utils.Constants {
                 .filter(_kvp => _kvp.Key.startsWith('.'));
         }
     };
-    
+
 
     //access profiles
     export const Roles_RootRole = "#root";
@@ -599,8 +599,14 @@ module BitDiamond.Utils.Constants {
     export const Roles_BitMemberRole = "#bit-member";
 
 
+    //System users
+    export const SystemUsers_Root = "@root";
+    export const SystemUsers_Guest = "@guest";
+    export const SystemUsers_Apex = "@apex";
+
+
     //user data
-    export const UserData_ProfileImage = "ProfileImage";
+    export const UserData_ProfileImage = "Profile.Image";
 
 
     //URLs
@@ -611,5 +617,9 @@ module BitDiamond.Utils.Constants {
     //MISC
     export const Misc_OAuthTokenKey = 'BitDiamonds.Security.OAuth.BearerToken'; //bearer token localstorage key
     export const Misc_OAuthCustomHeaders_OldToken = "OAuthOldToken"; //used for sending any current tokens to the server for invalidation
+
+
+    ///Settings
+    export const Settings_MaxBitLevel = 3;
 
 }

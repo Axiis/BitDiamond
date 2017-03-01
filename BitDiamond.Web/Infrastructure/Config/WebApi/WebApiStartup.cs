@@ -83,7 +83,7 @@ namespace BitDiamond.Web.Infrastructure.Config.WebApi
         {
             //change the json formatter
             config.Formatters.Clear();
-            config.Formatters.Add(new JsonMediaTypeFormatter { SerializerSettings = Constants.DefaultJsonSerializerSettings });
+            config.Formatters.Add(new JsonMediaTypeFormatter { SerializerSettings = Constants.Misc_DefaultJsonSerializerSettings });
 
             //conigure dependency injection
             config.DependencyResolver = app.GetSimpleInjectorResolver();

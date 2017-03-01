@@ -1,29 +1,40 @@
 ﻿using Axis.Luna;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BitDiamond.Core.Utils
 {
-    using RANG = RandomAlphaNumericGenerator;
+    using Axis.Luna.Extensions;
+    using System.Net.Mail;
 
     public static class ReferralHelper
     {
-        public static string GenerateReferenceCode(IEnumerable<string> codes)
+        public static string GenerateCode(string userId)
         {
-            string newCode = null;
-            do
+            if (userId == Constants.SystemUsers_Apex) return userId + "-001";
+            else if (!userId.IsEmail()) throw new Exception("invalid userid");
+            else
             {
-                newCode = $"{RANG.RandomAlphaNumeric(5)}-{RANG.RandomAlphaNumeric(5)}-{RANG.RandomAlphaNumeric(10)}";
-                newCode = newCode.ToUpper()
-                                 .Replace("I", "A").Replace("1", "A")
-                                 .Replace("O", "B").Replace("0", "B");
+                var parts = userId.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+                return parts[1]
+                    .Pipe(_chars => Encoding.ASCII.GetBytes(_chars.ToArray()))
+                    .Aggregate(17, (hash, next) => hash * 283 + next)
+                    .Pipe(_hash => $"@{parts[0]}-{_hash}");
             }
-            while (codes.Contains(newCode));
+        }
 
-            return newCode;
+        public static bool IsEmail(this string email)
+        {
+            try
+            {
+                var m = new MailAddress(email);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

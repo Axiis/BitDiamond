@@ -32,11 +32,9 @@ module BitDiamond.Controllers.Shared {
     }
 
 
-
     export class NavBar {
 
     }
-
 
 
     export class SideBar {

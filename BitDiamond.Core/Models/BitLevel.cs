@@ -8,7 +8,7 @@ namespace BitDiamond.Core.Models
     public class BitLevel: BaseModel<long>
     {
         private BlockChainTransaction _transaction;
-        private long _transactionId;
+        private long? _transactionId;
         public virtual BlockChainTransaction Donation
         {
             get { return _transaction; }
@@ -19,7 +19,7 @@ namespace BitDiamond.Core.Models
                 else _transactionId = 0;
             }
         }
-        public long DonationId
+        public long? DonationId
         {
             get { return _transactionId; }
             set

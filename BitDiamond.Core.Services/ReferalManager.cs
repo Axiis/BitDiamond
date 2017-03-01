@@ -51,8 +51,6 @@ namespace BitDiamond.Core.Services
                 var downlines = _query.AllDownlines(referee);
                 var user = _query.GetUserById(userId);
 
-                var codes = _query.GetAllReferenceCodes();
-
                 //affix to the referee if he has no downlines
                 if (downlines.Count() == 0)
                 {
@@ -60,7 +58,7 @@ namespace BitDiamond.Core.Services
                     {
                         UplineCode = refereeCode,
                         ReferrerCode = refereeCode,
-                        ReferenceCode = ReferralHelper.GenerateReferenceCode(codes),
+                        ReferenceCode = ReferralHelper.GenerateCode(userId),
                         User = user
                     };
 
@@ -85,7 +83,7 @@ namespace BitDiamond.Core.Services
                         {
                             UplineCode = _duo.UplineCode,
                             ReferrerCode = refereeCode,
-                            ReferenceCode = ReferralHelper.GenerateReferenceCode(codes),
+                            ReferenceCode = ReferralHelper.GenerateCode(userId),
                             User = user
                         };
 

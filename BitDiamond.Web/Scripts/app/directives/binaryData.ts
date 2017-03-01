@@ -2,10 +2,10 @@
 module BitDiamond.Directives {
 
     export class BinaryData {
-        scope: {
+        scope: any = {
             binaryData: "="
         };
-        restrict: 'A';
+        restrict: any = 'A';
 
         link(scope, element, attributes) {
 

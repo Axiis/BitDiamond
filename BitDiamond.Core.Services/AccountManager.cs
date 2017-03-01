@@ -96,7 +96,12 @@ namespace BitDiamond.Core.Services
                 };
                 #endregion
                 return _pcommand
+
+                #region Add user
                     .Add(user) //add user
+                #endregion
+
+                #region Assign Credentials
                     .Then(opr =>
                     {
                         #region Assign credentials (password)
@@ -111,38 +116,29 @@ namespace BitDiamond.Core.Services
                         return _credentialAuth.AssignCredential(targetUser, secretCredential);
                         #endregion
                     })
+                #endregion
+
+                #region Assign role
                     .Then(opr =>
                     {
-                        #region Assign role
                         return _authorizer.AssignRole(user, Constants.Roles_BitMemberRole);
-                        #endregion
                     })
+                #endregion
+
+                #region Place the user in the referal hierarchy
                     .Then(opr =>
                     {
-                        #region create default bit level
-                        var bitlevel = new BitLevel
-                        {
-                            Cycle = 1,
-                            DonationCount = 0,
-                            Level = 0,
-                            SkipCount = 0,
-                            User = user
-                        };
-                        return _pcommand.Add(bitlevel);
-                        #endregion
-                    })
-                    .Then(opr =>
-                    {
-                        #region Place the user in the referal hierarchy
                         return _refManager.AffixNewUser(user.UserId, referrer);
-                        #endregion
                     })
+                #endregion
+
+                #region Request context verification
                     .Then(opr =>
                     {
-                        #region Request context verification
                         return RequestUserActivation(user.UserId);
-                        #endregion
                     })
+                #endregion
+
                     .Then(opr => user);
             }
         });
@@ -497,7 +493,8 @@ namespace BitDiamond.Core.Services
         public Operation<UserData> GetUserData(string name)
         => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
         {
-            return _query.GetUserData(UserContext.CurrentUser(), name);
+            var d = _query.GetUserData(UserContext.CurrentUser(), name);
+            return d;
         });
 
         public Operation<string> UpdateProfileImage(EncodedBinaryData image, string oldImageUrl)

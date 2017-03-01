@@ -1,0 +1,228 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">Bit Level</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href >Bit Level</a></li>
+            <li><a href class="active">Home</a></li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<ul class="nav customtab nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+        <a href role="tab">
+            <span class="visible-xs">
+                <i class="ti-home" title="Home"></i>
+            </span>
+            <span class="hidden-xs">Home</span>
+        </a>
+    </li>
+    <li role="presentation" class="">
+        <a href ui-sref="bitcoinAddresses" role="tab">
+            <span class="visible-xs">
+                <i class="icon-settings" title="Bitcoin Address"></i>
+            </span>
+            <span class="hidden-xs">Bitcoin Addresses</span>
+        </a>
+    </li>
+    <li role="presentation" class="">
+        <a href ui-sref="history" role="tab">
+            <span class="visible-xs">
+                <i class="ti-time" title="History"></i>
+            </span>
+            <span class="hidden-xs">History</span>
+        </a>
+    </li>
+</ul>
+
+<h5 class="text-muted" ng-show="vm.hasBitLevel"><strong>Level Information</strong></h5>
+<div class="row" ng-show="vm.hasBitLevel">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+        <div class="white-box">
+            <div class="row row-in">
+
+                <div class="col-lg-3 col-sm-6 row-in-br">
+                    <div class="col-in row">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <i data-icon="E" class="icon-refresh text-info"></i>
+                            <h5 class="text-muted vb">Current Cycle</h5>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <h3 class="counter text-right m-t-15 text-info">{{vm.currentCycle}}</h3>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-info" role="progressbar" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-6 row-in-br  b-r-none">
+                    <div class="col-in row">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <i class="ti-stats-up" data-icon=""></i>
+                            <h5 class="text-muted vb">Current Level</h5>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <h3 class="counter text-right m-t-15 text-primary">{{vm.currentLevel}}</h3>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-primary" role="progressbar" ng-style="{width:vm.cyclePercentage()+'%'}"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-6 row-in-br">
+                    <div class="col-in row">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <i class="fa fa-btc text-success" data-icon=""></i>
+                            <h5 class="text-muted vb">Donations Received</h5>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <h3 class="counter text-right m-t-15 text-success">{{vm.donationsReceived}}</h3>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-success" role="progressbar" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-6  b-0">
+                    <div class="col-in row">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <i class="ti-close text-danger" data-icon=""></i>
+                            <h5 class="text-muted vb">Donations Missed</h5>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <h3 class="counter text-right m-t-15 text-danger">{{vm.donationsMissed}}</h3>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-danger" role="progressbar" style="width: 100%"> <span class="sr-only">40% Complete (success)</span> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<h5 class="text-muted" ng-show="vm.hasBitLevel"><strong>Upgrade Donation</strong></h5>
+<div class="row" ng-show="vm.hasBitLevel">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="white-box">
+            <div class="text-right">
+                <span class="text-muted">Amount</span>
+                <h1><i class="fa fa-btc"></i>&nbsp;{{vm.upgradeFee}}</h1>
+            </div>
+            <div style="height:24px;">
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="white-box">
+            <div class="text-right">
+                <span class="text-muted">Receiver</span>
+                <h3 style="white-space:nowrap; text-overflow:ellipsis; text-wrap:none; height:48px; margin-top:10px; margin-bottom:10px;" 
+                    data-toggle="tooltip" data-original-title="{{vm.receiverCode}}">{{vm.receiverCode}}</h3>
+            </div>
+            <div style="height:24px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="vm.hasBitLevel">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="white-box">
+            <div class="text-right">
+                <span class="text-muted">Next Level</span>
+                <h1><sup><i class="ti-arrow-up text-success"></i></sup>{{vm.nextLevel}}</h1>
+            </div> <span class="text-success">{{vm.cyclePercentage()}}%</span>
+            <div class="progress m-b-0">
+                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" ng-style="{width:vm.cyclePercentage()+'%'}"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="white-box">
+            <div class="text-right">
+                <span class="text-muted">Donation</span>                
+            </div>
+            <div style="height:68px;">
+                <div class="form-material form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="text" class="form-control form-control-line" 
+                                   placeholder="Enter transaction hash"
+                                   ng-hide="vm.hasTransactionHash"
+                                   ng-model="vm.transactionHash"/>
+                            <span class="text-success" ng-show="vm.hasTransactionHash">{{vm.bitLevel.Donation.TransactionHash}}</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <button class="btn btn-block btn-outline btn-info"
+                                ng-hide="vm.hasTransactionHash"
+                                ng-class="{disabled: !vm.hasActiveBitcoinAddress}"
+                                ng-click="vm.updateTransactionHash()">Update</button>
+                        <button class="btn btn-block btn-outline btn-success" 
+                                ng-show="vm.hasTransactionHash"
+                                ng-class="{disabled: !vm.hasActiveBitcoinAddress}"
+                                ng-click="vm.confirmDonation()">Confirm</button>
+                    </div>
+                </div>
+            </div>
+            <div style="height:24px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-6 col-lg-6 col-sm-12"
+     ng-hide="vm.hasBitLevel"
+     style="margin-top:30px;">
+    <div class="white-box">
+        <h3 class="box-title">
+            Welcome!
+        </h3>
+        <span class="text-muted">
+            Get started on your journey by triggering your first <strong class="text-muted">Cycle</strong>. 
+            Click the button below to get things started.
+        </span>
+        <div class="row sales-report">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <h3><i class="icon-diamond"></i> Begin Cycle</h3>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6 ">
+                <button class="btn btn-block btn-outline btn-rounded btn-success btn-md"
+                        ng-class="{disabled: !vm.hasActiveBitcoinAddress}"
+                        type="button"
+                        ng-click="vm.upgradeLevel()"
+                        style="margin-top:10px; margin-bottom:10px;">
+                    <i class="ti-arrow-up"></i> Level Up
+                </button>
+            </div>
+        </div>
+        <span class="text-warning" ng-hide="vm.hasActiveBitcoinAddress">
+            We noticed you haven't yet got any <strong>bitcoin transaction address</strong> setup yet.
+            Not to worry, this can easily be done by following the instructions <strong><a href ui-sref="bitcoinAddresses">Here</a></strong>.
+        </span>
+    </div>
+</div>
+
+ 

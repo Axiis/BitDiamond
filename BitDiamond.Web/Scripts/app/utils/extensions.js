@@ -104,6 +104,18 @@ var BitDiamond;
                 return false;
         };
         ///string extension
+        Object.defineProperty(String.prototype, 'asChars', {
+            value: function () {
+                var _this = this;
+                var arr = [];
+                for (var cnt = 0; cnt < _this.length; cnt++)
+                    arr.push(_this.charAt(cnt));
+                return arr;
+            },
+            writable: false,
+            configurable: false,
+            enumerable: false
+        });
         Object.defineProperty(String.prototype, 'trimLeft', {
             value: function (str) {
                 var _this = this;
@@ -175,6 +187,10 @@ var BitDiamond;
         });
         ///number extension
         ///array extensions    
+        Array.prototype.insert = function (index, item) {
+            var _this = this;
+            return _this.splice(index, 0, item);
+        };
         Array.prototype.paginate = function (sequence, pageIndex, pageSize) {
             if (pageIndex < 0 || pageSize < 1)
                 throw 'invalid pagination arguments';
@@ -244,3 +260,4 @@ var BitDiamond;
         };
     })(Extensions = BitDiamond.Extensions || (BitDiamond.Extensions = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=extensions.js.map

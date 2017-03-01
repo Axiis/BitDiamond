@@ -5,58 +5,50 @@ module BitDiamond.Directives {
     export class RingLoader {
 
         restrict: string = 'E';
-        scope: any = {
-            size: '=?',
-            //color: '=?', get this from the 'attributes' in the 'link' function
-            isBlockLoader: '=?blockLoader',
-            overlayOpacity: '=?',
-            show: '=?'
-        };
-
-        //note that we should do all of these inside the link function instead so that the color attribute can be carried from the attributes object.
-        controller($scope) {
-        };
-
-
+        scope: any = {};
+        
         link(scope: ng.IScope, element: JQuery, attributes: ng.IAttributes): void {
 
             var $scope: any = scope;
 
             //default values
-            if (!$scope.size) $scope.size = '0px';
-            if (Object.isNullOrUndefined($scope.isBlockLoader)) $scope.isBlockLoader = false;
-            if (!$scope.overlayOpacity) $scope.overlayOpacity = 0;
-            if (!$scope.show) $scope.show = false;
-            if (Object.isNullOrUndefined(attributes['color'])) $scope.color = 'rgba(0,0,0,0)';
-            else $scope.color = attributes['color'];
+            var size = scope.$eval(attributes['size'] || '0');
+            var isBlockLoader = scope.$eval(attributes['blockLoader'] || 'false');
+            var overlayOpacity = scope.$eval(attributes['overlayOpacity'] || '0');
+            var color = attributes['color'] || 'rgba(0,0,0,0.98)';
+            var show = attributes['show'] || 'false'; //<-- show isnt evaluated on purpose
 
-            $scope.containerStyle = function () {
-                return {
-                    height: $scope.size + 'px',
-                    width: $scope.size + 'px'
-                };
-            };
-
-            $scope.rotorStyle = function () {
-                return {
-                    'box-shadow': '0 2px 0 0 ' + $scope.color
-                };
-            };
-
-            $scope.overlayStyle = function () {
-                return {
-                    'background-color': 'rgba(0,0,0,' + ($scope.overlayOpacity) + ')',
-                    display: !$scope.isBlockLoader ? 'inline-block' : 'block',
-                    width: !$scope.isBlockLoader ? 'initial' : '100%',
-                    height: !$scope.isBlockLoader ? 'initial' : '100%',
-                    'text-align': !$scope.isBlockLoader ? 'initial' : 'center'
-                };
+            $scope.__ldrz___show = function () {
+                return scope.$parent.$eval(show);
             }
+
+            $scope.__ldrz___containerStyle = function () {
+                return {
+                    height: size + 'px',
+                    width: size + 'px'
+                };
+            };
+
+            $scope.__ldrz___rotorStyle = function () {
+                return {
+                    'box-shadow': '0 2px 0 0 ' + color
+                };
+            };
+
+            $scope.__ldrz___overlayStyle = function () {
+                return {
+                    'background-color': 'rgba(0,0,0,' + (overlayOpacity) + ')',
+                    display: !isBlockLoader ? 'inline-block' : 'block',
+                    width: !isBlockLoader ? 'initial' : '100%',
+                    height: !isBlockLoader ? 'initial' : '100%',
+                    'text-align': !isBlockLoader ? 'initial' : 'center'
+                };
+            };
         }
 
-        template: string = '<div class="inline-center-pseudo" ng-style="overlayStyle()" ng-show="show">' +
-        '<div class="ring-loader" ng-style="containerStyle()">' +
-        '<div ng-style="rotorStyle()"></div>' +
+        template: string = '<div class="inline-center-pseudo" ng-style="__ldrz___overlayStyle()" ng-show="__ldrz___show()">' +
+        '<div class="ring-loader" ng-style="__ldrz___containerStyle()">' +
+        '<div ng-style="__ldrz___rotorStyle()"></div>' +
         '</div>' +
         '</div>';
     }
@@ -64,40 +56,33 @@ module BitDiamond.Directives {
     export class WheelLoader {
 
         restrict: string = 'E';
-        scope: any = {
-            size: '=?',
-            //color: '=?', get this from the 'attributes' in the 'link' function
-            isBlockLoader: '=?blockLoader',
-            overlayOpacity: '=?',
-            show: '=?'
-        };
+        scope: any = {};
         
-        controller($scope) {
-        };
-
-
         link(scope: ng.IScope, element: JQuery, attributes: ng.IAttributes): void {
 
             var $scope: any = scope;
 
             //default values
-            if (!$scope.size) $scope.size = '0px';
-            if (Object.isNullOrUndefined($scope.isBlockLoader)) $scope.isBlockLoader = false;
-            if (!$scope.overlayOpacity) $scope.overlayOpacity = 0;
-            if (!$scope.show) $scope.show = false;
-            if (Object.isNullOrUndefined(attributes['color'])) $scope.color = 'rgba(0,0,0,0.98)';
-            else $scope.color = attributes['color'];
+            var size = scope.$eval(attributes['size'] || '0');
+            var isBlockLoader = scope.$eval(attributes['blockLoader'] || 'false');
+            var overlayOpacity = scope.$eval(attributes['overlayOpacity'] || '0');
+            var color = scope.$eval(attributes['color'] || 'rgba(0,0,0,0.98)');
+            var show = attributes['show'] || 'false'; //<-- show isnt evaluated on purpose
 
-            $scope.containerStyle = function () {
+            $scope.__ldrz___show = function () {
+                return scope.$parent.$eval(show);
+            } 
+
+            $scope.__ldrz___containerStyle = function () {
                 return {
-                    height: $scope.size + 'px',
-                    width: $scope.size + 'px'
+                    height: size + 'px',
+                    width: size + 'px'
                 };
             };
 
-            $scope.rotorStyle = function () {
+            $scope.__ldrz___rotorStyle = function () {
                 return {
-                    'border': '2px solid ' + $scope.color,
+                    'border': '2px solid ' + color,
                     'border-radius': '50%',
                     'border-left-color': 'transparent',
                     'border-right-color': 'transparent',
@@ -109,74 +94,72 @@ module BitDiamond.Directives {
                 };
             };
 
-            $scope.overlayStyle = function () {
+            $scope.__ldrz___overlayStyle = function () {
                 return {
-                    'background-color': 'rgba(0,0,0,' + ($scope.overlayOpacity) + ')',
-                    display: !$scope.isBlockLoader ? 'inline-block' : 'block',
-                    width: !$scope.isBlockLoader ? 'initial' : '100%',
-                    height: !$scope.isBlockLoader ? 'initial' : '100%',
-                    'text-align': !$scope.isBlockLoader ? 'initial' : 'center'
+                    'background-color': 'rgba(0,0,0,' + (overlayOpacity) + ')',
+                    display: !isBlockLoader ? 'inline-block' : 'block',
+                    width: !isBlockLoader ? 'initial' : '100%',
+                    height: !isBlockLoader ? 'initial' : '100%',
+                    'text-align': !isBlockLoader ? 'initial' : 'center'
                 };
             }
         }
 
-        template: string = '<div class="inline-center-pseudo" ng-style="overlayStyle()" ng-show="show">' +
-        '<div ng-style="rotorStyle()"></div>' +
+        template: string = '<div class="inline-center-pseudo" ng-style="__ldrz___overlayStyle()" ng-show="__ldrz___show()">' +
+        '<div ng-style="__ldrz___rotorStyle()"></div>' +
         '</div>';
     }
 
     export class BoxLoader {
 
         restrict: string = 'E';
-        scope: any = {
-            size: '=?',
-            isBlockLoader: '=?blockLoader',
-            overlayOpacity: '=?',
-            show: '=?'
-        };
+        scope: any = {};
 
         link(scope: ng.IScope, element: JQuery, attributes: ng.IAttributes) {
 
             var $scope: any = scope;
 
             //default values
-            if (!$scope.size) $scope.size = '0px';
-            if (Object.isNullOrUndefined($scope.isBlockLoader)) $scope.isBlockLoader = false;
-            if (!$scope.overlayOpacity) $scope.overlayOpacity = 0;
-            if (!$scope.show) $scope.show = false;
-            if (Object.isNullOrUndefined(attributes['color'])) $scope.color = 'rgba(0,0,0,0)';
-            else $scope.color = attributes['color'];
+            var size = scope.$eval(attributes['size'] || '0');
+            var isBlockLoader = scope.$eval(attributes['blockLoader'] || 'false');
+            var overlayOpacity = scope.$eval(attributes['overlayOpacity'] || '0');
+            var color = attributes['color'] || 'rgba(0,0,0,0.98)';
+            var show = attributes['show'] || 'false'; //<-- show isnt evaluated on purpose
 
-            $scope.containerStyle = function () {
+            $scope.__ldrz___show = function () {
+                return scope.$parent.$eval(show);
+            }  
+
+            $scope.__ldrz___containerStyle = function () {
                 return {
-                    height: $scope.size + 'px',
-                    width: $scope.size + 'px'
+                    height: size + 'px',
+                    width: size + 'px'
                 };
             };
 
-            $scope.boxStyle = function () {
+            $scope.__ldrz___boxStyle = function () {
                 return {
-                    'background': $scope.color
+                    'background': color
                 };
             };
 
-            $scope.overlayStyle = function () {
+            $scope.__ldrz___overlayStyle = function () {
                 return {
-                    'background-color': 'rgba(0,0,0,' + ($scope.overlayOpacity) + ')',
-                    display: !$scope.isBlockLoader ? 'inline-block' : 'block',
-                    width: !$scope.isBlockLoader ? 'initial' : '100%',
-                    height: !$scope.isBlockLoader ? 'initial' : '100%',
-                    'text-align': !$scope.isBlockLoader ? 'initial' : 'center'
+                    'background-color': 'rgba(0,0,0,' + (overlayOpacity) + ')',
+                    display: !isBlockLoader ? 'inline-block' : 'block',
+                    width: !isBlockLoader ? 'initial' : '100%',
+                    height: !isBlockLoader ? 'initial' : '100%',
+                    'text-align': !isBlockLoader ? 'initial' : 'center'
                 };
             }
         };
 
-        template: string = '<div class="inline-center-pseudo" ng-style="overlayStyle()" ng-show="show">' +
-                               '<div class="cube-loader" ng-style="containerStyle()">' +
-                                   '<div ng-style="boxStyle()"></div>' +
-                                   '<div ng-style="boxStyle()"></div>' +
-                                   '<div ng-style="boxStyle()"></div>' +
-                                   '<div ng-style="boxStyle()"></div>' +
+        template: string = '<div class="inline-center-pseudo" ng-style="__ldrz___overlayStyle()" ng-show="__ldrz___show()">' +
+                               '<div class="cube-loader" ng-style="__ldrz___containerStyle()">' +
+                                   '<div ng-style="__ldrz___boxStyle()"></div>' +
+                                   '<div ng-style="__ldrz___boxStyle()"></div>' +
+                                   '<div ng-style="__ldrz___boxStyle()"></div>' +
+                                   '<div ng-style="__ldrz___boxStyle()"></div>' +
                                '</div>' +
                            '</div>';
 

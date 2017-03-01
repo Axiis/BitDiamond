@@ -1,6 +1,9 @@
 ﻿
 module BitDiamond.Utils {
 
+    //http://stackoverflow.com/a/46181/4137383
+    export const EmailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
     const lut = []; for (var i = 0; i < 256; i++) { lut[i] = (i < 16 ? '0' : '') + (i).toString(16); }
     export function NewGuid() {
         var d0 = Math.random() * 0xffffffff | 0;

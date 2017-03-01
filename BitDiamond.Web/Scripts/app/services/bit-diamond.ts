@@ -118,8 +118,8 @@ module BitDiamond.Services {
         }
 
         updateProfileImage(data: Utils.EncodedBinaryData, oldUrl: string): ng.IPromise<Utils.Operation<string>> {
-            return this.__transport.get<Utils.Operation<string>>('/api/accounts/userdata/filter', {
-                Image: data,
+            return this.__transport.put<Utils.Operation<string>>('/api/accounts/profile-images', {
+                Image: data.RawObjectForm(),
                 OldImageUrl: oldUrl
             });
         }
@@ -166,17 +166,112 @@ module BitDiamond.Services {
         }
 
 
-        
-        constructor(private __transport: Utils.Services.DomainTransport, private $q: ng.IQService) {
-
+        __transport: Utils.Services.DomainTransport;
+        $q: ng.IQService;
+        constructor(__transport, $q) {
+            this.__transport = __transport;
+            this.$q = $q;
         }
     }
-
-    export class Profile {
-
-    }
+    
 
     export class Dashboard {
 
+
+        __transport: Utils.Services.DomainTransport;
+        $q: ng.IQService;
+        constructor(__transport, $q) {
+            this.__transport = __transport;
+            this.$q = $q;
+        }
+    }
+
+    export class BitLevel {
+
+        upgrade(): ng.IPromise<Utils.Operation<Models.IBitLevel>> {
+            return this.__transport.post<Utils.Operation<Models.IBitLevel>>('/api/bit-levels/cycles', null);
+        }
+
+        updateTransactionHash(hash: string): ng.IPromise<Utils.Operation<Models.IBlockChainTransaction>> {
+            return this.__transport.put<Utils.Operation<Models.IBlockChainTransaction>>('/api/bit-levels/transactions/current', {
+                Hash: hash
+            });
+        }
+
+        confirmUpgradeDonation(): ng.IPromise<Utils.Operation<Models.IBlockChainTransaction>> {
+            return this.__transport.put<Utils.Operation<Models.IBlockChainTransaction>>('/api/bit-levels/transactions/current/confirm', null);
+        }
+
+        getCurrentUpgradeTransaction(): ng.IPromise<Utils.Operation<Models.IBlockChainTransaction>> {
+            return this.__transport.get<Utils.Operation<Models.IBlockChainTransaction>>('/api/bit-levels/transactions/current');
+        }
+
+        currentLevel(): ng.IPromise<Utils.Operation<Models.IBitLevel>> {
+            return this.__transport.get<Utils.Operation<Models.IBitLevel>>('/api/bit-levels/cycles/current');
+        }
+
+        getBitLevelById(id: number): ng.IPromise<Utils.Operation<Models.IBitLevel>> {
+            return this.__transport.get<Utils.Operation<Models.IBitLevel>>('/api/bit-levels/cycles');
+        }
+
+        getBitLevelHistory(): ng.IPromise<Utils.Operation<Models.IBitLevel[]>> {
+            return this.__transport.get<Utils.Operation<Models.IBitLevel[]>>('/api/bit-levels/cycles/history');
+        }
+
+        getUpgradeFee(level: number): ng.IPromise<Utils.Operation<number>> {
+            return this.__transport.get<Utils.Operation<number>>('/api/bit-levels/upgrade-fees/' + level);
+        }
+
+        getUpgradeDonationReceiver(levelId: number): ng.IPromise<Utils.Operation<Models.IBitcoinAddress>> {
+            return this.__transport.get<Utils.Operation<Models.IBitcoinAddress>>('/api/bit-levels/transactions/receivers', {
+                Id: levelId
+            });
+        }
+
+        receiverConfirmation(hash: string): ng.IPromise<Utils.Operation<void>> {
+            return this.__transport.put<Utils.Operation<void>>('/api/bit-levels/transactions/receiver-confirmation', {
+                Hash: hash
+            });
+        }
+
+        getAllBitcoinAddresses(): ng.IPromise<Utils.Operation<Models.IBitcoinAddress[]>> {
+            return this.__transport.get<Utils.Operation<Models.IBitcoinAddress[]>>('/api/bit-levels/bitcoin-addresses');
+        }
+
+        getActiveBitcoinAddress(): ng.IPromise<Utils.Operation<Models.IBitcoinAddress>> {
+            return this.__transport.get<Utils.Operation<Models.IBitcoinAddress>>('/api/bit-levels/bitcoin-addresses/active');
+        }
+
+        addBitcoinAddress(address: Models.IBitcoinAddress): ng.IPromise<Utils.Operation<Models.IBitcoinAddress>> {
+            return this.__transport.post<Utils.Operation<Models.IBitcoinAddress>>('/api/bit-levels/bitcoin-addresses', address);
+        }
+
+        activateBitcoinAddress(id: number): ng.IPromise<Utils.Operation<Models.IBitcoinAddress>> {
+            return this.__transport.put<Utils.Operation<Models.IBitcoinAddress>>('/api/bit-levels/bitcoin-addresses/activate', {
+                Id: id
+            });
+        }
+
+        deactivateBitcoinAddress(id: number): ng.IPromise<Utils.Operation<Models.IBitcoinAddress>> {
+            return this.__transport.put<Utils.Operation<Models.IBitcoinAddress>>('/api/bit-levels/bitcoin-addresses/deactivate', {
+                Id: id
+            });
+        }
+
+        verifyBitcoinAddress(id: number): ng.IPromise<Utils.Operation<Models.IBitcoinAddress>> {
+            return this.__transport.put<Utils.Operation<Models.IBitcoinAddress>>('/api/bit-levels/bitcoin-addresses/verify', {
+                Id: id
+            });
+        }
+
+
+
+
+        __transport: Utils.Services.DomainTransport;
+        $q: ng.IQService;
+        constructor(__transport, $q) {
+            this.__transport = __transport;
+            this.$q = $q;
+        }
     }
 }

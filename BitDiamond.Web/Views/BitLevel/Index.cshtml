@@ -21,7 +21,7 @@
     <link href="~/Content/Theme/eliteadmin/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
     <!-- morris CSS -->
     <link href="~/Content/Theme/eliteadmin/plugins/bower_components/morrisjs/morris.css" rel="stylesheet">
-    <link href="~/Content/Theme/eliteadmin/plugins/bower_components/css-chart/css-chart.css" rel="stylesheet"> 
+    <link href="~/Content/Theme/eliteadmin/plugins/bower_components/css-chart/css-chart.css" rel="stylesheet">
     <!-- animation CSS -->
     <link href="~/content/theme/eliteadmin/dark/css/animate.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -70,7 +70,7 @@
     </style>
 </head>
 
-<body ng-app="profile">
+<body ng-app="bitlevel">
     <div id="wrapper">
         <!-- Top Navigation -->
         <nav class="navbar navbar-default navbar-static-top m-b-0">
@@ -118,9 +118,9 @@
                         </ul>
                         <!-- /.dropdown-messages -->
                     </li>
-                    
+
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href> 
+                        <a class="dropdown-toggle" data-toggle="dropdown" href>
                             <div class="notify">
                             </div>
                         </a>
@@ -135,7 +135,6 @@
             <!-- /.navbar-static-side -->
         </nav>
         <!-- End Top Navigation -->
-
         <!-- Left navbar-header -->
         <div class="navbar-default sidebar" role="navigation" ng-controller="SideBar as vm">
             <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
@@ -143,7 +142,7 @@
 
                     <div class="user-profile">
                         <div class="dropdown user-pro-body">
-                            <div><img ng-src="{{vm.profileImage()}}" alt="user-img" class="img-circle"></div> 
+                            <div><img ng-src="{{vm.profileImage()}}" alt="user-img" class="img-circle"></div>
                             <a href class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{vm.userNames()}} <span class="caret"></span></a>
                             <ul class="dropdown-menu animated flipInY">
                                 <li><a href ui-sref="home"><i class="ti-user"></i> My Profile</a></li>
@@ -295,6 +294,7 @@
     <script type="text/javascript" src="~/scripts/app/utils/map.js"></script>
     <script type="text/javascript" src="~/scripts/app/utils/operation.js"></script>
     <script type="text/javascript" src="~/scripts/app/utils/encodedBinaryData.js"></script>
+    <script type="text/javascript" src="~/scripts/app/utils/domain-tools.js"></script>
 
     <script type="text/javascript" src="~/scripts/app/models/axis-apollo.js"></script>
     <script type="text/javascript" src="~/scripts/app/models/domain.js"></script>
@@ -306,10 +306,10 @@
     <script type="text/javascript" src="~/scripts/app/services/utility.js"></script>
     <script type="text/javascript" src="~/scripts/app/services/bit-diamond.js"></script>
 
-    <script type="text/javascript" src="~/scripts/app/controllers/profile.js"></script>
+    <script type="text/javascript" src="~/scripts/app/controllers/bitlevel.js"></script>
     <script type="text/javascript" src="~/scripts/app/controllers/_shared.js"></script>
 
-    <script type="text/javascript" src="~/scripts/app/modules/profile.js"></script>
+    <script type="text/javascript" src="~/scripts/app/modules/bitlevel.js"></script>
 
 </body>
 </html>

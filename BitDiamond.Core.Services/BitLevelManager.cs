@@ -10,6 +10,8 @@ using BitDiamond.Core.Utils;
 using Axis.Luna.Extensions;
 using Newtonsoft.Json;
 using Axis.Jupiter.Kore.Command;
+using Axis.Pollux.Identity.Principal;
+using System.Linq;
 
 namespace BitDiamond.Core.Services
 {
@@ -40,121 +42,129 @@ namespace BitDiamond.Core.Services
             _authorizer = authorizer;
             _notifier = notifier;
             _blockChain = blockChain;
+            _settingsManager = settingsManager;
 
             UserContext = userContext;
         }
+               
 
-        public Operation<BitLevel> ConfirmUpgrade(string transactionHash)
-            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+        /// <summary>
+        /// Does both upgrading and recycling
+        /// </summary>
+        /// <returns></returns>
+        public Operation<BitLevel> Upgrade()
+        => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+        {
+            //attempt to confirm the upgrade donation first...
+            //note that this method returns "null" for new users without bitlevels
+            ConfirmUpgradeDonnation().Resolve();
+
+            var maxLevelSettings = _settingsManager.GetSetting(Constants.Settings_MaxBitLevel).Resolve();
+            var maxLevel = (int)maxLevelSettings.ParseData<long>();
+            var targetUser = UserContext.CurrentUser();
+            var currentLevel = _query.CurrentBitLevel(targetUser) ?? new BitLevel { Level = maxLevel, Cycle = 0, Donation = new BlockChainTransaction { Status = BlockChainTransactionStatus.Verified } };
+            if (currentLevel.Donation.Status == BlockChainTransactionStatus.Unverified) throw new Exception("Current level donnation is still unverified");
+
+            var myAddress = _query.GetActiveBitcoinAddress(targetUser)
+                                  .ThrowIfNull("You do not have a valid block chain transaction address yet.");
+
+            var nextLevel = (currentLevel.Level + 1) % (maxLevel + 1);
+            var nextCycle = nextLevel == 0 ? currentLevel.Cycle + 1 : currentLevel.Cycle;
+
+            var lastBeneficiaryAddressId = currentLevel.Donation.ReceiverId;
+            var lastBeneficiaryAddress = _query.GetBitcoinAddressById(lastBeneficiaryAddressId);
+            var nextUpgradeBeneficiary = NextUpgradeBeneficiary(lastBeneficiaryAddress?.Owner ?? targetUser, nextLevel, nextCycle).ThrowIfNull("Could not find a valid beneficiary");
+            var beneficiaryAddress = _query.GetActiveBitcoinAddress(nextUpgradeBeneficiary);
+
+            var bl = new BitLevel
             {
-                var currentUser = UserContext.CurrentUser();
-                var currentLevel = _query.CurrentBitLevel(currentUser);
+                Level = nextLevel,
+                Cycle = nextCycle,
+                DonationCount = 0,
+                SkipCount = 0,
+                User = targetUser
+            };
+            _pcommand.Add(bl).Resolve();
 
-                var blockChainTransaction = _blockChain.GetTransactionDetails(transactionHash).Resolve();
-                if (IsSameTransaction(currentLevel.Donation, blockChainTransaction))
-                {
-                    currentLevel.Donation.Status = blockChainTransaction.Status;
-                    currentLevel.Donation.LedgerCount = blockChainTransaction.LedgerCount;
-                    //if the ledger count is  < 3, queue this transaction for verification polling till the ledger
-                    //count is greater than 3
-                    _pcommand.Update(currentLevel);
-
-                    //increment receiver's donnation count
-                    var receiverLevel = _query.CurrentBitLevel(blockChainTransaction.Receiver.Owner);
-                    receiverLevel.DonationCount++;
-                    _pcommand.Update(receiverLevel);
-
-                    return currentLevel;
-                }
-                else throw new Exception("invalid transaction hash");
-            });
-
-        public Operation<BitLevel> RequestUpgrade()
-            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+            var donation = new BlockChainTransaction
             {
-                var currentUser = UserContext.CurrentUser();
-                var currentLevel = _query.CurrentBitLevel(currentUser);                
-                var maxLevel = _settingsManager.GetSetting(Constants.Settings_MaxBitLevel)
-                                               .Resolve()
-                                               .ParseData<int>();
+                Amount = GetUpgradeAmount(nextLevel + 1),
+                LedgerCount = 0,
+                CreatedOn = DateTime.Now,
+                Sender = myAddress,
+                Receiver = beneficiaryAddress,
+                Status = BlockChainTransactionStatus.Unverified,
+                ContextType = Constants.TransactionContext_UpgradeBitLevel,
+                ContextId = bl.Id.ToString()
+            };
+            _pcommand.Add(donation).Resolve();
 
-                if (currentLevel.Level == maxLevel) throw new Exception("cannot upgrade from max level");
+            bl.DonationId = donation.Id;
+            _pcommand.Update(bl);
 
-                //get the ideal upgrade receiver
-                var receiver = _query.Upline(currentUser, currentLevel.Level + 1);
-                var receiverLevel = _query.CurrentBitLevel(receiver.User);
-                if (receiverLevel.Donation.Status != BlockChainTransactionStatus.Valid ||
-                    receiverLevel.Cycle < currentLevel.Cycle ||
-                    receiverLevel.Level <= currentLevel.Level)
-                {
-                    //increment the skip count and persist
-                    receiverLevel.SkipCount++;
-                    _pcommand.Update(receiverLevel);
+            bl.Donation = donation;
+            return bl;
+        });
 
-                    _notifier.NotifyUser(new Notification
-                    {
-                        Message = "Due to your delay in confirming your upgrade, your downline's donnation has skipped you.",
-                        Type = NotificationType.Warning,
-                        Target = receiverLevel.User
-                    });
+        public Operation<BlockChainTransaction> UpdateTransactionHash(string transactionHash)
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            var currentUser = UserContext.CurrentUser();
+            var currentLevel = _query.CurrentBitLevel(currentUser);
 
-                    //find the next best receiver
-                    receiverLevel = _query.GetClosestValidBeneficiary(currentUser);
-                }
+            _query.GetTransactionWithHash(transactionHash)
+                  .ThrowIfNotNull(new Exception("A transaction already exists in the system with the supplied hash"));
 
-                return new BitLevel
-                {
-                    Cycle = currentLevel.Cycle,
-                    Level = currentLevel.Level + 1,
-                    DonationCount = 0,
-                    SkipCount = 0,
-                    User = currentUser,
-                    Donation = new BlockChainTransaction
-                    {
-                        Amount = GetUpgradeAmount(currentLevel.Level + 1),
-                        LedgerCount = 0,
-                        Receiver = _query.GetBitcoinAddress(receiverLevel.User),
-                        Sender = _query.GetBitcoinAddress(currentUser),
-                        CreatedOn = DateTime.Now
-                    }
-                }
-                .Pipe(_bl => _pcommand.Add(_bl));
-            });
+            currentLevel.Donation.TransactionHash = transactionHash;
+            return _pcommand.Update(currentLevel.Donation);
+        });
 
-        public Operation<BitLevel> RecycleAccount()
-            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+        public Operation<BlockChainTransaction> ConfirmUpgradeDonnation()
+        => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+        {
+            var currentUser = UserContext.CurrentUser();
+            var currentLevel = _query.CurrentBitLevel(currentUser);
+
+            // for a new user...
+            if (currentLevel == null) return null;
+
+            //for a donation without receiver and sender
+            else if (currentLevel.Donation.SenderId <= 0 ||
+                    currentLevel.Donation.ReceiverId <= 0)
+                throw new Exception("Invalid Donation transaction Receiver/Sender");
+
+            var blockChainTransaction = _blockChain
+                .GetTransactionDetails(currentLevel.Donation.TransactionHash)
+                .Resolve()
+                .ThrowIf(_bct => _bct.LedgerCount < 3, "Transaction ledger count is less than threshold");
+
+            if (IsSameTransaction(currentLevel.Donation, blockChainTransaction) &&
+                blockChainTransaction.Status == BlockChainTransactionStatus.Verified)
             {
+                currentLevel.Donation.Status = BlockChainTransactionStatus.Verified;
+                currentLevel.Donation.LedgerCount = blockChainTransaction.LedgerCount;
+                _pcommand.Update(currentLevel.Donation);
+                
+                //increment receiver's donnation count
+                var receiverLevel = _query.CurrentBitLevel(blockChainTransaction.Receiver.Owner);
+                receiverLevel.DonationCount++;
+                _pcommand.Update(receiverLevel);
 
-                var currentUser = UserContext.CurrentUser();
-                var currentLevel = _query.CurrentBitLevel(currentUser);
-                var maxLevel = _settingsManager.GetSetting(Constants.Settings_MaxBitLevel)
-                                               .Resolve()
-                                               .ParseData<int>();
+                return currentLevel.Donation;
+            }
+            else throw new Exception("Invalid transaction hash");
+        });
 
-                if (currentLevel != null &&
-                    currentLevel.Level < maxLevel)
-                    throw new Exception($"only level {Constants.Settings_MaxBitLevel} accounts can be recycled");
+        public Operation ReceiverConfirmation(string transactionHash)
+        => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+        {
+            var transaction = _query.GetTransactionWithHash(transactionHash)
+                                    .ThrowIfNull("Transaction not found")
+                                    .ThrowIf(_t => _t.Receiver.OwnerId != UserContext.CurrentUser().UserId, "Invalid transaction");
 
-                var btcAddress = _query.GetBitcoinAddress(currentUser);
-                return new BitLevel
-                {
-                    Cycle = (currentLevel?.Cycle ?? 0) + 1,
-                    Level = 0,
-                    DonationCount = 0,
-                    SkipCount = 0,
-                    User = currentUser,
-                    Donation = new BlockChainTransaction
-                    {
-                        Amount = 0,
-                        LedgerCount = int.MaxValue,
-                        CreatedOn = DateTime.Now,
-                        Receiver = btcAddress,
-                        Sender = btcAddress,
-                        Status = BlockChainTransactionStatus.Valid
-                    }
-                }
-                .Pipe(_bl => _pcommand.Add(_bl));
-            });
+            transaction.Status = BlockChainTransactionStatus.Verified;
+            _pcommand.Update(transaction).Resolve();
+        });
 
 
         public Operation<BitLevel> CurrentUserLevel()
@@ -169,11 +179,109 @@ namespace BitDiamond.Core.Services
             => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(),
                                            () => _query.GetBitLevelHistory(UserContext.CurrentUser()));
 
+        public Operation<decimal> GetUpgradeFee(int level)
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            var feeVector = _settingsManager
+                .GetSetting(Constants.Settings_UpgradeFeeVector)
+                .Resolve()
+                .ParseData(_json => JsonConvert.DeserializeObject<decimal[]>(_json, Constants.Misc_DefaultJsonSerializerSettings));
+
+            return feeVector[level - 1];
+        });
+
+        public Operation<BitcoinAddress> GetUpgradeTransactionReceiver(long id)
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            var bl = _query.GetBitLevelById(id);
+            var trnx = _query.GetBlockChainTransaction(bl.DonationId ?? 0);
+            return _query.GetBitcoinAddressById(trnx.ReceiverId);
+        });
+
+        public Operation<BlockChainTransaction> GetCurrentUpgradeTransaction()
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            var bl = _query.CurrentBitLevel(UserContext.CurrentUser());
+            return _query.GetBlockChainTransaction(bl.DonationId ?? 0);
+        });
+
+        public Operation<IEnumerable<BitcoinAddress>> GetAllBitcoinAddresses()
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            return _query.GetAllBitcoinAddresses(UserContext.CurrentUser())
+                         .OrderByDescending(_bca => _bca.CreatedOn)
+                         .AsEnumerable();
+        });
+
+        public Operation<BitcoinAddress> AddBitcoindAddress(BitcoinAddress address)
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            if (address == null || address.Id != 0) throw new Exception("Invalid bit address given");
+            else return address.With(new {OwnerId = UserContext.CurrentUser().UserId }).Validate()
+            .Then(opr =>
+            {
+                address.IsVerified = false;
+                address.IsActive = false;
+
+                return _pcommand.Add(address);
+            });
+        });
+
+        public Operation<BitcoinAddress> ActivateAddress(long bitcoinAddressId)
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            var address = _query.GetBitcoinAddressById(bitcoinAddressId);
+            if (address == null || address.OwnerId != UserContext.CurrentUser().UserId || !address.IsVerified) throw new Exception("Invalid bitcoin address");
+            else if(!address.IsActive)
+            {
+                _query.GetActiveBitcoinAddress(UserContext.CurrentUser())
+                      .Pipe(_bca => _bca != null ? DeactivateAddress(_bca.Id) : Operation.FromValue<BitcoinAddress>(null))
+                      .Then(opr =>
+                      {
+                          address.IsActive = true;
+                          return _pcommand.Update(address);
+                      })
+                      .Resolve();
+            }
+
+            return address;
+        });
+
+        public Operation<BitcoinAddress> DeactivateAddress(long bitcoinAddressId)
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            var address = _query.GetBitcoinAddressById(bitcoinAddressId);
+            if (address == null || address.OwnerId != UserContext.CurrentUser().UserId) throw new Exception("Invalid bitcoin address");
+            else if (address.IsActive)
+            {
+                address.IsActive = false;
+                _pcommand.Update(address);
+            }
+
+            return address;
+        });
+
+        public Operation<BitcoinAddress> VerifyAddress(long bitcoinAddressId)
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            var address = _query.GetBitcoinAddressById(bitcoinAddressId)
+                                .ThrowIfNull("Invalid bitcoin id specified");
+            return _blockChain.VerifyBitcoinAddress(address);
+        });
+
+        public Operation<BitcoinAddress> GetActiveBitcoinAddress()
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            return _query.GetActiveBitcoinAddress(UserContext.CurrentUser());
+        });
+
+
         private decimal GetUpgradeAmount(int level)
-            => _settingsManager.GetSetting(Constants.Settings_UpgradeCostVector)
+            => _settingsManager.GetSetting(Constants.Settings_UpgradeFeeVector)
                                .Resolve()
                                .ParseData(_d => JsonConvert.DeserializeObject<decimal[]>(_d))
                                [level];
+
 
         private bool IsSameTransaction(BlockChainTransaction tnx1, BlockChainTransaction tnx2)
         {
@@ -182,5 +290,22 @@ namespace BitDiamond.Core.Services
                    (tnx1.Receiver?.Equals(tnx2.Receiver) ?? false) &&
                    (tnx1.Sender?.Equals(tnx2.Sender) ?? false);
         }
+
+        private User NextUpgradeBeneficiary(User lastBeneficiary, int nextLvel, int nextCycle)
+        => _query.Uplines(lastBeneficiary)
+                 .FirstOrDefault(_rn =>
+                 {
+                     var bl = _query.CurrentBitLevel(_rn.User);
+                     if (bl.Cycle < nextCycle ||
+                        bl.Cycle == nextCycle && bl.Level <= nextLvel)
+                     {
+                         bl.SkipCount++;
+                         _pcommand.Update(bl);
+                 
+                         return false;
+                     }
+                     else return true;
+                 })?
+                 .User;
     }
 }

@@ -11,12 +11,16 @@ namespace BitDiamond.Core.Utils
         public static readonly string Settings_DefaultContextVerificationExpirationTime = "System.ContextVerification.ValidPeriod";
         public static readonly string Settings_DefaultPasswordExpirationTime = "System.Credential.Password.ValidPeriod";
         public static readonly string Settings_MaxBitLevel = "System.BitLevel.MaxLevel";
-        public static readonly string Settings_UpgradeCostVector = "system.BitLevel.UpgradeCostVector";
+        public static readonly string Settings_UpgradeFeeVector = "system.BitLevel.UpgradeFeeVector";
         #endregion
 
         #region Verification Contexts
         public static readonly string VerificationContext_UserActivation = "Context.UserActivation";
         public static readonly string VerificationContext_CredentialReset = "Context.CredentialUpdate";
+        #endregion
+
+        #region Transaction Contexts
+        public static readonly string TransactionContext_UpgradeBitLevel = "BlockChainTransactionContext.UpgradeBitLevel";
         #endregion
 
         #region Roles
@@ -41,7 +45,7 @@ namespace BitDiamond.Core.Utils
         #endregion
 
         #region Misc
-        public static readonly JsonSerializerSettings DefaultJsonSerializerSettings = new JsonSerializerSettings
+        public static readonly JsonSerializerSettings Misc_DefaultJsonSerializerSettings = new JsonSerializerSettings
         {
             Converters = Enumerate<JsonConverter>()
                 .Append(new Axis.Apollo.Json.TimeSpanConverter())

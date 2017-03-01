@@ -2,6 +2,8 @@ var BitDiamond;
 (function (BitDiamond) {
     var Utils;
     (function (Utils) {
+        //http://stackoverflow.com/a/46181/4137383
+        Utils.EmailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         var lut = [];
         for (var i = 0; i < 256; i++) {
             lut[i] = (i < 16 ? '0' : '') + (i).toString(16);
@@ -195,3 +197,4 @@ var BitDiamond;
         Utils.MimeMap = MimeMap;
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=tools.js.map

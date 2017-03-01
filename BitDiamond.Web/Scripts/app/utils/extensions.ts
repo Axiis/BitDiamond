@@ -22,6 +22,8 @@ interface String {
     startsWith(str: string): boolean;
     endsWith(str: string): boolean;
     contains(str: string): boolean;
+
+    asChars(): string[];
 }
 
 
@@ -35,6 +37,7 @@ interface Array<T> {
     clear();
     reduce<U>(seed: U, transformFunc: (in1: U, in2: T) => U): U;
     contains(value: T): boolean;
+    insert(index: number, item: T): T[]
 }
 
 module BitDiamond.Extensions {
@@ -146,6 +149,18 @@ module BitDiamond.Extensions {
 
     ///string extension
 
+    Object.defineProperty(String.prototype, 'asChars', {
+        value: function (): string[] {
+            var _this = this as string;
+            var arr: string[] = [];
+            for (var cnt = 0; cnt < _this.length; cnt++) arr.push(_this.charAt(cnt));
+            return arr;
+        },
+        writable: false,
+        configurable: false,
+        enumerable: false
+    });
+
     Object.defineProperty(String.prototype, 'trimLeft', {
         value: function (str: string): string {
             var _this = this as string;
@@ -220,6 +235,11 @@ module BitDiamond.Extensions {
 
 
     ///array extensions    
+
+    Array.prototype.insert = function <T>(index, item): T[] {
+        var _this = this as T[];
+        return _this.splice(index, 0, item);
+    };
 
     Array.prototype.paginate = function<Data>(sequence: Array<Data>, pageIndex: number, pageSize: number): BitDiamond.Utils.SequencePage<Data> {
 

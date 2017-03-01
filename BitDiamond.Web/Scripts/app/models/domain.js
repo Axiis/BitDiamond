@@ -46,8 +46,7 @@ var BitDiamond;
         var BlockChainTransactionStatus;
         (function (BlockChainTransactionStatus) {
             BlockChainTransactionStatus[BlockChainTransactionStatus["Unverified"] = 0] = "Unverified";
-            BlockChainTransactionStatus[BlockChainTransactionStatus["Invalid"] = 1] = "Invalid";
-            BlockChainTransactionStatus[BlockChainTransactionStatus["Valid"] = 2] = "Valid";
+            BlockChainTransactionStatus[BlockChainTransactionStatus["Verified"] = 1] = "Verified";
         })(BlockChainTransactionStatus = Models.BlockChainTransactionStatus || (Models.BlockChainTransactionStatus = {}));
         var NotificationType;
         (function (NotificationType) {
@@ -58,3 +57,4 @@ var BitDiamond;
         })(NotificationType = Models.NotificationType || (Models.NotificationType = {}));
     })(Models = BitDiamond.Models || (BitDiamond.Models = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=domain.js.map

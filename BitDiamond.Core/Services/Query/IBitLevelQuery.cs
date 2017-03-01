@@ -1,6 +1,7 @@
 ﻿using Axis.Pollux.Identity.Principal;
 using BitDiamond.Core.Models;
 using System.Collections.Generic;
+using Axis.Luna;
 
 namespace BitDiamond.Core.Services.Query
 {
@@ -14,9 +15,17 @@ namespace BitDiamond.Core.Services.Query
 
         IEnumerable<BitLevel> GetBitLevelHistory(User user);
         BitLevel CurrentBitLevel(User user);
-        BitLevel GetClosestValidBeneficiary(User user);
+        BitLevel PreviousBitLevel(User targetUser);
+        BitLevel GetNextUpgradeBeneficiary(User user);
         BitLevel GetBitLevelById(long id);
 
-        BitcoinAddress GetBitcoinAddress(User user);
+        BitcoinAddress GetActiveBitcoinAddress(User user);
+        BitcoinAddress GetBitcoinAddressById(long id);
+        IEnumerable<BitcoinAddress> GetBitcoinAddresses(User user);
+        User GetUser(string targetUser);
+        BlockChainTransaction GetTransactionWithHash(string transactionHash);
+        BitLevel GetBitLevelHavingTransaction(long id);
+        BlockChainTransaction GetBlockChainTransaction(long transactionId);
+        IEnumerable<BitcoinAddress> GetAllBitcoinAddresses(User user);
     }
 }

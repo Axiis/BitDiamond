@@ -28,3 +28,12 @@
 4.	Create an "invalidate logon" operation in the AccountService. See the implementation in the "bit-diamond.ts" file for
 	guidance.
 5.  RunPerRequest MUST dispose the services in reverse order of registration [DONE]
+
+
+2017-02-25 ================================================================================================================
+1.	Every new level a user attains either by a level upgrade, or an account Recycle, a blockchaintransaction object is
+	created and associated to it. This transaction object is used to track the "upgrade" to the next level. When a user
+	upgrades to the highest level, he/she isn't given any new transaction objects, until a recycle is done. This means i 
+	will have to make changes to the BitLevel Manager.
+2.	Part of activating a Bitcoin address is SETTING it as the CURRENT BIT-LEVEL's DONATION SENDER address. This is 
+	VITAL.

@@ -132,12 +132,16 @@ module BitDiamond.Models {
 	export interface IBaseModel<IdType>
 	{
 		Id: IdType;
+		CreatedOn: Apollo.Models.JsonDateTime;
+		ModifiedOn?: Apollo.Models.JsonDateTime;
 	}
 	export interface IBitcoinAddress extends IBaseModel<number>
 	{
 		BlockChainAddress: string;
 		Owner: Pollux.Models.IUser;
 		OwnerId: string;
+		IsVerified: boolean;
+		IsActive: boolean;
 	}
 	export interface IBlockChainTransaction extends IBaseModel<number>
 	{
@@ -164,7 +168,7 @@ module BitDiamond.Models {
 	export interface IBitLevel extends IBaseModel<number>
 	{
 		Donation: BitDiamond.Models.IBlockChainTransaction;
-		DonationId: number;
+		DonationId?: number;
 		Level: number;
 		SkipCount: number;
 		DonationCount: number;
@@ -215,8 +219,7 @@ module BitDiamond.Models {
 	}
 	export enum BlockChainTransactionStatus { 
 		Unverified = 0, 
-		Invalid = 1, 
-		Valid = 2, 
+		Verified = 1, 
 	}
 	export enum NotificationType { 
 		Info = 0, 

@@ -18,7 +18,14 @@ var BitDiamond;
                     this.__account = __account;
                     this.__notify = __notify;
                     this.__userContext = __userContext;
-                    this.__userContext.profileImageRef.then(function (pimg) { return _this.profileImage = pimg; });
+                    this.__userContext.profileImageRef.then(function (pimg) {
+                        if (!Object.isNullOrUndefined(pimg)) {
+                            _this.profileImage = pimg;
+                        }
+                    }).finally(function () {
+                        if (Object.isNullOrUndefined(_this.profileImage))
+                            _this.profileImage = {};
+                    });
                     this.__userContext.userBio.then(function (bio) {
                         if (!Object.isNullOrUndefined(bio)) {
                             _this.userBio = bio;
@@ -26,13 +33,21 @@ var BitDiamond;
                             _this.userBio.copyTo(_this.tempBio);
                             _this._dobField = _this.userBio.Dob.toMoment().toDate();
                         }
-                    }, function (err) { return _this.userBio = {}; });
+                    }).finally(function () {
+                        if (Object.isNullOrUndefined(_this.userBio)) {
+                            _this.userBio = {};
+                        }
+                    });
                     this.__userContext.userContact.then(function (contact) {
                         if (!Object.isNullOrUndefined(contact)) {
                             _this.userContact = contact;
                             _this.userContact.copyTo(_this.tempContact);
                         }
-                    }, function (err) { return _this.userContact = {}; });
+                    }).finally(function () {
+                        if (Object.isNullOrUndefined(_this.userContact)) {
+                            _this.userContact = {};
+                        }
+                    });
                     this.__userContext.user.then(function (u) {
                         _this.user = u;
                         _this.tempBio.OwnerId = _this.user.UserId;
@@ -107,7 +122,7 @@ var BitDiamond;
                             _this.__notify.error('Couldn\'t update your profile image');
                         }).finally(function () {
                             _this.isUpdatingProfileImage = false;
-                            $('profileImageSelector')[0].clear();
+                            $('#profileImageSelector')[0].reset();
                         });
                     },
                     enumerable: true,
@@ -167,3 +182,4 @@ var BitDiamond;
         })(Profile = Controllers.Profile || (Controllers.Profile = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=profile.js.map

@@ -30,57 +30,57 @@ namespace BitDiamond.Web.Controllers.Api
 
         #region Account
         [HttpPost, Route("api/accounts/users")]
-        public IHttpActionResult RegisterUser([FromBody] Models.RegisterUserArgs data)
+        public IHttpActionResult RegisterUser([FromBody] AccountControllerModels.RegisterUserArgs data)
         => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.RegisterUser(data.TargetUser, data.Referrer, data.Credential))
             .OperationResult(Request);
 
         [HttpPost, Route("api/accounts/admins")]
-        public IHttpActionResult RegisterAdminUser([FromBody] Models.RegisterUserArgs data)
+        public IHttpActionResult RegisterAdminUser([FromBody] AccountControllerModels.RegisterUserArgs data)
         => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.RegisterAdminUser(data.TargetUser, data.Credential))
             .OperationResult(Request);
 
         [HttpPut, Route("api/accounts/users/deactivate")]
-        public IHttpActionResult DeactivateUser([FromBody] Models.UserEmailArgs data)
+        public IHttpActionResult DeactivateUser([FromBody] AccountControllerModels.UserEmailArgs data)
         => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.DeactivateUser(data.TargetUser))
             .OperationResult(Request);
 
         [HttpPut, Route("api/accounts/users/block")]
-        public IHttpActionResult BlockUser([FromBody] Models.UserEmailArgs data)
+        public IHttpActionResult BlockUser([FromBody] AccountControllerModels.UserEmailArgs data)
         => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.BlockUser(data.TargetUser))
             .OperationResult(Request);
 
 
         [HttpPut, Route("api/accounts/users/activations")]
-        public IHttpActionResult RequestUserActivation([FromBody] Models.UserEmailArgs data)
+        public IHttpActionResult RequestUserActivation([FromBody] AccountControllerModels.UserEmailArgs data)
         => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.RequestUserActivation(data.TargetUser))
             .OperationResult(Request);
 
         [HttpPut, Route("api/accounts/users/activations/verify")]
-        public IHttpActionResult VerifyUserActivation([FromBody] Models.UserActivationArgs data)
+        public IHttpActionResult VerifyUserActivation([FromBody] AccountControllerModels.UserActivationArgs data)
         => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.VerifyUserActivation(data.TargetUser, data.Token))
             .OperationResult(Request);
 
 
         [HttpPut, Route("api/accounts/users/credentials/reset-tokens")]
-        public IHttpActionResult RequestCredentialReset([FromBody] Models.CredentialUpdateArgs data)
+        public IHttpActionResult RequestCredentialReset([FromBody] AccountControllerModels.CredentialUpdateArgs data)
         => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.RequestCredentialReset(data.Metadata, data.TargetUser))
             .OperationResult(Request);
 
         [HttpPut, Route("api/accounts/users/credentials/reset-tokens/verify")]
-        public IHttpActionResult ResetCredential([FromBody] Models.CredentialUpdateArgs data)
+        public IHttpActionResult ResetCredential([FromBody] AccountControllerModels.CredentialUpdateArgs data)
         => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.ResetCredential(data.New, data.Token, data.TargetUser))
             .OperationResult(Request);
 
         [HttpPut, Route("api/accounts/users/logons/invalidate")]
-        public IHttpActionResult InvalidateLogon([FromBody] Models.LogonArgs data)
+        public IHttpActionResult InvalidateLogon([FromBody] AccountControllerModels.LogonArgs data)
         => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.InvalidateLogon(data.Token))
             .OperationResult(Request);
@@ -122,13 +122,13 @@ namespace BitDiamond.Web.Controllers.Api
 
         #region User data
         [HttpPost, Route("api/accounts/userdata")]
-        public IHttpActionResult AddData([FromBody] Models.UserDataArgs data)
+        public IHttpActionResult AddData([FromBody] AccountControllerModels.UserDataArgs data)
         => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.AddData(data.Data))
             .OperationResult(Request);
 
         [HttpPut, Route("api/accounts/userdata")]
-        public IHttpActionResult UpdateData([FromBody] Models.UserDataArgs data)
+        public IHttpActionResult UpdateData([FromBody] AccountControllerModels.UserDataArgs data)
         => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.UpdateData(data.Data))
             .OperationResult(Request);
@@ -136,7 +136,7 @@ namespace BitDiamond.Web.Controllers.Api
         [HttpDelete, Route("api/accounts/userdata")]
         public IHttpActionResult RemoveData(string data)
         => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
-            .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<Models.UserDataArgs>(_jopr.Result, Constants.DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
+            .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<AccountControllerModels.UserDataArgs>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
             .Then(argopr => _account.RemoveData(argopr.Result.Names))
             .OperationResult(Request);
 
@@ -147,12 +147,12 @@ namespace BitDiamond.Web.Controllers.Api
         [HttpGet, Route("api/accounts/userdata/filter")]
         public IHttpActionResult GetUserData(string data)
         => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
-            .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<Models.UserDataArgs>(_jopr.Result, Constants.DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
+            .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<AccountControllerModels.UserDataArgs>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
             .Then(argopr => _account.GetUserData(argopr.Result.Name))
             .OperationResult(Request);
 
         [HttpPut, Route("api/accounts/profile-images")]
-        public IHttpActionResult UpdateProfileImage([FromBody] Models.ProfileImageArgs data)
+        public IHttpActionResult UpdateProfileImage([FromBody] AccountControllerModels.ProfileImageArgs data)
         => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.UpdateProfileImage(data.Image, data.OldImageUrl))
             .OperationResult(Request);
@@ -160,7 +160,7 @@ namespace BitDiamond.Web.Controllers.Api
     }
 
 
-    namespace Models
+    namespace AccountControllerModels
     {
         public class LogonArgs
         {

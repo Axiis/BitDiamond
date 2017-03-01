@@ -8,6 +8,7 @@ using static Axis.Luna.Extensions.ExceptionExtensions;
 using Axis.Jupiter.Europa;
 using System.Data.SqlClient;
 using Axis.Luna.Extensions;
+using System;
 
 namespace BitDiamond.Data.EF.Query
 {
@@ -37,7 +38,7 @@ namespace BitDiamond.Data.EF.Query
         public IEnumerable<ReferralNode> Downlines(User user)
         => UserRef(user).Pipe(_ur => _refQuery.AllDownlines(_ur));
 
-        public BitcoinAddress GetBitcoinAddress(User user)
+        public BitcoinAddress GetActiveBitcoinAddress(User user)
         => _europa.Store<BitcoinAddress>()
                   .QueryWith(_bca => _bca.Owner)
                   .Where(_bca => _bca.Owner.EntityId == user.EntityId)
@@ -56,15 +57,17 @@ namespace BitDiamond.Data.EF.Query
                   .OrderByDescending(_bca => _bca.CreatedOn)
                   .ToArray();
 
-        public BitLevel GetClosestValidBeneficiary(User user)
+        public BitLevel GetNextUpgradeBeneficiary(User user)
         {
             var uplines = Uplines(user);
             var userLevel = CurrentBitLevel(user);
             return uplines.Select(_ul => CurrentBitLevel(_ul.User))
-                          .Where(_bl => _bl.Donation.Status == BlockChainTransactionStatus.Valid)
                           .Where(_bl => (_bl.Level > userLevel.Level && _bl.Cycle == userLevel.Cycle) || _bl.Cycle > userLevel.Cycle)
                           .FirstOrDefault();
         }
+
+        public User GetUser(string targetUser)
+        => _europa.Store<User>().Query.FirstOrDefault(_u => _u.EntityId == targetUser);
 
         public IEnumerable<ReferralNode> Referrals(User user)
         {
@@ -145,5 +148,54 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
                   .QueryWith(_r => _r.User)
                   .Where(_r => _r.User.EntityId == user.EntityId)
                   .FirstOrDefault();
+
+        public BitcoinAddress GetBitcoinAddressById(long id)
+        => _europa.Store<BitcoinAddress>()
+                  .QueryWith(_ba => _ba.Owner)
+                  .Where(_ba => _ba.Id == id)
+                  .FirstOrDefault();
+
+        public BitLevel GetBitLevel(User user)
+        => _europa.Store<BitLevel>()
+                  .QueryWith(_ba => _ba.Donation, _ba => _ba.User)
+                  .Where(_ba => _ba.UserId == user.UserId)
+                  .FirstOrDefault();
+
+        public BitLevel PreviousBitLevel(User targetUser)
+        => _europa.Store<BitLevel>()
+                  .QueryWith(_bl => _bl.User, _bl => _bl.Donation)
+                  .OrderByDescending(_bl => _bl.CreatedOn)
+                  .Skip(1).Take(1)
+                  .FirstOrDefault();
+
+        public BlockChainTransaction GetTransactionWithHash(string transactionHash)
+        => _europa.Store<BlockChainTransaction>()
+                  .QueryWith(_bct => _bct.Receiver, _bct => _bct.Sender)
+                  .Where(_bct => _bct.TransactionHash == transactionHash)
+                  .FirstOrDefault();
+
+        public BitLevel GetBitLevelHavingTransaction(long id)
+        => _europa.Store<BitLevel>()
+                  .QueryWith(_bl => _bl.Donation)
+                  .Where(_bl => _bl.DonationId == id)
+                  .FirstOrDefault();
+
+        public BlockChainTransaction GetBlockChainTransaction(long transactionId)
+        => _europa.Store<BlockChainTransaction>()
+                  .QueryWith(_bct => _bct.Receiver, _btc => _btc.Sender)
+                  .Where(_bct => _bct.Id == transactionId)
+                  .FirstOrDefault();
+
+        public IEnumerable<BitcoinAddress> GetBitcoinAddresses(User user)
+        => _europa.Store<BitcoinAddress>()
+                  .QueryWith(_bca => _bca.Owner)
+                  .Where(_bca => _bca.OwnerId == user.EntityId)
+                  .ToArray();
+
+        public IEnumerable<BitcoinAddress> GetAllBitcoinAddresses(User user)
+        => _europa.Store<BitcoinAddress>()
+                  .QueryWith(_bca => _bca.Owner)
+                  .Where(_bca => _bca.OwnerId == user.UserId)
+                  .ToArray();
     }
 }

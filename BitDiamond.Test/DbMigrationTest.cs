@@ -8,6 +8,10 @@ using BitDiamond.Data.EF;
 using Axis.Luna.Extensions;
 using Axis.Pollux.Identity.Principal;
 using Axis.Pollux.RBAC.Auth;
+using BitDiamond.Web.Infrastructure.Utils;
+using BitDiamond.Core.Models;
+using System.Linq;
+using BitDiamond.Core.Utils;
 
 namespace BitDiamond.Test
 {
@@ -17,26 +21,31 @@ namespace BitDiamond.Test
         [TestMethod]
         public void TestMethod1()
         {
-            var config = new ContextConfiguration<EuropaContext>()
-                .WithConnection("server=(local);database=BitDiamondDb_Test;user id=sa;password=developer;Max Pool Size=1000;Min Pool Size=10;pooling=true;multipleactiveresultsets=True;")
-                .WithEFConfiguraton(_efc =>
-                {
-                    _efc.LazyLoadingEnabled = false;
-                    _efc.ProxyCreationEnabled = false;
-                })
-                .WithInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<EuropaContext>())
-                .UsingModule(new IdentityAccessModuleConfig())
-                .UsingModule(new AuthenticationAccessModuleConfig())
-                .UsingModule(new RBACAccessModuleConfig())
-                .UsingModule(new BitDiamondModuleConfig());
-
-            new EuropaContext(config).Using(europa =>
+            try
             {
-                europa.Store<User>().Query.ForAll((cnt, next) =>
+                var config = new ContextConfiguration<EuropaContext>()
+                    .WithConnection("server=(local);database=BitDiamondDb_Test;user id=sa;password=developer;Max Pool Size=1000;Min Pool Size=10;pooling=true;multipleactiveresultsets=True;")
+                    .WithEFConfiguraton(_efc =>
+                    {
+                        _efc.LazyLoadingEnabled = false;
+                        _efc.ProxyCreationEnabled = false;
+                    })
+                    .WithInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<EuropaContext>())
+                    .UsingModule(new IdentityAccessModuleConfig())
+                    .UsingModule(new AuthenticationAccessModuleConfig())
+                    .UsingModule(new RBACAccessModuleConfig())
+                    .UsingModule(new BitDiamondModuleConfig());
+
+                new EuropaContext(config).Using(europa =>
                 {
-                    Console.WriteLine(next.EntityId);
+                    var ss = europa.Store<SystemSetting>().Query.FirstOrDefault(_ss => _ss.Name == Constants.Settings_MaxBitLevel);
+                    Console.WriteLine(ss?.Data ?? "null");
                 });
-            });
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
         }
 

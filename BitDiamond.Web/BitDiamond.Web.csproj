@@ -1167,6 +1167,9 @@
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\Dashboard.cshtml" />
     <Content Include="Views\Profile\Home.cshtml" />
+    <Content Include="Views\BitLevel\Index.cshtml" />
+    <Content Include="Views\BitLevel\Home.cshtml" />
+    <Content Include="Views\BitLevel\CoinAddresses.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1179,7 +1182,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\Api\AccountController.cs" />
+    <Compile Include="Controllers\Api\BitLevelController.cs" />
     <Compile Include="Controllers\Mvc\AccountController.cs" />
+    <Compile Include="Controllers\Mvc\BitLevelController.cs" />
     <Compile Include="Controllers\Mvc\ProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1224,6 +1229,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\app\controllers\account.ts" />
+    <TypeScriptCompile Include="Scripts\app\controllers\bitlevel.ts" />
     <TypeScriptCompile Include="Scripts\app\controllers\profile.ts" />
     <TypeScriptCompile Include="Scripts\app\controllers\_shared.ts" />
     <TypeScriptCompile Include="Scripts\app\directives\binaryData.ts" />
@@ -1233,10 +1239,12 @@
     <TypeScriptCompile Include="Scripts\app\models\axis-apollo.ts" />
     <TypeScriptCompile Include="Scripts\app\models\domain.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\account.ts" />
+    <TypeScriptCompile Include="Scripts\app\modules\bitlevel.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\profile.ts" />
     <TypeScriptCompile Include="Scripts\app\services\bit-diamond.ts" />
     <TypeScriptCompile Include="Scripts\app\services\utility.ts" />
     <TypeScriptCompile Include="Scripts\app\utils\constants.ts" />
+    <TypeScriptCompile Include="Scripts\app\utils\domain-tools.ts" />
     <TypeScriptCompile Include="Scripts\app\utils\encodedBinaryData.ts" />
     <TypeScriptCompile Include="Scripts\app\utils\extensions.ts" />
     <TypeScriptCompile Include="Scripts\app\utils\external-libs.ts" />

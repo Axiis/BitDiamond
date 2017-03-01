@@ -6,11 +6,14 @@ namespace BitDiamond.Data.EF.Mappings
     {
         public BitLevelMapping()
         {
-            this.Ignore(e => e.Donation);
-
             this.HasRequired(e => e.User)
                 .WithMany()
                 .HasForeignKey(e => e.UserId)
+                .WillCascadeOnDelete(false);
+
+            this.HasOptional(e => e.Donation)
+                .WithMany()
+                .HasForeignKey(e => e.DonationId)
                 .WillCascadeOnDelete(false);
         }
     }

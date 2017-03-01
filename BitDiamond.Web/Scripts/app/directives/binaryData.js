@@ -4,6 +4,10 @@ var BitDiamond;
     (function (Directives) {
         var BinaryData = (function () {
             function BinaryData() {
+                this.scope = {
+                    binaryData: "="
+                };
+                this.restrict = 'A';
             }
             BinaryData.prototype.link = function (scope, element, attributes) {
                 element.bind("change", function (changeEvent) {
@@ -29,3 +33,4 @@ var BitDiamond;
         Directives.BinaryData = BinaryData;
     })(Directives = BitDiamond.Directives || (BitDiamond.Directives = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=binaryData.js.map

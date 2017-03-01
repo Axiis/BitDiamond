@@ -34,6 +34,8 @@ namespace BitDiamond.Web.Infrastructure.Services
         public Operation Delete(string blobUri)
         => Operation.Try(() =>
         {
+            if (string.IsNullOrWhiteSpace(blobUri)) return;
+
             //delete blob file
             var finfo = new FileInfo(GetLocalPath(blobUri));
             if (finfo.Exists) finfo.Delete();

@@ -1,0 +1,161 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">Bit Level</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href>Bit Level</a></li>
+            <li><a href class="active">Bitcoin Addresses</a></li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<ul class="nav customtab nav-tabs" role="tablist"
+    style="margin-bottom:20px;">
+    <li role="presentation">
+        <a href role="tab" ui-sref="home">
+            <span class="visible-xs">
+                <i class="ti-home" title="Home"></i>
+            </span>
+            <span class="hidden-xs">Home</span>
+        </a>
+    </li>
+    <li role="presentation" class="active">
+        <a href role="tab">
+            <span class="visible-xs">
+                <i class="icon-settings" title="Bitcoin Address"></i>
+            </span>
+            <span class="hidden-xs">Bitcoin Addresses</span>
+        </a>
+    </li>
+    <li role="presentation" class="">
+        <a href ui-sref="history" role="tab">
+            <span class="visible-xs">
+                <i class="ti-time" title="History"></i>
+            </span>
+            <span class="hidden-xs">History</span>
+        </a>
+    </li>
+</ul>
+
+<div ng-hide="vm.isLoadingView">
+
+    <div class="row bd-slide-in-left bd-fade-in"
+         ng-hide="vm.isEditingAddress">
+        <div class="col-md-6">
+            <button class="btn btn-outline btn-info"
+                    ng-click="vm.editNewAddress()">
+                <i class="ti-plus"></i>&nbsp;&nbsp;Add Bitcoin Address
+            </button>
+        </div>
+    </div>
+
+
+    <div class="row bd-slide-in-left bd-fade-in"
+         ng-show="vm.isEditingAddress">
+        <div class="col-md-6 col-lg-6 col-sm-12"
+             style="margin-top:30px;">
+            <div class="white-box">
+                <h3 class="box-title">
+                    <i class="fa fa-btc fa-2x"></i> Transaction Address
+                </h3>
+                <div class="row sales-report">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="form-material form-horizontal">
+                                    <input type="text" class="form-control"
+                                           placeholder="Enter Bitcoin Address"
+                                           ng-model="vm.tempAddress.BlockChainAddress" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-outline btn-default"
+                        ng-click="vm.persistNewAddress()">
+                    <span ng-hide="vm.isPersistingAddress">
+                        <i class="ti-save"></i>&nbsp;&nbsp;Update
+                    </span>
+                    <ring-loader size="18" color="white" show="vm.isPersistingAddress"></ring-loader>
+                </button>
+                <button class="btn btn-outline btn-danger"
+                        ng-click="vm.cancelEdit()">
+                    <i class="ti-close"></i>&nbsp;&nbsp;Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row bd-slide-in-left bd-fade-in"
+         ng-show="vm.canShowActiveAddress()">
+        <div class="col-md-6 col-lg-6 col-sm-12"
+             style="margin-top:30px;">
+            <div class="white-box">
+                <h3 class="box-title text-muted">
+                    <i class="fa fa-btc fa-2x"></i>&nbsp;&nbsp;Transaction Address
+
+                    <i style='display:inline-block; padding-left:10px;' class="ti-flag-alt pull-right text-primary" ></i>
+                    <i style='display:inline-block; padding-left:10px;' class="ti-thumb-up pull-right text-success"></i>
+                </h3>
+                <div class="row sales-report" style="border-left:2px solid #00c292;">
+                    <div class="col-md-12">
+                        <h6>{{vm.activeAddress.BlockChainAddress}}</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row bd-slide-in-left bd-fade-in"
+         ng-hide="vm.isEditingAddress"
+         ng-repeat="address in vm.addresses">
+
+        <div class="col-md-6 col-lg-6 col-sm-12"
+             style="margin-top:30px;">
+            <div class="white-box">
+                <h3 class="box-title text-muted">
+                    <i class="fa fa-btc fa-2x"></i>&nbsp;&nbsp;Transaction Address
+
+                    <i style='display:inline-block; padding-left:10px;' class="ti-flag-alt pull-right text-primary" ng-show="address.IsVerified"></i>
+                    <i style='display:inline-block; padding-left:10px;' class="ti-thumb-up pull-right text-success" ng-show="vm.canShowActivatedFlag(address)"></i>
+                </h3>
+                <div class="row sales-report"
+                     style="border-left:2px solid"
+                     ng-style="vm.cardStateColor(address)">
+                    <div class="col-md-12">
+                        <h6>{{address.BlockChainAddress}}</h6>
+                    </div>
+                </div>
+                <button class="btn btn-outline btn-success"
+                        ng-show="vm.canActivate(address)"
+                        ng-click="vm.activateAddress(address)">
+                    <span ng-hide="vm.isActivatingAddress(address)">
+                        <i class="ti-thumb-up"></i> Activate
+                    </span>
+                    <ring-loader size="18" color="white" show="vm.isActivatingAddress(address)"></ring-loader>
+                </button>
+                <button class="btn btn-outline btn-primary"
+                        ng-hide="address.IsVerified"
+                        ng-click="vm.verifyAddress(address)">
+                    <span ng-hide="vm.isVerifyingAddress(address)">
+                        <i class="ti-flag-alt"></i> Verify
+                    </span>
+                    <ring-loader size="18" color="white" show="vm.isVerifyingAddress(address)"></ring-loader>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-show="vm.isLoadingView"
+     style="position:absolute; left:220px; bottom:60px; right:0; top:166px;">
+    <box-loader size="40" color="white" show="true" block-loader="true"></box-loader>
+</div>

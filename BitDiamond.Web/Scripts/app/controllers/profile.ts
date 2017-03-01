@@ -81,18 +81,18 @@ module BitDiamond.Controllers.Profile {
         get dobBinding(): Date {
             return this._dobField;
         }
-
+        
         set previewImage(value: Utils.EncodedBinaryData) {
             this.isUpdatingProfileImage = true;
             var oldUrl: string = Object.isNullOrUndefined(this.profileImage) ? '' : (this.profileImage.Data || '');
 
-            this.__account.updateProfileImage(value, oldUrl).then(opr => {
+            this.__account.updateProfileImage(value, oldUrl).then(opr => {                
                 this.profileImage.Data = opr.Result;
             }, err => {
                 this.__notify.error('Couldn\'t update your profile image');
             }).finally(() => {
                 this.isUpdatingProfileImage = false;
-                ($('profileImageSelector')[0] as any).clear();
+                ($('#profileImageSelector')[0] as any).reset();
             });
         }
 
@@ -152,7 +152,13 @@ module BitDiamond.Controllers.Profile {
             this.__notify = __notify;
             this.__userContext = __userContext;
 
-            this.__userContext.profileImageRef.then(pimg => this.profileImage = pimg);
+            this.__userContext.profileImageRef.then(pimg => {
+                if (!Object.isNullOrUndefined(pimg)) {
+                    this.profileImage = pimg;
+                }
+            }).finally(() => {
+                if (Object.isNullOrUndefined(this.profileImage)) this.profileImage = {} as Pollux.Models.IUserData;
+            });
 
             this.__userContext.userBio.then(bio => {
                 if (!Object.isNullOrUndefined(bio)) {
@@ -161,16 +167,22 @@ module BitDiamond.Controllers.Profile {
                     (<Object>this.userBio).copyTo(this.tempBio);
                     this._dobField = this.userBio.Dob.toMoment().toDate();
                 }
-            }, err => this.userBio = {
-            } as Pollux.Models.IBioData);
+            }).finally(() => {
+                if (Object.isNullOrUndefined(this.userBio)) {
+                    this.userBio = {} as Pollux.Models.IBioData;
+                }
+            });
 
             this.__userContext.userContact.then(contact => {
                 if (!Object.isNullOrUndefined(contact)) {
                     this.userContact = contact;
                     (<Object>this.userContact).copyTo(this.tempContact);
                 }
-            }, err => this.userContact = {
-            } as Pollux.Models.IContactData);
+            }).finally(() => {
+                if (Object.isNullOrUndefined(this.userContact)) {
+                    this.userContact = {} as Pollux.Models.IContactData;
+                }
+            });
 
             this.__userContext.user.then(u => {
                 this.user = u;

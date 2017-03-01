@@ -25,16 +25,17 @@ namespace BitDiamond.Core.Services
 
 
         public Operation<BlockChainTransaction> GetTransactionDetails(string transactionHash)
-            => Operation.Try(() =>
-            {
-                //use web client to call the webservice that validates the transaction hash...
-
-                return ((BlockChainTransaction)null).ThrowIf(_t => true, "");
-            });
-
-        public Operation<BitcoinAddress> UpdateBitcoinAddress(BitcoinAddress bitcoinAddress)
+        => Operation.Try(() =>
         {
-            throw new NotImplementedException();
-        }
+            //use web client to call the webservice that validates the transaction hash...
+
+            return ((BlockChainTransaction)null).ThrowIf(_t => true, "");
+        });
+
+        public Operation<BitcoinAddress> VerifyBitcoinAddress(BitcoinAddress bitcoinAddress)
+        => Operation.Try(() =>
+        {
+            return bitcoinAddress;
+        });
     }
 }

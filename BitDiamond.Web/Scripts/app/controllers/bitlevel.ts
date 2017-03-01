@@ -93,7 +93,7 @@ module BitDiamond.Controllers.BitLevel {
         verifiedTransactionLedgerCountClass() {
             if (!Object.isNullOrUndefined(this.bitLevel) &&
                 !Object.isNullOrUndefined(this.bitLevel.Donation) &&
-                this.bitLevel.Donation.LedgerCount > 3) return { 'text-success': true };
+                this.bitLevel.Donation.LedgerCount >= 3) return { 'text-success': true };
             else return {};
         }
         isTransactionVerified() {

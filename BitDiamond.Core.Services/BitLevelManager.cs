@@ -298,8 +298,8 @@ namespace BitDiamond.Core.Services
         {
             if (tnx1 == null || tnx2 == null) return false;
             return tnx1.Amount == tnx2.Amount &&
-                   (tnx1.Receiver?.Equals(tnx2.Receiver) ?? false) &&
-                   (tnx1.Sender?.Equals(tnx2.Sender) ?? false);
+                   (tnx1.ReceiverId.Equals(tnx2.ReceiverId)) &&
+                   (tnx1.SenderId.Equals(tnx2.SenderId));
         }
 
         private User NextUpgradeBeneficiary(User lastBeneficiary, int nextLvel, int nextCycle)

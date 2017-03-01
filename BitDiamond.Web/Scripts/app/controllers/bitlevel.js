@@ -106,7 +106,7 @@ var BitDiamond;
                 Home.prototype.verifiedTransactionLedgerCountClass = function () {
                     if (!Object.isNullOrUndefined(this.bitLevel) &&
                         !Object.isNullOrUndefined(this.bitLevel.Donation) &&
-                        this.bitLevel.Donation.LedgerCount > 3)
+                        this.bitLevel.Donation.LedgerCount >= 3)
                         return { 'text-success': true };
                     else
                         return {};

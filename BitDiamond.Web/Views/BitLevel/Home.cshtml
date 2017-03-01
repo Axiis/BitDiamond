@@ -126,6 +126,21 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+             ng-show="vm.isTransactionVerified()">
+            <div class="white-box" style="background-color: #303843; height:162px;">
+                <div class="text-right">
+                    <span class="text-muted"><sup><i class="ti-arrow-up"></i></sup>&nbsp;Upgrade</span>
+                    <button class="btn btn-block btn-rounded btn-success"
+                            style="margin-top:50px;">
+                        <span ng-hide="vm.isUpgrading"> <i class="icon-diamond"></i> Level Up</span>
+                        <ring-loader size="16" color="white" show="vm.isUpgrading"></ring-loader>
+                    </button>
+                </div>
+                <div style="height:24px;">
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row" ng-show="vm.hasBitLevel">
@@ -191,22 +206,6 @@
         </div>
     </div>
 
-    <div class="row" ng-show="vm.hasBitLevel">
-
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <div class="white-box" style="background-color: transparent;">
-                <div class="text-right">
-                    <span class="text-muted">Receiver</span>
-                    <button class="btn btn-block btn-outline btn-rounded btn-success">
-                        <span><sup><i class=""></i></sup> Level Up</span>
-                    </button>
-                </div>
-                <div style="height:24px;">
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="col-md-6 col-lg-6 col-sm-12"
          ng-hide="vm.hasBitLevel"
          style="margin-top:30px;">
@@ -228,7 +227,7 @@
                             type="button"
                             ng-click="vm.upgradeLevel()"
                             style="margin-top:10px; margin-bottom:10px;">
-                        <span ng-hide="vm.isUpgrading"><i class="ti-arrow-up"></i> Level Up</span>
+                        <span ng-hide="vm.isUpgrading"><sup><i class="ti-arrow-up"></i></sup> Level Up</span>
                         <ring-loader size="16" color="white" show="vm.isUpgrading"></ring-loader>
                     </button>
                 </div>

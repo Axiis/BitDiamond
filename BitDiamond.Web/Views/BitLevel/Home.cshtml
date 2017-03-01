@@ -50,35 +50,18 @@
             <div class="white-box">
                 <div class="row row-in">
 
-                    <div class="col-lg-3 col-sm-6 row-in-br">
+                    <div class="col-lg-6 col-sm-6 row-in-br">
                         <div class="col-in row">
                             <div class="col-md-6 col-sm-6 col-xs-6">
-                                <i data-icon="E" class="icon-refresh text-info"></i>
+                                <i data-icon="E" class="ti-stats-up text-info"></i>
                                 <h5 class="text-muted vb">Current Cycle</h5>
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-6">
-                                <h3 class="counter text-right m-t-15 text-info">{{vm.currentCycle}}</h3>
+                                <h3 class="counter text-right m-t-15 text-info">{{vm.currentCycle}} / {{vm.currentLevel}}</h3>
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="progress">
                                     <div class="progress-bar progress-bar-info" role="progressbar" style="width: 100%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 row-in-br  b-r-none">
-                        <div class="col-in row">
-                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                <i class="ti-stats-up" data-icon=""></i>
-                                <h5 class="text-muted vb">Current Level</h5>
-                            </div>
-                            <div class="col-md-6 col-sm-6 col-xs-6">
-                                <h3 class="counter text-right m-t-15 text-primary">{{vm.currentLevel}}</h3>
-                            </div>
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-primary" role="progressbar" ng-style="{width:vm.cyclePercentage()+'%'}"></div>
                                 </div>
                             </div>
                         </div>
@@ -123,7 +106,7 @@
     </div>
 
 
-    <h5 class="text-muted" ng-show="vm.hasBitLevel"><strong>Upgrade Donation</strong></h5>
+    <h5 class="text-muted" ng-show="vm.hasBitLevel"><strong>Upgrade Information</strong></h5>
     <div class="row" ng-show="vm.hasBitLevel">
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="white-box">
@@ -153,13 +136,10 @@
     <div class="row" ng-show="vm.hasBitLevel">
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="white-box">
-                <div class="text-right">
+                <div class="text-right" style="height:112px;">
                     <span class="text-muted">Next Level</span>
-                    <h1><sup><i class="ti-arrow-up text-success"></i></sup>{{vm.nextLevel}}</h1>
-                </div> <span class="text-success">{{vm.cyclePercentage()}}%</span>
-                <div class="progress m-b-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" ng-style="{width:vm.cyclePercentage()+'%'}"></div>
-                </div>
+                    <h1><sup><i class="ti-arrow-up text-success"></i></sup>&nbsp;&nbsp;&nbsp;{{vm.nextLevel}}</h1>
+                </div> 
             </div>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -221,7 +201,8 @@
                             type="button"
                             ng-click="vm.upgradeLevel()"
                             style="margin-top:10px; margin-bottom:10px;">
-                        <i class="ti-arrow-up"></i> Level Up
+                        <span ng-hide="vm.isUpgrading"><i class="ti-arrow-up"></i> Level Up</span>
+                        <ring-loader size="16" color="white" show="vm.isUpgrading"></ring-loader>
                     </button>
                 </div>
             </div>

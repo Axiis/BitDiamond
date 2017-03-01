@@ -3,15 +3,11 @@ using BitDiamond.Core.Services.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Axis.Pollux.Identity.Principal;
 using BitDiamond.Core.Models;
 
 using static Axis.Luna.Extensions.ExceptionExtensions;
-using static Axis.Luna.Extensions.ObjectExtensions;
 using System.Data.SqlClient;
-using Axis.Jupiter.Europa;
 using Axis.Luna.Extensions;
 using System.Configuration;
 
@@ -75,9 +71,9 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
                     {
                         refnodes.Add(new ReferralNode
                         {
-                            ReferenceCode = row.GetString(0),
-                            ReferrerCode = row.GetString(1),
-                            UplineCode = row.GetString(2),
+                            ReferenceCode = row.IsDBNull(0) ? null : row.GetString(0),
+                            ReferrerCode = row.IsDBNull(1) ? null : row.GetString(1),
+                            UplineCode = row.IsDBNull(3) ? null : row.GetString(2),
                             CreatedOn = row.GetDateTime(3),
                             ModifiedOn = row.IsDBNull(4)? (DateTime?)null: row.GetDateTime(4),
                             Id = row.GetInt64(5),
@@ -85,7 +81,7 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
                             {
                                 EntityId = _uid,
                                 CreatedOn = row.GetDateTime(7),
-                                ModifiedOn = row.GetDateTime(8),
+                                ModifiedOn = row.IsDBNull(8) ? (DateTime?)null : row.GetDateTime(8),
                                 Status = row.GetInt32(9),
                                 UId = row.GetGuid(10)
                             })
@@ -113,6 +109,12 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
 
         public User GetUserById(string userId)
         => _europa.Store<User>().Query.FirstOrDefault(_u => _u.EntityId == userId);
+
+        public ReferralNode GetUserReferalNode(User user)
+        => _europa.Store<ReferralNode>()
+                  .QueryWith(_r => _r.User)
+                  .Where(_r => _r.UserId == user.UserId)
+                  .FirstOrDefault();
 
         public IEnumerable<ReferralNode> Uplines(ReferralNode node)
         {
@@ -161,17 +163,17 @@ JOIN UplinesCTE AS ul ON ul.ReferenceCode = r.ReferenceCode
                     {
                         refnodes.Add(new ReferralNode
                         {
-                            ReferenceCode = row.GetString(0),
-                            ReferrerCode = row.GetString(1),
-                            UplineCode = row.GetString(2),
+                            ReferenceCode = row.IsDBNull(0) ? null : row.GetString(0),
+                            ReferrerCode = row.IsDBNull(1) ? null : row.GetString(1),
+                            UplineCode = row.IsDBNull(2) ? null : row.GetString(2),
                             CreatedOn = row.GetDateTime(3),
-                            ModifiedOn = row.GetDateTime(4),
+                            ModifiedOn = row.IsDBNull(4)? (DateTime?)null: row.GetDateTime(4),
                             Id = row.GetInt64(5),
                             User = userCache.GetOrAdd(row.GetString(6), _uid => new User
                             {
                                 EntityId = _uid,
                                 CreatedOn = row.GetDateTime(7),
-                                ModifiedOn = row.GetDateTime(8),
+                                ModifiedOn = row.IsDBNull(8) ? (DateTime?)null : row.GetDateTime(8),
                                 Status = row.GetInt32(9),
                                 UId = row.GetGuid(10)
                             })

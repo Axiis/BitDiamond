@@ -89,7 +89,7 @@ module BitDiamond.Controllers.BitLevel {
                 });
 
                 //load the donation receiver
-                this.__bitlevel.getUpgradeDonationReceiver(this.bitLevel.Id).then(opr => {
+                this.__bitlevel.getUpgradeDonationReceiver(this.bitLevel.Donation.reId).then(opr => {
                     this.receiver = opr.Result;
                     this.receiverCode = Utils.Domain.GenerateReferenceCode(this.receiver.OwnerId);
                 }, err => {
@@ -98,7 +98,9 @@ module BitDiamond.Controllers.BitLevel {
             }
             else {
                 this.hasBitLevel = false;
-                this.__bitlevel.getActiveBitcoinAddress().then(opr => this.hasActiveBitcoinAddress = true);
+                this.__bitlevel.getActiveBitcoinAddress().then(opr => {
+                    if (!Object.isNullOrUndefined(opr.Result)) this.hasActiveBitcoinAddress = true;
+                });
             }
 
             return this.$q.resolve(<Utils.Operation<Models.IBitLevel>>{

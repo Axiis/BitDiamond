@@ -43,6 +43,7 @@ namespace BitDiamond.Data.EF.Query
         => _europa.Store<BitcoinAddress>()
                   .QueryWith(_bca => _bca.Owner)
                   .Where(_bca => _bca.Owner.EntityId == user.EntityId)
+                  .Where(_bca => _bca.IsActive)
                   .FirstOrDefault();
 
         public BitLevel GetBitLevelById(long id)
@@ -121,13 +122,13 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
                             ReferrerCode = row.GetString(1),
                             UplineCode = row.GetString(2),
                             CreatedOn = row.GetDateTime(3),
-                            ModifiedOn = row.GetDateTime(4),
+                            ModifiedOn = row.IsDBNull(4) ? (DateTime?)null : row.GetDateTime(4),
                             Id = row.GetInt64(5),
                             User = userCache.GetOrAdd(row.GetString(6), _uid => new User
                             {
                                 EntityId = _uid,
                                 CreatedOn = row.GetDateTime(7),
-                                ModifiedOn = row.GetDateTime(8),
+                                ModifiedOn = row.IsDBNull(8) ? (DateTime?)null : row.GetDateTime(8),
                                 Status = row.GetInt32(9),
                                 UId = row.GetGuid(10)
                             })

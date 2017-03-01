@@ -109,7 +109,10 @@ var BitDiamond;
                     }
                     else {
                         this.hasBitLevel = false;
-                        this.__bitlevel.getActiveBitcoinAddress().then(function (opr) { return _this.hasActiveBitcoinAddress = true; });
+                        this.__bitlevel.getActiveBitcoinAddress().then(function (opr) {
+                            if (!Object.isNullOrUndefined(opr.Result))
+                                _this.hasActiveBitcoinAddress = true;
+                        });
                     }
                     return this.$q.resolve({
                         Message: null,

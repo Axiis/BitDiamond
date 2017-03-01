@@ -94,8 +94,11 @@ namespace BitDiamond.Web.Controllers.Api
 
 
         [HttpGet, Route("api/bit-levels/transactions/receivers")]
-        public IHttpActionResult GetUpgradeTransactionReceiver([FromBody] BitLevelArgs args)
-        => _bitlevel.GetUpgradeTransactionReceiver(args?.Id ?? 0L).OperationResult(Request);
+        public IHttpActionResult GetUpgradeTransactionReceiver(string data)
+        => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
+            .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<BitcoinAddressArgs>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
+            .Then(argopr => _bitlevel.GetUpgradeTransactionReceiver(argopr.Result.Id))
+            .OperationResult(Request);
 
 
         [HttpGet, Route("api/bit-levels/transactions/current")]

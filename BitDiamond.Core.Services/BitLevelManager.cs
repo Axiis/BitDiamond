@@ -18,6 +18,7 @@ namespace BitDiamond.Core.Services
     public class BitLevelManager : IBitLevelManager, IUserContextAware
     {
         private IBitLevelQuery _query = null;
+        private IReferralQuery _refQuery = null;
         private IPersistenceCommands _pcommand = null;
         private IUserAuthorization _authorizer = null;
         private IUserNotifier _notifier = null;
@@ -28,20 +29,22 @@ namespace BitDiamond.Core.Services
 
         public BitLevelManager(IUserAuthorization authorizer, IUserContext userContext, IBitLevelQuery query, 
                                IPersistenceCommands pcommand, IUserNotifier notifier, IBlockChainService blockChain,
-                               ISettingsManager settingsManager)
+                               ISettingsManager settingsManager, IReferralQuery refQuery)
         {
             ThrowNullArguments(() => userContext,
                                () => query,
                                () => pcommand,
                                () => notifier,
                                () => blockChain,
-                               () => settingsManager);
+                               () => settingsManager,
+                               () => refQuery);
 
             _query = query;
             _pcommand = pcommand;
             _authorizer = authorizer;
             _notifier = notifier;
             _blockChain = blockChain;
+            _refQuery = refQuery;
             _settingsManager = settingsManager;
 
             UserContext = userContext;
@@ -261,12 +264,20 @@ namespace BitDiamond.Core.Services
             return address;
         });
 
+        public Operation<ReferralNode> GetUserRef(long userId)
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            return _refQuery.
+        });
+
         public Operation<BitcoinAddress> VerifyAddress(long bitcoinAddressId)
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
             var address = _query.GetBitcoinAddressById(bitcoinAddressId)
                                 .ThrowIfNull("Invalid bitcoin id specified");
-            return _blockChain.VerifyBitcoinAddress(address);
+
+            return _blockChain.VerifyBitcoinAddress(address)
+                              .Then(opr => _pcommand.Update(opr.Result.With(new { IsVerified = true })));
         });
 
         public Operation<BitcoinAddress> GetActiveBitcoinAddress()
@@ -280,7 +291,7 @@ namespace BitDiamond.Core.Services
             => _settingsManager.GetSetting(Constants.Settings_UpgradeFeeVector)
                                .Resolve()
                                .ParseData(_d => JsonConvert.DeserializeObject<decimal[]>(_d))
-                               [level];
+                               [level-1];
 
 
         private bool IsSameTransaction(BlockChainTransaction tnx1, BlockChainTransaction tnx2)

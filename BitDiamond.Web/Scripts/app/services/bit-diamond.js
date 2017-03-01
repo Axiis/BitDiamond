@@ -163,7 +163,7 @@ var BitDiamond;
                     Hash: hash
                 });
             };
-            BitLevel.prototype.confirmUpgradeDonation = function () {
+            BitLevel.prototype.confirmUpgradeDonationTransaction = function () {
                 return this.__transport.put('/api/bit-levels/transactions/current/confirm', null);
             };
             BitLevel.prototype.getCurrentUpgradeTransaction = function () {
@@ -181,7 +181,7 @@ var BitDiamond;
             BitLevel.prototype.getUpgradeFee = function (level) {
                 return this.__transport.get('/api/bit-levels/upgrade-fees/' + level);
             };
-            BitLevel.prototype.getUpgradeDonationReceiver = function (levelId) {
+            BitLevel.prototype.getUpgradeDonationReceiverRef = function (levelId) {
                 return this.__transport.get('/api/bit-levels/transactions/receivers', {
                     Id: levelId
                 });
@@ -220,4 +220,3 @@ var BitDiamond;
         Services.BitLevel = BitLevel;
     })(Services = BitDiamond.Services || (BitDiamond.Services = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=bit-diamond.js.map

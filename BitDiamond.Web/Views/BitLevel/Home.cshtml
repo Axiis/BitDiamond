@@ -110,22 +110,17 @@
     <div class="row" ng-show="vm.hasBitLevel">
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="white-box">
-                <div class="text-right">
-                    <span class="text-muted">Amount</span>
-                    <h1><i class="fa fa-btc"></i>&nbsp;{{vm.upgradeFee}}</h1>
-                </div>
-                <div style="height:24px;">
+                <div class="text-right" style="height:112px;">
+                    <span class="text-muted">Next Level</span>
+                    <h1><sup><i class="ti-arrow-up text-success"></i></sup>&nbsp;&nbsp;&nbsp;{{vm.nextLevel}}</h1>
                 </div>
             </div>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="white-box">
                 <div class="text-right">
-                    <span class="text-muted">Receiver</span>
-                    <h3 style="white-space:nowrap; text-overflow:ellipsis; text-wrap:none; height:48px; margin-top:10px; margin-bottom:10px;"
-                        data-toggle="tooltip" data-original-title="{{vm.receiverCode}}">
-                        {{vm.receiverCode}}
-                    </h3>
+                    <span class="text-muted">Amount</span>
+                    <h1><i class="fa fa-btc"></i>&nbsp;{{vm.upgradeFee}}</h1>
                 </div>
                 <div style="height:24px;">
                 </div>
@@ -136,43 +131,75 @@
     <div class="row" ng-show="vm.hasBitLevel">
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="white-box">
-                <div class="text-right" style="height:112px;">
-                    <span class="text-muted">Next Level</span>
-                    <h1><sup><i class="ti-arrow-up text-success"></i></sup>&nbsp;&nbsp;&nbsp;{{vm.nextLevel}}</h1>
-                </div> 
+                <div class="text-right">
+                    <span class="text-muted">Receiver</span>
+                    <h4 style="white-space:nowrap; text-overflow:ellipsis; text-wrap:none; height:48px; margin-top:10px; margin-bottom:10px;"
+                        data-toggle="tooltip" data-original-title="{{vm.receiverCode}}">
+                        {{vm.receiverCode}}
+                    </h4>
+                </div>
+                <div style="height:24px;">
+                </div>
             </div>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="white-box">
                 <div class="text-right">
-                    <span class="text-muted">Donation</span>
+                    <span class="text-muted">Transaction</span>
                 </div>
-                <div style="height:68px;">
+                <div style="height:92px;" ng-hide="vm.hasTransactionHash">
                     <div class="form-material form-horizontal">
                         <div class="form-group">
                             <div class="col-md-12">
                                 <input type="text" class="form-control form-control-line"
                                        placeholder="Enter transaction hash"
-                                       ng-hide="vm.hasTransactionHash"
                                        ng-model="vm.transactionHash" />
                                 <span class="text-success" ng-show="vm.hasTransactionHash">{{vm.bitLevel.Donation.TransactionHash}}</span>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <button class="btn btn-block btn-outline btn-info"
-                                    ng-hide="vm.hasTransactionHash"
                                     ng-class="{disabled: !vm.hasActiveBitcoinAddress}"
                                     ng-click="vm.updateTransactionHash()">
-                                Update
-                            </button>
-                            <button class="btn btn-block btn-outline btn-success"
-                                    ng-show="vm.hasTransactionHash"
-                                    ng-class="{disabled: !vm.hasActiveBitcoinAddress}"
-                                    ng-click="vm.confirmDonation()">
-                                Confirm
+                                <span ng-hide="vm.isSavingTransactionHash"><i class="ti-save"></i>&nbsp;&nbsp;Save</span>
+                                <ring-loader size="18" color="white" show="vm.isSavingTransactionHash"></ring-loader>
                             </button>
                         </div>
                     </div>
+                </div>
+
+                <div style="height:82px;" ng-show="vm.hasTransactionHash" class="text-right">
+                    <h6 style="white-space:nowrap; text-wrap:none; text-overflow:ellipsis; margin-bottom:20px;">
+                        {{vm.bitLevel.Donation.TransactionHash}}
+                    </h6>
+                    <span class="text-muted">Ledger Count</span>
+                    <h4>
+                        <span ng-class="vm.verifiedTransactionLedgerCountClass()">{{vm.bitLevel.Donation.LedgerCount}}</span>
+
+                        <button class="pull-left btn btn-sm btn-outline btn-primary"
+                                ng-hide="vm.isTransactionVerified()"
+                                type="button"
+                                ng-click="vm.verifyTransaction()">
+                            <span ng-hide="vm.isVerifyingTransaction">
+                                <i class="ti-flag-alt"></i>&nbsp;Verify
+                            </span>
+                            <ring-loader size="14" color="white" show="vm.isVerifyingTransaction"></ring-loader>
+                        </button>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-show="vm.hasBitLevel">
+
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="white-box" style="background-color: transparent;">
+                <div class="text-right">
+                    <span class="text-muted">Receiver</span>
+                    <button class="btn btn-block btn-outline btn-rounded btn-success">
+                        <span><sup><i class=""></i></sup> Level Up</span>
+                    </button>
                 </div>
                 <div style="height:24px;">
                 </div>

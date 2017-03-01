@@ -198,7 +198,7 @@ module BitDiamond.Services {
             });
         }
 
-        confirmUpgradeDonation(): ng.IPromise<Utils.Operation<Models.IBlockChainTransaction>> {
+        confirmUpgradeDonationTransaction(): ng.IPromise<Utils.Operation<Models.IBlockChainTransaction>> {
             return this.__transport.put<Utils.Operation<Models.IBlockChainTransaction>>('/api/bit-levels/transactions/current/confirm', null);
         }
 
@@ -222,8 +222,8 @@ module BitDiamond.Services {
             return this.__transport.get<Utils.Operation<number>>('/api/bit-levels/upgrade-fees/' + level);
         }
 
-        getUpgradeDonationReceiver(levelId: number): ng.IPromise<Utils.Operation<Models.IBitcoinAddress>> {
-            return this.__transport.get<Utils.Operation<Models.IBitcoinAddress>>('/api/bit-levels/transactions/receivers', {
+        getUpgradeDonationReceiverRef(levelId: number): ng.IPromise<Utils.Operation<Models.IReferralNode>> {
+            return this.__transport.get<Utils.Operation<Models.IReferralNode>>('/api/bit-levels/transactions/receivers', {
                 Id: levelId
             });
         }

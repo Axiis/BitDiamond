@@ -62,9 +62,9 @@ namespace BitDiamond.Web.Controllers.Api
         public IHttpActionResult UpdateTransactionHash([FromBody] TransactionArgs arg)
         => _bitlevel.UpdateTransactionHash(arg.Hash).OperationResult(Request);
 
-        //[HttpPut, Route("api/bit-levels/transactions/current/confirm")]
-        //public IHttpActionResult ConfirmUpgradeDonation()
-        //=> _bitlevel.ConfirmUpgradeDonnation().OperationResult(Request);
+        [HttpPut, Route("api/bit-levels/transactions/current/confirm")]
+        public IHttpActionResult ConfirmUpgradeDonation()
+        => _bitlevel.ConfirmUpgradeDonnation().OperationResult(Request);
 
         [HttpGet, Route("api/bit-levels/cycles/current")]
         public IHttpActionResult CurrentUserLevel()
@@ -96,8 +96,8 @@ namespace BitDiamond.Web.Controllers.Api
         [HttpGet, Route("api/bit-levels/transactions/receivers")]
         public IHttpActionResult GetUpgradeTransactionReceiver(string data)
         => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
-            .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<BitcoinAddressArgs>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
-            .Then(argopr => _bitlevel.GetUpgradeTransactionReceiver(argopr.Result.Id))
+            .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<TransactionArgs>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
+            .Then(argopr => _bitlevel.GetUpgradeTransactionReceiverRef(argopr.Result.Id))
             .OperationResult(Request);
 
 
@@ -111,6 +111,7 @@ namespace BitDiamond.Web.Controllers.Api
         public class TransactionArgs
         {
             public string Hash { get; set; }
+            public long Id { get; set; }
         }
 
         public class BitLevelArgs

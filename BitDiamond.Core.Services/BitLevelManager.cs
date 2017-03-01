@@ -193,12 +193,12 @@ namespace BitDiamond.Core.Services
             return feeVector[level - 1];
         });
 
-        public Operation<BitcoinAddress> GetUpgradeTransactionReceiver(long id)
+        public Operation<ReferralNode> GetUpgradeTransactionReceiverRef(long id)
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
-            var bl = _query.GetBitLevelById(id);
-            var trnx = _query.GetBlockChainTransaction(bl.DonationId ?? 0);
-            return _query.GetBitcoinAddressById(trnx.ReceiverId);
+            var trnx = _query.GetBlockChainTransaction(id);
+            var receiver = _query.GetUser(trnx.Receiver.OwnerId);
+            return _refQuery.GetUserReferalNode(receiver);
         });
 
         public Operation<BlockChainTransaction> GetCurrentUpgradeTransaction()
@@ -264,10 +264,10 @@ namespace BitDiamond.Core.Services
             return address;
         });
 
-        public Operation<ReferralNode> GetUserRef(long userId)
+        public Operation<ReferralNode> GetUserRef(string userId)
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
-            return _refQuery.
+            return _refQuery.GetUserReferalNode(_query.GetUser(userId));
         });
 
         public Operation<BitcoinAddress> VerifyAddress(long bitcoinAddressId)

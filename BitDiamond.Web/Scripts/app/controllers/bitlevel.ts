@@ -13,12 +13,13 @@ module BitDiamond.Controllers.BitLevel {
         hasActiveBitcoinAddress: boolean;
         upgradeFee: number = 0;
         receiverCode: string;
-        receiver: Models.IBitcoinAddress;
+        receiver: Models.IReferralNode;
         transactionHash: string;
         isLoadingView: boolean;
 
         isUpgrading: boolean;
-        isUpdatingHash: boolean;
+        isSavingTransactionHash: boolean;
+        isVerifyingTransaction: boolean;
 
         __bitlevel: Services.BitLevel;
         __usercontext: Utils.Services.UserContext;
@@ -63,15 +64,43 @@ module BitDiamond.Controllers.BitLevel {
             }
         }
         updateTransactionHash() {
-            if (this.isUpdatingHash) return;
+            if (this.isSavingTransactionHash) return;
             else {
+                this.isSavingTransactionHash = true;
                 this.__bitlevel.updateTransactionHash(this.transactionHash).then(opr => {
+                    this.bitLevel.Donation = opr.Result;
                     this.__notify.success('Your transaction hash was verified!');
                 }, err => {
+                    this.__notify.error('Something went wrong - could not save the transaction hash.', 'Oops!');
                 }).finally(() => {
-                    this.isUpdatingHash = false;
+                    this.isSavingTransactionHash = false;
                 });
             }
+        }
+        verifyTransaction() {
+            if (this.isVerifyingTransaction) return;
+            else {
+                this.isVerifyingTransaction = true;
+                this.__bitlevel.confirmUpgradeDonationTransaction().then(opr => {
+                    this.__notify.success('Your transaction hash was verified!');
+                }, err => {
+                    this.__notify.error('Something went wrong - could not verify your transaction.', 'Oops!');
+                }).finally(() => {
+                    this.isVerifyingTransaction = false;
+                });
+            }
+        }
+        verifiedTransactionLedgerCountClass() {
+            if (!Object.isNullOrUndefined(this.bitLevel) &&
+                !Object.isNullOrUndefined(this.bitLevel.Donation) &&
+                this.bitLevel.Donation.LedgerCount > 3) return { 'text-success': true };
+            else return {};
+        }
+        isTransactionVerified() {
+            if (!Object.isNullOrUndefined(this.bitLevel) &&
+                !Object.isNullOrUndefined(this.bitLevel.Donation) &&
+                this.bitLevel.Donation.Status == Models.BlockChainTransactionStatus.Verified) return true;
+            else return false;
         }
 
         initState(opr: Utils.Operation<Models.IBitLevel>): ng.IPromise<Utils.Operation<Models.IBitLevel>> {
@@ -79,7 +108,7 @@ module BitDiamond.Controllers.BitLevel {
             if (!Object.isNullOrUndefined(this.bitLevel)) {
                 this.hasBitLevel = true;
                 this.hasActiveBitcoinAddress = true;
-                this.hasTransactionHash = !Object.isNullOrUndefined(this.bitLevel.Donation.TransactionHash) || this.bitLevel.Donation.TransactionHash != '';
+                this.hasTransactionHash = !Object.isNullOrUndefined(this.bitLevel.Donation.TransactionHash) && this.bitLevel.Donation.TransactionHash.trim() != '';
                 this.donationsMissed = this.bitLevel.SkipCount;
                 this.donationsReceived = this.bitLevel.DonationCount;
                 this.upgradeFee = this.bitLevel.Donation.Amount;
@@ -89,9 +118,9 @@ module BitDiamond.Controllers.BitLevel {
                 });
 
                 //load the donation receiver
-                this.__bitlevel.getUpgradeDonationReceiver(this.bitLevel.Donation.reId).then(opr => {
+                this.__bitlevel.getUpgradeDonationReceiverRef(this.bitLevel.Donation.Id).then(opr => {
                     this.receiver = opr.Result;
-                    this.receiverCode = Utils.Domain.GenerateReferenceCode(this.receiver.OwnerId);
+                    this.receiverCode = this.receiver.ReferenceCode;
                 }, err => {
                     this.__notify.error('Could not load upgrade donation receiver information.', 'Oops!');
                 });

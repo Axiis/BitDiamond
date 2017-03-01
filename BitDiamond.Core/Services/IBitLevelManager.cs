@@ -54,7 +54,7 @@ namespace BitDiamond.Core.Services
         Operation<BitcoinAddress> ActivateAddress(long v);
 
         [Resource(":system/bit-levels/transactions/receivers/@get")]
-        Operation<BitcoinAddress> GetUpgradeTransactionReceiver(long v);
+        Operation<ReferralNode> GetUpgradeTransactionReceiverRef(long v);
 
 
         [Resource(":system/bit-levels/bitcoin-addresses/@deactivate")]
@@ -63,5 +63,8 @@ namespace BitDiamond.Core.Services
 
         [Resource(":system/bit-levels/bitcoin-addresses/@verify")]
         Operation<BitcoinAddress> VerifyAddress(long v);
+
+        [Resource(":system/bit-levels/referrals/@get")]
+        Operation<ReferralNode> GetUserRef(string userId);
     }
 }

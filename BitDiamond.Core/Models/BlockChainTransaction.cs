@@ -8,7 +8,6 @@ namespace BitDiamond.Core.Models
     {
         private BitcoinAddress _sender;
         private long _senderId;
-        [Required(ErrorMessage = "Sender is Required")]
         public virtual BitcoinAddress Sender
         {
             get { return _sender; }
@@ -19,6 +18,7 @@ namespace BitDiamond.Core.Models
                 else _senderId = 0;
             }
         }
+        [Required(ErrorMessage = "Sender Id is Required")]
         public long SenderId
         {
             get { return _senderId; }
@@ -32,7 +32,6 @@ namespace BitDiamond.Core.Models
 
         private BitcoinAddress _receiver;
         private long _receiverId;
-        [Required(ErrorMessage = "Receiver is Required")]
         public virtual BitcoinAddress Receiver
         {
             get { return _receiver; }
@@ -43,6 +42,7 @@ namespace BitDiamond.Core.Models
                 else _receiverId = 0;
             }
         }
+        [Required(ErrorMessage = "ReceiverId is Required")]
         public long ReceiverId
         {
             get { return _receiverId; }

@@ -74,16 +74,50 @@ var BitDiamond;
                 };
                 Home.prototype.updateTransactionHash = function () {
                     var _this = this;
-                    if (this.isUpdatingHash)
+                    if (this.isSavingTransactionHash)
                         return;
                     else {
+                        this.isSavingTransactionHash = true;
                         this.__bitlevel.updateTransactionHash(this.transactionHash).then(function (opr) {
+                            _this.bitLevel.Donation = opr.Result;
                             _this.__notify.success('Your transaction hash was verified!');
                         }, function (err) {
+                            _this.__notify.error('Something went wrong - could not save the transaction hash.', 'Oops!');
                         }).finally(function () {
-                            _this.isUpdatingHash = false;
+                            _this.isSavingTransactionHash = false;
                         });
                     }
+                };
+                Home.prototype.verifyTransaction = function () {
+                    var _this = this;
+                    if (this.isVerifyingTransaction)
+                        return;
+                    else {
+                        this.isVerifyingTransaction = true;
+                        this.__bitlevel.confirmUpgradeDonationTransaction().then(function (opr) {
+                            _this.__notify.success('Your transaction hash was verified!');
+                        }, function (err) {
+                            _this.__notify.error('Something went wrong - could not verify your transaction.', 'Oops!');
+                        }).finally(function () {
+                            _this.isVerifyingTransaction = false;
+                        });
+                    }
+                };
+                Home.prototype.verifiedTransactionLedgerCountClass = function () {
+                    if (!Object.isNullOrUndefined(this.bitLevel) &&
+                        !Object.isNullOrUndefined(this.bitLevel.Donation) &&
+                        this.bitLevel.Donation.LedgerCount > 3)
+                        return { 'text-success': true };
+                    else
+                        return {};
+                };
+                Home.prototype.isTransactionVerified = function () {
+                    if (!Object.isNullOrUndefined(this.bitLevel) &&
+                        !Object.isNullOrUndefined(this.bitLevel.Donation) &&
+                        this.bitLevel.Donation.Status == BitDiamond.Models.BlockChainTransactionStatus.Verified)
+                        return true;
+                    else
+                        return false;
                 };
                 Home.prototype.initState = function (opr) {
                     var _this = this;
@@ -91,7 +125,7 @@ var BitDiamond;
                     if (!Object.isNullOrUndefined(this.bitLevel)) {
                         this.hasBitLevel = true;
                         this.hasActiveBitcoinAddress = true;
-                        this.hasTransactionHash = !Object.isNullOrUndefined(this.bitLevel.Donation.TransactionHash) || this.bitLevel.Donation.TransactionHash != '';
+                        this.hasTransactionHash = !Object.isNullOrUndefined(this.bitLevel.Donation.TransactionHash) && this.bitLevel.Donation.TransactionHash.trim() != '';
                         this.donationsMissed = this.bitLevel.SkipCount;
                         this.donationsReceived = this.bitLevel.DonationCount;
                         this.upgradeFee = this.bitLevel.Donation.Amount;
@@ -100,9 +134,9 @@ var BitDiamond;
                             cycle: this.bitLevel.Cycle
                         });
                         //load the donation receiver
-                        this.__bitlevel.getUpgradeDonationReceiver(this.bitLevel.Id).then(function (opr) {
+                        this.__bitlevel.getUpgradeDonationReceiverRef(this.bitLevel.Donation.Id).then(function (opr) {
                             _this.receiver = opr.Result;
-                            _this.receiverCode = BitDiamond.Utils.Domain.GenerateReferenceCode(_this.receiver.OwnerId);
+                            _this.receiverCode = _this.receiver.ReferenceCode;
                         }, function (err) {
                             _this.__notify.error('Could not load upgrade donation receiver information.', 'Oops!');
                         });
@@ -283,4 +317,3 @@ var BitDiamond;
         })(BitLevel = Controllers.BitLevel || (Controllers.BitLevel = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=bitlevel.js.map

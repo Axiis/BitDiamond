@@ -56,3 +56,17 @@
 .bd-fade-out.ng-enter-active {
     opacity: 0;
 }
+
+
+.bd-level-history-label {
+    font-size: 14px;
+}
+
+.bd-level-history-value{
+    font-size:16px !important;
+    color: #dce2ec !important;
+}
+
+.bd-level-history-title{
+
+}

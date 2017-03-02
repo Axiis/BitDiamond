@@ -170,7 +170,7 @@ module BitDiamond.Controllers.BitLevel {
 
         levels: Utils.SequencePage<Models.IBitLevel>;
         pageLinks: number[];
-        pageSize: number = 30;
+        pageSize: number = 20;
 
         isLoadingView: boolean;
 
@@ -181,7 +181,7 @@ module BitDiamond.Controllers.BitLevel {
 
         loadHistory(index: number, size: number): ng.IPromise<Utils.SequencePage<Models.IBitLevel>> {
             this.isLoadingView = true;
-            return this.__bitLevel.getPagedBitLevelHistory(index, size || 30).then(opr => {
+            return this.__bitLevel.getPagedBitLevelHistory(index, size || this.pageSize || 30).then(opr => {
                 this.levels = !Object.isNullOrUndefined(opr.Result) ?
                     new Utils.SequencePage<Models.IBitLevel>(opr.Result.Page, opr.Result.SequenceLength, opr.Result.PageSize, opr.Result.PageIndex) :
                     new Utils.SequencePage<Models.IBitLevel>([], 0, 0, 0);
@@ -221,7 +221,7 @@ module BitDiamond.Controllers.BitLevel {
             this.$q = $q;
 
             //load the initial view
-            this.loadHistory(0, 30);
+            this.loadHistory(0, this.pageSize);
         }
     }
 

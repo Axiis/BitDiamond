@@ -55,14 +55,14 @@ namespace BitDiamond.Data.EF.Query
 
         public IEnumerable<BitLevel> GetBitLevelHistory(User user)
         => _europa.Store<BitLevel>()
-                  .QueryWith(_bca => _bca.User, _bca => _bca.Donation)
+                  .QueryWith(_bca => _bca.User, _bca => _bca.Donation, _bca => _bca.Donation.Receiver, _bca => _bca.Donation.Sender)
                   .Where(_bca => _bca.User.EntityId == user.EntityId)
                   .OrderByDescending(_bca => _bca.CreatedOn)
                   .ToArray();
 
         public SequencePage<BitLevel> GetPagedBitLevelHistory(User user, int pageSize, long pageIndex)
         => _europa.Store<BitLevel>()
-                  .QueryWith(_bca => _bca.User, _bca => _bca.Donation)
+                  .QueryWith(_bca => _bca.User, _bca => _bca.Donation, _bca => _bca.Donation.Receiver, _bca => _bca.Donation.Sender)
                   .Where(_bca => _bca.User.EntityId == user.EntityId)
                   .OrderByDescending(_bca => _bca.CreatedOn)
                   .Pipe(_p => new SequencePage<BitLevel>(_p.Skip((int)(pageSize * pageIndex))

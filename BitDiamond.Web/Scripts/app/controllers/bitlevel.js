@@ -177,18 +177,18 @@ var BitDiamond;
             BitLevel.Home = Home;
             var History = (function () {
                 function History(__bitlevel, __userContext, __notify, $q) {
-                    this.pageSize = 30;
+                    this.pageSize = 20;
                     this.__bitLevel = __bitlevel;
                     this.__userContext = __userContext;
                     this.__notify = __userContext;
                     this.$q = $q;
                     //load the initial view
-                    this.loadHistory(0, 30);
+                    this.loadHistory(0, this.pageSize);
                 }
                 History.prototype.loadHistory = function (index, size) {
                     var _this = this;
                     this.isLoadingView = true;
-                    return this.__bitLevel.getPagedBitLevelHistory(index, size || 30).then(function (opr) {
+                    return this.__bitLevel.getPagedBitLevelHistory(index, size || this.pageSize || 30).then(function (opr) {
                         _this.levels = !Object.isNullOrUndefined(opr.Result) ?
                             new BitDiamond.Utils.SequencePage(opr.Result.Page, opr.Result.SequenceLength, opr.Result.PageSize, opr.Result.PageIndex) :
                             new BitDiamond.Utils.SequencePage([], 0, 0, 0);

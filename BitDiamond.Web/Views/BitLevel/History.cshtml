@@ -50,22 +50,51 @@
 
     <div class="col-md-6">
         <div class="btn-group">
-            <button type="button" class="btn btn-default btn-outline waves-effect" ng-click="vm.loadFirstPage()"><i class="ti-angle-left"></i></button>
+            <button type="button" class="btn btn-default btn-outline waves-effect" ng-click="vm.loadFirstPage()"><i class="ti-angle-double-left"></i></button>
             <button type="button" class="btn waves-effect" 
                     ng-repeat="page in vm.pageLinks" 
                     ng-class="vm.linkButtonClass(page)"
-                    ng-click="loadLinkPage(page)">{{page+1}}</button>
-            <button type="button" class="btn btn-default btn-outline waves-effect" ng-click="vm.loadLastPage()"><i class="ti-angle-right"></i></button>
+                    ng-click="vm.loadLinkPage(page)">{{page+1}}</button>
+            <button type="button" class="btn btn-default btn-outline waves-effect" ng-click="vm.loadLastPage()"><i class="ti-angle-double-right"></i></button>
         </div>
     </div>
 
 </div>
 
-<div class="row" style="border-bottom: 1px solid #666; margin-bottom:15px;" 
+<div style=" margin-bottom:35px;" 
      ng-repeat="level in vm.levels.Page">
-    <div class="col-md-1 col-sm-3">
-        <h2>{{level.Cycle}} / {{level.Level}}</h2>
+    <div class="row">
+        <div class="col-md-1 col-sm-6 b-r"
+             style="height:100px;">
+            <strong>Level</strong>
+            <br>
+            <h2 style="margin-top:-4px;">{{level.Cycle}} / {{level.Level}}</h2>
+        </div>
+        <div class="col-md-5 col-sm-6 b-r"
+             style="height:100px;">
+            <strong>Upgrade Transaction</strong>
+
+            <br/>
+            Amount - <span class="bd-level-history-value"><i class="fa fa-btc"></i> {{level.Donation.Amount}} </span>
+            
+            <br />
+            Adress - <span class="bd-level-history-value">{{level.Donation.Receiver.BlockChainAddress}} </span>
+        </div>
+        <div class="col-md-3 col-sm-6 b-r"
+             style="height:100px;">
+            <strong>Donations</strong>
+            <br>
+            <span class="bd-level-history-value">{{level.DonationCount}} </span> received<br/>
+            <span class="bd-level-history-value">{{level.SkipCount}} </span> missed
+        </div>
+        <div class="col-md-3 col-sm-6 b-r"
+             style="height:100px;">
+            <strong>Date</strong>
+            <br>
+            Confirmed on: <span class="bd-level-history-value">{{moment(level.Donation.ModifiedOn.toMoment()).format()}} </span><br />
+        </div>
     </div>
+    <hr/>
 </div>
 
 

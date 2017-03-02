@@ -52,6 +52,24 @@ var BitDiamond;
                     enumerable: true,
                     configurable: true
                 });
+                Object.defineProperty(Home.prototype, "hasTransactionHash", {
+                    get: function () {
+                        return !Object.isNullOrUndefined(this.bitLevel) &&
+                            !Object.isNullOrUndefined(this.bitLevel.Donation) &&
+                            !Object.isNullOrUndefined(this.bitLevel.Donation.TransactionHash) &&
+                            this.bitLevel.Donation.TransactionHash.trim() != '';
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Home.prototype, "isAtMaxCycleLevel", {
+                    get: function () {
+                        return !Object.isNullOrUndefined(this.bitLevel) &&
+                            this.bitLevel.Level == BitDiamond.Utils.Constants.Settings_MaxBitLevel;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 Home.prototype.cyclePercentage = function () {
                     return Math.round((this.currentLevel / BitDiamond.Utils.Constants.Settings_MaxBitLevel) * 100) + '%';
                 };
@@ -95,6 +113,7 @@ var BitDiamond;
                     else {
                         this.isVerifyingTransaction = true;
                         this.__bitlevel.confirmUpgradeDonationTransaction().then(function (opr) {
+                            _this.bitLevel.Donation = opr.Result;
                             _this.__notify.success('Your transaction hash was verified!');
                         }, function (err) {
                             _this.__notify.error('Something went wrong - could not verify your transaction.', 'Oops!');
@@ -125,7 +144,6 @@ var BitDiamond;
                     if (!Object.isNullOrUndefined(this.bitLevel)) {
                         this.hasBitLevel = true;
                         this.hasActiveBitcoinAddress = true;
-                        this.hasTransactionHash = !Object.isNullOrUndefined(this.bitLevel.Donation.TransactionHash) && this.bitLevel.Donation.TransactionHash.trim() != '';
                         this.donationsMissed = this.bitLevel.SkipCount;
                         this.donationsReceived = this.bitLevel.DonationCount;
                         this.upgradeFee = this.bitLevel.Donation.Amount;
@@ -158,8 +176,46 @@ var BitDiamond;
             }());
             BitLevel.Home = Home;
             var History = (function () {
-                function History(__bitlevel, __userContext, __notify) {
+                function History(__bitlevel, __userContext, __notify, $q) {
+                    this.pageSize = 30;
+                    this.__bitLevel = __bitlevel;
+                    this.__userContext = __userContext;
+                    this.__notify = __userContext;
+                    this.$q = $q;
+                    //load the initial view
+                    this.loadHistory(0, 30);
                 }
+                History.prototype.loadHistory = function (index, size) {
+                    var _this = this;
+                    this.isLoadingView = true;
+                    return this.__bitLevel.getPagedBitLevelHistory(index, size || 30).then(function (opr) {
+                        _this.levels = !Object.isNullOrUndefined(opr.Result) ?
+                            new BitDiamond.Utils.SequencePage(opr.Result.Page, opr.Result.SequenceLength, opr.Result.PageSize, opr.Result.PageIndex) :
+                            new BitDiamond.Utils.SequencePage([], 0, 0, 0);
+                        _this.pageLinks = _this.levels.AdjacentIndexes(2);
+                        return _this.$q.resolve(opr.Result);
+                    }, function (err) {
+                        _this.__notify.error('Something went wrong - couldn\'t load your history.', 'Oops!');
+                    }).finally(function () {
+                        _this.isLoadingView = false;
+                    });
+                };
+                History.prototype.loadLastPage = function () {
+                    this.loadHistory(this.levels.PageCount - 1, this.pageSize);
+                };
+                History.prototype.loadFirstPage = function () {
+                    this.loadHistory(0, this.pageSize);
+                };
+                History.prototype.loadLinkPage = function (pageIndex) {
+                    this.loadHistory(pageIndex, this.pageSize);
+                };
+                History.prototype.linkButtonClass = function (page) {
+                    return {
+                        'btn-outline': page != this.levels.PageIndex,
+                        'btn-default': page != this.levels.PageIndex,
+                        'btn-info': page == this.levels.PageIndex,
+                    };
+                };
                 return History;
             }());
             BitLevel.History = History;

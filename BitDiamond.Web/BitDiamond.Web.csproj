@@ -1170,6 +1170,7 @@
     <Content Include="Views\BitLevel\Index.cshtml" />
     <Content Include="Views\BitLevel\Home.cshtml" />
     <Content Include="Views\BitLevel\CoinAddresses.cshtml" />
+    <Content Include="Views\BitLevel\History.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1183,6 +1184,7 @@
   <ItemGroup>
     <Compile Include="Controllers\Api\AccountController.cs" />
     <Compile Include="Controllers\Api\BitLevelController.cs" />
+    <Compile Include="Controllers\Api\SettingsController.cs" />
     <Compile Include="Controllers\Mvc\AccountController.cs" />
     <Compile Include="Controllers\Mvc\BitLevelController.cs" />
     <Compile Include="Controllers\Mvc\ProfileController.cs" />

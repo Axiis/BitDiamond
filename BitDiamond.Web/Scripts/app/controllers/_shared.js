@@ -92,7 +92,7 @@ var BitDiamond;
                 };
                 SideBar.prototype.getModuleUrl = function (moduleName) {
                     if (moduleName == 'dashboard')
-                        return '/profiles/index';
+                        return '/profile/index';
                     else
                         return '/' + moduleName + '/index';
                 };

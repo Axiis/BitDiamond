@@ -151,7 +151,7 @@ module BitDiamond.Utils {
             this.SequenceLength = sequenceLength;
             this.Page = page;
             this.PageSize = pageSize || page.length;
-            this.PageCount = Math.floor(this.SequenceLength / this.PageSize) + (this.SequenceLength % this.PageSize > 0 ? 1 : 0);
+            this.PageCount = sequenceLength == 0 ? 0 : (Math.floor(this.SequenceLength / this.PageSize) + (this.SequenceLength % this.PageSize > 0 ? 1 : 0));
         }
 
         /// <summary>

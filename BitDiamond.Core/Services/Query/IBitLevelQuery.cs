@@ -14,6 +14,7 @@ namespace BitDiamond.Core.Services.Query
         ReferralNode UserRef(User user);
 
         IEnumerable<BitLevel> GetBitLevelHistory(User user);
+        SequencePage<BitLevel> GetPagedBitLevelHistory(User user, int pageSize, long pageIndex);
         BitLevel CurrentBitLevel(User user);
         BitLevel PreviousBitLevel(User targetUser);
         BitLevel GetNextUpgradeBeneficiary(User user);

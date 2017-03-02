@@ -71,6 +71,9 @@ namespace BitDiamond.Core.Services
             var myAddress = _query.GetActiveBitcoinAddress(targetUser)
                                   .ThrowIfNull("You do not have a valid block chain transaction address yet.");
 
+            if (currentLevel.Cycle == int.MaxValue && currentLevel.Level == maxLevel)
+                throw new Exception("You cannot upgrade past the maximum cycle");
+
             var nextLevel = (currentLevel.Level + 1) % (maxLevel + 1);
             var nextCycle = nextLevel == 0 ? currentLevel.Cycle + 1 : currentLevel.Cycle;
 
@@ -91,14 +94,16 @@ namespace BitDiamond.Core.Services
 
             var donation = new BlockChainTransaction
             {
-                Amount = GetUpgradeAmount(nextLevel + 1),
-                LedgerCount = 0,
+                Amount = nextLevel == maxLevel ? 0 : GetUpgradeAmount(nextLevel + 1),
+                LedgerCount = nextLevel == maxLevel ? int.MaxValue : 0,
                 CreatedOn = DateTime.Now,
                 Sender = myAddress,
                 Receiver = beneficiaryAddress,
-                Status = BlockChainTransactionStatus.Unverified,
                 ContextType = Constants.TransactionContext_UpgradeBitLevel,
-                ContextId = bl.Id.ToString()
+                ContextId = bl.Id.ToString(),
+                Status = nextLevel == maxLevel ?
+                         BlockChainTransactionStatus.Verified : 
+                         BlockChainTransactionStatus.Unverified
             };
             _pcommand.Add(donation).Resolve();
 
@@ -147,9 +152,10 @@ namespace BitDiamond.Core.Services
                 currentLevel.Donation.Status = BlockChainTransactionStatus.Verified;
                 currentLevel.Donation.LedgerCount = blockChainTransaction.LedgerCount;
                 _pcommand.Update(currentLevel.Donation);
-                
+
                 //increment receiver's donnation count
-                var receiverLevel = _query.CurrentBitLevel(blockChainTransaction.Receiver.Owner);
+                var receiverAddress = _query.GetBitcoinAddressById(blockChainTransaction.ReceiverId);
+                var receiverLevel = _query.CurrentBitLevel(receiverAddress.Owner);
                 receiverLevel.DonationCount++;
                 _pcommand.Update(receiverLevel);
 
@@ -286,12 +292,18 @@ namespace BitDiamond.Core.Services
             return _query.GetActiveBitcoinAddress(UserContext.CurrentUser());
         });
 
+        public Operation<SequencePage<BitLevel>> PagedUserUpgradeHistory(int pageSize, long pageIndex = 0)
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            return _query.GetPagedBitLevelHistory(UserContext.CurrentUser(), pageSize, pageIndex);
+        });
+
 
         private decimal GetUpgradeAmount(int level)
-            => _settingsManager.GetSetting(Constants.Settings_UpgradeFeeVector)
-                               .Resolve()
-                               .ParseData(_d => JsonConvert.DeserializeObject<decimal[]>(_d))
-                               [level-1];
+        => _settingsManager.GetSetting(Constants.Settings_UpgradeFeeVector)
+                           .Resolve()
+                           .ParseData(_d => JsonConvert.DeserializeObject<decimal[]>(_d))
+                           [level-1];
 
 
         private bool IsSameTransaction(BlockChainTransaction tnx1, BlockChainTransaction tnx2)
@@ -316,7 +328,7 @@ namespace BitDiamond.Core.Services
                          return false;
                      }
                      else return true;
-                 })?
-                 .User;
+                 })?.User
+                 ?? lastBeneficiary;
     }
 }

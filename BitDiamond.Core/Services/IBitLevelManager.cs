@@ -36,6 +36,9 @@ namespace BitDiamond.Core.Services
         [Resource(":system/bit-levels/cycles/history/@get")]
         Operation<IEnumerable<BitLevel>> UserUpgradeHistory();
 
+        [Resource(":system/bit-levels/cycles/history/@get-paged")]
+        Operation<SequencePage<BitLevel>> PagedUserUpgradeHistory(int pageSize, long pageIndex = 0L);
+
         [Resource(":system/bit-levels/bitcoin-addresses/active/@get")]
         Operation<BitcoinAddress> GetActiveBitcoinAddress();
 

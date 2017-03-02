@@ -218,6 +218,13 @@ module BitDiamond.Services {
             return this.__transport.get<Utils.Operation<Models.IBitLevel[]>>('/api/bit-levels/cycles/history');
         }
 
+        getPagedBitLevelHistory(pageIndex: number, pageSize: number): ng.IPromise<Utils.Operation<Utils.SequencePage<Models.IBitLevel>>> {
+            return this.__transport.get<Utils.Operation<Utils.SequencePage<Models.IBitLevel>>>('/api/bit-levels/cycles/history/pages', {
+                PageSize: pageSize,
+                PageIndex: pageIndex
+            });
+        }
+
         getUpgradeFee(level: number): ng.IPromise<Utils.Operation<number>> {
             return this.__transport.get<Utils.Operation<number>>('/api/bit-levels/upgrade-fees/' + level);
         }
@@ -265,13 +272,14 @@ module BitDiamond.Services {
         }
 
 
-
-
+        private _maxBitLevel: ng.IPromise<Utils.Operation<number>>;
         __transport: Utils.Services.DomainTransport;
         $q: ng.IQService;
+
         constructor(__transport, $q) {
             this.__transport = __transport;
             this.$q = $q;
+
         }
     }
 }

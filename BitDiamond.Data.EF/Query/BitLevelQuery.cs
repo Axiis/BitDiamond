@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using Axis.Luna.Extensions;
 using System;
 using System.Configuration;
+using Axis.Luna;
 
 namespace BitDiamond.Data.EF.Query
 {
@@ -58,6 +59,15 @@ namespace BitDiamond.Data.EF.Query
                   .Where(_bca => _bca.User.EntityId == user.EntityId)
                   .OrderByDescending(_bca => _bca.CreatedOn)
                   .ToArray();
+
+        public SequencePage<BitLevel> GetPagedBitLevelHistory(User user, int pageSize, long pageIndex)
+        => _europa.Store<BitLevel>()
+                  .QueryWith(_bca => _bca.User, _bca => _bca.Donation)
+                  .Where(_bca => _bca.User.EntityId == user.EntityId)
+                  .OrderByDescending(_bca => _bca.CreatedOn)
+                  .Pipe(_p => new SequencePage<BitLevel>(_p.Skip((int)(pageSize * pageIndex))
+                                                           .Take(pageSize)
+                                                           .ToArray(), _p.Count(), pageSize, pageIndex));
 
         public BitLevel GetNextUpgradeBeneficiary(User user)
         {

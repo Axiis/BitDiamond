@@ -136,7 +136,7 @@ var BitDiamond;
                 this.SequenceLength = sequenceLength;
                 this.Page = page;
                 this.PageSize = pageSize || page.length;
-                this.PageCount = Math.floor(this.SequenceLength / this.PageSize) + (this.SequenceLength % this.PageSize > 0 ? 1 : 0);
+                this.PageCount = sequenceLength == 0 ? 0 : (Math.floor(this.SequenceLength / this.PageSize) + (this.SequenceLength % this.PageSize > 0 ? 1 : 0));
             }
             /// <summary>
             /// Returns an array containing page indexes for pages immediately adjecent to the current page.
@@ -197,4 +197,3 @@ var BitDiamond;
         Utils.MimeMap = MimeMap;
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=tools.js.map

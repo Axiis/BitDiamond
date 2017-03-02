@@ -67,7 +67,7 @@ module BitDiamond.Controllers.Shared {
             return { active: this.isCurrentModule(moduleName) };
         }
         getModuleUrl(moduleName: string): string {
-            if (moduleName == 'dashboard') return '/profiles/index';
+            if (moduleName == 'dashboard') return '/profile/index';
             else return '/' + moduleName + '/index';
         }
 

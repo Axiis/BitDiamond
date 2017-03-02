@@ -83,6 +83,14 @@ namespace BitDiamond.Web.Controllers.Api
         => _bitlevel.UserUpgradeHistory().OperationResult(Request);
 
 
+        [HttpGet, Route("api/bit-levels/cycles/history/pages")]
+        public IHttpActionResult UserUpgradeHistory(string data)
+        => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
+            .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<SequencePageArgs>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
+            .Then(argopr => _bitlevel.PagedUserUpgradeHistory(argopr.Result.PageSize, argopr.Result.PageIndex))
+            .OperationResult(Request);
+
+
         [HttpPut, Route("api/bit-levels/transactions/receiver-confirmation")]
         public IHttpActionResult ReceiverConfirmation(TransactionArgs arg)
         => _bitlevel.ReceiverConfirmation(arg?.Hash).OperationResult(Request);
@@ -122,6 +130,12 @@ namespace BitDiamond.Web.Controllers.Api
         public class BitcoinAddressArgs
         {
             public long Id { get; set; }
+        }
+
+        public class SequencePageArgs
+        {
+            public int PageSize { get; set; }
+            public int PageIndex { get; set; }
         }
     }
 }

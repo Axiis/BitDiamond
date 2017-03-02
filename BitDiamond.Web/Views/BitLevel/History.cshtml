@@ -1,0 +1,75 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">Bit Level</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href>Bit Level</a></li>
+            <li><a href class="active">History</a></li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<ul class="nav customtab nav-tabs" role="tablist" 
+    style="margin-bottom:20px;">
+    <li role="presentation">
+        <a href role="tab" ui-sref="home">
+            <span class="visible-xs">
+                <i class="ti-home" title="Home"></i>
+            </span>
+            <span class="hidden-xs">Home</span>
+        </a>
+    </li>
+    <li role="presentation" class="">
+        <a href ui-sref="bitcoinAddresses" role="tab">
+            <span class="visible-xs">
+                <i class="icon-settings" title="Bitcoin Address"></i>
+            </span>
+            <span class="hidden-xs">Bitcoin Addresses</span>
+        </a>
+    </li>
+    <li role="presentation" class="active">
+        <a href role="tab">
+            <span class="visible-xs">
+                <i class="ti-time" title="History"></i>
+            </span>
+            <span class="hidden-xs">History</span>
+        </a>
+    </li>
+</ul>
+
+<div class="row" style="margin-bottom:20px;">
+
+    <div class="col-md-6">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default btn-outline waves-effect" ng-click="vm.loadFirstPage()"><i class="ti-angle-left"></i></button>
+            <button type="button" class="btn waves-effect" 
+                    ng-repeat="page in vm.pageLinks" 
+                    ng-class="vm.linkButtonClass(page)"
+                    ng-click="loadLinkPage(page)">{{page+1}}</button>
+            <button type="button" class="btn btn-default btn-outline waves-effect" ng-click="vm.loadLastPage()"><i class="ti-angle-right"></i></button>
+        </div>
+    </div>
+
+</div>
+
+<div class="row" style="border-bottom: 1px solid #666; margin-bottom:15px;" 
+     ng-repeat="level in vm.levels.Page">
+    <div class="col-md-1 col-sm-3">
+        <h2>{{level.Cycle}} / {{level.Level}}</h2>
+    </div>
+</div>
+
+
+<div ng-show="vm.isLoadingView"
+     style="position:absolute; left:220px; bottom:60px; right:0; top:166px;">
+    <box-loader size="40" color="white" show="true" block-loader="true"></box-loader>
+</div>

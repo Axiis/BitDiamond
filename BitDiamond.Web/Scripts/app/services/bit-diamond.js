@@ -178,6 +178,12 @@ var BitDiamond;
             BitLevel.prototype.getBitLevelHistory = function () {
                 return this.__transport.get('/api/bit-levels/cycles/history');
             };
+            BitLevel.prototype.getPagedBitLevelHistory = function (pageIndex, pageSize) {
+                return this.__transport.get('/api/bit-levels/cycles/history/pages', {
+                    PageSize: pageSize,
+                    PageIndex: pageIndex
+                });
+            };
             BitLevel.prototype.getUpgradeFee = function (level) {
                 return this.__transport.get('/api/bit-levels/upgrade-fees/' + level);
             };

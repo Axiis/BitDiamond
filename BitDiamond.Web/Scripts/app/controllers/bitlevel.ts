@@ -9,7 +9,6 @@ module BitDiamond.Controllers.BitLevel {
         cycle: Utils.Domain.BitCycle;
         bitLevel: Models.IBitLevel;
         hasBitLevel: boolean;
-        hasTransactionHash: boolean;
         hasActiveBitcoinAddress: boolean;
         upgradeFee: number = 0;
         receiverCode: string;
@@ -41,6 +40,16 @@ module BitDiamond.Controllers.BitLevel {
                 var next = this.cycle.nextCycle();
                 return next.cycle + '/' + next.level;
             }
+        }
+        get hasTransactionHash(): boolean {
+            return !Object.isNullOrUndefined(this.bitLevel) &&
+                !Object.isNullOrUndefined(this.bitLevel.Donation) &&
+                !Object.isNullOrUndefined(this.bitLevel.Donation.TransactionHash) &&
+                this.bitLevel.Donation.TransactionHash.trim() != '';
+        }
+        get isAtMaxCycleLevel(): boolean {
+            return !Object.isNullOrUndefined(this.bitLevel) &&
+                this.bitLevel.Level == Utils.Constants.Settings_MaxBitLevel;
         }
 
         cyclePercentage(): string {
@@ -82,6 +91,7 @@ module BitDiamond.Controllers.BitLevel {
             else {
                 this.isVerifyingTransaction = true;
                 this.__bitlevel.confirmUpgradeDonationTransaction().then(opr => {
+                    this.bitLevel.Donation = opr.Result;
                     this.__notify.success('Your transaction hash was verified!');
                 }, err => {
                     this.__notify.error('Something went wrong - could not verify your transaction.', 'Oops!');
@@ -108,7 +118,6 @@ module BitDiamond.Controllers.BitLevel {
             if (!Object.isNullOrUndefined(this.bitLevel)) {
                 this.hasBitLevel = true;
                 this.hasActiveBitcoinAddress = true;
-                this.hasTransactionHash = !Object.isNullOrUndefined(this.bitLevel.Donation.TransactionHash) && this.bitLevel.Donation.TransactionHash.trim() != '';
                 this.donationsMissed = this.bitLevel.SkipCount;
                 this.donationsReceived = this.bitLevel.DonationCount;
                 this.upgradeFee = this.bitLevel.Donation.Amount;
@@ -159,8 +168,60 @@ module BitDiamond.Controllers.BitLevel {
 
     export class History {
 
+        levels: Utils.SequencePage<Models.IBitLevel>;
+        pageLinks: number[];
+        pageSize: number = 30;
 
-        constructor(__bitlevel, __userContext, __notify) {
+        isLoadingView: boolean;
+
+        __bitLevel: Services.BitLevel;
+        __userContext: Utils.Services.UserContext;
+        __notify: Utils.Services.NotifyService;
+        $q: ng.IQService;
+
+        loadHistory(index: number, size: number): ng.IPromise<Utils.SequencePage<Models.IBitLevel>> {
+            this.isLoadingView = true;
+            return this.__bitLevel.getPagedBitLevelHistory(index, size || 30).then(opr => {
+                this.levels = !Object.isNullOrUndefined(opr.Result) ?
+                    new Utils.SequencePage<Models.IBitLevel>(opr.Result.Page, opr.Result.SequenceLength, opr.Result.PageSize, opr.Result.PageIndex) :
+                    new Utils.SequencePage<Models.IBitLevel>([], 0, 0, 0);
+
+                this.pageLinks = this.levels.AdjacentIndexes(2);
+
+                return this.$q.resolve(opr.Result);
+            }, err => {
+                this.__notify.error('Something went wrong - couldn\'t load your history.', 'Oops!');
+            }).finally(() => {
+                this.isLoadingView = false;
+            });
+        }
+
+        loadLastPage() {
+            this.loadHistory(this.levels.PageCount - 1, this.pageSize);
+        }
+        loadFirstPage() {
+            this.loadHistory(0, this.pageSize);
+        }
+        loadLinkPage(pageIndex: number) {
+            this.loadHistory(pageIndex, this.pageSize);
+        }
+        linkButtonClass(page: number) {
+            return {
+                'btn-outline': page != this.levels.PageIndex,
+                'btn-default': page != this.levels.PageIndex,
+                'btn-info': page == this.levels.PageIndex,
+            };
+        }
+
+
+        constructor(__bitlevel, __userContext, __notify, $q) {
+            this.__bitLevel = __bitlevel;
+            this.__userContext = __userContext;
+            this.__notify = __userContext;
+            this.$q = $q;
+
+            //load the initial view
+            this.loadHistory(0, 30);
         }
     }
 

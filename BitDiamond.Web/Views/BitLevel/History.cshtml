@@ -90,8 +90,12 @@
         <div class="col-md-3 col-sm-6 b-r"
              style="height:100px;">
             <strong>Date</strong>
-            <br>
-            Confirmed on: <span class="bd-level-history-value">{{moment(level.Donation.ModifiedOn.toMoment()).format()}} </span><br />
+
+            <br />
+            Upgraded on - <span class="bd-level-history-value">{{vm.displayDate(level.CreatedOn)}} </span>
+
+            <br/>
+            Confirmed payment on - <span class="bd-level-history-value">{{vm.displayDate(level.Donation.ModifiedOn) || 'Not Confirmed'}} </span>      
         </div>
     </div>
     <hr/>

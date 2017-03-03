@@ -5,7 +5,12 @@ var BitDiamond;
         var Profile;
         (function (Profile) {
             var Dashboard = (function () {
-                function Dashboard() {
+                function Dashboard(__notify, __account, __userContext, $q) {
+                    this.__notify = __notify;
+                    this.__account = __account;
+                    this.__userContext = __userContext;
+                    //after loading timeline data...
+                    Libs.HorizontalTimeline.initTimeline($('.cd-horizontal-timeline'));
                 }
                 return Dashboard;
             }());

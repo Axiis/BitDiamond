@@ -43,7 +43,6 @@
     <link href="~/Content/loaders.css" rel="stylesheet" type="text/css">
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css">
 
-
     <style type="text/css">
         .jqstooltip {
             position: absolute;
@@ -69,6 +68,7 @@
             text-align: left;
         }
     </style>
+
 </head>
 
 <body ng-app="profile">
@@ -177,7 +177,7 @@
                         </li>
 
                         <li>
-                            <a ng-href="{{vm.getModuleUrl('payment-history')}}" ng-class="vm.getActiveClass('payment-history')" class="waves-effect">
+                            <a ng-href="{{vm.getModuleUrl('payments')}}" ng-class="vm.getActiveClass('payments')" class="waves-effect">
                                 <i class="fa fa-btc fa-fw" data-icon="v"></i>
                                 <span class="hide-menu">
                                     Payment History
@@ -263,7 +263,6 @@
 
     <script type="text/javascript" src="~/Content/Theme/eliteadmin/plugins/bower_components/skycons/skycons.js"></script>
 
-    <script src="../plugins/bower_components/horizontal-timeline/js/horizontal-timeline.js"></script>
     <!--Morris JavaScript -->
     <script src="~/Content/Theme/eliteadmin/plugins/bower_components/raphael/raphael-min.js"></script>
     <script src="~/Content/Theme/eliteadmin/plugins/bower_components/morrisjs/morris.js"></script>
@@ -292,6 +291,7 @@
     <script type="text/javascript" src="~/scripts/libs/angular-ui-router.min.js"></script>
 
 
+    <script type="text/javascript" src="~/scripts/app/utils/horizontal-timeline.js"></script>
     <script type="text/javascript" src="~/scripts/app/utils/constants.js"></script>
     <script type="text/javascript" src="~/scripts/app/utils/extensions.js"></script>
     <script type="text/javascript" src="~/scripts/app/utils/tools.js"></script>

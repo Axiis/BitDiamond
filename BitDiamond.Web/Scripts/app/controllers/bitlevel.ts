@@ -182,9 +182,22 @@ module BitDiamond.Controllers.BitLevel {
         loadHistory(index: number, size: number): ng.IPromise<Utils.SequencePage<Models.IBitLevel>> {
             this.isLoadingView = true;
             return this.__bitLevel.getPagedBitLevelHistory(index, size || this.pageSize || 30).then(opr => {
-                this.levels = !Object.isNullOrUndefined(opr.Result) ?
-                    new Utils.SequencePage<Models.IBitLevel>(opr.Result.Page, opr.Result.SequenceLength, opr.Result.PageSize, opr.Result.PageIndex) :
-                    new Utils.SequencePage<Models.IBitLevel>([], 0, 0, 0);
+
+                if (!Object.isNullOrUndefined(opr.Result)) {
+                    opr.Result.Page = opr.Result.Page.map(lvl => {
+                        lvl.CreatedOn = new Apollo.Models.JsonDateTime(lvl.CreatedOn);
+                        lvl.ModifiedOn = new Apollo.Models.JsonDateTime(lvl.ModifiedOn);
+                        if (!Object.isNullOrUndefined(lvl.Donation)) {
+                            lvl.Donation.ModifiedOn = new Apollo.Models.JsonDateTime(lvl.Donation.ModifiedOn);
+                            lvl.Donation.CreatedOn = new Apollo.Models.JsonDateTime(lvl.Donation.CreatedOn);
+                        }
+                        return lvl;
+                    });
+                    this.levels = new Utils.SequencePage<Models.IBitLevel>(opr.Result.Page, opr.Result.SequenceLength, opr.Result.PageSize, opr.Result.PageIndex);
+                }
+                else {
+                    this.levels = new Utils.SequencePage<Models.IBitLevel>([], 0, 0, 0);
+                }
 
                 this.pageLinks = this.levels.AdjacentIndexes(2);
 
@@ -211,6 +224,10 @@ module BitDiamond.Controllers.BitLevel {
                 'btn-default': page != this.levels.PageIndex,
                 'btn-info': page == this.levels.PageIndex,
             };
+        }
+        displayDate(date: Apollo.Models.JsonDateTime): string {
+            if (Object.isNullOrUndefined(date)) return null;
+            else return date.toMoment().format('YYYY/M/d  H:m');
         }
 
 

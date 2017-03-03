@@ -3,9 +3,19 @@ module BitDiamond.Controllers.Profile {
 
     export class Dashboard {
 
+        __notify: Utils.Services.NotifyService;
+        __account: Services.Account;
+        __userContext: Utils.Services.UserContext;
 
-        constructor() {
+        $q: ng.IQService;
 
+        constructor(__notify, __account, __userContext, $q) {
+            this.__notify = __notify;
+            this.__account = __account;
+            this.__userContext = __userContext;
+
+            //after loading timeline data...
+            Libs.HorizontalTimeline.initTimeline($('.cd-horizontal-timeline'));
         }
     }
 

@@ -136,6 +136,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DbMigrationTest.cs" />
     <Compile Include="DIRegistrationTest.cs" />
+    <Compile Include="Queries\BlockChainQueryTests.cs" />
     <Compile Include="UnitTest2.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -89,6 +89,7 @@
     <Compile Include="Services\IReferralManager.cs" />
     <Compile Include="Services\ISettingsManager.cs" />
     <Compile Include="Services\IUserContext.cs" />
+    <Compile Include="Services\Query\IBlockChainQuery.cs" />
     <Compile Include="Services\Query\IUserContextQuery.cs" />
     <Compile Include="Utils\IUserContextAware.cs" />
     <Compile Include="Services\IUserNotifier.cs" />

@@ -3,15 +3,52 @@
     Layout = null;
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Outgoing</title>
-</head>
-<body>
-    <div> 
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">Payments</h4>
     </div>
-</body>
-</html>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href>Payments</a></li>
+            <li><a href class="active">Incoming</a></li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<ul class="nav customtab nav-tabs" role="tablist"
+    style="margin-bottom:20px;">
+    <li role="presentation">
+        <a href role="tab" ui-sref="incoming">
+            <span class="visible-xs">
+                <i class="ti-import" title="Incoming"></i>
+            </span>
+            <span class="hidden-xs">Incoming</span>
+        </a>
+    </li>
+    <li role="presentation" class="active">
+        <a href role="tab">
+            <span class="visible-xs">
+                <i class="ti-export" title="Outgoing"></i>
+            </span>
+            <span class="hidden-xs">Outgoing</span>
+        </a>
+    </li>
+</ul>
+
+<div class="row" style="margin-bottom:20px;">
+
+    <div class="col-md-6">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default btn-outline waves-effect" ng-click="vm.loadFirstPage()"><i class="ti-angle-double-left"></i></button>
+            <button type="button" class="btn waves-effect"
+                    ng-repeat="page in vm.pageLinks"
+                    ng-class="vm.linkButtonClass(page)"
+                    ng-click="vm.loadLinkPage(page)">
+                {{page+1}}
+            </button>
+            <button type="button" class="btn btn-default btn-outline waves-effect" ng-click="vm.loadLastPage()"><i class="ti-angle-double-right"></i></button>
+        </div>
+    </div>
+
+</div>

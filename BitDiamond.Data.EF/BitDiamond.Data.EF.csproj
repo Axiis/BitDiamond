@@ -101,6 +101,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query\AccountQuery.cs" />
     <Compile Include="Query\BitLevelQuery.cs" />
+    <Compile Include="Query\BlockChainQuery.cs" />
     <Compile Include="Query\ContextVerifierQuery.cs" />
     <Compile Include="Query\ReferralQuery.cs" />
     <Compile Include="Query\SettingsQuery.cs" />

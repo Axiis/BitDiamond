@@ -34,6 +34,8 @@ namespace BitDiamond.Core.Models
             }
         }
 
+        public ReferralNode OwnerRef { get; set; }
+
         public bool IsVerified { get; set; }
 
         public bool IsActive { get; set; }

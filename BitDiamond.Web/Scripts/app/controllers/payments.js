@@ -5,14 +5,142 @@ var BitDiamond;
         var Payments;
         (function (Payments) {
             var Incoming = (function () {
-                function Incoming() {
+                function Incoming(__blockChain, __userContext, __notify, $q) {
+                    this.pageSize = 20;
+                    this.__blockChain = __blockChain;
+                    this.__userContext = __userContext;
+                    this.__notify = __userContext;
+                    this.$q = $q;
+                    //load the initial view
+                    this.loadHistory(0, this.pageSize);
                 }
+                Incoming.prototype.isTransactionVerified = function (transaction) {
+                    if (Object.isNullOrUndefined(transaction))
+                        return false;
+                    else
+                        return transaction.Status == BitDiamond.Models.BlockChainTransactionStatus.Verified;
+                };
+                Incoming.prototype.loadHistory = function (index, size) {
+                    var _this = this;
+                    this.isLoadingView = true;
+                    return this.__blockChain.getPagedIncomingTransactions(index, size || this.pageSize || 30).then(function (opr) {
+                        if (!Object.isNullOrUndefined(opr.Result)) {
+                            opr.Result.Page = opr.Result.Page.map(function (trnx) {
+                                trnx.CreatedOn = new Apollo.Models.JsonDateTime(trnx.CreatedOn);
+                                trnx.ModifiedOn = new Apollo.Models.JsonDateTime(trnx.ModifiedOn);
+                                return trnx;
+                            });
+                            _this.payments = new BitDiamond.Utils.SequencePage(opr.Result.Page, opr.Result.SequenceLength, opr.Result.PageSize, opr.Result.PageIndex);
+                        }
+                        else {
+                            _this.payments = new BitDiamond.Utils.SequencePage([], 0, 0, 0);
+                        }
+                        _this.pageLinks = _this.payments.AdjacentIndexes(2);
+                        return _this.$q.resolve(opr.Result);
+                    }, function (err) {
+                        _this.__notify.error('Something went wrong - couldn\'t load your history.', 'Oops!');
+                    }).finally(function () {
+                        _this.isLoadingView = false;
+                    });
+                };
+                Incoming.prototype.loadLastPage = function () {
+                    this.loadHistory(this.payments.PageCount - 1, this.pageSize);
+                };
+                Incoming.prototype.loadFirstPage = function () {
+                    this.loadHistory(0, this.pageSize);
+                };
+                Incoming.prototype.loadLinkPage = function (pageIndex) {
+                    this.loadHistory(pageIndex, this.pageSize);
+                };
+                Incoming.prototype.linkButtonClass = function (page) {
+                    return {
+                        'btn-outline': page != this.payments.PageIndex,
+                        'btn-default': page != this.payments.PageIndex,
+                        'btn-info': page == this.payments.PageIndex,
+                    };
+                };
+                Incoming.prototype.displayDate = function (date) {
+                    if (Object.isNullOrUndefined(date))
+                        return null;
+                    else
+                        return date.toMoment().format('YYYY/M/d  H:m');
+                };
+                Incoming.prototype.verifyManually = function (transaction) {
+                };
                 return Incoming;
             }());
             Payments.Incoming = Incoming;
             var Outgoing = (function () {
-                function Outgoing() {
+                function Outgoing(__blockChain, __userContext, __notify, $q) {
+                    this.pageSize = 20;
+                    this.__blockChain = __blockChain;
+                    this.__userContext = __userContext;
+                    this.__notify = __userContext;
+                    this.$q = $q;
+                    //load the initial view
+                    this.loadHistory(0, this.pageSize);
                 }
+                Outgoing.prototype.loadHistory = function (index, size) {
+                    var _this = this;
+                    this.isLoadingView = true;
+                    return this.__blockChain.getPagedOutgoingTransactions(index, size || this.pageSize || 30).then(function (opr) {
+                        if (!Object.isNullOrUndefined(opr.Result)) {
+                            opr.Result.Page = opr.Result.Page.map(function (trnx) {
+                                trnx.CreatedOn = new Apollo.Models.JsonDateTime(trnx.CreatedOn);
+                                trnx.ModifiedOn = new Apollo.Models.JsonDateTime(trnx.ModifiedOn);
+                                return trnx;
+                            });
+                            _this.payments = new BitDiamond.Utils.SequencePage(opr.Result.Page, opr.Result.SequenceLength, opr.Result.PageSize, opr.Result.PageIndex);
+                        }
+                        else {
+                            _this.payments = new BitDiamond.Utils.SequencePage([], 0, 0, 0);
+                        }
+                        _this.pageLinks = _this.payments.AdjacentIndexes(2);
+                        return _this.$q.resolve(opr.Result);
+                    }, function (err) {
+                        _this.__notify.error('Something went wrong - couldn\'t load your history.', 'Oops!');
+                    }).finally(function () {
+                        _this.isLoadingView = false;
+                    });
+                };
+                Outgoing.prototype.canVerify = function (trnx) {
+                    return true;
+                };
+                Outgoing.prototype.loadLastPage = function () {
+                    this.loadHistory(this.payments.PageCount - 1, this.pageSize);
+                };
+                Outgoing.prototype.loadFirstPage = function () {
+                    this.loadHistory(0, this.pageSize);
+                };
+                Outgoing.prototype.loadLinkPage = function (pageIndex) {
+                    this.loadHistory(pageIndex, this.pageSize);
+                };
+                Outgoing.prototype.linkButtonClass = function (page) {
+                    return {
+                        'btn-outline': page != this.payments.PageIndex,
+                        'btn-default': page != this.payments.PageIndex,
+                        'btn-info': page == this.payments.PageIndex,
+                    };
+                };
+                Outgoing.prototype.displayDate = function (date) {
+                    if (Object.isNullOrUndefined(date))
+                        return null;
+                    else
+                        return date.toMoment().format('YYYY/M/d  H:m');
+                };
+                Outgoing.prototype.verify = function (trnx) {
+                    var _this = this;
+                    if (!this.isVerifyingTransaction) {
+                        this.isVerifyingTransaction = true;
+                        this.__blockChain.verifyManually(trnx.TransactionHash).then(function (opr) {
+                            _this.__notify.success('Transaction verified successfully.');
+                        }, function (err) {
+                            _this.__notify.error('Something went wrong - could not verify the transaction.', 'Oops!');
+                        }).finally(function () {
+                            _this.isVerifyingTransaction = false;
+                        });
+                    }
+                };
                 return Outgoing;
             }());
             Payments.Outgoing = Outgoing;

@@ -5,7 +5,6 @@ using Axis.Pollux.Identity.Principal;
 using BitDiamond.Core.Models;
 using Axis.Jupiter;
 using static Axis.Luna.Extensions.ExceptionExtensions;
-using Axis.Jupiter.Europa;
 using System.Data.SqlClient;
 using Axis.Luna.Extensions;
 using System;

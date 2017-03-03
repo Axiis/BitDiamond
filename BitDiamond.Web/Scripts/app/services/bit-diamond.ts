@@ -186,6 +186,7 @@ module BitDiamond.Services {
         }
     }
 
+
     export class BitLevel {
 
         upgrade(): ng.IPromise<Utils.Operation<Models.IBitLevel>> {
@@ -280,6 +281,126 @@ module BitDiamond.Services {
             this.__transport = __transport;
             this.$q = $q;
 
+        }
+    }
+
+
+    export class BlockChain {
+
+        getPagedIncomingTransactions(pageIndex: number, pageSize: number): ng.IPromise<Utils.Operation<Utils.SequencePage<Models.IBlockChainTransaction>>> {
+            return this.$q.resolve(<Utils.Operation<Utils.SequencePage<Models.IBlockChainTransaction>>>{
+                Message: null,
+                Succeeded: true,
+                Result: new Utils.SequencePage<Models.IBlockChainTransaction>([
+                    <Models.IBlockChainTransaction>{
+                        Amount: Math.round(Math.random() * 1000),
+                        CreatedOn: new Apollo.Models.JsonDateTime(Date.now()),
+                        LedgerCount: Math.round(Math.random() * 10),
+                        Receiver: {
+                            BlockChainAddress: 'me',
+                            IsActive: true,
+                            IsVerified: true
+                        },
+                        Sender: {
+                            BlockChainAddress: '@apex-001',
+                            IsActive: true,
+                            IsVerified: true
+                        },
+                        Status: BitDiamond.Models.BlockChainTransactionStatus.Verified,
+                        TransactionHash: Math.random() + ''
+                    },
+                    <Models.IBlockChainTransaction>{
+                        Amount: Math.round(Math.random() * 1000),
+                        CreatedOn: new Apollo.Models.JsonDateTime(Date.now()),
+                        LedgerCount: Math.round(Math.random() * 10),
+                        Receiver: {
+                            BlockChainAddress: 'me',
+                            IsActive: true,
+                            IsVerified: true
+                        },
+                        Sender: {
+                        },
+                        Status: BitDiamond.Models.BlockChainTransactionStatus.Verified,
+                        TransactionHash: Math.random() + ''
+                    },
+                    <Models.IBlockChainTransaction>{
+                        Amount: Math.round(Math.random() * 1000),
+                        CreatedOn: new Apollo.Models.JsonDateTime(Date.now()),
+                        LedgerCount: Math.round(Math.random() * 10),
+                        Receiver: {
+                            BlockChainAddress: 'me-2',
+                            IsActive: true,
+                            IsVerified: true
+                        },
+                        Sender: {
+                            BlockChainAddress: 'some-one-else-43344',
+                            IsActive: true,
+                            IsVerified: true
+                        },
+                        Status: BitDiamond.Models.BlockChainTransactionStatus.Verified,
+                        TransactionHash: Math.random() + ''
+                    },
+                    <Models.IBlockChainTransaction>{
+                        Amount: Math.round(Math.random() * 1000),
+                        CreatedOn: new Apollo.Models.JsonDateTime(Date.now()),
+                        LedgerCount: Math.round(Math.random() * 10),
+                        Receiver: {
+                            BlockChainAddress: 'me-3',
+                            IsActive: true,
+                            IsVerified: true
+                        },
+                        Sender: {
+                            BlockChainAddress: 'another-person-64-there',
+                            IsActive: true,
+                            IsVerified: true
+                        },
+                        Status: BitDiamond.Models.BlockChainTransactionStatus.Verified,
+                        TransactionHash: Math.random() + ''
+                    },
+                    <Models.IBlockChainTransaction>{
+                        Amount: Math.round(Math.random() * 1000),
+                        CreatedOn: new Apollo.Models.JsonDateTime(Date.now()),
+                        LedgerCount: Math.round(Math.random() * 10),
+                        Receiver: {
+                            BlockChainAddress: 'me-2',
+                            IsActive: true,
+                            IsVerified: true
+                        },
+                        Sender: {
+                            BlockChainAddress: 'etc-etc-etc',
+                            IsActive: true,
+                            IsVerified: true
+                        },
+                        Status: BitDiamond.Models.BlockChainTransactionStatus.Verified,
+                        TransactionHash: Math.random() + ''
+                    }
+                    ],10, 5, 0)
+            });
+        }
+        getPagedOutgoingTransactions(pageIndex: number, pageSize: number): ng.IPromise<Utils.Operation<Utils.SequencePage<Models.IBlockChainTransaction>>> {
+            return this.$q.resolve(<Utils.Operation<Utils.SequencePage<Models.IBlockChainTransaction>>>{
+                Message: null,
+                Succeeded: true,
+                Result: new Utils.SequencePage<Models.IBlockChainTransaction>([
+
+                ], 10, 5, 0)
+            });
+        }
+
+        verifyManually(transactionHash: string): ng.IPromise<Utils.Operation<void>> {
+            return this.$q.resolve(<Utils.Operation<void>>{
+                Succeeded: true,
+                Result: null,
+                Message: null
+            });
+        }
+
+
+        __transport: Utils.Services.DomainTransport;
+        $q: ng.IQService;
+        constructor(__transport, $q) {
+            this.__transport = __transport;
+            this.$q = $q;
         }
     }
 }

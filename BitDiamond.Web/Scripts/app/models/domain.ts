@@ -140,6 +140,7 @@ module BitDiamond.Models {
 		BlockChainAddress: string;
 		Owner: Pollux.Models.IUser;
 		OwnerId: string;
+		OwnerRef: BitDiamond.Models.IReferralNode;
 		IsVerified: boolean;
 		IsActive: boolean;
 	}

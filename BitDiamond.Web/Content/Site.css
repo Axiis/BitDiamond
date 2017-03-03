@@ -70,3 +70,9 @@
 .bd-level-history-title{
 
 }
+
+table.bd-transaction-table td.bd-nowrap{
+    white-space: nowrap;
+    text-wrap:none;
+    text-overflow: ellipsis;
+}

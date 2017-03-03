@@ -57,3 +57,4 @@ var BitDiamond;
         })(NotificationType = Models.NotificationType || (Models.NotificationType = {}));
     })(Models = BitDiamond.Models || (BitDiamond.Models = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=domain.js.map

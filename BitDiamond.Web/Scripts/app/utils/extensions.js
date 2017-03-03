@@ -260,3 +260,4 @@ var BitDiamond;
         };
     })(Extensions = BitDiamond.Extensions || (BitDiamond.Extensions = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=extensions.js.map

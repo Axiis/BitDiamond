@@ -27,6 +27,25 @@ namespace BitDiamond.Data.EF.Query
             _refQuery = referralQuery;
         }
 
+        public IQueryable<JoinObject> BaseBitLevelQuery()
+        {
+            return from bl in _europa.Store<BitLevel>().Query
+            join btc in _europa.Store<BlockChainTransaction>().Query on bl.DonationId equals btc.Id
+            join rad in _europa.Store<BitcoinAddress>().Query on btc.ReceiverId equals rad.Id
+            join sad in _europa.Store<BitcoinAddress>().Query on btc.SenderId equals sad.Id
+            join rref in _europa.Store<ReferralNode>().Query on rad.OwnerId equals rref.UserId
+            join sref in _europa.Store<ReferralNode>().Query on sad.OwnerId equals sref.UserId
+            select new JoinObject
+            {
+                Level = bl,
+                Transaction = btc,
+                ReceiverAddress = rad,
+                SenderAddress = sad,
+                ReceiverNode = rref,
+                SenderNode = sref
+            };
+        }
+
 
         public BitLevel CurrentBitLevel(User user)
         => _europa.Store<BitLevel>()
@@ -208,5 +227,15 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
                   .QueryWith(_bca => _bca.Owner)
                   .Where(_bca => _bca.OwnerId == user.UserId)
                   .ToArray();
+    }
+
+    public class JoinObject
+    {
+        public BitLevel Level { get; set; }
+        public BlockChainTransaction Transaction { get; set; }
+        public BitcoinAddress SenderAddress { get; set; }
+        public BitcoinAddress ReceiverAddress { get; set; }
+        public ReferralNode SenderNode { get; set; }
+        public ReferralNode ReceiverNode { get; set; }
     }
 }

@@ -95,6 +95,7 @@ namespace BitDiamond.Web.Infrastructure.DI
 
             #region queries
             c.RegisterLazyService<Core.Services.Query.IAccountQuery, Data.EF.Query.AccountQuery>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IBlockChainQuery, Data.EF.Query.BlockChainQuery>(gen, Lifestyle.Scoped);
             c.RegisterLazyService<Core.Services.Query.IBitLevelQuery, Data.EF.Query.BitLevelQuery>(gen, Lifestyle.Scoped);
             c.RegisterLazyService<Core.Services.Query.IContextVerifierQuery, Data.EF.Query.ContextVerifierQuery>(gen, Lifestyle.Scoped);
             c.RegisterLazyService<Core.Services.Query.IReferralQuery, Data.EF.Query.ReferralQuery>(gen, Lifestyle.Scoped);

@@ -175,7 +175,10 @@ namespace BitDiamond.Data.EF
                     ":system/accounts/userdata/*",
                     ":system/accounts/logons/@invalidate",
                     ":system/accounts/users/roles/@get",
+
                     ":system/bit-levels/*",
+
+                    ":system/block-chain/*",
 
                     ":system/settings/@get",
                     ":system/settings/all/@get"

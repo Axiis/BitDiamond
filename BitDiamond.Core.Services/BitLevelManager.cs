@@ -185,8 +185,8 @@ namespace BitDiamond.Core.Services
                                            () => _query.GetBitLevelById(id));
 
         public Operation<IEnumerable<BitLevel>> UserUpgradeHistory()
-            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(),
-                                           () => _query.GetBitLevelHistory(UserContext.CurrentUser()));
+        => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(),
+                                       () => _query.GetBitLevelHistory(UserContext.CurrentUser()));
 
         public Operation<decimal> GetUpgradeFee(int level)
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>

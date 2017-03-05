@@ -51,7 +51,7 @@ namespace BitDiamond.Data.EF.Query
                ReceiverBio = __rb
            };
 
-        public IQueryable<BlockChainTransactionJoiner> BaseBlockChainQuery()
+        public IQueryable<TransactionJoiner> BaseBlockChainQuery()
         => from btc in _europa.Store<BlockChainTransaction>().Query
            join rad in _europa.Store<BitcoinAddress>().Query on btc.ReceiverId equals rad.Id
            join sad in _europa.Store<BitcoinAddress>().Query on btc.SenderId equals sad.Id
@@ -61,7 +61,7 @@ namespace BitDiamond.Data.EF.Query
            join sb in _europa.Store<BioData>().Query on sad.OwnerId equals sb.OwnerId into _sb
            from __rb in _rb.DefaultIfEmpty()
            from __sb in _sb.DefaultIfEmpty()
-           select new BlockChainTransactionJoiner
+           select new TransactionJoiner
            {
                Transaction = btc,
                ReceiverAddress = rad,
@@ -280,86 +280,88 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
             .AsEnumerable()
             .Select(_jo => _jo.ToAddress())
             .ToArray();
-    }
 
-    public class BitLevelJoiner
-    {
-        public BitLevel Level { get; set; }
-        public BlockChainTransaction Transaction { get; set; }
-        public BitcoinAddress SenderAddress { get; set; }
-        public BitcoinAddress ReceiverAddress { get; set; }
-        public ReferralNode SenderNode { get; set; }
-        public ReferralNode ReceiverNode { get; set; }
-        public BioData SenderBio { get; set; }
-        public BioData ReceiverBio { get; set; }
 
-        public BitLevel ToBitLevel()
+        #region Joiner helper classes
+        public class BitLevelJoiner
         {
-            SenderNode.UserBio = SenderBio;
-            ReceiverNode.UserBio = ReceiverBio;
+            public BitLevel Level { get; set; }
+            public BlockChainTransaction Transaction { get; set; }
+            public BitcoinAddress SenderAddress { get; set; }
+            public BitcoinAddress ReceiverAddress { get; set; }
+            public ReferralNode SenderNode { get; set; }
+            public ReferralNode ReceiverNode { get; set; }
+            public BioData SenderBio { get; set; }
+            public BioData ReceiverBio { get; set; }
 
-            SenderAddress.OwnerRef = SenderNode;
-            ReceiverAddress.OwnerRef = ReceiverNode;
+            public BitLevel ToBitLevel()
+            {
+                SenderNode.UserBio = SenderBio;
+                ReceiverNode.UserBio = ReceiverBio;
 
-            Transaction.Sender = SenderAddress;
-            Transaction.Receiver = ReceiverAddress;
+                SenderAddress.OwnerRef = SenderNode;
+                ReceiverAddress.OwnerRef = ReceiverNode;
 
-            Level.Donation = Transaction;
-            return Level;
+                Transaction.Sender = SenderAddress;
+                Transaction.Receiver = ReceiverAddress;
+
+                Level.Donation = Transaction;
+                return Level;
+            }
         }
-    }
 
-
-    public class BlockChainTransactionJoiner
-    {
-        public BlockChainTransaction Transaction { get; set; }
-        public BitcoinAddress SenderAddress { get; set; }
-        public BitcoinAddress ReceiverAddress { get; set; }
-        public ReferralNode SenderNode { get; set; }
-        public ReferralNode ReceiverNode { get; set; }
-        public BioData SenderBio { get; set; }
-        public BioData ReceiverBio { get; set; }
-
-        public BlockChainTransaction ToBlockChainTransaction()
+        public class TransactionJoiner
         {
-            SenderNode.UserBio = SenderBio;
-            ReceiverNode.UserBio = ReceiverBio;
+            public BlockChainTransaction Transaction { get; set; }
+            public BitcoinAddress SenderAddress { get; set; }
+            public BitcoinAddress ReceiverAddress { get; set; }
+            public ReferralNode SenderNode { get; set; }
+            public ReferralNode ReceiverNode { get; set; }
+            public BioData SenderBio { get; set; }
+            public BioData ReceiverBio { get; set; }
 
-            SenderAddress.OwnerRef = SenderNode;
-            ReceiverAddress.OwnerRef = ReceiverNode;
+            public BlockChainTransaction ToBlockChainTransaction()
+            {
+                SenderNode.UserBio = SenderBio;
+                ReceiverNode.UserBio = ReceiverBio;
 
-            Transaction.Sender = SenderAddress;
-            Transaction.Receiver = ReceiverAddress;
+                SenderAddress.OwnerRef = SenderNode;
+                ReceiverAddress.OwnerRef = ReceiverNode;
 
-            return Transaction;
+                Transaction.Sender = SenderAddress;
+                Transaction.Receiver = ReceiverAddress;
+
+                return Transaction;
+            }
         }
-    }
 
-    public class BitcoinAddressJoiner
-    {
-        public BitcoinAddress Address { get; set; }
-        public ReferralNode RefNode { get; set; }
-        public BioData UserBio { get; set; }
-
-        public BitcoinAddress ToAddress()
+        public class BitcoinAddressJoiner
         {
-            RefNode.UserBio = UserBio;
-            Address.OwnerRef = RefNode;
+            public BitcoinAddress Address { get; set; }
+            public ReferralNode RefNode { get; set; }
+            public BioData UserBio { get; set; }
 
-            return Address;
+            public BitcoinAddress ToAddress()
+            {
+                RefNode.UserBio = UserBio;
+                Address.OwnerRef = RefNode;
+
+                return Address;
+            }
         }
-    }
 
-    public class ReferralNodeJoiner
-    {
-        public ReferralNode RefNode { get; set; }
-        public BioData UserBio { get; set; }
-
-        public ReferralNode ToRefNode()
+        public class ReferralNodeJoiner
         {
-            RefNode.UserBio = UserBio;
+            public ReferralNode RefNode { get; set; }
+            public BioData UserBio { get; set; }
 
-            return RefNode;
+            public ReferralNode ToRefNode()
+            {
+                RefNode.UserBio = UserBio;
+
+                return RefNode;
+            }
         }
+        #endregion
     }
 }

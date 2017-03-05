@@ -69,7 +69,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="transaction in vm.payments.Page">
-                        <td>{{transaction.Sender.OwnerRef.ReferenceCode}}</td>
+                        <td>{{vm.getTransactionSender(transaction)}}</td>
                         <td><i class="fa fa-btc"></i>&nbsp;{{transaction.Amount}}</td>
                         <td class="bd-nowrap"><strong>#</strong> {{transaction.TransactionHash}}</td>
                         <td>{{transaction.LedgerCount}}</td>

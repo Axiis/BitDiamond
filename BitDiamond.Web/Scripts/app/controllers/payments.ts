@@ -8,6 +8,7 @@ module BitDiamond.Controllers.Payments {
         pageSize: number = 20;
 
         isLoadingView: boolean;
+        isVerifyingTransaction: boolean;
 
         __blockChain: Services.BlockChain;
         __userContext: Utils.Services.UserContext;
@@ -66,8 +67,26 @@ module BitDiamond.Controllers.Payments {
             if (Object.isNullOrUndefined(date)) return null;
             else return date.toMoment().format('YYYY/M/d  H:m');
         }
-        verifyManually(transaction: Models.IBlockChainTransaction) {
-
+        getTransactionSender(trnx: Models.IBlockChainTransaction): string {
+            if (Object.isNullOrUndefined(trnx.Sender)) return '-';
+            else if (Object.isNullOrUndefined(trnx.Sender.OwnerRef)) return trnx.Sender.BlockChainAddress;
+            else if (Object.isNullOrUndefined(trnx.Sender.OwnerRef.UserBio)) return trnx.Sender.OwnerRef.ReferenceCode;
+            else {
+                var bio = trnx.Sender.OwnerRef.UserBio;
+                return (bio.FirstName || '') + ' ' + (bio.LastName || '');
+            }
+        }
+        verifyManually(trnx: Models.IBlockChainTransaction) {
+            if (!this.isVerifyingTransaction) {
+                this.isVerifyingTransaction = true;
+                this.__blockChain.verifyManually(trnx.TransactionHash).then(opr => {
+                    this.__notify.success('Transaction verified successfully.');
+                }, err => {
+                    this.__notify.error('Something went wrong - could not verify the transaction.', 'Oops!');
+                }).finally(() => {
+                    this.isVerifyingTransaction = false;
+                });
+            }
         }
 
 
@@ -90,7 +109,6 @@ module BitDiamond.Controllers.Payments {
         pageSize: number = 20;
 
         isLoadingView: boolean;
-        isVerifyingTransaction: boolean;
 
         __blockChain: Services.BlockChain;
         __userContext: Utils.Services.UserContext;
@@ -147,17 +165,17 @@ module BitDiamond.Controllers.Payments {
             if (Object.isNullOrUndefined(date)) return null;
             else return date.toMoment().format('YYYY/M/d  H:m');
         }
-        verify(trnx: Models.IBlockChainTransaction) {
-            if (!this.isVerifyingTransaction) {
-                this.isVerifyingTransaction = true;
-                this.__blockChain.verifyManually(trnx.TransactionHash).then(opr => {
-                    this.__notify.success('Transaction verified successfully.');
-                }, err => {
-                    this.__notify.error('Something went wrong - could not verify the transaction.', 'Oops!');
-                }).finally(() => {
-                    this.isVerifyingTransaction = false;
-                });
+        getTransactionSender(trnx: Models.IBlockChainTransaction): string {
+            if (Object.isNullOrUndefined(trnx.Sender)) return '-';
+            else if (Object.isNullOrUndefined(trnx.Sender.OwnerRef)) return trnx.Sender.BlockChainAddress;
+            else if (Object.isNullOrUndefined(trnx.Sender.OwnerRef.UserBio)) return trnx.Sender.OwnerRef.ReferenceCode;
+            else {
+                var bio = trnx.Sender.OwnerRef.UserBio;
+                return (bio.FirstName || '') + ' ' + (bio.LastName || '');
             }
+        }
+        transactionStatus(trnx: Models.IBlockChainTransaction): string {
+            return Models.BlockChainTransactionStatus[trnx.Status];
         }
 
         constructor(__blockChain, __userContext, __notify, $q) {

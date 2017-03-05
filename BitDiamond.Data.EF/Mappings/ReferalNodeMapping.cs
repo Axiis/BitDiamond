@@ -6,6 +6,8 @@ namespace BitDiamond.Data.EF.Mappings
     {
         public ReferalNodeMapping()
         {
+            this.Ignore(e => e.UserBio);
+
             this.HasRequired(e => e.User)
                 .WithMany()
                 .HasForeignKey(e => e.UserId);

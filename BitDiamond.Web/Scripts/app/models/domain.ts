@@ -196,6 +196,7 @@ module BitDiamond.Models {
 		Referrals: BitDiamond.Models.IReferralNode[];
 		UplineCode: string;
 		Upline: BitDiamond.Models.IReferralNode;
+		UserBio: Pollux.Models.IBioData;
 		DirectDownlines: BitDiamond.Models.IReferralNode[];
 	}
 	export interface ISystemSetting extends IBaseModel<number>

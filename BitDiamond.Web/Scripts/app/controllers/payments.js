@@ -65,7 +65,30 @@ var BitDiamond;
                     else
                         return date.toMoment().format('YYYY/M/d  H:m');
                 };
-                Incoming.prototype.verifyManually = function (transaction) {
+                Incoming.prototype.getTransactionSender = function (trnx) {
+                    if (Object.isNullOrUndefined(trnx.Sender))
+                        return '-';
+                    else if (Object.isNullOrUndefined(trnx.Sender.OwnerRef))
+                        return trnx.Sender.BlockChainAddress;
+                    else if (Object.isNullOrUndefined(trnx.Sender.OwnerRef.UserBio))
+                        return trnx.Sender.OwnerRef.ReferenceCode;
+                    else {
+                        var bio = trnx.Sender.OwnerRef.UserBio;
+                        return (bio.FirstName || '') + ' ' + (bio.LastName || '');
+                    }
+                };
+                Incoming.prototype.verifyManually = function (trnx) {
+                    var _this = this;
+                    if (!this.isVerifyingTransaction) {
+                        this.isVerifyingTransaction = true;
+                        this.__blockChain.verifyManually(trnx.TransactionHash).then(function (opr) {
+                            _this.__notify.success('Transaction verified successfully.');
+                        }, function (err) {
+                            _this.__notify.error('Something went wrong - could not verify the transaction.', 'Oops!');
+                        }).finally(function () {
+                            _this.isVerifyingTransaction = false;
+                        });
+                    }
                 };
                 return Incoming;
             }());
@@ -128,18 +151,20 @@ var BitDiamond;
                     else
                         return date.toMoment().format('YYYY/M/d  H:m');
                 };
-                Outgoing.prototype.verify = function (trnx) {
-                    var _this = this;
-                    if (!this.isVerifyingTransaction) {
-                        this.isVerifyingTransaction = true;
-                        this.__blockChain.verifyManually(trnx.TransactionHash).then(function (opr) {
-                            _this.__notify.success('Transaction verified successfully.');
-                        }, function (err) {
-                            _this.__notify.error('Something went wrong - could not verify the transaction.', 'Oops!');
-                        }).finally(function () {
-                            _this.isVerifyingTransaction = false;
-                        });
+                Outgoing.prototype.getTransactionSender = function (trnx) {
+                    if (Object.isNullOrUndefined(trnx.Sender))
+                        return '-';
+                    else if (Object.isNullOrUndefined(trnx.Sender.OwnerRef))
+                        return trnx.Sender.BlockChainAddress;
+                    else if (Object.isNullOrUndefined(trnx.Sender.OwnerRef.UserBio))
+                        return trnx.Sender.OwnerRef.ReferenceCode;
+                    else {
+                        var bio = trnx.Sender.OwnerRef.UserBio;
+                        return (bio.FirstName || '') + ' ' + (bio.LastName || '');
                     }
+                };
+                Outgoing.prototype.transactionStatus = function (trnx) {
+                    return BitDiamond.Models.BlockChainTransactionStatus[trnx.Status];
                 };
                 return Outgoing;
             }());

@@ -36,8 +36,12 @@ namespace BitDiamond.Test.Queries
 
             var q = new BitLevelQuery(cxt, new ReferralQuery(cxt));
 
-            var x = q.BaseBitLevelQuery();
-
+            var x = q.BaseBitLevelQuery().Where(_jo => _jo.Level.UserId == "dev.bankai@gmail.com");
+            Console.WriteLine(x.ToArray().Length);
+            var r = x.AsEnumerable();
+            var u = r.Select(_r => _r.ToBitLevel());
+            var uar = u.ToArray();
+            Console.WriteLine(uar.Length);
         }
     }
 }

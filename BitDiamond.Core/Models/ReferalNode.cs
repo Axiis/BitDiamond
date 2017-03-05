@@ -40,6 +40,8 @@ namespace BitDiamond.Core.Models
         public string UplineCode { get; set; }
         public virtual ReferralNode Upline { get; set; }
 
+        public BioData UserBio { get; set; }
+
         public virtual List<ReferralNode> DirectDownlines { get; private set; } = new List<ReferralNode>();
     }
 }

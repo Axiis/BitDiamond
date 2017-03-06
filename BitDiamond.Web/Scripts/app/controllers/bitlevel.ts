@@ -11,7 +11,6 @@ module BitDiamond.Controllers.BitLevel {
         hasBitLevel: boolean;
         hasActiveBitcoinAddress: boolean;
         upgradeFee: number = 0;
-        receiverCode: string;
         receiver: Models.IReferralNode;
         transactionHash: string;
         isLoadingView: boolean;
@@ -54,6 +53,30 @@ module BitDiamond.Controllers.BitLevel {
 
         cyclePercentage(): string {
             return Math.round((this.currentLevel / Utils.Constants.Settings_MaxBitLevel) * 100) + '%';
+        }
+        receiverName(): string {
+            if (Object.isNullOrUndefined(this.bitLevel)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver.OwnerRef)) return this.bitLevel.Donation.Receiver.OwnerId;
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver.OwnerRef.UserBio)) return this.bitLevel.Donation.Receiver.OwnerId;
+            else {
+                var bio = this.bitLevel.Donation.Receiver.OwnerRef.UserBio;
+                return bio.FirstName + ' ' + bio.LastName;
+            }
+        }
+        receiverCode(): string {
+            if (Object.isNullOrUndefined(this.bitLevel)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver.OwnerRef)) return this.bitLevel.Donation.Receiver.OwnerId;
+            else return this.bitLevel.Donation.Receiver.OwnerRef.ReferenceCode;
+        }
+        receiverAddress(): string {
+            if (Object.isNullOrUndefined(this.bitLevel)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver)) return '-';
+            else return this.bitLevel.Donation.Receiver.BlockChainAddress;
         }
 
 
@@ -124,14 +147,6 @@ module BitDiamond.Controllers.BitLevel {
                 this.cycle = new Utils.Domain.BitCycle({
                     level: this.bitLevel.Level,
                     cycle: this.bitLevel.Cycle
-                });
-
-                //load the donation receiver
-                this.__bitlevel.getUpgradeDonationReceiverRef(this.bitLevel.Donation.Id).then(opr => {
-                    this.receiver = opr.Result;
-                    this.receiverCode = this.receiver.ReferenceCode;
-                }, err => {
-                    this.__notify.error('Could not load upgrade donation receiver information.', 'Oops!');
                 });
             }
             else {

@@ -73,6 +73,44 @@ var BitDiamond;
                 Home.prototype.cyclePercentage = function () {
                     return Math.round((this.currentLevel / BitDiamond.Utils.Constants.Settings_MaxBitLevel) * 100) + '%';
                 };
+                Home.prototype.receiverName = function () {
+                    if (Object.isNullOrUndefined(this.bitLevel))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver.OwnerRef))
+                        return this.bitLevel.Donation.Receiver.OwnerId;
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver.OwnerRef.UserBio))
+                        return this.bitLevel.Donation.Receiver.OwnerId;
+                    else {
+                        var bio = this.bitLevel.Donation.Receiver.OwnerRef.UserBio;
+                        return bio.FirstName + ' ' + bio.LastName;
+                    }
+                };
+                Home.prototype.receiverCode = function () {
+                    if (Object.isNullOrUndefined(this.bitLevel))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver.OwnerRef))
+                        return this.bitLevel.Donation.Receiver.OwnerId;
+                    else
+                        return this.bitLevel.Donation.Receiver.OwnerRef.ReferenceCode;
+                };
+                Home.prototype.receiverAddress = function () {
+                    if (Object.isNullOrUndefined(this.bitLevel))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver))
+                        return '-';
+                    else
+                        return this.bitLevel.Donation.Receiver.BlockChainAddress;
+                };
                 Home.prototype.upgradeLevel = function () {
                     var _this = this;
                     if (this.isUpgrading || !this.hasActiveBitcoinAddress)
@@ -150,13 +188,6 @@ var BitDiamond;
                         this.cycle = new BitDiamond.Utils.Domain.BitCycle({
                             level: this.bitLevel.Level,
                             cycle: this.bitLevel.Cycle
-                        });
-                        //load the donation receiver
-                        this.__bitlevel.getUpgradeDonationReceiverRef(this.bitLevel.Donation.Id).then(function (opr) {
-                            _this.receiver = opr.Result;
-                            _this.receiverCode = _this.receiver.ReferenceCode;
-                        }, function (err) {
-                            _this.__notify.error('Could not load upgrade donation receiver information.', 'Oops!');
                         });
                     }
                     else {

@@ -35,6 +35,8 @@ namespace BitDiamond.Data.EF.Query
            join sad in _europa.Store<BitcoinAddress>().Query on btc.SenderId equals sad.Id
            join rref in _europa.Store<ReferralNode>().Query on rad.OwnerId equals rref.UserId
            join sref in _europa.Store<ReferralNode>().Query on sad.OwnerId equals sref.UserId
+           join r in _europa.Store<User>().Query on rad.OwnerId equals r.EntityId
+           join s in _europa.Store<User>().Query on sad.OwnerId equals s.EntityId
            join rb in _europa.Store<BioData>().Query on bl.UserId equals rb.OwnerId into _rb
            join sb in _europa.Store<BioData>().Query on sad.OwnerId equals sb.OwnerId into _sb
            from __rb in _rb.DefaultIfEmpty()
@@ -48,13 +50,17 @@ namespace BitDiamond.Data.EF.Query
                ReceiverNode = rref,
                SenderNode = sref,
                SenderBio = __sb,
-               ReceiverBio = __rb
+               ReceiverBio = __rb,
+               Receiver = r,
+               Sender = s
            };
 
         public IQueryable<TransactionJoiner> BaseBlockChainQuery()
         => from btc in _europa.Store<BlockChainTransaction>().Query
            join rad in _europa.Store<BitcoinAddress>().Query on btc.ReceiverId equals rad.Id
            join sad in _europa.Store<BitcoinAddress>().Query on btc.SenderId equals sad.Id
+           join r in _europa.Store<User>().Query on rad.OwnerId equals r.EntityId
+           join s in _europa.Store<User>().Query on sad.OwnerId equals s.EntityId
            join rref in _europa.Store<ReferralNode>().Query on rad.OwnerId equals rref.UserId
            join sref in _europa.Store<ReferralNode>().Query on sad.OwnerId equals sref.UserId
            join rb in _europa.Store<BioData>().Query on rad.OwnerId equals rb.OwnerId into _rb
@@ -69,29 +75,35 @@ namespace BitDiamond.Data.EF.Query
                ReceiverNode = rref,
                SenderNode = sref,
                SenderBio = __sb,
-               ReceiverBio = __rb
+               ReceiverBio = __rb,
+               Receiver = r,
+               Sender = s
            };
 
         public IQueryable<BitcoinAddressJoiner> BaseBitcoinAddressQuery()
         => from rad in _europa.Store<BitcoinAddress>().Query
            join rref in _europa.Store<ReferralNode>().Query on rad.OwnerId equals rref.UserId
            join rb in _europa.Store<BioData>().Query on rad.OwnerId equals rb.OwnerId into _rb
+           join o in _europa.Store<User>().Query on rad.OwnerId equals o.EntityId
            from __rb in _rb.DefaultIfEmpty()
            select new BitcoinAddressJoiner
            {
                Address = rad,
                RefNode = rref,
-               UserBio = __rb
+               UserBio = __rb,
+               Owner = o
            };
 
         public IQueryable<ReferralNodeJoiner> BaseReferralNodeQuery()
         => from rref in _europa.Store<ReferralNode>().Query
            join rb in _europa.Store<BioData>().Query on rref.UserId equals rb.OwnerId into _rb
+           join o in _europa.Store<User>().Query on rref.UserId equals o.EntityId
            from __rb in _rb.DefaultIfEmpty()
            select new ReferralNodeJoiner
            {
                RefNode = rref,
-               UserBio = __rb
+               UserBio = __rb,
+               Owner = o
            };
         #endregion
 
@@ -227,44 +239,44 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
         public ReferralNode UserRef(User user)
         => BaseReferralNodeQuery()
             .Where(_r => _r.RefNode.User.EntityId == user.EntityId)
-            .FirstOrDefault()
+            .FirstOrDefault()?
             .ToRefNode();
 
         public BitcoinAddress GetBitcoinAddressById(long id)
         => BaseBitcoinAddressQuery()
             .Where(_ba => _ba.Address.Id == id)
-            .FirstOrDefault()
+            .FirstOrDefault()?
             .ToAddress();
 
         public BitLevel GetBitLevel(User user)
         => BaseBitLevelQuery()
             .Where(_ba => _ba.Level.UserId == user.UserId)
-            .FirstOrDefault()
+            .FirstOrDefault()?
             .ToBitLevel();
 
         public BitLevel PreviousBitLevel(User targetUser)
         => BaseBitLevelQuery()
             .OrderByDescending(_bl => _bl.Level.CreatedOn)
             .Skip(1).Take(1)
-            .FirstOrDefault()
+            .FirstOrDefault()?
             .ToBitLevel();
 
         public BlockChainTransaction GetTransactionWithHash(string transactionHash)
         => BaseBlockChainQuery()
              .Where(_bct => _bct.Transaction.TransactionHash == transactionHash)
-             .FirstOrDefault()
+             .FirstOrDefault()?
              .ToBlockChainTransaction();
 
         public BitLevel GetBitLevelHavingTransaction(long id)
         => BaseBitLevelQuery()
             .Where(_bl => _bl.Level.DonationId == id)
-            .FirstOrDefault()
+            .FirstOrDefault()?
             .ToBitLevel();
 
         public BlockChainTransaction GetBlockChainTransaction(long transactionId)
         => BaseBlockChainQuery()
             .Where(_bct => _bct.Transaction.Id == transactionId)
-            .FirstOrDefault()
+            .FirstOrDefault()?
             .ToBlockChainTransaction();
 
         public IEnumerable<BitcoinAddress> GetBitcoinAddresses(User user)
@@ -293,11 +305,19 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
             public ReferralNode ReceiverNode { get; set; }
             public BioData SenderBio { get; set; }
             public BioData ReceiverBio { get; set; }
+            public User Receiver { get; set; }
+            public User Sender { get; set; }
 
             public BitLevel ToBitLevel()
             {
+                if(SenderBio!=null) SenderBio.Owner = Sender;
+                if (ReceiverBio != null) ReceiverBio.Owner = Receiver;
+
                 SenderNode.UserBio = SenderBio;
+                SenderNode.User = Sender;
+
                 ReceiverNode.UserBio = ReceiverBio;
+                ReceiverNode.User = Receiver;
 
                 SenderAddress.OwnerRef = SenderNode;
                 ReceiverAddress.OwnerRef = ReceiverNode;
@@ -306,6 +326,7 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
                 Transaction.Receiver = ReceiverAddress;
 
                 Level.Donation = Transaction;
+                Level.User = Receiver;
                 return Level;
             }
         }
@@ -319,11 +340,19 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
             public ReferralNode ReceiverNode { get; set; }
             public BioData SenderBio { get; set; }
             public BioData ReceiverBio { get; set; }
+            public User Receiver { get; set; }
+            public User Sender { get; set; }
 
             public BlockChainTransaction ToBlockChainTransaction()
             {
+                if (SenderBio != null) SenderBio.Owner = Sender;
+                if (ReceiverBio != null) ReceiverBio.Owner = Receiver;
+
                 SenderNode.UserBio = SenderBio;
+                SenderNode.User = Sender;
+
                 ReceiverNode.UserBio = ReceiverBio;
+                ReceiverNode.User = Receiver;
 
                 SenderAddress.OwnerRef = SenderNode;
                 ReceiverAddress.OwnerRef = ReceiverNode;
@@ -340,11 +369,15 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
             public BitcoinAddress Address { get; set; }
             public ReferralNode RefNode { get; set; }
             public BioData UserBio { get; set; }
+            public User Owner { get; set; }
 
             public BitcoinAddress ToAddress()
             {
+                if (UserBio != null) UserBio.Owner = Owner;
+
                 RefNode.UserBio = UserBio;
                 Address.OwnerRef = RefNode;
+                Address.Owner = Owner;
 
                 return Address;
             }
@@ -354,10 +387,14 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
         {
             public ReferralNode RefNode { get; set; }
             public BioData UserBio { get; set; }
+            public User Owner { get; set; }
 
             public ReferralNode ToRefNode()
             {
+                if (UserBio != null) UserBio.Owner = Owner;
+
                 RefNode.UserBio = UserBio;
+                RefNode.User = Owner;
 
                 return RefNode;
             }

@@ -191,12 +191,7 @@ namespace BitDiamond.Core.Services
         public Operation<decimal> GetUpgradeFee(int level)
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
-            var feeVector = _settingsManager
-                .GetSetting(Constants.Settings_UpgradeFeeVector)
-                .Resolve()
-                .ParseData(_json => JsonConvert.DeserializeObject<decimal[]>(_json, Constants.Misc_DefaultJsonSerializerSettings));
-
-            return feeVector[level - 1];
+            return this.GetUpgradeAmount(level);
         });
 
         public Operation<ReferralNode> GetUpgradeTransactionReceiverRef(long id)

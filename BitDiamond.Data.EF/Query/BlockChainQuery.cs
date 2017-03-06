@@ -28,6 +28,8 @@ namespace BitDiamond.Data.EF.Query
         => from btc in _europa.Store<BlockChainTransaction>().Query
            join rad in _europa.Store<BitcoinAddress>().Query on btc.ReceiverId equals rad.Id
            join sad in _europa.Store<BitcoinAddress>().Query on btc.SenderId equals sad.Id
+           join r in _europa.Store<User>().Query on rad.OwnerId equals r.EntityId
+           join s in _europa.Store<User>().Query on sad.OwnerId equals s.EntityId
            join rref in _europa.Store<ReferralNode>().Query on rad.OwnerId equals rref.UserId
            join sref in _europa.Store<ReferralNode>().Query on sad.OwnerId equals sref.UserId
            join rb in _europa.Store<BioData>().Query on rad.OwnerId equals rb.OwnerId into _rb
@@ -42,7 +44,9 @@ namespace BitDiamond.Data.EF.Query
                ReceiverNode = rref,
                SenderNode = sref,
                SenderBio = __sb,
-               ReceiverBio = __rb
+               ReceiverBio = __rb,
+               Receiver = r,
+               Sender = s
            };
         #endregion
 
@@ -110,6 +114,7 @@ namespace BitDiamond.Data.EF.Query
 
 
         #region joiner helpers
+
         public class TransactionJoiner
         {
             public BlockChainTransaction Transaction { get; set; }
@@ -119,11 +124,19 @@ namespace BitDiamond.Data.EF.Query
             public ReferralNode ReceiverNode { get; set; }
             public BioData SenderBio { get; set; }
             public BioData ReceiverBio { get; set; }
+            public User Receiver { get; set; }
+            public User Sender { get; set; }
 
             public BlockChainTransaction ToBlockChainTransaction()
             {
+                if (SenderBio != null) SenderBio.Owner = Sender;
+                if (ReceiverBio != null) ReceiverBio.Owner = Receiver;
+
                 SenderNode.UserBio = SenderBio;
+                SenderNode.User = Sender;
+
                 ReceiverNode.UserBio = ReceiverBio;
+                ReceiverNode.User = Receiver;
 
                 SenderAddress.OwnerRef = SenderNode;
                 ReceiverAddress.OwnerRef = ReceiverNode;

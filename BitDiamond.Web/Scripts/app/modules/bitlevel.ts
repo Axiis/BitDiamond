@@ -8,12 +8,6 @@ module BitDiamond.Modules {
     bitlevelModules.directive('boxLoader', () => new BitDiamond.Directives.BoxLoader());
     bitlevelModules.directive('binaryData', () => new BitDiamond.Directives.BinaryData());
     bitlevelModules.directive('enumOptions', () => new BitDiamond.Directives.EnumOptions());
-    //bitlevelModules.directive('tagsInput', () => new Gaia.Directives.TagsInput());
-    //bitlevelModules.directive('numberSpinner', () => new Gaia.Directives.NumberSpinner());
-    //bitlevelModules.directive('smallProductCard', ['#gaia.marketPlaceService', '#gaia.utils.notify', '$compile',
-    //    (mp: Services.MarketPlaceService, n: Utils.Services.NotifyService, $compile: ng.ICompileService) => new Gaia.Directives.MarketPlace.SmallProductCard(mp, n, $compile)]);
-    //bitlevelModules.directive('largeProductCard', ['#gaia.marketPlaceService', '#gaia.utils.notify', '$compile',
-    //    (mp: Services.MarketPlaceService, n: Utils.Services.NotifyService, $compile: ng.ICompileService) => new Gaia.Directives.MarketPlace.LargeProductCard(mp, n, $compile)]);
 
 
     //services
@@ -24,6 +18,7 @@ module BitDiamond.Modules {
 
     bitlevelModules.service('__bitlevel', BitDiamond.Services.BitLevel);
     bitlevelModules.service('__account', BitDiamond.Services.Account);
+    bitlevelModules.service('__systemNotification', BitDiamond.Services.Notification);
 
 
     //controllers

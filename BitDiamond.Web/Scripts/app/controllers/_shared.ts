@@ -34,6 +34,41 @@ module BitDiamond.Controllers.Shared {
 
     export class NavBar {
 
+        hasNotifications
+
+        notifications: Models.INotification[];
+        notificationCount: number;
+
+        get hasSeenNotifications(): boolean {
+            if (Object.isNullOrUndefined(this.notifications)) return true;
+            return this.notifications.length == 0;
+        }
+        displayTime(time: Apollo.Models.JsonDateTime): string {
+            if (Object.isNullOrUndefined(time)) return '';
+            else return time.toMoment().format('YYYY/M/D  H:m');
+        }
+
+        __userContext: Utils.Services.UserContext;
+        __systemNotification: Services.Notification;
+        $q: ng.IQService;
+
+        constructor(__systemNotification, __userContext, $q) {
+            this.__systemNotification = __systemNotification;
+            this.__userContext = __userContext
+            this.$q = $q;
+
+            this.__systemNotification.getUnseenNotificaftions().then(opr => {
+                this.notifications = opr.Result.slice(0, 5).map(n => {
+                    n.CreatedOn = new Apollo.Models.JsonDateTime(n.CreatedOn);
+                    n.ModifiedOn = new Apollo.Models.JsonDateTime(n.ModifiedOn);
+                    return n;
+                });
+                this.notificationCount = opr.Result.length;
+            }, err => {
+                this.notificationCount = 0;
+                this.notifications = [];
+            });
+        }
     }
 
 

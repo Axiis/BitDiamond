@@ -15,9 +15,9 @@ var BitDiamond;
             }());
             Notification.Details = Details;
             var History = (function () {
-                function History(__notification, __userContext, __notify, $q) {
+                function History(__systemNotification, __userContext, __notify, $q) {
                     this.pageSize = 20;
-                    this.__systemNotifications = __notification;
+                    this.__systemNotifications = __systemNotification;
                     this.__usercontext = __userContext;
                     this.__notify = __notify;
                     this.$q = $q;
@@ -116,4 +116,3 @@ var BitDiamond;
         })(Notification = Controllers.Notification || (Controllers.Notification = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=notifications.js.map

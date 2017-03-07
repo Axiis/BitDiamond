@@ -19,6 +19,7 @@ module BitDiamond.Modules {
     paymentsModules.service('__bitlevel', BitDiamond.Services.BitLevel);
     paymentsModules.service('__blockChain', BitDiamond.Services.BlockChain);
     paymentsModules.service('__account', BitDiamond.Services.Account);
+    paymentsModules.service('__systemNotification', BitDiamond.Services.Notification);
 
 
     //controllers

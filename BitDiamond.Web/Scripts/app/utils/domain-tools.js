@@ -49,4 +49,3 @@ var BitDiamond;
         })(Domain = Utils.Domain || (Utils.Domain = {}));
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=domain-tools.js.map

@@ -423,4 +423,3 @@ var BitDiamond;
         })(BitLevel = Controllers.BitLevel || (Controllers.BitLevel = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=bitlevel.js.map

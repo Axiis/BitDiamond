@@ -13,7 +13,7 @@ module BitDiamond.Modules {
     notificationModule.service('__notify', BitDiamond.Utils.Services.NotifyService);
     notificationModule.service('__userContext', BitDiamond.Utils.Services.UserContext);
 
-    notificationModule.service('__notification', BitDiamond.Services.Notification);
+    notificationModule.service('__systemNotification', BitDiamond.Services.Notification);
     notificationModule.service('__account', BitDiamond.Services.Account);
 
 

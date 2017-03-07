@@ -16,6 +16,7 @@ var BitDiamond;
         Modules.paymentsModules.service('__bitlevel', BitDiamond.Services.BitLevel);
         Modules.paymentsModules.service('__blockChain', BitDiamond.Services.BlockChain);
         Modules.paymentsModules.service('__account', BitDiamond.Services.Account);
+        Modules.paymentsModules.service('__systemNotification', BitDiamond.Services.Notification);
         //controllers
         Modules.paymentsModules.controller('NavBar', BitDiamond.Controllers.Shared.NavBar);
         Modules.paymentsModules.controller('SideBar', BitDiamond.Controllers.Shared.SideBar);
@@ -40,4 +41,3 @@ var BitDiamond;
         });
     })(Modules = BitDiamond.Modules || (BitDiamond.Modules = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=payments.js.map

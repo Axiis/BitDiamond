@@ -74,7 +74,7 @@
     <div id="wrapper">
         <!-- Top Navigation -->
         <nav class="navbar navbar-default navbar-static-top m-b-0">
-            <div class="navbar-header" ng-controller="NavBar">
+            <div class="navbar-header" ng-controller="NavBar as vm">
                 <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse"><i class="ti-menu"></i></a>
                 <div class="top-left-part"><a class="logo" href="index.html"><b><img src="~/Content/Theme/eliteadmin/plugins/images/eliteadmin-logo.png" alt="home" class="dark-logo"><img src="~/Content/Theme/eliteadmin/plugins/images/eliteadmin-logo-dark.png" alt="home" class="light-logo"></b><span class="hidden-xs"><img src="~/Content/Theme/eliteadmin/plugins/images/eliteadmin-text.png" alt="home" class="dark-logo"><img src="~/Content/Theme/eliteadmin/plugins/images/eliteadmin-text-dark.png" alt="home" class="light-logo"></span></a></div>
 
@@ -93,27 +93,26 @@
                         </a>
                         <ul class="dropdown-menu mailbox animated flipInY">
                             <li>
-                                <div class="drop-title">You have {{vm.notifications.length}} new Notifications</div>
+                                <div class="drop-title">You have {{vm.notificationCount}} new Notifications</div>
                             </li>
                             <li>
                                 <div class="message-center">
-                                    <a ng-repeat="n in vm.first4Notifications()"
-                                       ng-href="vm.notificationDisplayLink(n)">
+                                    <a ng-repeat="n in vm.notifications">
                                         <div class="user-img">
                                             <div alt="user" class="img-circle" style="width:40px; height:40px; text-align: center;">
                                                 <i class="icon-bell" style="font-size:30px; color:white;"></i>
                                             </div>
                                         </div>
                                         <div class="mail-contnet">
-                                            <h5>{{n.Title}}</h5>
-                                            <span class="mail-desc" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{n.Message}}</span>
-                                            <span class="time">{{vm.displayTime(n.CreatedOn)}}</span>
+                                            <h5 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                                                ng-bind-html="n.Title"></h5>
+                                            <span class="time text-success">{{vm.displayTime(n.CreatedOn)}}</span>
                                         </div>
                                     </a>
                                 </div>
                             </li>
                             <li>
-                                <a class="text-center" href="/notifications/index"> <strong>See all notifications</strong> <i class="fa fa-angle-right"></i> </a>
+                                <a class="text-center" href="/notifications/index"> See all notifications <i class="fa fa-angle-right"></i> </a>
                             </li>
                         </ul>
                         <!-- /.dropdown-messages -->

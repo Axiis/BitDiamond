@@ -118,8 +118,8 @@ module BitDiamond.Controllers.Notification {
         __notify: Utils.Services.NotifyService;
         $q: ng.IQService;
 
-        constructor(__notification, __userContext, __notify, $q) {
-            this.__systemNotifications = __notification;
+        constructor(__systemNotification, __userContext, __notify, $q) {
+            this.__systemNotifications = __systemNotification;
             this.__usercontext = __userContext;
             this.__notify = __notify;
             this.$q = $q;

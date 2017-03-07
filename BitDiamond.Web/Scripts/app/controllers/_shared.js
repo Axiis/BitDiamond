@@ -25,8 +25,38 @@ var BitDiamond;
             }());
             Shared.Message = Message;
             var NavBar = (function () {
-                function NavBar() {
+                function NavBar(__systemNotification, __userContext, $q) {
+                    var _this = this;
+                    this.__systemNotification = __systemNotification;
+                    this.__userContext = __userContext;
+                    this.$q = $q;
+                    this.__systemNotification.getUnseenNotificaftions().then(function (opr) {
+                        _this.notifications = opr.Result.slice(0, 5).map(function (n) {
+                            n.CreatedOn = new Apollo.Models.JsonDateTime(n.CreatedOn);
+                            n.ModifiedOn = new Apollo.Models.JsonDateTime(n.ModifiedOn);
+                            return n;
+                        });
+                        _this.notificationCount = opr.Result.length;
+                    }, function (err) {
+                        _this.notificationCount = 0;
+                        _this.notifications = [];
+                    });
                 }
+                Object.defineProperty(NavBar.prototype, "hasSeenNotifications", {
+                    get: function () {
+                        if (Object.isNullOrUndefined(this.notifications))
+                            return true;
+                        return this.notifications.length == 0;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                NavBar.prototype.displayTime = function (time) {
+                    if (Object.isNullOrUndefined(time))
+                        return '';
+                    else
+                        return time.toMoment().format('YYYY/M/D  H:m');
+                };
                 return NavBar;
             }());
             Shared.NavBar = NavBar;
@@ -115,4 +145,3 @@ var BitDiamond;
         })(Shared = Controllers.Shared || (Controllers.Shared = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=_shared.js.map

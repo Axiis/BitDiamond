@@ -13,6 +13,7 @@ var BitDiamond;
         Modules.referralsModule.service('__userContext', BitDiamond.Utils.Services.UserContext);
         Modules.referralsModule.service('__account', BitDiamond.Services.Account);
         Modules.referralsModule.service('__referrals', BitDiamond.Services.Referrals);
+        Modules.referralsModule.service('__systemNotification', BitDiamond.Services.Notification);
         //controllers
         Modules.referralsModule.controller('NavBar', BitDiamond.Controllers.Shared.NavBar);
         Modules.referralsModule.controller('SideBar', BitDiamond.Controllers.Shared.SideBar);
@@ -30,4 +31,3 @@ var BitDiamond;
         });
     })(Modules = BitDiamond.Modules || (BitDiamond.Modules = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=referrals.js.map

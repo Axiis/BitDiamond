@@ -6,14 +6,6 @@ var BitDiamond;
         //directives
         Modules.accountModule.directive('ringLoader', function () { return new BitDiamond.Directives.RingLoader(); });
         Modules.accountModule.directive('boxLoader', function () { return new BitDiamond.Directives.BoxLoader(); });
-        //module.directive('binaryData', Gaia.Directives.BinaryData);
-        //module.directive('tagsInput', () => new Gaia.Directives.TagsInput());
-        //module.directive('numberSpinner', () => new Gaia.Directives.NumberSpinner());
-        //module.directive('enumOptions', () => new Gaia.Directives.EnumOptions());
-        //module.directive('smallProductCard', ['#gaia.marketPlaceService', '#gaia.utils.notify', '$compile',
-        //    (mp: Services.MarketPlaceService, n: Utils.Services.NotifyService, $compile: ng.ICompileService) => new Gaia.Directives.MarketPlace.SmallProductCard(mp, n, $compile)]);
-        //module.directive('largeProductCard', ['#gaia.marketPlaceService', '#gaia.utils.notify', '$compile',
-        //    (mp: Services.MarketPlaceService, n: Utils.Services.NotifyService, $compile: ng.ICompileService) => new Gaia.Directives.MarketPlace.LargeProductCard(mp, n, $compile)]);
         //services
         Modules.accountModule.service('__transport', BitDiamond.Utils.Services.DomainTransport);
         Modules.accountModule.service('__dom', BitDiamond.Utils.Services.DomModelService);
@@ -83,4 +75,3 @@ var BitDiamond;
         });
     })(Modules = BitDiamond.Modules || (BitDiamond.Modules = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=account.js.map

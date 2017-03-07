@@ -8,19 +8,12 @@ module BitDiamond.Modules {
     profileModule.directive('boxLoader', () => new BitDiamond.Directives.BoxLoader());
     profileModule.directive('binaryData', () => new BitDiamond.Directives.BinaryData());
     profileModule.directive('enumOptions', () => new BitDiamond.Directives.EnumOptions());
-    //profileModule.directive('tagsInput', () => new Gaia.Directives.TagsInput());
-    //profileModule.directive('numberSpinner', () => new Gaia.Directives.NumberSpinner());
-    //profileModule.directive('smallProductCard', ['#gaia.marketPlaceService', '#gaia.utils.notify', '$compile',
-    //    (mp: Services.MarketPlaceService, n: Utils.Services.NotifyService, $compile: ng.ICompileService) => new Gaia.Directives.MarketPlace.SmallProductCard(mp, n, $compile)]);
-    //profileModule.directive('largeProductCard', ['#gaia.marketPlaceService', '#gaia.utils.notify', '$compile',
-    //    (mp: Services.MarketPlaceService, n: Utils.Services.NotifyService, $compile: ng.ICompileService) => new Gaia.Directives.MarketPlace.LargeProductCard(mp, n, $compile)]);
-
 
     //services
     profileModule.service('__transport', BitDiamond.Utils.Services.DomainTransport);
-    profileModule.service('__dom', BitDiamond.Utils.Services.DomModelService);
     profileModule.service('__notify', BitDiamond.Utils.Services.NotifyService);
     profileModule.service('__userContext', BitDiamond.Utils.Services.UserContext);
+    profileModule.service('__systemNotification', BitDiamond.Services.Notification);
 
     profileModule.service('__account', BitDiamond.Services.Account);
 

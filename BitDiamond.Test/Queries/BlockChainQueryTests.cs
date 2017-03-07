@@ -31,6 +31,7 @@ using System.Web.Http;
 using Axis.Luna.Extensions;
 using System.Web.Mvc;
 using Axis.Pollux.Identity.Principal;
+using System.Text;
 
 namespace BitDiamond.Test.Queries
 {
@@ -58,7 +59,7 @@ namespace BitDiamond.Test.Queries
             var bcQuery = new BlockChainQuery(cxt);
 
             var start = DateTime.Now;
-            var r = bcQuery.GetPagedOutgoingUserTransactions(new Axis.Pollux.Identity.Principal.User { EntityId = "dev.bankai@gmail.com" }, 10, 0);
+            var r = bcQuery.GetPagedOutgoingUserTransactions(new User { EntityId = "dev.bankai@gmail.com" }, 10, 0);
             Console.WriteLine(DateTime.Now - start);
         }
 
@@ -79,17 +80,31 @@ namespace BitDiamond.Test.Queries
                 var bcController = scope.Resolve<BlockChainController>();
                 Console.WriteLine($"BlockChainController resolved in: {DateTime.Now - start}");
 
+                var data = Convert.ToBase64String(Encoding.UTF8.GetBytes("{\"PageSize\":20, \"PageIndex\":0}"));
+                start = DateTime.Now;
+                var opr = bcController.GetOutgoingUserTransactions(data);//.GetOutgoingUserTransactions(20, 0);
+                Console.WriteLine($"1st run bcController.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+
 
                 start = DateTime.Now;
-                var opr = bcManager.GetOutgoingUserTransactions(20, 0);
-                Console.WriteLine($"1st run bcManager.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+                opr = bcController.GetOutgoingUserTransactions(data);//.GetOutgoingUserTransactions(20, 0);
+                Console.WriteLine($"2nd run bcController.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+
 
                 start = DateTime.Now;
-                opr = bcManager.GetOutgoingUserTransactions(20, 0);
+                opr = bcController.GetOutgoingUserTransactions(data);
+                Console.WriteLine($"3rd run bcController.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+
+                start = DateTime.Now;
+                var oprx = bcManager.GetOutgoingUserTransactions(20, 0);
                 Console.WriteLine($"2nd run bcManager.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
 
                 start = DateTime.Now;
-                opr = bcManager.GetOutgoingUserTransactions(20, 0);
+                oprx = bcManager.GetOutgoingUserTransactions(20, 0);
+                Console.WriteLine($"3rd run bcManager.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+
+                start = DateTime.Now;
+                oprx = bcManager.GetOutgoingUserTransactions(20, 0);
                 Console.WriteLine($"3rd run bcManager.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
             }
         }

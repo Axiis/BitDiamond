@@ -12,6 +12,7 @@ using Axis.Luna.Extensions;
 namespace BitDiamond.Core.Services
 {
     using Axis.Jupiter.Kore.Command;
+    using Axis.Pollux.Identity.Principal;
     using Utils;
 
     public class ReferralManager : IReferralManager, IUserContextAware
@@ -90,6 +91,18 @@ namespace BitDiamond.Core.Services
                         return _pcommand.Add(@ref);
                     });
             }
+        });
+
+        public Operation<ReferralNode> GetUserRef(string userId)
+        => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+        {
+            return _query.GetUserReferalNode(new User { EntityId = userId });
+        });
+
+        public Operation<ReferralNode> CurrentUserRef()
+        => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
+        {
+            return _query.GetUserReferalNode(UserContext.CurrentUser());
         });
 
         public Operation<IEnumerable<ReferralNode>> AllDownlines(ReferralNode node)

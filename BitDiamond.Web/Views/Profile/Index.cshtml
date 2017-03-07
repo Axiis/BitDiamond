@@ -12,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" type="image/png" sizes="16x16" href="~/Content/Theme/eliteadmin/plugins/images/favicon.png">
-    <title>BitDiamond - Dashboard</title>
+    <title>BitDiamond - Profile</title>
     <!-- Bootstrap Core CSS -->
     <link href="~/content/theme/eliteadmin/dark/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- animation CSS -->
@@ -21,14 +21,16 @@
     <link href="~/Content/Theme/eliteadmin/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
     <!-- morris CSS -->
     <link href="~/Content/Theme/eliteadmin/plugins/bower_components/morrisjs/morris.css" rel="stylesheet">
-    <link href="~/Content/Theme/eliteadmin/plugins/bower_components/css-chart/css-chart.css" rel="stylesheet"> 
+    <link href="~/Content/Theme/eliteadmin/plugins/bower_components/css-chart/css-chart.css" rel="stylesheet">
+
     <link href="~/Content/Theme/eliteadmin/plugins/bower_components/horizontal-timeline/css/horizontal-timeline.css" rel="stylesheet">
+
     <!-- animation CSS -->
     <link href="~/content/theme/eliteadmin/dark/css/animate.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="~/content/theme/eliteadmin/dark/css/style.css" rel="stylesheet">
     <!-- color CSS -->
-    <link href="~/content/theme/eliteadmin/dark/css/colors/default-dark.css" id="theme" rel="stylesheet">
+    <link href="~/content/theme/eliteadmin/dark/css/colors/default-dark.css" id="theme" rel="stylesheet"> 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -42,6 +44,7 @@
 
     <link href="~/Content/loaders.css" rel="stylesheet" type="text/css">
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css">
+
 
     <style type="text/css">
         .jqstooltip {
@@ -68,7 +71,6 @@
             text-align: left;
         }
     </style>
-
 </head>
 
 <body ng-app="profile">
@@ -119,9 +121,9 @@
                         </ul>
                         <!-- /.dropdown-messages -->
                     </li>
-                    
+
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href> 
+                        <a class="dropdown-toggle" data-toggle="dropdown" href>
                             <div class="notify">
                             </div>
                         </a>
@@ -136,7 +138,6 @@
             <!-- /.navbar-static-side -->
         </nav>
         <!-- End Top Navigation -->
-
         <!-- Left navbar-header -->
         <div class="navbar-default sidebar" role="navigation" ng-controller="SideBar as vm">
             <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
@@ -144,8 +145,13 @@
 
                     <div class="user-profile">
                         <div class="dropdown user-pro-body">
-                            <div><img ng-src="{{vm.profileImage()}}" alt="user-img" class="img-circle"></div> 
-                            <a href class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{vm.userNames()}} <span class="caret"></span></a>
+                            <div><img ng-src="{{vm.profileImage()}}" alt="user-img" class="img-circle"></div>
+                            <a href class="dropdown-toggle u-dropdown"
+                               data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span style="white-space:nowrap; text-overflow:ellipsis; position:relative; width:85%; display: inline-block; overflow:hidden;"
+                                      data-toggle="tooltip" data-original-title="{{vm.userNames()}}">{{vm.userNames()}}</span>
+                                <span class="caret"></span>
+                            </a>
                             <ul class="dropdown-menu animated flipInY">
                                 <li><a href="/profile/index#!/home"><i class="ti-user"></i> My Profile</a></li>
                                 <li role="separator" class="divider"></li>
@@ -260,9 +266,10 @@
     <script src="~/Content/Theme/eliteadmin/dark/js/jquery.slimscroll.js"></script>
     <!--Wave Effects -->
     <script src="~/Content/Theme/eliteadmin/dark/js/waves.js"></script>
+    <!--clipboard js -->
+    <script src="~/Scripts/libs/clipboardjs/clipboard.min.js"></script>
 
     <script type="text/javascript" src="~/Content/Theme/eliteadmin/plugins/bower_components/skycons/skycons.js"></script>
-
     <!--Morris JavaScript -->
     <script src="~/Content/Theme/eliteadmin/plugins/bower_components/raphael/raphael-min.js"></script>
     <script src="~/Content/Theme/eliteadmin/plugins/bower_components/morrisjs/morris.js"></script>
@@ -276,6 +283,9 @@
     <!--Counter js -->
     <script src="~/Content/Theme/eliteadmin/plugins/bower_components/waypoints/lib/jquery.waypoints.js"></script>
     <script src="~/Content/Theme/eliteadmin/plugins/bower_components/counterup/jquery.counterup.min.js"></script>
+
+    <script src="~/Scripts/app/utils/horizontal-timeline.js"></script>
+
     <!-- Custom Theme JavaScript -->
     <script src="~/Content/Theme/eliteadmin/dark/js/custom.min.js"></script>
     <!--script src="~/Content/Theme/eliteadmin/dark/js/widget.js"></script-->
@@ -291,13 +301,13 @@
     <script type="text/javascript" src="~/scripts/libs/angular-ui-router.min.js"></script>
 
 
-    <script type="text/javascript" src="~/scripts/app/utils/horizontal-timeline.js"></script>
     <script type="text/javascript" src="~/scripts/app/utils/constants.js"></script>
     <script type="text/javascript" src="~/scripts/app/utils/extensions.js"></script>
     <script type="text/javascript" src="~/scripts/app/utils/tools.js"></script>
     <script type="text/javascript" src="~/scripts/app/utils/map.js"></script>
     <script type="text/javascript" src="~/scripts/app/utils/operation.js"></script>
     <script type="text/javascript" src="~/scripts/app/utils/encodedBinaryData.js"></script>
+    <script type="text/javascript" src="~/scripts/app/utils/domain-tools.js"></script>
 
     <script type="text/javascript" src="~/scripts/app/models/axis-apollo.js"></script>
     <script type="text/javascript" src="~/scripts/app/models/domain.js"></script>
@@ -314,5 +324,8 @@
 
     <script type="text/javascript" src="~/scripts/app/modules/profile.js"></script>
 
+    <script type="text/javascript">
+    $('[data-toggle=tooltip]').tooltip();
+    </script>
 </body>
 </html>

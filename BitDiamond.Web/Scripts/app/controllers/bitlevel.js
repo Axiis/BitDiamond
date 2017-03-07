@@ -136,6 +136,7 @@ var BitDiamond;
                         this.isSavingTransactionHash = true;
                         this.__bitlevel.updateTransactionHash(this.transactionHash).then(function (opr) {
                             _this.bitLevel.Donation = opr.Result;
+                            _this.transactionHash = null;
                             _this.__notify.success('Your transaction hash was verified!');
                         }, function (err) {
                             _this.__notify.error('Something went wrong - could not save the transaction hash.', 'Oops!');
@@ -263,7 +264,7 @@ var BitDiamond;
                     if (Object.isNullOrUndefined(date))
                         return null;
                     else
-                        return date.toMoment().format('YYYY/M/d  H:m');
+                        return date.toMoment().format('YYYY/M/D - H:m');
                 };
                 return History;
             }());
@@ -340,7 +341,7 @@ var BitDiamond;
                     else {
                         this.isPersistingAddress = true;
                         this.__bitlevel.addBitcoinAddress(this.tempAddress).then(function (opr) {
-                            _this.addresses.insert(0, _this.tempAddress);
+                            _this.addresses.insert(0, opr.Result);
                             _this.tempAddress = null;
                         }, function (err) {
                             _this.__notify.error('Something went wrong - could not save your new Address.', 'Ooops!');

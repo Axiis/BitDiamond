@@ -38,4 +38,4 @@
 2.	Part of activating a Bitcoin address is SETTING it as the CURRENT BIT-LEVEL's DONATION SENDER address. This is 
 	VITAL.
 3.	Remove receiver-confirmation from the bit-level controller/manager/etc. There is an implementation in block-chain, that
-	is where the implemenation rightly belongs.
+	is where the implemenation rightly belongs. [DONE]

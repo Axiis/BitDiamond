@@ -1,0 +1,40 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div class="row bg-title" style="margin-bottom:20px;">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">Family Tree</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href>Family Tree</a></li>
+            <li><a href class="active">Downlines</a></li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<ul class="nav customtab nav-tabs" role="tablist"
+    style="margin-bottom:20px;">
+    <li role="presentation" class="active">
+        <a href role="tab">
+            <span class="visible-xs">
+                <i class="ti-home" title="Home"></i>
+            </span>
+            <span class="hidden-xs">Downlines</span>
+        </a>
+    </li>
+</ul>
+
+<div ng-hide="vm.isLoadingView">
+    <div id="downlines" style="padding:20px;"></div>
+</div>
+
+
+
+<div ng-show="vm.isLoadingView"
+     style="position:absolute; left:220px; bottom:60px; right:0; top:166px;">
+    <box-loader size="40" color="white" show="true" block-loader="true"></box-loader>
+</div>

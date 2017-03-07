@@ -135,7 +135,6 @@
             <!-- /.navbar-static-side -->
         </nav>
         <!-- End Top Navigation -->
-        
         <!-- Left navbar-header -->
         <div class="navbar-default sidebar" role="navigation" ng-controller="SideBar as vm">
             <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
@@ -144,7 +143,12 @@
                     <div class="user-profile">
                         <div class="dropdown user-pro-body">
                             <div><img ng-src="{{vm.profileImage()}}" alt="user-img" class="img-circle"></div>
-                            <a href class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{vm.userNames()}} <span class="caret"></span></a>
+                            <a href class="dropdown-toggle u-dropdown"
+                               data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span style="white-space:nowrap; text-overflow:ellipsis; position:relative; width:85%; display: inline-block; overflow:hidden;"
+                                      data-toggle="tooltip" data-original-title="{{vm.userNames()}}">{{vm.userNames()}}</span>
+                                <span class="caret"></span>
+                            </a>
                             <ul class="dropdown-menu animated flipInY">
                                 <li><a href="/profile/index#!/home"><i class="ti-user"></i> My Profile</a></li>
                                 <li role="separator" class="divider"></li>
@@ -259,6 +263,8 @@
     <script src="~/Content/Theme/eliteadmin/dark/js/jquery.slimscroll.js"></script>
     <!--Wave Effects -->
     <script src="~/Content/Theme/eliteadmin/dark/js/waves.js"></script>
+    <!--clipboard js -->
+    <script src="~/Scripts/libs/clipboardjs/clipboard.min.js"></script>
 
     <script type="text/javascript" src="~/Content/Theme/eliteadmin/plugins/bower_components/skycons/skycons.js"></script>
     <!--Morris JavaScript -->
@@ -312,5 +318,8 @@
 
     <script type="text/javascript" src="~/scripts/app/modules/payments.js"></script>
 
+    <script type="text/javascript">
+    $('[data-toggle=tooltip]').tooltip();
+    </script>
 </body>
 </html>

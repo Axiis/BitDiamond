@@ -76,3 +76,58 @@ table.bd-transaction-table td.bd-nowrap{
     text-wrap:none;
     text-overflow: ellipsis;
 }
+
+
+.bd-card-animated {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.bd-card-animated:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.bd-card-1 {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.bd-card-2 {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.bd-card-3 {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.bd-card-4 {
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+
+.bd-marker{
+    border-left:2px solid;
+    border-left-color:#9FA9BB;
+}
+
+.bd-marker-info{
+    border-left-color:#03a9f3;
+}
+
+.bd-marker-success{
+    border-left-color:#00c292;
+}
+
+.bd-marker-warning{
+    border-left-color:#fec107;
+}
+
+.bd-marker-danger{
+    border-left-color:#fb9678;
+}
+
+.bd-marker-primary{
+    border-left-color:#ab8ce4;
+}
+
+.bd-marker.active {
+    border-left-width:8px !important;
+}

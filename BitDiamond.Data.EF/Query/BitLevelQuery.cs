@@ -123,13 +123,13 @@ namespace BitDiamond.Data.EF.Query
         => BaseBitcoinAddressQuery()
             .Where(_bca => _bca.Address.Owner.EntityId == user.EntityId)
             .Where(_bca => _bca.Address.IsActive)
-            .FirstOrDefault()
+            .FirstOrDefault()?
             .ToAddress();
 
         public BitLevel GetBitLevelById(long id)
         => BaseBitLevelQuery()
             .Where(_bca => _bca.Level.Id == id)
-            .FirstOrDefault()
+            .FirstOrDefault()?
             .ToBitLevel();
 
         public IEnumerable<BitLevel> GetBitLevelHistory(User user)
@@ -166,28 +166,31 @@ namespace BitDiamond.Data.EF.Query
         {
             var query =
 @"
-WITH DownLinesCTE (ReferenceCode)
+WITH DownLinesCTE (ReferenceCode, [rank])
 AS
 (
 -- Anchor member definition
-    SELECT r.ReferenceCode
+    SELECT r.ReferenceCode, 0
     FROM dbo.ReferralNode AS r
     WHERE r.UserId = @userId
 
     UNION ALL
 
 -- Recursive member definition
-    SELECT referred.ReferenceCode
-    FROM DownLinesCTE as code
+    SELECT referred.ReferenceCode, code.[rank] + 1
+    FROM DownLinesCTE AS code
     JOIN dbo.ReferralNode AS referred ON referred.ReferrerCode = code.ReferenceCode
 )
 
 -- Statement that executes the CTE
 SELECT r.ReferenceCode, r.ReferrerCode, r.UplineCode, r.CreatedOn, r.ModifiedOn, r.Id, 
-       u.EntityId AS u_EntityId, u.CreatedOn AS u_CreatedOn, u.ModifiedOn AS u_ModifiedOn, u.Status as u_Status, u.UId AS u_UId
+       u.EntityId AS u_EntityId, u.CreatedOn AS u_CreatedOn, u.ModifiedOn AS u_ModifiedOn, u.Status as u_Status, u.UId AS u_UId,
+       bd.FirstName, bd.LastName
 FROM dbo.ReferralNode AS r
 JOIN dbo.[User] AS u ON u.EntityId = r.UserId
 JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
+LEFT JOIN dbo.BioData AS bd ON bd.OwnerId = u.EntityId
+ORDER BY dl.[rank]
 ";
 
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["EuropaContext"].ConnectionString))
@@ -222,7 +225,12 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
                                 ModifiedOn = row.IsDBNull(8) ? (DateTime?)null : row.GetDateTime(8),
                                 Status = row.GetInt32(9),
                                 UId = row.GetGuid(10)
-                            })
+                            }),
+                            UserBio = new BioData
+                            {
+                                FirstName = row.IsDBNull(11) ? null : row.GetString(11),
+                                LastName = row.IsDBNull(12) ? null : row.GetString(12)
+                            }
                         });
                     }
                     return refnodes;
@@ -326,7 +334,7 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
                 Transaction.Receiver = ReceiverAddress;
 
                 Level.Donation = Transaction;
-                Level.User = Receiver;
+                Level.User = Sender;
                 return Level;
             }
         }

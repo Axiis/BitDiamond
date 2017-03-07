@@ -1,0 +1,331 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/Content/Theme/eliteadmin/plugins/images/favicon.png">
+    <title>BitDiamond - Family Tree</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="~/content/theme/eliteadmin/dark/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- animation CSS -->
+    <link href="~/content/theme/eliteadmin/dark/css/animate.css" rel="stylesheet">
+    <!-- Menu CSS -->
+    <link href="~/Content/Theme/eliteadmin/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
+    <!-- morris CSS -->
+    <link href="~/Content/Theme/eliteadmin/plugins/bower_components/morrisjs/morris.css" rel="stylesheet">
+    <link href="~/Content/Theme/eliteadmin/plugins/bower_components/css-chart/css-chart.css" rel="stylesheet">
+
+    <link href="~/Scripts/libs/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet">
+
+
+    <!-- animation CSS -->
+    <link href="~/content/theme/eliteadmin/dark/css/animate.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="~/content/theme/eliteadmin/dark/css/style.css" rel="stylesheet">
+    <!-- color CSS -->
+    <link href="~/content/theme/eliteadmin/dark/css/colors/default-dark.css" id="theme" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href="~/content/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/toastr.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/Theme/eliteadmin/plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
+
+    <link href="~/Content/loaders.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css">
+
+
+    <style type="text/css">
+        .jqstooltip {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            visibility: hidden;
+            background: rgb(0, 0, 0) transparent;
+            background-color: rgba(0,0,0,0.6);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+            -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+            color: white;
+            font: 10px arial, san serif;
+            text-align: left;
+            white-space: nowrap;
+            padding: 5px;
+            border: 1px solid white;
+            z-index: 10000;
+        }
+
+        .jqsfield {
+            color: white;
+            font: 10px arial, san serif;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body ng-app="referrals">
+    <div id="wrapper">
+        <!-- Top Navigation -->
+        <nav class="navbar navbar-default navbar-static-top m-b-0">
+            <div class="navbar-header" ng-controller="NavBar">
+                <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse"><i class="ti-menu"></i></a>
+                <div class="top-left-part"><a class="logo" href="index.html"><b><img src="~/Content/Theme/eliteadmin/plugins/images/eliteadmin-logo.png" alt="home" class="dark-logo"><img src="~/Content/Theme/eliteadmin/plugins/images/eliteadmin-logo-dark.png" alt="home" class="light-logo"></b><span class="hidden-xs"><img src="~/Content/Theme/eliteadmin/plugins/images/eliteadmin-text.png" alt="home" class="dark-logo"><img src="~/Content/Theme/eliteadmin/plugins/images/eliteadmin-text-dark.png" alt="home" class="light-logo"></span></a></div>
+
+                <ul class="nav navbar-top-links navbar-left hidden-xs">
+                    <li><a href="javascript:void(0)" class="open-close hidden-xs waves-effect waves-light"><i class="icon-arrow-left-circle ti-menu"></i></a></li>
+                </ul>
+
+                <ul class="nav navbar-top-links navbar-right pull-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#">
+                            <i class="icon-bell"></i>
+                            <div class="notify" ng-hide="vm.hasSeenNotifications">
+                                <span class="heartbit"></span><span class="point">
+                                </span>
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu mailbox animated flipInY">
+                            <li>
+                                <div class="drop-title">You have {{vm.notifications.length}} new Notifications</div>
+                            </li>
+                            <li>
+                                <div class="message-center">
+                                    <a ng-repeat="n in vm.first4Notifications()"
+                                       ng-href="vm.notificationDisplayLink(n)">
+                                        <div class="user-img">
+                                            <div alt="user" class="img-circle" style="width:40px; height:40px; text-align: center;">
+                                                <i class="icon-bell" style="font-size:30px; color:white;"></i>
+                                            </div>
+                                        </div>
+                                        <div class="mail-contnet">
+                                            <h5>{{n.Title}}</h5>
+                                            <span class="mail-desc" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{n.Message}}</span>
+                                            <span class="time">{{vm.displayTime(n.CreatedOn)}}</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-center" href="/notifications/index"> <strong>See all notifications</strong> <i class="fa fa-angle-right"></i> </a>
+                            </li>
+                        </ul>
+                        <!-- /.dropdown-messages -->
+                    </li>
+
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href>
+                            <div class="notify">
+                            </div>
+                        </a>
+                        <!-- /.dropdown-messages -->
+                    </li>
+                    <!-- /.dropdown -->
+
+                </ul>
+            </div>
+            <!-- /.navbar-header -->
+            <!-- /.navbar-top-links -->
+            <!-- /.navbar-static-side -->
+        </nav>
+        <!-- End Top Navigation -->
+        <!-- Left navbar-header -->
+        <div class="navbar-default sidebar" role="navigation" ng-controller="SideBar as vm">
+            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+                <div class="sidebar-nav navbar-collapse slimscrollsidebar" style="overflow: hidden; width: auto; height: 100%;">
+
+                    <div class="user-profile">
+                        <div class="dropdown user-pro-body">
+                            <div><img ng-src="{{vm.profileImage()}}" alt="user-img" class="img-circle"></div>
+                            <a href class="dropdown-toggle u-dropdown"
+                               data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span style="white-space:nowrap; text-overflow:ellipsis; position:relative; width:85%; display: inline-block; overflow:hidden;"
+                                      data-toggle="tooltip" data-original-title="{{vm.userNames()}}">{{vm.userNames()}}</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu animated flipInY">
+                                <li><a href="/profile/index#!/home"><i class="ti-user"></i> My Profile</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href ng-click="vm.logout()"><i class="fa fa-power-off"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <ul class="nav in" id="side-menu">
+
+                        <li>
+                            <a ng-href="{{vm.getModuleUrl('dashboard')}}" ng-class="vm.getActiveClass('dashboard')" class="waves-effect">
+                                <i class="icon-grid fa-fw" data-icon="v"></i>
+                                <span class="hide-menu">
+                                    Dashboard
+                                </span>
+                            </a>
+                        </li>
+
+                        <li class="nav-small-cap"></li>
+
+                        <li>
+                            <a ng-href="{{vm.getModuleUrl('bit-level')}}" ng-class="vm.getActiveClass('bit-level')" class="waves-effect">
+                                <i class="icon-diamond fa-fw" data-icon="v"></i>
+                                <span class="hide-menu">
+                                    Bit Level
+                                </span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a ng-href="{{vm.getModuleUrl('payments')}}" ng-class="vm.getActiveClass('payments')" class="waves-effect">
+                                <i class="fa fa-btc fa-fw" data-icon="v"></i>
+                                <span class="hide-menu">
+                                    Payment History
+                                </span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a ng-href="{{vm.getModuleUrl('family-tree')}}" ng-class="vm.getActiveClass('family-tree')" class="waves-effect">
+                                <i class="icon-people fa-fw" data-icon="v"></i>
+                                <span class="hide-menu">
+                                    Family Tree
+                                </span>
+                            </a>
+                        </li>
+
+                        <li class="nav-small-cap"></li>
+
+                        <li>
+                            <a ng-href="{{vm.getModuleUrl('news')}}" ng-class="vm.getActiveClass('news')" class="waves-effect">
+                                <i class="icon-book-open fa-fw" data-icon="v"></i>
+                                <span class="hide-menu">
+                                    News
+                                </span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a ng-href="{{vm.getModuleUrl('notifications')}}" ng-class="vm.getActiveClass('notifications')" class="waves-effect">
+                                <i class="icon-bell fa-fw" data-icon="v"></i>
+                                <span class="hide-menu">
+                                    Notifications
+                                </span>
+                            </a>
+                        </li>
+
+                        <li class="nav-small-cap"></li>
+
+                        <li>
+                            <a ng-href="{{vm.getModuleUrl('faq')}}" ng-class="vm.getActiveClass('faq')" class="waves-effect">
+                                <i class="icon-question fa-fw" data-icon="v"></i>
+                                <span class="hide-menu">
+                                    FAQ
+                                </span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a ng-href="{{vm.getModuleUrl('contact-us')}}" ng-class="vm.getActiveClass('contact-us')" class="waves-effect">
+                                <i class="icon-call-out fa-fw" data-icon="v"></i>
+                                <span class="hide-menu">
+                                    Contact Us
+                                </span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div><div class="slimScrollBar" style="background: rgb(220, 220, 220); width: 0px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 5794px;"></div><div class="slimScrollRail" style="width: 0px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+            </div>
+        </div>
+        <!-- Left navbar-header end -->
+        <!-- Page Content -->
+        <div id="page-wrapper" style="min-height: 885px;">
+            <div class="container-fluid bd-slide-in-left bd-fade-in" ui-view>
+
+            </div>
+            <!-- /.container-fluid -->
+            <footer class="footer text-center"> @DateTime.Now.Year © Bit-Diamond </footer>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+    <script src="~/Content/Theme/eliteadmin/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Content/Theme/eliteadmin/dark/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Menu Plugin JavaScript -->
+    <script src="~/Content/Theme/eliteadmin/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
+    <!--slimscroll JavaScript -->
+    <script src="~/Content/Theme/eliteadmin/dark/js/jquery.slimscroll.js"></script>
+    <!--Wave Effects -->
+    <script src="~/Content/Theme/eliteadmin/dark/js/waves.js"></script>
+    <!--clipboard js -->
+    <script src="~/Scripts/libs/clipboardjs/clipboard.min.js"></script>
+
+    <script type="text/javascript" src="~/Content/Theme/eliteadmin/plugins/bower_components/skycons/skycons.js"></script>
+    <!--Morris JavaScript -->
+    <script src="~/Content/Theme/eliteadmin/plugins/bower_components/raphael/raphael-min.js"></script>
+    <script src="~/Content/Theme/eliteadmin/plugins/bower_components/morrisjs/morris.js"></script>
+    <!-- Sparkline chart JavaScript -->
+    <script src="~/Content/Theme/eliteadmin/plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js"></script>
+    <script src="~/Content/Theme/eliteadmin/plugins/bower_components/jquery-sparkline/jquery.charts-sparkline.js"></script>
+
+    <script type="text/javascript" src="~/Content/Theme/eliteadmin/plugins/bower_components/sweetalert/sweetalert.min.js"></script>
+    <script type="text/javascript" src="~/Content/Theme/eliteadmin/plugins/bower_components/sweetalert/jquery.sweet-alert.custom.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/libs/bootstrap-treeview/bootstrap-treeview.min.js"></script>
+
+    <!--Counter js -->
+    <script src="~/Content/Theme/eliteadmin/plugins/bower_components/waypoints/lib/jquery.waypoints.js"></script>
+    <script src="~/Content/Theme/eliteadmin/plugins/bower_components/counterup/jquery.counterup.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="~/Content/Theme/eliteadmin/dark/js/custom.min.js"></script>
+    <!--script src="~/Content/Theme/eliteadmin/dark/js/widget.js"></script-->
+
+    <script type="text/javascript" src="~/scripts/libs/zxcvbn.js"></script>
+    <script type="text/javascript" src="~/scripts/libs/toastr.min.js"></script>
+    <script type="text/javascript" src="~/scripts/libs/moment.min.js"></script>
+
+    <script type="text/javascript" src="~/scripts/libs/angular.min.js"></script>
+    <script type="text/javascript" src="~/scripts/libs/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="~/scripts/libs/angular-animate.min.js"></script>
+    <script type="text/javascript" src="~/scripts/libs/angular-route.min.js"></script>
+    <script type="text/javascript" src="~/scripts/libs/angular-ui-router.min.js"></script>
+
+
+    <script type="text/javascript" src="~/scripts/app/utils/constants.js"></script>
+    <script type="text/javascript" src="~/scripts/app/utils/extensions.js"></script>
+    <script type="text/javascript" src="~/scripts/app/utils/tools.js"></script>
+    <script type="text/javascript" src="~/scripts/app/utils/map.js"></script>
+    <script type="text/javascript" src="~/scripts/app/utils/operation.js"></script>
+    <script type="text/javascript" src="~/scripts/app/utils/encodedBinaryData.js"></script>
+    <script type="text/javascript" src="~/scripts/app/utils/domain-tools.js"></script>
+
+    <script type="text/javascript" src="~/scripts/app/models/axis-apollo.js"></script>
+    <script type="text/javascript" src="~/scripts/app/models/domain.js"></script>
+
+    <script type="text/javascript" src="~/scripts/app/directives/loaders.js"></script>
+    <script type="text/javascript" src="~/scripts/app/directives/enumOptions.js"></script>
+    <script type="text/javascript" src="~/scripts/app/directives/binaryData.js"></script>
+
+    <script type="text/javascript" src="~/scripts/app/services/utility.js"></script>
+    <script type="text/javascript" src="~/scripts/app/services/bit-diamond.js"></script>
+
+    <script type="text/javascript" src="~/scripts/app/controllers/referrals.js"></script>
+    <script type="text/javascript" src="~/scripts/app/controllers/_shared.js"></script>
+
+    <script type="text/javascript" src="~/scripts/app/modules/referrals.js"></script>
+
+    <script type="text/javascript">
+    $('[data-toggle=tooltip]').tooltip();
+    </script>
+</body>
+</html>

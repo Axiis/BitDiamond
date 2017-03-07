@@ -93,6 +93,8 @@ var BitDiamond;
                 SideBar.prototype.getModuleUrl = function (moduleName) {
                     if (moduleName == 'dashboard')
                         return '/profile/index';
+                    else if (moduleName == 'family-tree')
+                        return '/referrals/index';
                     else
                         return '/' + moduleName + '/index';
                 };
@@ -100,6 +102,7 @@ var BitDiamond;
                     var m = window.location.pathname.split('/')[1];
                     switch (m) {
                         case 'profile': return 'dashboard' == moduleName;
+                        case 'referrals': 'family-tree' == moduleName;
                         default: return m == moduleName;
                     }
                 };

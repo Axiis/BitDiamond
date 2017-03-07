@@ -1,0 +1,94 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">Notifications</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href>Notifications</a></li>
+            <li><a href class="active">History</a></li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row" style="margin-bottom:20px;">
+
+    <div class="col-md-6">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default btn-outline waves-effect" ng-click="vm.loadFirstPage()"><i class="ti-angle-double-left"></i></button>
+            <button type="button" class="btn waves-effect"
+                    ng-repeat="page in vm.pageLinks"
+                    ng-class="vm.linkButtonClass(page)"
+                    ng-click="vm.loadLinkPage(page)">
+                {{page+1}}
+            </button>
+            <button type="button" class="btn btn-default btn-outline waves-effect" ng-click="vm.loadLastPage()"><i class="ti-angle-double-right"></i></button>
+        </div>
+    </div>
+
+    <div class="col-md-6"
+         style="text-align:right;">
+        <button class="btn btn-outline btn-sm btn-warning"
+                ng-click="vm.clearAll()">
+            <span ng-hide="vm.isClearingAll"><i class="ti-close"></i> Clear All</span>
+            <ring-loader show="vm.isClearingAll" size="16" color="white"></ring-loader>
+        </button>
+    </div>
+
+</div>
+
+<div class="row" ng-hide="vm.isLoadingView">
+
+    <div class="col-sm-12 col-md-offset-3 col-md-6"
+         style="margin-bottom:20px;"
+         ng-repeat="notification in vm.notifications.Page">
+        <div class="white-box bd-card-2">
+            <div class="clearfix">
+                <div class="col-sm-6">
+                    <h3>
+                        <span>
+                            <i class="icon-bell" 
+                               ng-class="vm.iconClasses(notification)"></i>
+                            <div class="notify" 
+                                 style="display:inline-block; margin-left: -5px; margin-bottom:10px;"                                 
+                                 ng-hide="notification.Seen">
+                                <span class="heartbit"></span><span class="point">
+                                </span>
+                            </div>
+                        </span>
+                    </h3>
+                </div>
+                <div class="col-sm-6" style="text-align:right;">
+                    <span style="font-size:12px; width:80px; display:inline-block; line-height:2em;">
+                        {{vm.displayDate(notification.CreatedOn)}}
+                    </span>
+                </div>
+            </div>
+            <div class="row sales-report bd-marker"
+                 ng-class="vm.markerClasses(notification)">
+                <h4 ng-bind-html="notification.Title"></h4>
+                <span ng-bind-html="notification.Message"></span>
+            </div>
+            <div style="text-align:right;">
+                <button class="btn btn-outline btn-sm btn-warning"
+                        ng-click="vm.clear(notification)"
+                        ng-hide="notification.Seen">
+                    <span ng-hide="notification.$__isClearing"><i class="ti-close"></i> Clear</span>
+                    <ring-loader show="notification.$__isClearing" size="16" color="white"></ring-loader>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div ng-show="vm.isLoadingView"
+     style="position:absolute; left:220px; bottom:60px; right:0; top:166px;">
+    <box-loader size="40" color="white" show="true" block-loader="true"></box-loader>
+</div>

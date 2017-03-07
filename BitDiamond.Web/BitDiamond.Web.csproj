@@ -371,6 +371,8 @@
     <Content Include="Scripts\libs\angular-ui-router.min.js" />
     <Content Include="Scripts\libs\angular.js" />
     <Content Include="Scripts\libs\angular.min.js" />
+    <Content Include="Scripts\libs\bootstrap-treeview\bootstrap-treeview.min.css" />
+    <Content Include="Scripts\libs\bootstrap-treeview\bootstrap-treeview.min.js" />
     <Content Include="Scripts\libs\bootstrap.js" />
     <Content Include="Scripts\libs\bootstrap.min.js" />
     <Content Include="Scripts\i18n\angular-locale_af-na.js" />
@@ -1118,6 +1120,7 @@
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
     <None Include="Scripts\libs\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\libs\clipboardjs\clipboard.min.js" />
     <Content Include="Scripts\libs\jquery-3.1.1.js" />
     <Content Include="Scripts\libs\jquery-3.1.1.min.js" />
     <Content Include="Scripts\libs\jquery-3.1.1.slim.js" />
@@ -1174,6 +1177,11 @@
     <Content Include="Views\Payments\Index.cshtml" />
     <Content Include="Views\Payments\Incoming.cshtml" />
     <Content Include="Views\Payments\Outgoing.cshtml" />
+    <Content Include="Views\Referrals\Home.cshtml" />
+    <Content Include="Views\Referrals\Index.cshtml" />
+    <Content Include="Views\Notification\Details.cshtml" />
+    <Content Include="Views\Notification\History.cshtml" />
+    <Content Include="Views\Notification\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1188,9 +1196,13 @@
     <Compile Include="Controllers\Api\AccountController.cs" />
     <Compile Include="Controllers\Api\BitLevelController.cs" />
     <Compile Include="Controllers\Api\BlockChainController.cs" />
+    <Compile Include="Controllers\Api\NotificationController.cs" />
+    <Compile Include="Controllers\Api\ReferralsController.cs" />
     <Compile Include="Controllers\Api\SettingsController.cs" />
     <Compile Include="Controllers\Mvc\AccountController.cs" />
     <Compile Include="Controllers\Mvc\BitLevelController.cs" />
+    <Compile Include="Controllers\Mvc\NotificationController.cs" />
+    <Compile Include="Controllers\Mvc\ReferralsController.cs" />
     <Compile Include="Controllers\Mvc\PaymentsController.cs" />
     <Compile Include="Controllers\Mvc\ProfileController.cs" />
     <Compile Include="Global.asax.cs">
@@ -1237,8 +1249,10 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\app\controllers\account.ts" />
     <TypeScriptCompile Include="Scripts\app\controllers\bitlevel.ts" />
+    <TypeScriptCompile Include="Scripts\app\controllers\notifications.ts" />
     <TypeScriptCompile Include="Scripts\app\controllers\payments.ts" />
     <TypeScriptCompile Include="Scripts\app\controllers\profile.ts" />
+    <TypeScriptCompile Include="Scripts\app\controllers\referrals.ts" />
     <TypeScriptCompile Include="Scripts\app\controllers\_shared.ts" />
     <TypeScriptCompile Include="Scripts\app\directives\binaryData.ts" />
     <TypeScriptCompile Include="Scripts\app\directives\enumOptions.ts" />
@@ -1248,6 +1262,8 @@
     <TypeScriptCompile Include="Scripts\app\models\domain.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\account.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\bitlevel.ts" />
+    <TypeScriptCompile Include="Scripts\app\modules\notifications.ts" />
+    <TypeScriptCompile Include="Scripts\app\modules\referrals.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\payments.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\profile.ts" />
     <TypeScriptCompile Include="Scripts\app\services\bit-diamond.ts" />

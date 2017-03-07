@@ -68,6 +68,7 @@ module BitDiamond.Controllers.Shared {
         }
         getModuleUrl(moduleName: string): string {
             if (moduleName == 'dashboard') return '/profile/index';
+            else if (moduleName == 'family-tree') return '/referrals/index';
             else return '/' + moduleName + '/index';
         }
 
@@ -75,6 +76,7 @@ module BitDiamond.Controllers.Shared {
             var m = window.location.pathname.split('/')[1];
             switch (m) {
                 case 'profile': return 'dashboard' == moduleName;
+                case 'referrals': 'family-tree' == moduleName;
                 default: return m == moduleName;
             }
         }

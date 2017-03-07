@@ -211,6 +211,7 @@ module BitDiamond.Utils.Services {
         userBio: ng.IPromise<Pollux.Models.IBioData>;
         userContact: ng.IPromise<Pollux.Models.IContactData>;
         profileImageRef: ng.IPromise<Pollux.Models.IUserData>;
+        userRef: ng.IPromise<Models.IReferralNode>;
 
 
         __account: BitDiamond.Services.Account;
@@ -245,6 +246,11 @@ module BitDiamond.Utils.Services {
 
             //load user contact data
             this.userContact = this.__account.getContactdata().then(opr => {
+                return this.$q.resolve(opr.Result);
+            });
+
+            //load ref code
+            this.userRef = this.__account.getCurrentUserRef().then(opr => {
                 return this.$q.resolve(opr.Result);
             });
 

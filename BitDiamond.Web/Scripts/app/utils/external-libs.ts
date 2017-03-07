@@ -66,3 +66,31 @@ declare interface IBearerTokenResponse {
     error_description?: string,
     error_uri?: string
 };
+
+
+//bootstrap treeview
+declare interface ITreeViewNode {
+    text: string,
+    icon?: string,
+    selectedIcon?: string,
+    color?: string,
+    backColor?: string,
+    href?: string,
+    selectable?: boolean,
+    state?: {
+        checked:  boolean,
+        disabled: boolean,
+        expanded: boolean,
+        selected: boolean
+    },
+    tags?: string[],
+    nodes?:  ITreeViewNode[]
+}
+declare interface ITreeViewOptions {
+    data: ITreeViewNode[],
+    showTags?: boolean
+}
+
+declare interface JQuery {
+    treeview(options: ITreeViewOptions): JQuery;
+} 

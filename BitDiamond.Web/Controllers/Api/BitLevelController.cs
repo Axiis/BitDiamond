@@ -38,19 +38,27 @@ namespace BitDiamond.Web.Controllers.Api
 
         [HttpPost, Route("api/bit-levels/bitcoin-addresses")]
         public IHttpActionResult AddBitcoinAddress([FromBody] BitcoinAddress address)
-        => _bitlevel.AddBitcoindAddress(address).OperationResult(Request);
+        => Operation.Try(() => address.ThrowIfNull(new MalformedApiArgumentsException()))
+            .Then(opr => _bitlevel.AddBitcoindAddress(address))
+            .OperationResult(Request);
 
         [HttpPut, Route("api/bit-levels/bitcoin-addresses/activate")]
         public IHttpActionResult ActivateAddress([FromBody] BitcoinAddressArgs args)
-        => _bitlevel.ActivateAddress(args?.Id ?? 0).OperationResult(Request);
+        => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
+            .Then(opr => _bitlevel.ActivateAddress(args.Id))
+            .OperationResult(Request);
 
         [HttpPut, Route("api/bit-levels/bitcoin-addresses/deactivate")]
         public IHttpActionResult DeactivateAddress([FromBody] BitcoinAddressArgs args)
-        => _bitlevel.DeactivateAddress(args?.Id ?? 0).OperationResult(Request);
+        => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
+            .Then(opr => _bitlevel.DeactivateAddress(args.Id))
+            .OperationResult(Request);
 
         [HttpPut, Route("api/bit-levels/bitcoin-addresses/verify")]
         public IHttpActionResult VerifyAddress([FromBody] BitcoinAddressArgs args)
-        => _bitlevel.VerifyAddress(args?.Id ?? 0).OperationResult(Request);
+        => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
+            .Then(opr => _bitlevel.VerifyAddress(args.Id))
+            .OperationResult(Request);
 
 
 
@@ -59,8 +67,10 @@ namespace BitDiamond.Web.Controllers.Api
         => _bitlevel.Upgrade().OperationResult(Request);
 
         [HttpPut, Route("api/bit-levels/transactions/current")]
-        public IHttpActionResult UpdateTransactionHash([FromBody] TransactionArgs arg)
-        => _bitlevel.UpdateTransactionHash(arg.Hash).OperationResult(Request);
+        public IHttpActionResult UpdateTransactionHash([FromBody] TransactionArgs args)
+        => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
+            .Then(opr => _bitlevel.UpdateTransactionHash(args.Hash))
+            .OperationResult(Request);
 
         [HttpPut, Route("api/bit-levels/transactions/current/confirm")]
         public IHttpActionResult ConfirmUpgradeDonation()
@@ -91,22 +101,9 @@ namespace BitDiamond.Web.Controllers.Api
             .OperationResult(Request);
 
 
-        [HttpPut, Route("api/bit-levels/transactions/receiver-confirmation")]
-        public IHttpActionResult ReceiverConfirmation(TransactionArgs arg)
-        => _bitlevel.ReceiverConfirmation(arg?.Hash).OperationResult(Request);
-
-
         [HttpGet, Route("api/bit-levels/upgrade-fees/{level}")]
         public IHttpActionResult GetUpgradeFee(int level)
         => _bitlevel.GetUpgradeFee(level).OperationResult(Request);
-
-
-        [HttpGet, Route("api/bit-levels/transactions/receivers")]
-        public IHttpActionResult GetUpgradeTransactionReceiver(string data)
-        => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
-            .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<TransactionArgs>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
-            .Then(argopr => _bitlevel.GetUpgradeTransactionReceiverRef(argopr.Result.Id))
-            .OperationResult(Request);
 
 
         [HttpGet, Route("api/bit-levels/transactions/current")]

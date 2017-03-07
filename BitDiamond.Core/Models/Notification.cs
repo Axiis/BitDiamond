@@ -13,6 +13,11 @@ namespace BitDiamond.Core.Models
 
         public NotificationType Type { get; set; }
         public bool Seen { get; set; }
+        
+        [MaxLength(400, ErrorMessage = "Context is too long")]
+        public string Context { get; set; }
+        [MaxLength(400, ErrorMessage = "Context id is too long")]
+        public string ContextId { get; set; }
 
         private User _target;
         private string _targetId;

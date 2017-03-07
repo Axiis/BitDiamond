@@ -213,6 +213,10 @@ var BitDiamond;
                     this.userContact = this.__account.getContactdata().then(function (opr) {
                         return _this.$q.resolve(opr.Result);
                     });
+                    //load ref code
+                    this.userRef = this.__account.getCurrentUserRef().then(function (opr) {
+                        return _this.$q.resolve(opr.Result);
+                    });
                     //load any other needed data
                 }
                 return UserContext;

@@ -3,6 +3,10 @@ module BitDiamond.Services {
 
     export class Account {
 
+        getCurrentUserRef(): ng.IPromise<Utils.Operation<Models.IReferralNode>> {
+            return this.__transport.get<Utils.Operation<Models.IReferralNode>>('/api/referrals/current');
+        }
+
         registerUser(targetUser: string, referrer: string, credential: Pollux.Models.ICredential): ng.IPromise<Utils.Operation<Pollux.Models.IUser>> {
             return this.__transport.post<Utils.Operation<Pollux.Models.IUser>>('/api/accounts/users', {
                 TargetUser: targetUser,
@@ -228,18 +232,6 @@ module BitDiamond.Services {
 
         getUpgradeFee(level: number): ng.IPromise<Utils.Operation<number>> {
             return this.__transport.get<Utils.Operation<number>>('/api/bit-levels/upgrade-fees/' + level);
-        }
-
-        getUpgradeDonationReceiverRef(levelId: number): ng.IPromise<Utils.Operation<Models.IReferralNode>> {
-            return this.__transport.get<Utils.Operation<Models.IReferralNode>>('/api/bit-levels/transactions/receivers', {
-                Id: levelId
-            });
-        }
-
-        receiverConfirmation(hash: string): ng.IPromise<Utils.Operation<void>> {
-            return this.__transport.put<Utils.Operation<void>>('/api/bit-levels/transactions/receiver-confirmation', {
-                Hash: hash
-            });
         }
 
         getAllBitcoinAddresses(): ng.IPromise<Utils.Operation<Models.IBitcoinAddress[]>> {
@@ -548,13 +540,114 @@ module BitDiamond.Services {
             return this.__transport.put('/api/block-chain/transactions/incoming', {
                 TransactionHash: transactionHash
             });
-            //return this.$q.resolve(<Utils.Operation<void>>{
-            //    Succeeded: true,
-            //    Result: null,
-            //    Message: null
-            //});
         }
 
+
+        __transport: Utils.Services.DomainTransport;
+        $q: ng.IQService;
+        constructor(__transport, $q) {
+            this.__transport = __transport;
+            this.$q = $q;
+        }
+    }
+
+
+    export class Referrals {
+
+        getDirectDownlines(refCode: string): ng.IPromise<Utils.Operation<Models.IReferralNode[]>> {
+            return this.__transport.get<Utils.Operation<Models.IReferralNode[]>>('/api/referrals/downlines/direct', {
+                ReferenceCode: refCode
+            });
+        }
+
+        getAllDownlines(refCode: string): ng.IPromise<Utils.Operation<Models.IReferralNode[]>> {
+            return this.__transport.get<Utils.Operation<Models.IReferralNode[]>>('/api/referrals/downlines', {
+                ReferenceCode: refCode
+            });
+        }
+
+        getUplines(refCode: string): ng.IPromise<Utils.Operation<Models.IReferralNode[]>> {
+            return this.__transport.get<Utils.Operation<Models.IReferralNode[]>>('/api/referrals/uplines', {
+                ReferenceCode: refCode
+            });
+        }
+
+        __transport: Utils.Services.DomainTransport;
+        $q: ng.IQService;
+        constructor(__transport, $q) {
+            this.__transport = __transport;
+            this.$q = $q;
+        }
+    }
+
+
+    export class Notification {
+
+        clearNotification(id: number): ng.IPromise<Utils.Operation<Models.INotification>> {
+            return this.__transport.put<Utils.Operation<Models.INotification>>('/api/notifications/single', {
+                Id: id
+            });
+        }
+
+        clearAll(): ng.IPromise<Utils.Operation<void>> {
+            return this.__transport.put<Utils.Operation<void>>('/api/notifications', null);
+        }
+
+        getNotificationHistory(): ng.IPromise<Utils.Operation<Models.INotification[]>> {
+            return this.__transport.get<Utils.Operation<Models.INotification[]>>('/api/notifications');
+        }
+
+        getUnseenNotificaftions(): ng.IPromise<Utils.Operation<Models.INotification[]>> {
+            return this.__transport.get<Utils.Operation<Models.INotification[]>>('/api/notifications/unseen');
+        }
+
+        getPagedNotificationHistory(pageIndex: number, pageSize: number): ng.IPromise<Utils.Operation<Utils.SequencePage<Models.INotification>>> {
+            return this.__transport.get<Utils.Operation<Utils.SequencePage<Models.INotification>>>('/api/notifications/paged', {
+                PageIndex: pageIndex,
+                PageSize: pageSize
+            });
+            //return this.$q.resolve(<Utils.Operation<Utils.SequencePage<Models.INotification>>>{
+            //    Succeeded: true,
+            //    Message: null,
+            //    Result: new Utils.SequencePage<Models.INotification>([
+            //        {
+            //            Id: 0,
+            //            Message: 'some message',
+            //            Seen: true,
+            //            Type: Models.NotificationType.Error,
+            //            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
+            //        } as Models.INotification,
+            //        {
+            //            Id: 0,
+            //            Message: 'some message2',
+            //            Seen: false,
+            //            Type: Models.NotificationType.Info,
+            //            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
+            //        } as Models.INotification,
+            //        {
+            //            Id: 0,
+            //            Message: 'some message3',
+            //            Seen: false,
+            //            Type: Models.NotificationType.Success,
+            //            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
+            //        } as Models.INotification,
+            //        {
+            //            Id: 0,
+            //            Message: 'some message4',
+            //            Seen: false,
+            //            Type: Models.NotificationType.Warning,
+            //            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
+            //        } as Models.INotification,
+            //        {
+            //            Id: 0,
+            //            Message: 'some message5',
+            //            Seen: true,
+            //            Type: Models.NotificationType.Error,
+            //            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
+            //        } as Models.INotification
+            //    ], 10, 5, 0)
+            //});
+        }
 
         __transport: Utils.Services.DomainTransport;
         $q: ng.IQService;

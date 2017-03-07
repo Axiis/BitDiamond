@@ -9,6 +9,7 @@ using static Axis.Luna.Extensions.ExceptionExtensions;
 using Axis.Luna.Extensions;
 using BitDiamond.Core.Utils;
 using Axis.Jupiter.Kore.Command;
+using System;
 
 namespace BitDiamond.Core.Services
 {
@@ -83,6 +84,13 @@ namespace BitDiamond.Core.Services
         => _auth.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
             return _query.UnseenNotifications(UserContext.CurrentUser());
+        });
+
+        public Operation<SequencePage<Notification>> PagedNotificationHistory(int pageSize, int pageIndex = 0)
+        => _auth.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            var x = _query.GetPagedNotificationHistory(UserContext.CurrentUser(), pageSize, pageIndex);
+            return x;
         });
     }
 }

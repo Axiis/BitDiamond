@@ -63,7 +63,7 @@ var BitDiamond;
                     if (Object.isNullOrUndefined(date))
                         return null;
                     else
-                        return date.toMoment().format('YYYY/M/d  H:m');
+                        return date.toMoment().format('YYYY/M/D  H:m');
                 };
                 Incoming.prototype.getTransactionSender = function (trnx) {
                     if (Object.isNullOrUndefined(trnx.Sender))
@@ -149,7 +149,7 @@ var BitDiamond;
                     if (Object.isNullOrUndefined(date))
                         return null;
                     else
-                        return date.toMoment().format('YYYY/M/d  H:m');
+                        return date.toMoment().format('YYYY/M/D  H:m');
                 };
                 Outgoing.prototype.getTransactionSender = function (trnx) {
                     if (Object.isNullOrUndefined(trnx.Sender))

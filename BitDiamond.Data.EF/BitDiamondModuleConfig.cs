@@ -10,7 +10,6 @@ using Axis.Pollux.RBAC.Auth;
 using BitDiamond.Core.Models;
 using BitDiamond.Core.Utils;
 using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Text;
 
@@ -151,7 +150,9 @@ namespace BitDiamond.Data.EF
 
                     ":system/settings/@get",
                     ":system/settings/all/@get",
-                    ":system/settings/@update"
+                    ":system/settings/@update",
+
+                    ":system/notifications/*"
                 }
                 .Select(_selector => new Permission
                 {
@@ -181,7 +182,9 @@ namespace BitDiamond.Data.EF
                     ":system/block-chain/*",
 
                     ":system/settings/@get",
-                    ":system/settings/all/@get"
+                    ":system/settings/all/@get",
+
+                    ":system/notifications/*"
                 }
                 .Select(_selector => new Permission
                 {

@@ -20,7 +20,7 @@ namespace BitDiamond.Core.Utils
                 return parts[1]
                     .Pipe(_chars => Encoding.ASCII.GetBytes(_chars.ToArray()))
                     .Aggregate(17, (hash, next) => hash * 283 + next)
-                    .Pipe(_hash => $"@{parts[0]}-{_hash}");
+                    .Pipe(_hash => $"@{parts[0]}-{Math.Abs(_hash)}");
             }
         }
 

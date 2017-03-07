@@ -28,28 +28,31 @@ namespace BitDiamond.Data.EF.Query
         {
             var query =
 @"
-WITH DownLinesCTE (ReferenceCode)
+WITH DownLinesCTE (ReferenceCode, [rank])
 AS
 (
 -- Anchor member definition
-    SELECT r.ReferenceCode
+    SELECT r.ReferenceCode, 0
     FROM dbo.ReferralNode AS r
     WHERE r.UplineCode = @reference
 
     UNION ALL
 
 -- Recursive member definition
-    SELECT downline.ReferenceCode
+    SELECT downline.ReferenceCode, code.[rank] + 1
     FROM DownLinesCTE as code
     JOIN dbo.ReferralNode AS downline ON downline.UplineCode = code.ReferenceCode
 )
 
 -- Statement that executes the CTE
 SELECT r.ReferenceCode, r.ReferrerCode, r.UplineCode, r.CreatedOn, r.ModifiedOn, r.Id, 
-       u.EntityId AS u_EntityId, u.CreatedOn AS u_CreatedOn, u.ModifiedOn AS u_ModifiedOn, u.Status as u_Status, u.UId AS u_UId
+       u.EntityId AS u_EntityId, u.CreatedOn AS u_CreatedOn, u.ModifiedOn AS u_ModifiedOn, u.Status as u_Status, u.UId AS u_UId,
+       bd.FirstName, bd.LastName
 FROM dbo.ReferralNode AS r
 JOIN dbo.[User] AS u ON u.EntityId = r.UserId
-JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
+JOIN DownLinesCTE AS dl ON dl.ReferenceCode = r.ReferenceCode
+LEFT JOIN dbo.BioData AS bd ON bd.OwnerId = u.EntityId
+ORDER BY dl.[rank]
 ";
 
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["EuropaContext"].ConnectionString))
@@ -75,7 +78,7 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
                             ReferrerCode = row.IsDBNull(1) ? null : row.GetString(1),
                             UplineCode = row.IsDBNull(3) ? null : row.GetString(2),
                             CreatedOn = row.GetDateTime(3),
-                            ModifiedOn = row.IsDBNull(4)? (DateTime?)null: row.GetDateTime(4),
+                            ModifiedOn = row.IsDBNull(4) ? (DateTime?)null : row.GetDateTime(4),
                             Id = row.GetInt64(5),
                             User = userCache.GetOrAdd(row.GetString(6), _uid => new User //<-- the UserId of the ReferralNode is also set behind the scenes
                             {
@@ -84,7 +87,12 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
                                 ModifiedOn = row.IsDBNull(8) ? (DateTime?)null : row.GetDateTime(8),
                                 Status = row.GetInt32(9),
                                 UId = row.GetGuid(10)
-                            })
+                            }),
+                            UserBio = new BioData
+                            {
+                                FirstName = row.IsDBNull(11) ? null : row.GetString(11),
+                                LastName = row.IsDBNull(12) ? null : row.GetString(12)
+                            }
                         });
                     }
                     return refnodes;
@@ -120,28 +128,31 @@ JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
         {
             var query =
 @"
-WITH UplinesCTE (ReferenceCode)
+WITH UplinesCTE (ReferenceCode, [rank])
 AS
 (
 -- Anchor member definition: statrt with the first parent/upline
-    SELECT r.UplineCode
+    SELECT r.UplineCode, 0
     FROM dbo.ReferralNode AS r
-    WHERE r.ReferenceCode = @referrerCode
+    WHERE r.ReferenceCode = @referenceCode
 
     UNION ALL
 
 -- Recursive member definition
-    SELECT node.UplineCode
+    SELECT node.UplineCode, code.[rank] + 1
     FROM dbo.ReferralNode as node
     JOIN UplinesCTE AS code ON code.ReferenceCode = node.ReferenceCode
 )
 
 -- Statement that executes the CTE
 SELECT r.ReferenceCode, r.ReferrerCode, r.UplineCode, r.CreatedOn, r.ModifiedOn, r.Id, 
-       u.EntityId AS u_EntityId, u.CreatedOn AS u_CreatedOn, u.ModifiedOn AS u_ModifiedOn, u.Status as u_Status, u.UId AS u_UId
+       u.EntityId AS u_EntityId, u.CreatedOn AS u_CreatedOn, u.ModifiedOn AS u_ModifiedOn, u.Status as u_Status, u.UId AS u_UId,
+       bd.FirstName, bd.LastName
 FROM dbo.ReferralNode AS r
 JOIN dbo.[User] AS u ON u.EntityId = r.UserId
 JOIN UplinesCTE AS ul ON ul.ReferenceCode = r.ReferenceCode
+LEFT JOIN dbo.BioData AS bd ON bd.OwnerId = u.EntityId
+ORDER BY ul.[rank]
 ";
             
             using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["EuropaContext"].ConnectionString))
@@ -153,7 +164,7 @@ JOIN UplinesCTE AS ul ON ul.ReferenceCode = r.ReferenceCode
                     CommandText = query,
                     //CommandTimeout = 
                 };
-                qcommand.Parameters.Add(new SqlParameter("referrerCode", node.ReferenceCode));
+                qcommand.Parameters.Add(new SqlParameter("referenceCode", node.ReferenceCode));
 
                 using (var row = qcommand.ExecuteReader())
                 {
@@ -167,7 +178,7 @@ JOIN UplinesCTE AS ul ON ul.ReferenceCode = r.ReferenceCode
                             ReferrerCode = row.IsDBNull(1) ? null : row.GetString(1),
                             UplineCode = row.IsDBNull(2) ? null : row.GetString(2),
                             CreatedOn = row.GetDateTime(3),
-                            ModifiedOn = row.IsDBNull(4)? (DateTime?)null: row.GetDateTime(4),
+                            ModifiedOn = row.IsDBNull(4) ? (DateTime?)null : row.GetDateTime(4),
                             Id = row.GetInt64(5),
                             User = userCache.GetOrAdd(row.GetString(6), _uid => new User
                             {
@@ -176,7 +187,12 @@ JOIN UplinesCTE AS ul ON ul.ReferenceCode = r.ReferenceCode
                                 ModifiedOn = row.IsDBNull(8) ? (DateTime?)null : row.GetDateTime(8),
                                 Status = row.GetInt32(9),
                                 UId = row.GetGuid(10)
-                            })
+                            }),
+                            UserBio = new BioData
+                            {
+                                FirstName = row.IsDBNull(11) ? null : row.GetString(11),
+                                LastName = row.IsDBNull(12) ? null : row.GetString(12)
+                            }
                         });
                     }
                     return refnodes;

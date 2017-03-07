@@ -7,6 +7,9 @@ var BitDiamond;
                 this.__transport = __transport;
                 this.$q = $q;
             }
+            Account.prototype.getCurrentUserRef = function () {
+                return this.__transport.get('/api/referrals/current');
+            };
             Account.prototype.registerUser = function (targetUser, referrer, credential) {
                 return this.__transport.post('/api/accounts/users', {
                     TargetUser: targetUser,
@@ -186,16 +189,6 @@ var BitDiamond;
             };
             BitLevel.prototype.getUpgradeFee = function (level) {
                 return this.__transport.get('/api/bit-levels/upgrade-fees/' + level);
-            };
-            BitLevel.prototype.getUpgradeDonationReceiverRef = function (levelId) {
-                return this.__transport.get('/api/bit-levels/transactions/receivers', {
-                    Id: levelId
-                });
-            };
-            BitLevel.prototype.receiverConfirmation = function (hash) {
-                return this.__transport.put('/api/bit-levels/transactions/receiver-confirmation', {
-                    Hash: hash
-                });
             };
             BitLevel.prototype.getAllBitcoinAddresses = function () {
                 return this.__transport.get('/api/bit-levels/bitcoin-addresses');
@@ -487,15 +480,102 @@ var BitDiamond;
                 return this.__transport.put('/api/block-chain/transactions/incoming', {
                     TransactionHash: transactionHash
                 });
-                //return this.$q.resolve(<Utils.Operation<void>>{
-                //    Succeeded: true,
-                //    Result: null,
-                //    Message: null
-                //});
             };
             return BlockChain;
         }());
         Services.BlockChain = BlockChain;
+        var Referrals = (function () {
+            function Referrals(__transport, $q) {
+                this.__transport = __transport;
+                this.$q = $q;
+            }
+            Referrals.prototype.getDirectDownlines = function (refCode) {
+                return this.__transport.get('/api/referrals/downlines/direct', {
+                    ReferenceCode: refCode
+                });
+            };
+            Referrals.prototype.getAllDownlines = function (refCode) {
+                return this.__transport.get('/api/referrals/downlines', {
+                    ReferenceCode: refCode
+                });
+            };
+            Referrals.prototype.getUplines = function (refCode) {
+                return this.__transport.get('/api/referrals/uplines', {
+                    ReferenceCode: refCode
+                });
+            };
+            return Referrals;
+        }());
+        Services.Referrals = Referrals;
+        var Notification = (function () {
+            function Notification(__transport, $q) {
+                this.__transport = __transport;
+                this.$q = $q;
+            }
+            Notification.prototype.clearNotification = function (id) {
+                return this.__transport.put('/api/notifications/single', {
+                    Id: id
+                });
+            };
+            Notification.prototype.clearAll = function () {
+                return this.__transport.put('/api/notifications', null);
+            };
+            Notification.prototype.getNotificationHistory = function () {
+                return this.__transport.get('/api/notifications');
+            };
+            Notification.prototype.getUnseenNotificaftions = function () {
+                return this.__transport.get('/api/notifications/unseen');
+            };
+            Notification.prototype.getPagedNotificationHistory = function (pageIndex, pageSize) {
+                return this.__transport.get('/api/notifications/paged', {
+                    PageIndex: pageIndex,
+                    PageSize: pageSize
+                });
+                //return this.$q.resolve(<Utils.Operation<Utils.SequencePage<Models.INotification>>>{
+                //    Succeeded: true,
+                //    Message: null,
+                //    Result: new Utils.SequencePage<Models.INotification>([
+                //        {
+                //            Id: 0,
+                //            Message: 'some message',
+                //            Seen: true,
+                //            Type: Models.NotificationType.Error,
+                //            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
+                //        } as Models.INotification,
+                //        {
+                //            Id: 0,
+                //            Message: 'some message2',
+                //            Seen: false,
+                //            Type: Models.NotificationType.Info,
+                //            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
+                //        } as Models.INotification,
+                //        {
+                //            Id: 0,
+                //            Message: 'some message3',
+                //            Seen: false,
+                //            Type: Models.NotificationType.Success,
+                //            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
+                //        } as Models.INotification,
+                //        {
+                //            Id: 0,
+                //            Message: 'some message4',
+                //            Seen: false,
+                //            Type: Models.NotificationType.Warning,
+                //            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
+                //        } as Models.INotification,
+                //        {
+                //            Id: 0,
+                //            Message: 'some message5',
+                //            Seen: true,
+                //            Type: Models.NotificationType.Error,
+                //            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
+                //        } as Models.INotification
+                //    ], 10, 5, 0)
+                //});
+            };
+            return Notification;
+        }());
+        Services.Notification = Notification;
     })(Services = BitDiamond.Services || (BitDiamond.Services = {}));
 })(BitDiamond || (BitDiamond = {}));
 //# sourceMappingURL=bit-diamond.js.map

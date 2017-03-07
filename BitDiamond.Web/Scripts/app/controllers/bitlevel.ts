@@ -101,6 +101,7 @@ module BitDiamond.Controllers.BitLevel {
                 this.isSavingTransactionHash = true;
                 this.__bitlevel.updateTransactionHash(this.transactionHash).then(opr => {
                     this.bitLevel.Donation = opr.Result;
+                    this.transactionHash = null;
                     this.__notify.success('Your transaction hash was verified!');
                 }, err => {
                     this.__notify.error('Something went wrong - could not save the transaction hash.', 'Oops!');
@@ -242,7 +243,7 @@ module BitDiamond.Controllers.BitLevel {
         }
         displayDate(date: Apollo.Models.JsonDateTime): string {
             if (Object.isNullOrUndefined(date)) return null;
-            else return date.toMoment().format('YYYY/M/d  H:m');
+            else return date.toMoment().format('YYYY/M/D - H:m');
         }
 
 
@@ -319,7 +320,7 @@ module BitDiamond.Controllers.BitLevel {
             else {
                 this.isPersistingAddress = true;
                 this.__bitlevel.addBitcoinAddress(this.tempAddress).then(opr => {
-                    this.addresses.insert(0, this.tempAddress);
+                    this.addresses.insert(0, opr.Result);
                     this.tempAddress = null;
                 }, err => {
                     this.__notify.error('Something went wrong - could not save your new Address.', 'Ooops!');

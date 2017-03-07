@@ -77,9 +77,7 @@ namespace BitDiamond.Core.Services
             var nextLevel = (currentLevel.Level + 1) % (maxLevel + 1);
             var nextCycle = nextLevel == 0 ? currentLevel.Cycle + 1 : currentLevel.Cycle;
 
-            var lastBeneficiaryAddressId = currentLevel.Donation.ReceiverId;
-            var lastBeneficiaryAddress = _query.GetBitcoinAddressById(lastBeneficiaryAddressId);
-            var nextUpgradeBeneficiary = NextUpgradeBeneficiary(lastBeneficiaryAddress?.Owner ?? targetUser, nextLevel, nextCycle).ThrowIfNull("Could not find a valid beneficiary");
+            var nextUpgradeBeneficiary = NextUpgradeBeneficiary(nextLevel == 0 ? targetUser : currentLevel.Donation.Receiver.Owner, nextLevel, nextCycle).ThrowIfNull("Could not find a valid beneficiary");
             var beneficiaryAddress = _query.GetActiveBitcoinAddress(nextUpgradeBeneficiary);
 
             var bl = new BitLevel
@@ -154,8 +152,7 @@ namespace BitDiamond.Core.Services
                 _pcommand.Update(currentLevel.Donation);
 
                 //increment receiver's donnation count
-                var receiverAddress = _query.GetBitcoinAddressById(blockChainTransaction.ReceiverId);
-                var receiverLevel = _query.CurrentBitLevel(receiverAddress.Owner);
+                var receiverLevel = _query.CurrentBitLevel(blockChainTransaction.Receiver.Owner);
                 receiverLevel.DonationCount++;
                 _pcommand.Update(receiverLevel);
 
@@ -164,21 +161,13 @@ namespace BitDiamond.Core.Services
             else throw new Exception("Invalid transaction hash");
         });
 
-        public Operation ReceiverConfirmation(string transactionHash)
-        => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
-        {
-            var transaction = _query.GetTransactionWithHash(transactionHash)
-                                    .ThrowIfNull("Transaction not found")
-                                    .ThrowIf(_t => _t.Receiver.OwnerId != UserContext.CurrentUser().UserId, "Invalid transaction");
-
-            transaction.Status = BlockChainTransactionStatus.Verified;
-            _pcommand.Update(transaction).Resolve();
-        });
-
 
         public Operation<BitLevel> CurrentUserLevel()
-            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(),
-                                           () => _query.CurrentBitLevel(UserContext.CurrentUser()));
+            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(),() =>
+            {
+                var level =_query.CurrentBitLevel(UserContext.CurrentUser());
+                return level;
+            });
 
         public Operation<BitLevel> GetBitLevelById(long id)
             => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(),
@@ -189,25 +178,12 @@ namespace BitDiamond.Core.Services
                                        () => _query.GetBitLevelHistory(UserContext.CurrentUser()));
 
         public Operation<decimal> GetUpgradeFee(int level)
-        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
-        {
-            return this.GetUpgradeAmount(level);
-        });
-
-        public Operation<ReferralNode> GetUpgradeTransactionReceiverRef(long id)
-        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
-        {
-            var trnx = _query.GetBlockChainTransaction(id);
-            var receiver = _query.GetUser(trnx.Receiver.OwnerId);
-            return _refQuery.GetUserReferalNode(receiver);
-        });
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(),
+                                       () => GetUpgradeAmount(level));
 
         public Operation<BlockChainTransaction> GetCurrentUpgradeTransaction()
-        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
-        {
-            var bl = _query.CurrentBitLevel(UserContext.CurrentUser());
-            return _query.GetBlockChainTransaction(bl.DonationId ?? 0);
-        });
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), 
+                                       () => _query.CurrentBitLevel(UserContext.CurrentUser()).Donation);
 
         public Operation<IEnumerable<BitcoinAddress>> GetAllBitcoinAddresses()
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>

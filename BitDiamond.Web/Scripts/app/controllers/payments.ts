@@ -65,7 +65,7 @@ module BitDiamond.Controllers.Payments {
         }
         displayDate(date: Apollo.Models.JsonDateTime): string {
             if (Object.isNullOrUndefined(date)) return null;
-            else return date.toMoment().format('YYYY/M/d  H:m');
+            else return date.toMoment().format('YYYY/M/D  H:m');
         }
         getTransactionSender(trnx: Models.IBlockChainTransaction): string {
             if (Object.isNullOrUndefined(trnx.Sender)) return '-';
@@ -163,7 +163,7 @@ module BitDiamond.Controllers.Payments {
         }
         displayDate(date: Apollo.Models.JsonDateTime): string {
             if (Object.isNullOrUndefined(date)) return null;
-            else return date.toMoment().format('YYYY/M/d  H:m');
+            else return date.toMoment().format('YYYY/M/D  H:m');
         }
         getTransactionSender(trnx: Models.IBlockChainTransaction): string {
             if (Object.isNullOrUndefined(trnx.Sender)) return '-';

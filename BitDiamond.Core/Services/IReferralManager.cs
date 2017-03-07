@@ -11,5 +11,7 @@ namespace BitDiamond.Core.Services
         Operation<IEnumerable<ReferralNode>> DirectDownlines(ReferralNode node);
         Operation<IEnumerable<ReferralNode>> AllDownlines(ReferralNode node);
         Operation<IEnumerable<ReferralNode>> Uplines(ReferralNode node);
+        Operation<ReferralNode> GetUserRef(string userId);
+        Operation<ReferralNode> CurrentUserRef();
     }
 }

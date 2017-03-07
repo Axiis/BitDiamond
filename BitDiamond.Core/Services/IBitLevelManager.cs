@@ -45,9 +45,6 @@ namespace BitDiamond.Core.Services
         [Resource(":system/bit-levels/bitcoin-addresses/@add")]
         Operation<BitcoinAddress> AddBitcoindAddress(BitcoinAddress address);
 
-        [Resource(":system/bit-levels/transactions/@receiverConfirmation")]
-        Operation ReceiverConfirmation(string transactionHash);
-
 
         [Resource(":system/bit-levels/upgrade-fees/@get")]
         Operation<decimal> GetUpgradeFee(int level);
@@ -55,9 +52,6 @@ namespace BitDiamond.Core.Services
 
         [Resource(":system/bit-levels/bitcoin-addresses/@activate")]
         Operation<BitcoinAddress> ActivateAddress(long v);
-
-        [Resource(":system/bit-levels/transactions/receivers/@get")]
-        Operation<ReferralNode> GetUpgradeTransactionReceiverRef(long v);
 
 
         [Resource(":system/bit-levels/bitcoin-addresses/@deactivate")]

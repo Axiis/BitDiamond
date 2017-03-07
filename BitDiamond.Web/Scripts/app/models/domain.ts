@@ -183,6 +183,8 @@ module BitDiamond.Models {
 		Message: string;
 		Type: BitDiamond.Models.NotificationType;
 		Seen: boolean;
+		Context: string;
+		ContextId: string;
 		Target: Pollux.Models.IUser;
 		TargetId: string;
 	}

@@ -23,10 +23,10 @@ namespace BitDiamond.Web.Infrastructure.Utils
         public static readonly ContextConfiguration<EuropaContext> Misc_UniversalEuropaConfig = new ContextConfiguration<EuropaContext>()
             .WithConnection(ConfigurationManager.ConnectionStrings["EuropaContext"].ConnectionString)
             .WithEFConfiguraton(_efc =>
-        {
-            _efc.LazyLoadingEnabled = false;
-            _efc.ProxyCreationEnabled = false;
-        })
+            {
+                _efc.LazyLoadingEnabled = false;
+                _efc.ProxyCreationEnabled = false;
+            })
             .WithInitializer(new System.Data.Entity.DropCreateDatabaseIfModelChanges<EuropaContext>())
             .UsingModule(new IdentityAccessModuleConfig())
             .UsingModule(new AuthenticationAccessModuleConfig())

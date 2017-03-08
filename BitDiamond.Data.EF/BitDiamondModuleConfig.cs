@@ -152,7 +152,9 @@ namespace BitDiamond.Data.EF
                     ":system/settings/all/@get",
                     ":system/settings/@update",
 
-                    ":system/notifications/*"
+                    ":system/notifications/*",
+
+                    ":system/posts/*"
                 }
                 .Select(_selector => new Permission
                 {
@@ -184,7 +186,9 @@ namespace BitDiamond.Data.EF
                     ":system/settings/@get",
                     ":system/settings/all/@get",
 
-                    ":system/notifications/*"
+                    ":system/notifications/*",
+
+                    ":system/posts/@getPaged"
                 }
                 .Select(_selector => new Permission
                 {

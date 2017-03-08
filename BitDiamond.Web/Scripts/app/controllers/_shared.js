@@ -125,6 +125,8 @@ var BitDiamond;
                         return '/profile/index';
                     else if (moduleName == 'family-tree')
                         return '/referrals/index';
+                    else if (moduleName == 'news')
+                        return '/posts/index';
                     else
                         return '/' + moduleName + '/index';
                 };

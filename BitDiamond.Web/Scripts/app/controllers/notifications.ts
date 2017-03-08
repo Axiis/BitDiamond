@@ -100,7 +100,7 @@ module BitDiamond.Controllers.Notification {
                 this.__notify.success('Notification was cleared.');
                 notification.Seen = true;
             }, err => {
-                this.__notify.success('Something went wrong: ' + err.Message, 'Oops!');
+                this.__notify.error('Something went wrong: ' + (err.Message), 'Oops!');
             }).finally(() => {
                 delete notification['$__isClearing'];
             });

@@ -4,6 +4,7 @@ using Axis.Luna.Extensions;
 using Axis.Pollux.Authentication;
 using Axis.Pollux.Authentication.Service;
 using Axis.Pollux.Identity.Principal;
+using Axis.Pollux.RBAC.Auth;
 using BitDiamond.Core.Models;
 using BitDiamond.Web.Infrastructure.Utils;
 using Microsoft.Owin.Security.OAuth;
@@ -40,7 +41,7 @@ namespace BitDiamond.Web.Infrastructure.Security
             Operation.Try(() =>
             {
                 var oldToken = context.Request.Headers.GetValues(WebConstants.OAuthCustomHeaders_OldToken)?.FirstOrDefault() ?? null;
-                if(oldToken != null)
+                if (oldToken != null)
                 {
                     var logon = _cache.GetOrRefresh<UserLogon>(oldToken);
                     if (logon != null)
@@ -56,7 +57,7 @@ namespace BitDiamond.Web.Infrastructure.Security
             #region Verify the user exists
             .Then(opr =>
             {
-                _dataContext.Store<User>().Query
+                return _dataContext.Store<User>().Query
                     .Where(_u => _u.EntityId == context.UserName)
                     .FirstOrDefault()
                     .ThrowIfNull("invalid user credential")
@@ -65,12 +66,17 @@ namespace BitDiamond.Web.Infrastructure.Security
             #endregion
 
             #region verify credentials with the credential authority
-            .Then(opr => _credentialAuthority.VerifyCredential(new Credential
+            .Then(opr =>
             {
-                OwnerId = context.UserName,
-                Metadata = CredentialMetadata.Password,
-                Value = Encoding.UTF8.GetBytes(context.Password)
-            }))
+                _credentialAuthority.VerifyCredential(new Credential
+                {
+                    OwnerId = context.UserName,
+                    Metadata = CredentialMetadata.Password,
+                    Value = Encoding.UTF8.GetBytes(context.Password)
+                })
+                .Resolve();
+                return opr.Result;
+            })
             #endregion
 
             #region aggregate the claims that makeup the token
@@ -78,8 +84,15 @@ namespace BitDiamond.Web.Infrastructure.Security
             {
                 var identity = new ClaimsIdentity(context.Options.AuthenticationType);
 
-                identity.AddClaim(new Claim("user-name", context.UserName));
+                //identity.AddClaim(new Claim("user-name", context.UserName));
                 identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
+                identity.AddClaim(new Claim(ClaimTypes.Sid, opr.Result.UId.ToString()));
+                identity.AddClaim(new Claim("user-status", opr.Result.Status.ToString()));
+
+                //roles
+                _dataContext.Store<UserRole>().Query
+                            .Where(_ur => _ur.UserId == opr.Result.EntityId)
+                            .ForAll((_cnt, _next) => identity.AddClaim(new Claim(ClaimTypes.Role, _next.RoleName)));
 
                 context.Validated(new Microsoft.Owin.Security.AuthenticationTicket(identity, null));
             })

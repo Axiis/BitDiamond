@@ -204,6 +204,9 @@ var BitDiamond;
                         Result: this.bitLevel
                     });
                 };
+                Home.prototype.addressCopied = function () {
+                    this.__notify.info('Bitcoin address Copied to clipboard');
+                };
                 return Home;
             }());
             BitLevel.Home = Home;

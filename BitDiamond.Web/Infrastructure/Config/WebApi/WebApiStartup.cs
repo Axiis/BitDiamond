@@ -31,11 +31,6 @@ namespace BitDiamond.Web.Infrastructure.Config.WebApi
             ConfigureWebApi(app, config);
         }
 
-        private void ConfigureRequestDI(IAppBuilder app)
-        {
-            app.UseSimpleInjectorResolver(new WebApiRequestLifestyle(), DIRegistrations.RegisterTypes);
-        }
-
         private void ConfigureAuth(IAppBuilder app)
         {
             ///add the run-per-request generators for the services needed for authentication and authorization
@@ -48,7 +43,7 @@ namespace BitDiamond.Web.Infrastructure.Config.WebApi
 
             //weak cache used for logon processing
             var cache = new WeakCache();
-                        
+
             //Authorization. In this case, it comes before authentication because bearer authentication 
             //expects a token to be created already
             app.UseOAuthAuthorizationServer(new OAuthAuthorizationServerOptions
@@ -77,6 +72,11 @@ namespace BitDiamond.Web.Infrastructure.Config.WebApi
 
             //app.UseCors(CorsOptions.AllowAll); //<-- will configure this appropriately when it is needed
 
+        }
+
+        private void ConfigureRequestDI(IAppBuilder app)
+        {
+            app.UseSimpleInjectorResolver(new WebApiRequestLifestyle(), DIRegistrations.RegisterTypes);
         }
 
         private void ConfigureWebApi(IAppBuilder app, HttpConfiguration config)

@@ -16,9 +16,9 @@ namespace BitDiamond.Web.Infrastructure.Services
         public static IAppBuilder UseOwinContextProvider(this IAppBuilder app)
         => app.Use(async (context, next) =>
         {
-            CallContext.LogicalSetData(CallContextOwinKey, context);
             try
             {
+                CallContext.LogicalSetData(CallContextOwinKey, context);
                 await next();
             }
             finally

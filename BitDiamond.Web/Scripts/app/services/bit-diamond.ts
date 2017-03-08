@@ -656,4 +656,8 @@ module BitDiamond.Services {
             this.$q = $q;
         }
     }
+
+    export class Posts {
+
+    }
 }

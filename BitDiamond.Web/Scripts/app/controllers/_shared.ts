@@ -104,6 +104,7 @@ module BitDiamond.Controllers.Shared {
         getModuleUrl(moduleName: string): string {
             if (moduleName == 'dashboard') return '/profile/index';
             else if (moduleName == 'family-tree') return '/referrals/index';
+            else if (moduleName == 'news') return '/posts/index';
             else return '/' + moduleName + '/index';
         }
 

@@ -163,6 +163,9 @@ module BitDiamond.Controllers.BitLevel {
                 Result: this.bitLevel
             });
         }
+        addressCopied() {
+            this.__notify.info('Bitcoin address Copied to clipboard');
+        }
 
         constructor(__bitlevel, __userContext, __notify, $q) {
             this.__bitlevel = __bitlevel;

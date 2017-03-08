@@ -32,6 +32,7 @@ using Axis.Luna.Extensions;
 using System.Web.Mvc;
 using Axis.Pollux.Identity.Principal;
 using System.Text;
+using System.Collections.Generic;
 
 namespace BitDiamond.Test.Queries
 {
@@ -68,7 +69,7 @@ namespace BitDiamond.Test.Queries
         {
             var start = DateTime.Now;
             var resolver = new SimpleInjectorOwinResolutionContext(new ExecutionContextScopeLifestyle(), RegisterTypes);
-            Console.WriteLine($"Registered dependencies in: {DateTime.Now - start}");
+            Console.WriteLine($"Registered dependencies in: {DateTime.Now - start}\n\n\n");
 
             using (var scope = resolver.NewResolutionScope())
             {
@@ -94,18 +95,90 @@ namespace BitDiamond.Test.Queries
                 start = DateTime.Now;
                 opr = bcController.GetOutgoingUserTransactions(data);
                 Console.WriteLine($"3rd run bcController.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+            }
+
+
+            Console.WriteLine("\n\n\n");
+            using (var scope = resolver.NewResolutionScope())
+            {
+                start = DateTime.Now;
+                var bcManager = scope.Resolve<IBlockChainService>();
+                Console.WriteLine($"BlockChainService resolved in: {DateTime.Now - start}");
 
                 start = DateTime.Now;
-                var oprx = bcManager.GetOutgoingUserTransactions(20, 0);
-                Console.WriteLine($"2nd run bcManager.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+                var bcController = scope.Resolve<BlockChainController>();
+                Console.WriteLine($"BlockChainController resolved in: {DateTime.Now - start}");
+
+                var data = Convert.ToBase64String(Encoding.UTF8.GetBytes("{\"PageSize\":20, \"PageIndex\":0}"));
+                start = DateTime.Now;
+                var opr = bcController.GetOutgoingUserTransactions(data);//.GetOutgoingUserTransactions(20, 0);
+                Console.WriteLine($"1st run bcController.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+
 
                 start = DateTime.Now;
-                oprx = bcManager.GetOutgoingUserTransactions(20, 0);
-                Console.WriteLine($"3rd run bcManager.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+                opr = bcController.GetOutgoingUserTransactions(data);//.GetOutgoingUserTransactions(20, 0);
+                Console.WriteLine($"2nd run bcController.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+
 
                 start = DateTime.Now;
-                oprx = bcManager.GetOutgoingUserTransactions(20, 0);
-                Console.WriteLine($"3rd run bcManager.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+                opr = bcController.GetOutgoingUserTransactions(data);
+                Console.WriteLine($"3rd run bcController.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+            }
+
+
+            Console.WriteLine("\n\n\n");
+            using (var scope = resolver.NewResolutionScope())
+            {
+                start = DateTime.Now;
+                var bcManager = scope.Resolve<IBlockChainService>();
+                Console.WriteLine($"BlockChainService resolved in: {DateTime.Now - start}");
+
+                start = DateTime.Now;
+                var bcController = scope.Resolve<BlockChainController>();
+                Console.WriteLine($"BlockChainController resolved in: {DateTime.Now - start}");
+
+                var data = Convert.ToBase64String(Encoding.UTF8.GetBytes("{\"PageSize\":20, \"PageIndex\":0}"));
+                start = DateTime.Now;
+                var opr = bcController.GetOutgoingUserTransactions(data);//.GetOutgoingUserTransactions(20, 0);
+                Console.WriteLine($"1st run bcController.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+
+
+                start = DateTime.Now;
+                opr = bcController.GetOutgoingUserTransactions(data);//.GetOutgoingUserTransactions(20, 0);
+                Console.WriteLine($"2nd run bcController.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+
+
+                start = DateTime.Now;
+                opr = bcController.GetOutgoingUserTransactions(data);
+                Console.WriteLine($"3rd run bcController.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+            }
+
+
+            Console.WriteLine("\n\n\n");
+            using (var scope = resolver.NewResolutionScope())
+            {
+                start = DateTime.Now;
+                var bcManager = scope.Resolve<IBlockChainService>();
+                Console.WriteLine($"BlockChainService resolved in: {DateTime.Now - start}");
+
+                start = DateTime.Now;
+                var bcController = scope.Resolve<BlockChainController>();
+                Console.WriteLine($"BlockChainController resolved in: {DateTime.Now - start}");
+
+                var data = Convert.ToBase64String(Encoding.UTF8.GetBytes("{\"PageSize\":20, \"PageIndex\":0}"));
+                start = DateTime.Now;
+                var opr = bcController.GetOutgoingUserTransactions(data);//.GetOutgoingUserTransactions(20, 0);
+                Console.WriteLine($"1st run bcController.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+
+
+                start = DateTime.Now;
+                opr = bcController.GetOutgoingUserTransactions(data);//.GetOutgoingUserTransactions(20, 0);
+                Console.WriteLine($"2nd run bcController.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
+
+
+                start = DateTime.Now;
+                opr = bcController.GetOutgoingUserTransactions(data);
+                Console.WriteLine($"3rd run bcController.GetOutgoingUserTransactions executed in: {DateTime.Now - start}");
             }
         }
 
@@ -229,6 +302,8 @@ namespace BitDiamond.Test.Queries
     public class _UserContext : IUserContext
     {
         public User CurrentUser() => _user;
+
+        public IEnumerable<string> CurrentUserRoles() => new[] { "#bit-member" };
 
         private User _user = new User
         {

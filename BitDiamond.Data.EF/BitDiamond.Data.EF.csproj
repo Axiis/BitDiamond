@@ -95,6 +95,7 @@
     <Compile Include="Mappings\BlockChainTransactionMapping.cs" />
     <Compile Include="Mappings\ContextVerificationMapping.cs" />
     <Compile Include="Mappings\NotificationMapping.cs" />
+    <Compile Include="Mappings\PostMapping.cs" />
     <Compile Include="Mappings\ReferalNodeMapping.cs" />
     <Compile Include="Mappings\SystemSettingsMapping.cs" />
     <Compile Include="Mappings\UserLoginMapping.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Query\BitLevelQuery.cs" />
     <Compile Include="Query\BlockChainQuery.cs" />
     <Compile Include="Query\ContextVerifierQuery.cs" />
+    <Compile Include="Query\PostQuery.cs" />
     <Compile Include="Query\ReferralQuery.cs" />
     <Compile Include="Query\SettingsQuery.cs" />
     <Compile Include="Query\UserContextQuery.cs" />

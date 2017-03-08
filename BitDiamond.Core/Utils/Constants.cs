@@ -61,5 +61,9 @@ namespace BitDiamond.Core.Utils
         };
         #endregion
 
+        #region Post Contexts
+        public static readonly string PostContext_News = "PostContext.News";
+        #endregion
+
     }
 }

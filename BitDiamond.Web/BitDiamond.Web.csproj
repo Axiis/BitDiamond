@@ -338,9 +338,6 @@
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
     <Content Include="packages.config" />
-    <Content Include="ApplicationInsights.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Reinforced.Typings.settings.xml" />
     <Content Include="Scripts\libs\angular-animate.js" />
     <Content Include="Scripts\libs\angular-animate.min.js" />
@@ -1182,6 +1179,9 @@
     <Content Include="Views\Notification\Details.cshtml" />
     <Content Include="Views\Notification\History.cshtml" />
     <Content Include="Views\Notification\Index.cshtml" />
+    <Content Include="Views\Posts\Index.cshtml" />
+    <Content Include="Views\Posts\Details.cshtml" />
+    <Content Include="Views\Posts\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1197,11 +1197,13 @@
     <Compile Include="Controllers\Api\BitLevelController.cs" />
     <Compile Include="Controllers\Api\BlockChainController.cs" />
     <Compile Include="Controllers\Api\NotificationController.cs" />
+    <Compile Include="Controllers\Api\PostController.cs" />
     <Compile Include="Controllers\Api\ReferralsController.cs" />
     <Compile Include="Controllers\Api\SettingsController.cs" />
     <Compile Include="Controllers\Mvc\AccountController.cs" />
     <Compile Include="Controllers\Mvc\BitLevelController.cs" />
     <Compile Include="Controllers\Mvc\NotificationController.cs" />
+    <Compile Include="Controllers\Mvc\PostsController.cs" />
     <Compile Include="Controllers\Mvc\ReferralsController.cs" />
     <Compile Include="Controllers\Mvc\PaymentsController.cs" />
     <Compile Include="Controllers\Mvc\ProfileController.cs" />
@@ -1251,6 +1253,7 @@
     <TypeScriptCompile Include="Scripts\app\controllers\bitlevel.ts" />
     <TypeScriptCompile Include="Scripts\app\controllers\notifications.ts" />
     <TypeScriptCompile Include="Scripts\app\controllers\payments.ts" />
+    <TypeScriptCompile Include="Scripts\app\controllers\posts.ts" />
     <TypeScriptCompile Include="Scripts\app\controllers\profile.ts" />
     <TypeScriptCompile Include="Scripts\app\controllers\referrals.ts" />
     <TypeScriptCompile Include="Scripts\app\controllers\_shared.ts" />
@@ -1263,6 +1266,7 @@
     <TypeScriptCompile Include="Scripts\app\modules\account.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\bitlevel.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\notifications.ts" />
+    <TypeScriptCompile Include="Scripts\app\modules\posts.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\referrals.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\payments.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\profile.ts" />

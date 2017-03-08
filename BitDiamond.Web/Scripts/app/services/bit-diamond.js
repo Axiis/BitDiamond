@@ -576,5 +576,11 @@ var BitDiamond;
             return Notification;
         }());
         Services.Notification = Notification;
+        var Posts = (function () {
+            function Posts() {
+            }
+            return Posts;
+        }());
+        Services.Posts = Posts;
     })(Services = BitDiamond.Services || (BitDiamond.Services = {}));
 })(BitDiamond || (BitDiamond = {}));

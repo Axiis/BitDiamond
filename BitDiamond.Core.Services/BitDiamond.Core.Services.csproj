@@ -67,6 +67,7 @@
     <Compile Include="BlockChainService.cs" />
     <Compile Include="ContextVerifier.cs" />
     <Compile Include="BitLevelManager.cs" />
+    <Compile Include="PostService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferalManager.cs" />
     <Compile Include="SettingsManager.cs" />

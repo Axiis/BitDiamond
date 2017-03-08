@@ -105,7 +105,7 @@ var BitDiamond;
                         _this.__notify.success('Notification was cleared.');
                         notification.Seen = true;
                     }, function (err) {
-                        _this.__notify.success('Something went wrong: ' + err.Message, 'Oops!');
+                        _this.__notify.error('Something went wrong: ' + (err.Message), 'Oops!');
                     }).finally(function () {
                         delete notification['$__isClearing'];
                     });

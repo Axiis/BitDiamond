@@ -1,10 +1,8 @@
 ﻿using Axis.Pollux.Authentication;
 using Axis.Pollux.Identity.Principal;
-using BitDiamond.Core.Models;
 using System.Collections.Generic;
 using Axis.Pollux.RBAC.Auth;
 using Axis.Luna;
-using System;
 
 namespace BitDiamond.Core.Services
 {

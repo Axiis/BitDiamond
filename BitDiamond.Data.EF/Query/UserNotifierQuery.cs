@@ -24,7 +24,7 @@ namespace BitDiamond.Data.EF.Query
         }
 
         public Notification GetNotificationById(long id)
-        => _europa.Store<Notification>().Query.FirstOrDefault(_n => _n.Id == id);
+        => _europa.Store<Notification>().QueryWith(_n => _n.Target).FirstOrDefault(_n => _n.Id == id);
 
         public SequencePage<Notification> GetPagedNotificationHistory(User target, int pageSize, int pageIndex)
         => _europa.Store<Notification>()

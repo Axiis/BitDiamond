@@ -75,6 +75,7 @@
     <Compile Include="Models\Email\PasswordRecovery.cs" />
     <Compile Include="Models\Email\UserWelcome.cs" />
     <Compile Include="Models\Notification.cs" />
+    <Compile Include="Models\Post.cs" />
     <Compile Include="Models\ReferalNode.cs" />
     <Compile Include="Models\SystemSetting.cs" />
     <Compile Include="Models\UserLogon.cs" />
@@ -86,10 +87,12 @@
     <Compile Include="Services\IBitLevelManager.cs" />
     <Compile Include="Services\IAccountManager.cs" />
     <Compile Include="Services\IEmailPush.cs" />
+    <Compile Include="Services\IPostService.cs" />
     <Compile Include="Services\IReferralManager.cs" />
     <Compile Include="Services\ISettingsManager.cs" />
     <Compile Include="Services\IUserContext.cs" />
     <Compile Include="Services\Query\IBlockChainQuery.cs" />
+    <Compile Include="Services\Query\IPostQuery.cs" />
     <Compile Include="Services\Query\IUserContextQuery.cs" />
     <Compile Include="Utils\IUserContextAware.cs" />
     <Compile Include="Services\IUserNotifier.cs" />

@@ -12,7 +12,8 @@ module BitDiamond.Modules {
     postsModule.service('__transport', BitDiamond.Utils.Services.DomainTransport);
     postsModule.service('__notify', BitDiamond.Utils.Services.NotifyService);
     postsModule.service('__userContext', BitDiamond.Utils.Services.UserContext);
-    
+
+    postsModule.service('__posts', BitDiamond.Services.Posts);
     postsModule.service('__account', BitDiamond.Services.Account);
     postsModule.service('__systemNotification', BitDiamond.Services.Notification);
 
@@ -34,17 +35,23 @@ module BitDiamond.Modules {
             .state('list', {
                 url: '/list',
                 templateUrl: '/posts/list',
-                controller: 'list',
+                controller: 'List',
                 controllerAs: 'vm'
             })
             .state('edit', {
-                url: '/edit',
+                url: '/edit/',
+                params: {
+                    post: null
+                },
                 templateUrl: '/posts/edit',
                 controller: 'Edit',
                 controllerAs: 'vm'
             })
             .state('details', {
-                url: '/details',
+                url: '/details/',
+                params: {
+                    post: null
+                },
                 templateUrl: '/posts/details',
                 controller: 'Details',
                 controllerAs: 'vm'

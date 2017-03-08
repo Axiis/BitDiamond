@@ -1,0 +1,95 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">Posts</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href>Posts</a></li>
+            <li><a href class="active">News</a></li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row" style="margin-bottom:20px;">
+
+    <div class="col-md-6">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default btn-outline waves-effect" ng-click="vm.loadFirstPage()"><i class="ti-angle-double-left"></i></button>
+            <button type="button" class="btn waves-effect"
+                    ng-repeat="page in vm.pageLinks"
+                    ng-class="vm.linkButtonClass(page)"
+                    ng-click="vm.loadLinkPage(page)">
+                {{page+1}}
+            </button>
+            <button type="button" class="btn btn-default btn-outline waves-effect" ng-click="vm.loadLastPage()"><i class="ti-angle-double-right"></i></button>
+        </div>
+    </div>
+
+    <div class="col-md-6"
+         style="text-align:right;">
+        <!--Search will come here...later-->
+        <button class="btn btn-outline btn-info"
+                ng-show="vm.isAdmin"
+                ng-click="vm.createNews()">
+            <i class="ti-plus"></i>&nbsp;&nbsp;Add News
+        </button>
+    </div>
+
+</div>
+
+<div class="row" ng-hide="vm.isLoadingView">
+
+    <div class="col-sm-12 col-md-offset-2 col-md-8">
+        <div class="white-box">
+            <h3 class="box-title"><i style="font-size:20px;" class="icon-book-open"></i>&nbsp;&nbsp;&nbsp;News</h3>
+            <div ng-repeat="post in vm.posts.Page" 
+                 class="comment-center">
+                <div class="comment-body" style="width:100%;">
+                    <div class="user-img"> <img ng-src="{{vm.ownerImageUrl(post)}}" alt="user" class="img-circle"/></div>
+                    <div class="mail-contnet">
+                        <span class="label pull-right"
+                              style="font-size:12px;"
+                              ng-class="vm.postStatusClass(post)"
+                              ng-show="vm.isAdmin">{{vm.postStatus(post)}}</span>
+                        <h5 ng-bind-html="post.Title"
+                            style="cursor:pointer; height: 1.5em; line-height:1.5em; text-overflow:ellipsis; white-space:nowrap; text-wrap:none;"
+                            ng-click="vm.showDetails(post)"></h5> 
+                        <p class="mail-desc"
+                              style="line-height: 1.5em; height:3em;"
+                              ng-bind-html="post.Message">
+                        </p> 
+                        <div class="clearfix">
+                            <button class="btn btn-outline btn-default btn-sm pull-left"
+                                    ng-show="vm.canEdit(post)"
+                                    ng-click="vm.editNews(post)">
+                                <i class="ti-pencil"></i>&nbsp;&nbsp;Edit
+                            </button>
+                            <button class="btn btn-outline btn-sm btn-default pull-left dropdown-toggle waves-effect waves-light"
+                                    style="margin-left:5px; margin-right:5px;"
+                                    data-toggle="dropdown"
+                                    ng-show="vm.canAct(post)"
+                                    ng-click="vm.postAction(post)">
+                                {{vm.postActionText(post)}}
+                            </button>
+
+                            <span class="time pull-right" style="margin-top:15px; font-size:12px;">{{vm.displayDate(post.CreatedOn)}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div ng-show="vm.isLoadingView"
+     style="position:absolute; left:220px; bottom:60px; right:0; top:166px;">
+    <box-loader size="40" color="white" show="true" block-loader="true"></box-loader>
+</div>

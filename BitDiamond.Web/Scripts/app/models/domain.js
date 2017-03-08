@@ -55,5 +55,11 @@ var BitDiamond;
             NotificationType[NotificationType["Warning"] = 2] = "Warning";
             NotificationType[NotificationType["Success"] = 3] = "Success";
         })(NotificationType = Models.NotificationType || (Models.NotificationType = {}));
+        var PostStatus;
+        (function (PostStatus) {
+            PostStatus[PostStatus["Draft"] = 0] = "Draft";
+            PostStatus[PostStatus["Published"] = 1] = "Published";
+            PostStatus[PostStatus["Archived"] = 2] = "Archived";
+        })(PostStatus = Models.PostStatus || (Models.PostStatus = {}));
     })(Models = BitDiamond.Models || (BitDiamond.Models = {}));
 })(BitDiamond || (BitDiamond = {}));

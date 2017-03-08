@@ -3,38 +3,23 @@ module BitDiamond.Controllers.Posts {
 
     export class List {
 
-        levels: Utils.SequencePage<Models.IBitLevel>;
-        pageLinks: number[];
-        pageSize: number = 20;
-
-        isLoadingView: boolean;
-
-        __bitLevel: Services.BitLevel;
-        __userContext: Utils.Services.UserContext;
-        __notify: Utils.Services.NotifyService;
-        $q: ng.IQService;
-
-        loadHistory(index: number, size: number): ng.IPromise<Utils.SequencePage<Models.IBitLevel>> {
+        loadHistory(index: number, size: number): ng.IPromise<Utils.SequencePage<Models.IPost>> {
             this.isLoadingView = true;
-            return this.__bitLevel.getPagedBitLevelHistory(index, size || this.pageSize || 30).then(opr => {
+            return this.__posts.getPagedNewsPosts(index, size || this.pageSize || 30).then(opr => {
 
                 if (!Object.isNullOrUndefined(opr.Result)) {
-                    opr.Result.Page = opr.Result.Page.map(lvl => {
-                        lvl.CreatedOn = new Apollo.Models.JsonDateTime(lvl.CreatedOn);
-                        lvl.ModifiedOn = new Apollo.Models.JsonDateTime(lvl.ModifiedOn);
-                        if (!Object.isNullOrUndefined(lvl.Donation)) {
-                            lvl.Donation.ModifiedOn = new Apollo.Models.JsonDateTime(lvl.Donation.ModifiedOn);
-                            lvl.Donation.CreatedOn = new Apollo.Models.JsonDateTime(lvl.Donation.CreatedOn);
-                        }
-                        return lvl;
+                    opr.Result.Page = opr.Result.Page.map(_post => {
+                        _post.CreatedOn = new Apollo.Models.JsonDateTime(_post.CreatedOn);
+                        _post.ModifiedOn = new Apollo.Models.JsonDateTime(_post.ModifiedOn);
+                        return _post;
                     });
-                    this.levels = new Utils.SequencePage<Models.IBitLevel>(opr.Result.Page, opr.Result.SequenceLength, opr.Result.PageSize, opr.Result.PageIndex);
+                    this.posts = new Utils.SequencePage<Models.IPost>(opr.Result.Page, opr.Result.SequenceLength, opr.Result.PageSize, opr.Result.PageIndex);
                 }
                 else {
-                    this.levels = new Utils.SequencePage<Models.IBitLevel>([], 0, 0, 0);
+                    this.posts = new Utils.SequencePage<Models.IPost>([], 0, 0, 0);
                 }
 
-                this.pageLinks = this.levels.AdjacentIndexes(2);
+                this.pageLinks = this.posts.AdjacentIndexes(2);
 
                 return this.$q.resolve(opr.Result);
             }, err => {
@@ -45,7 +30,7 @@ module BitDiamond.Controllers.Posts {
         }
 
         loadLastPage() {
-            this.loadHistory(this.levels.PageCount - 1, this.pageSize);
+            this.loadHistory(this.posts.PageCount - 1, this.pageSize);
         }
         loadFirstPage() {
             this.loadHistory(0, this.pageSize);
@@ -55,34 +40,132 @@ module BitDiamond.Controllers.Posts {
         }
         linkButtonClass(page: number) {
             return {
-                'btn-outline': page != this.levels.PageIndex,
-                'btn-default': page != this.levels.PageIndex,
-                'btn-info': page == this.levels.PageIndex,
+                'btn-outline': page != this.posts.PageIndex,
+                'btn-default': page != this.posts.PageIndex,
+                'btn-info': page == this.posts.PageIndex,
             };
         }
         displayDate(date: Apollo.Models.JsonDateTime): string {
             if (Object.isNullOrUndefined(date)) return null;
             else return date.toMoment().format('YYYY/M/D - H:m');
         }
+        ownerImageUrl(post: Models.IPost) {
+            return '/content/images/default-user.png';
+        }
+        canEdit(post: Models.IPost) {
+            return this.isAdmin && post.Status != Models.PostStatus.Archived;
+        }
+        postStatus(post: Models.IPost) {
+            return Models.PostStatus[post.Status];
+        }
+        postStatusClass(post: Models.IPost) {
+            return {
+                'label-success': post.Status == Models.PostStatus.Published,
+                'label-default': post.Status == Models.PostStatus.Draft,
+                'label-warning': post.Status == Models.PostStatus.Archived
+            };
+        }
+        postActionText(post: Models.IPost) {
+            if (post.Status == Models.PostStatus.Draft) return 'Publish';
+            else if (post.Status == Models.PostStatus.Published) return 'Archive';
+            else return '';
+        }
+        canAct(post: Models.IPost) {
+            return post.Status != Models.PostStatus.Archived;
+        }
+
+        showDetails(post: Models.IPost) {
+            this.$state.go('details', { post: post });
+        }
+        createNews() {
+            this.$state.go('edit');
+        }
+        editNews(post: Models.IPost) {
+            this.$state.go('edit', { post: post });
+        }
+        postAction(post: Models.IPost) {
+            var action = post.Status == Models.PostStatus.Draft? this.__posts.publishPost:
+                Models.PostStatus.Published ? this.__posts.archivePost : null;
+
+            if (!Object.isNullOrUndefined(action)) {
+                post['$__isActing'] = true;
+                action(post.Id).then(opr => {
+                    post.Status = opr.Result.Status;
+                    this.__notify.success('Done');
+                }, err => {
+                    this.__notify.error('Something happened' + (err.Messaage || ''), 'Oops!');
+                }).finally(() => {
+                    delete post['$__isActing'];
+                });
+            }     
+        }
 
 
-        constructor(__bitlevel, __userContext, __notify, $q) {
-            this.__bitLevel = __bitlevel;
+        posts: Utils.SequencePage<Models.IPost>;
+        pageLinks: number[];
+        pageSize: number = 20;
+
+        isLoadingView: boolean;
+        isAdmin: boolean = true;
+
+        __posts: Services.Posts;
+        __userContext: Utils.Services.UserContext;
+        __notify: Utils.Services.NotifyService;
+        $q: ng.IQService;
+        $state: ng.ui.IStateService;
+
+        constructor(__posts, __userContext, __notify, $q, $state) {
+            this.__posts = __posts;
             this.__userContext = __userContext;
             this.__notify = __userContext;
             this.$q = $q;
+            this.$state = $state;
 
             //load the initial view
             this.loadHistory(0, this.pageSize);
+
+            this.__userContext.userRoles.then(r => {
+                //this.isAdmin = r.contains(Utils.Constants.Roles_AdminRole);
+            });
         }
     }
+
 
     export class Details {
 
     }
 
+
     export class Edit {
 
+        persist() {
+        }
+
+
+        post: Models.IPost;
+
+        isPersisting: boolean;
+
+        __posts: Services.Posts;
+        __userContext: Utils.Services.UserContext;
+        __notify: Utils.Services.NotifyService;
+        $q: ng.IQService;
+        $state: ng.ui.IStateService;
+        $stateParams: ng.ui.IStateParamsService;
+
+        constructor(__posts, __userContext, __notify, $q, $state, $stateParams) {
+            this.__posts = __posts;
+            this.__userContext = __userContext;
+            this.__notify = __userContext;
+            this.$q = $q;
+            this.$state = $state;
+            this.$stateParams = $stateParams;
+
+            this.post = $stateParams['post'] || {
+                Status: Models.PostStatus.Draft,
+                '$__isNascent': true
+            };
+        }
     }
 
 }

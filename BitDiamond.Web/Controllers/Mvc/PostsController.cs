@@ -19,5 +19,8 @@ namespace BitDiamond.Web.Controllers.Mvc
         // GET: Posts
         [HttpGet, Route("posts/edit")]
         public ActionResult Edit() => View();
+
+        [HttpGet, Route("posts/list")]
+        public ActionResult List() => View();
     }
 }

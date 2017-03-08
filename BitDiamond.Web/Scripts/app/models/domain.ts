@@ -188,6 +188,16 @@ module BitDiamond.Models {
 		Target: Pollux.Models.IUser;
 		TargetId: string;
 	}
+	export interface IPost extends IBaseModel<number>
+	{
+		Title: string;
+		Message: string;
+		Owner: Pollux.Models.IUser;
+		OwnerId: string;
+		Context: string;
+		ContextId: string;
+		Status: BitDiamond.Models.PostStatus;
+	}
 	export interface IReferralNode extends IBaseModel<number>
 	{
 		User: Pollux.Models.IUser;
@@ -230,5 +240,10 @@ module BitDiamond.Models {
 		Error = 1, 
 		Warning = 2, 
 		Success = 3, 
+	}
+	export enum PostStatus { 
+		Draft = 0, 
+		Published = 1, 
+		Archived = 2, 
 	}
 }

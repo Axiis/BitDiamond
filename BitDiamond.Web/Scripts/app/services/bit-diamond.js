@@ -227,254 +227,12 @@ var BitDiamond;
                     PageSize: pageSize,
                     PageIndex: pageIndex
                 });
-                //return this.$q.resolve(<Utils.Operation<Utils.SequencePage<Models.IBlockChainTransaction>>>{
-                //    Message: null,
-                //    Succeeded: true,
-                //    Result: new Utils.SequencePage<Models.IBlockChainTransaction>([
-                //        <Models.IBlockChainTransaction>{
-                //            Amount: Math.round(Math.random() * 1000),
-                //            CreatedOn: new Apollo.Models.JsonDateTime(Date.now()),
-                //            LedgerCount: Math.round(Math.random() * 10),
-                //            Receiver: {
-                //                BlockChainAddress: 'me-43t-gfgt5-54354refd-543e',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@dev.bankai-554'
-                //                }
-                //            },
-                //            Sender: {
-                //                BlockChainAddress: 'apex-654356-ujy56-56yt543-564ed',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@apex-001'
-                //                }
-                //            },
-                //            Status: BitDiamond.Models.BlockChainTransactionStatus.Verified,
-                //            TransactionHash: Math.random() + ''
-                //        },
-                //        <Models.IBlockChainTransaction>{
-                //            Amount: Math.round(Math.random() * 1000),
-                //            CreatedOn: new Apollo.Models.JsonDateTime(Date.now()),
-                //            LedgerCount: Math.round(Math.random() * 10),
-                //            Receiver: {
-                //                BlockChainAddress: 'me-43t-gfgt5-54354refd-543e',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@dev.bankai-554'
-                //                }
-                //            },
-                //            Sender: {
-                //                BlockChainAddress: 'apex-654356-ujy56-56yt543-564ed',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@apex-001'
-                //                }
-                //            },
-                //            Status: BitDiamond.Models.BlockChainTransactionStatus.Unverified,
-                //            TransactionHash: Math.random() + ''
-                //        },
-                //        <Models.IBlockChainTransaction>{
-                //            Amount: Math.round(Math.random() * 1000),
-                //            CreatedOn: new Apollo.Models.JsonDateTime(Date.now()),
-                //            LedgerCount: Math.round(Math.random() * 10),
-                //            Receiver: {
-                //                BlockChainAddress: 'me-43t-gfgt5-54354refd-543e',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@dev.bankai-554'
-                //                }
-                //            },
-                //            Sender: {
-                //                BlockChainAddress: 'apex-654356-ujy56-56yt543-564ed',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@apex-001'
-                //                }
-                //            },
-                //            Status: BitDiamond.Models.BlockChainTransactionStatus.Unverified,
-                //            TransactionHash: Math.random() + ''
-                //        },
-                //        <Models.IBlockChainTransaction>{
-                //            Amount: Math.round(Math.random() * 1000),
-                //            CreatedOn: new Apollo.Models.JsonDateTime(Date.now()),
-                //            LedgerCount: Math.round(Math.random() * 10),
-                //            Receiver: {
-                //                BlockChainAddress: 'me-43t-gfgt5-54354refd-543e',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@dev.bankai-554'
-                //                }
-                //            },
-                //            Sender: {
-                //                BlockChainAddress: 'apex-654356-ujy56-56yt543-564ed',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@apex-001'
-                //                }
-                //            },
-                //            Status: BitDiamond.Models.BlockChainTransactionStatus.Verified,
-                //            TransactionHash: Math.random() + ''
-                //        },
-                //        <Models.IBlockChainTransaction>{
-                //            Amount: Math.round(Math.random() * 1000),
-                //            CreatedOn: new Apollo.Models.JsonDateTime(Date.now()),
-                //            LedgerCount: Math.round(Math.random() * 10),
-                //            Receiver: {
-                //                BlockChainAddress: 'me-43t-gfgt5-54354refd-543e',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@dev.bankai-554'
-                //                }
-                //            },
-                //            Sender: {
-                //                BlockChainAddress: 'apex-654356-ujy56-56yt543-564ed',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@apex-001'
-                //                }
-                //            },
-                //            Status: BitDiamond.Models.BlockChainTransactionStatus.Verified,
-                //            TransactionHash: Math.random() + ''
-                //        }
-                //        ],10, 5, 0)
-                //});
             };
             BlockChain.prototype.getPagedOutgoingTransactions = function (pageIndex, pageSize) {
                 return this.__transport.get('/api/block-chain/transactions/outgoing', {
                     PageSize: pageSize,
                     PageIndex: pageIndex
                 });
-                //return this.$q.resolve(<Utils.Operation<Utils.SequencePage<Models.IBlockChainTransaction>>>{
-                //    Message: null,
-                //    Succeeded: true,
-                //    Result: new Utils.SequencePage<Models.IBlockChainTransaction>([
-                //        <Models.IBlockChainTransaction>{
-                //            Amount: Math.round(Math.random() * 1000),
-                //            CreatedOn: new Apollo.Models.JsonDateTime(Date.now()),
-                //            LedgerCount: Math.round(Math.random() * 10),
-                //            Receiver: {
-                //                BlockChainAddress: 'me-43t-gfgt5-54354refd-543e',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@dev.bankai-554'
-                //                }
-                //            },
-                //            Sender: {
-                //                BlockChainAddress: 'apex-654356-ujy56-56yt543-564ed',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@apex-001'
-                //                }
-                //            },
-                //            Status: BitDiamond.Models.BlockChainTransactionStatus.Verified,
-                //            TransactionHash: Math.random() + ''
-                //        },
-                //        <Models.IBlockChainTransaction>{
-                //            Amount: Math.round(Math.random() * 1000),
-                //            CreatedOn: new Apollo.Models.JsonDateTime(Date.now()),
-                //            LedgerCount: Math.round(Math.random() * 10),
-                //            Receiver: {
-                //                BlockChainAddress: 'me-43t-gfgt5-54354refd-543e',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@dev.bankai-554'
-                //                }
-                //            },
-                //            Sender: {
-                //                BlockChainAddress: 'apex-654356-ujy56-56yt543-564ed',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@apex-001'
-                //                }
-                //            },
-                //            Status: BitDiamond.Models.BlockChainTransactionStatus.Unverified,
-                //            TransactionHash: Math.random() + ''
-                //        },
-                //        <Models.IBlockChainTransaction>{
-                //            Amount: Math.round(Math.random() * 1000),
-                //            CreatedOn: new Apollo.Models.JsonDateTime(Date.now()),
-                //            LedgerCount: Math.round(Math.random() * 10),
-                //            Receiver: {
-                //                BlockChainAddress: 'me-43t-gfgt5-54354refd-543e',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@dev.bankai-554'
-                //                }
-                //            },
-                //            Sender: {
-                //                BlockChainAddress: 'apex-654356-ujy56-56yt543-564ed',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@apex-001'
-                //                }
-                //            },
-                //            Status: BitDiamond.Models.BlockChainTransactionStatus.Unverified,
-                //            TransactionHash: Math.random() + ''
-                //        },
-                //        <Models.IBlockChainTransaction>{
-                //            Amount: Math.round(Math.random() * 1000),
-                //            CreatedOn: new Apollo.Models.JsonDateTime(Date.now()),
-                //            LedgerCount: Math.round(Math.random() * 10),
-                //            Receiver: {
-                //                BlockChainAddress: 'me-43t-gfgt5-54354refd-543e',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@dev.bankai-554'
-                //                }
-                //            },
-                //            Sender: {
-                //                BlockChainAddress: 'apex-654356-ujy56-56yt543-564ed',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@apex-001'
-                //                }
-                //            },
-                //            Status: BitDiamond.Models.BlockChainTransactionStatus.Verified,
-                //            TransactionHash: Math.random() + ''
-                //        },
-                //        <Models.IBlockChainTransaction>{
-                //            Amount: Math.round(Math.random() * 1000),
-                //            CreatedOn: new Apollo.Models.JsonDateTime(Date.now()),
-                //            LedgerCount: Math.round(Math.random() * 10),
-                //            Receiver: {
-                //                BlockChainAddress: 'me-43t-gfgt5-54354refd-543e',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@dev.bankai-554'
-                //                }
-                //            },
-                //            Sender: {
-                //                BlockChainAddress: 'apex-654356-ujy56-56yt543-564ed',
-                //                IsActive: true,
-                //                IsVerified: true,
-                //                OwnerRef: {
-                //                    ReferenceCode: '@apex-001'
-                //                }
-                //            },
-                //            Status: BitDiamond.Models.BlockChainTransactionStatus.Verified,
-                //            TransactionHash: Math.random() + ''
-                //        }
-                //    ], 10, 5, 0)
-                //});
             };
             BlockChain.prototype.verifyManually = function (transactionHash) {
                 return this.__transport.put('/api/block-chain/transactions/incoming', {
@@ -531,54 +289,82 @@ var BitDiamond;
                     PageIndex: pageIndex,
                     PageSize: pageSize
                 });
-                //return this.$q.resolve(<Utils.Operation<Utils.SequencePage<Models.INotification>>>{
-                //    Succeeded: true,
-                //    Message: null,
-                //    Result: new Utils.SequencePage<Models.INotification>([
-                //        {
-                //            Id: 0,
-                //            Message: 'some message',
-                //            Seen: true,
-                //            Type: Models.NotificationType.Error,
-                //            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
-                //        } as Models.INotification,
-                //        {
-                //            Id: 0,
-                //            Message: 'some message2',
-                //            Seen: false,
-                //            Type: Models.NotificationType.Info,
-                //            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
-                //        } as Models.INotification,
-                //        {
-                //            Id: 0,
-                //            Message: 'some message3',
-                //            Seen: false,
-                //            Type: Models.NotificationType.Success,
-                //            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
-                //        } as Models.INotification,
-                //        {
-                //            Id: 0,
-                //            Message: 'some message4',
-                //            Seen: false,
-                //            Type: Models.NotificationType.Warning,
-                //            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
-                //        } as Models.INotification,
-                //        {
-                //            Id: 0,
-                //            Message: 'some message5',
-                //            Seen: true,
-                //            Type: Models.NotificationType.Error,
-                //            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
-                //        } as Models.INotification
-                //    ], 10, 5, 0)
-                //});
             };
             return Notification;
         }());
         Services.Notification = Notification;
         var Posts = (function () {
-            function Posts() {
+            function Posts(__transport, $q) {
+                this.__transport = __transport;
+                this.$q = $q;
             }
+            Posts.prototype.getPostById = function (id) {
+                return this.__transport.get('/api/posts/single', {
+                    Id: id
+                });
+            };
+            Posts.prototype.getPagedNewsPosts = function (pageSize, pageIndex) {
+                //return this.__transport.get<Utils.Operation<Utils.SequencePage<Models.IPost>>>('/api/posts/news/paged', {
+                //    PageSize: pageSize,
+                //    PageIndex: pageIndex
+                //});
+                return this.$q.resolve({
+                    Succeeded: true,
+                    Message: '',
+                    Result: new BitDiamond.Utils.SequencePage([{
+                            Context: 'PostContext.News',
+                            Title: 'Some Title here',
+                            Message: 'Post message/article or whatever you want to call it',
+                            Status: BitDiamond.Models.PostStatus.Archived,
+                            OwnerId: 'admin@xyz.com',
+                            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
+                        }, {
+                            Context: 'PostContext.News',
+                            Title: 'Some Title here',
+                            Message: 'Post message/article or whatever you want to call it',
+                            Status: BitDiamond.Models.PostStatus.Draft,
+                            OwnerId: 'admin@xyz.com',
+                            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
+                        }, {
+                            Context: 'PostContext.News',
+                            Title: 'Some Title here',
+                            Message: 'Post message/article or whatever you want to call it',
+                            Status: BitDiamond.Models.PostStatus.Published,
+                            OwnerId: 'admin@xyz.com',
+                            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
+                        }, {
+                            Context: 'PostContext.News',
+                            Title: 'Some Title here',
+                            Message: 'Post message/article or whatever you want to call it',
+                            Status: BitDiamond.Models.PostStatus.Published,
+                            OwnerId: 'admin@xyz.com',
+                            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
+                        }, {
+                            Context: 'PostContext.News',
+                            Title: 'Some Title here',
+                            Message: 'Post message/article or whatever you want to call it',
+                            Status: BitDiamond.Models.PostStatus.Archived,
+                            OwnerId: 'admin@xyz.com',
+                            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
+                        }], 5, 3, 0)
+                });
+            };
+            Posts.prototype.createPost = function (post) {
+                return this.__transport.post('/api/posts', post);
+            };
+            Posts.prototype.updatePost = function (post) {
+                return this.__transport.put('/api/posts', post);
+            };
+            Posts.prototype.publishPost = function (id) {
+                return this.__transport.put('/api/posts/published', {
+                    Id: id
+                });
+            };
+            Posts.prototype.archivePost = function (id) {
+                return this.__transport.put('/api/posts/archived', {
+                    Id: id
+                });
+            };
             return Posts;
         }());
         Services.Posts = Posts;

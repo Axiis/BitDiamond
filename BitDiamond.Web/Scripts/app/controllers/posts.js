@@ -5,35 +5,36 @@ var BitDiamond;
         var Posts;
         (function (Posts) {
             var List = (function () {
-                function List(__bitlevel, __userContext, __notify, $q) {
+                function List(__posts, __userContext, __notify, $q, $state) {
                     this.pageSize = 20;
-                    this.__bitLevel = __bitlevel;
+                    this.isAdmin = true;
+                    this.__posts = __posts;
                     this.__userContext = __userContext;
                     this.__notify = __userContext;
                     this.$q = $q;
+                    this.$state = $state;
                     //load the initial view
                     this.loadHistory(0, this.pageSize);
+                    this.__userContext.userRoles.then(function (r) {
+                        //this.isAdmin = r.contains(Utils.Constants.Roles_AdminRole);
+                    });
                 }
                 List.prototype.loadHistory = function (index, size) {
                     var _this = this;
                     this.isLoadingView = true;
-                    return this.__bitLevel.getPagedBitLevelHistory(index, size || this.pageSize || 30).then(function (opr) {
+                    return this.__posts.getPagedNewsPosts(index, size || this.pageSize || 30).then(function (opr) {
                         if (!Object.isNullOrUndefined(opr.Result)) {
-                            opr.Result.Page = opr.Result.Page.map(function (lvl) {
-                                lvl.CreatedOn = new Apollo.Models.JsonDateTime(lvl.CreatedOn);
-                                lvl.ModifiedOn = new Apollo.Models.JsonDateTime(lvl.ModifiedOn);
-                                if (!Object.isNullOrUndefined(lvl.Donation)) {
-                                    lvl.Donation.ModifiedOn = new Apollo.Models.JsonDateTime(lvl.Donation.ModifiedOn);
-                                    lvl.Donation.CreatedOn = new Apollo.Models.JsonDateTime(lvl.Donation.CreatedOn);
-                                }
-                                return lvl;
+                            opr.Result.Page = opr.Result.Page.map(function (_post) {
+                                _post.CreatedOn = new Apollo.Models.JsonDateTime(_post.CreatedOn);
+                                _post.ModifiedOn = new Apollo.Models.JsonDateTime(_post.ModifiedOn);
+                                return _post;
                             });
-                            _this.levels = new BitDiamond.Utils.SequencePage(opr.Result.Page, opr.Result.SequenceLength, opr.Result.PageSize, opr.Result.PageIndex);
+                            _this.posts = new BitDiamond.Utils.SequencePage(opr.Result.Page, opr.Result.SequenceLength, opr.Result.PageSize, opr.Result.PageIndex);
                         }
                         else {
-                            _this.levels = new BitDiamond.Utils.SequencePage([], 0, 0, 0);
+                            _this.posts = new BitDiamond.Utils.SequencePage([], 0, 0, 0);
                         }
-                        _this.pageLinks = _this.levels.AdjacentIndexes(2);
+                        _this.pageLinks = _this.posts.AdjacentIndexes(2);
                         return _this.$q.resolve(opr.Result);
                     }, function (err) {
                         _this.__notify.error('Something went wrong - couldn\'t load your history.', 'Oops!');
@@ -42,7 +43,7 @@ var BitDiamond;
                     });
                 };
                 List.prototype.loadLastPage = function () {
-                    this.loadHistory(this.levels.PageCount - 1, this.pageSize);
+                    this.loadHistory(this.posts.PageCount - 1, this.pageSize);
                 };
                 List.prototype.loadFirstPage = function () {
                     this.loadHistory(0, this.pageSize);
@@ -52,9 +53,9 @@ var BitDiamond;
                 };
                 List.prototype.linkButtonClass = function (page) {
                     return {
-                        'btn-outline': page != this.levels.PageIndex,
-                        'btn-default': page != this.levels.PageIndex,
-                        'btn-info': page == this.levels.PageIndex,
+                        'btn-outline': page != this.posts.PageIndex,
+                        'btn-default': page != this.posts.PageIndex,
+                        'btn-info': page == this.posts.PageIndex,
                     };
                 };
                 List.prototype.displayDate = function (date) {
@@ -62,6 +63,58 @@ var BitDiamond;
                         return null;
                     else
                         return date.toMoment().format('YYYY/M/D - H:m');
+                };
+                List.prototype.ownerImageUrl = function (post) {
+                    return '/content/images/default-user.png';
+                };
+                List.prototype.canEdit = function (post) {
+                    return this.isAdmin && post.Status != BitDiamond.Models.PostStatus.Archived;
+                };
+                List.prototype.postStatus = function (post) {
+                    return BitDiamond.Models.PostStatus[post.Status];
+                };
+                List.prototype.postStatusClass = function (post) {
+                    return {
+                        'label-success': post.Status == BitDiamond.Models.PostStatus.Published,
+                        'label-default': post.Status == BitDiamond.Models.PostStatus.Draft,
+                        'label-warning': post.Status == BitDiamond.Models.PostStatus.Archived
+                    };
+                };
+                List.prototype.postActionText = function (post) {
+                    if (post.Status == BitDiamond.Models.PostStatus.Draft)
+                        return 'Publish';
+                    else if (post.Status == BitDiamond.Models.PostStatus.Published)
+                        return 'Archive';
+                    else
+                        return '';
+                };
+                List.prototype.canAct = function (post) {
+                    return post.Status != BitDiamond.Models.PostStatus.Archived;
+                };
+                List.prototype.showDetails = function (post) {
+                    this.$state.go('details', { post: post });
+                };
+                List.prototype.createNews = function () {
+                    this.$state.go('edit');
+                };
+                List.prototype.editNews = function (post) {
+                    this.$state.go('edit', { post: post });
+                };
+                List.prototype.postAction = function (post) {
+                    var _this = this;
+                    var action = post.Status == BitDiamond.Models.PostStatus.Draft ? this.__posts.publishPost :
+                        BitDiamond.Models.PostStatus.Published ? this.__posts.archivePost : null;
+                    if (!Object.isNullOrUndefined(action)) {
+                        post['$__isActing'] = true;
+                        action(post.Id).then(function (opr) {
+                            post.Status = opr.Result.Status;
+                            _this.__notify.success('Done');
+                        }, function (err) {
+                            _this.__notify.error('Something happened' + (err.Messaage || ''), 'Oops!');
+                        }).finally(function () {
+                            delete post['$__isActing'];
+                        });
+                    }
                 };
                 return List;
             }());
@@ -73,8 +126,20 @@ var BitDiamond;
             }());
             Posts.Details = Details;
             var Edit = (function () {
-                function Edit() {
+                function Edit(__posts, __userContext, __notify, $q, $state, $stateParams) {
+                    this.__posts = __posts;
+                    this.__userContext = __userContext;
+                    this.__notify = __userContext;
+                    this.$q = $q;
+                    this.$state = $state;
+                    this.$stateParams = $stateParams;
+                    this.post = $stateParams['post'] || {
+                        Status: BitDiamond.Models.PostStatus.Draft,
+                        '$__isNascent': true
+                    };
                 }
+                Edit.prototype.persist = function () {
+                };
                 return Edit;
             }());
             Posts.Edit = Edit;

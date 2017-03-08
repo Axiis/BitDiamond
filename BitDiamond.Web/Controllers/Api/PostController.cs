@@ -2,8 +2,12 @@
 using Axis.Luna.Extensions;
 using BitDiamond.Core.Models;
 using BitDiamond.Core.Services;
+using BitDiamond.Core.Utils;
 using BitDiamond.Web.Controllers.Api.PostModels;
 using BitDiamond.Web.Infrastructure.Exceptions;
+using Newtonsoft.Json;
+using System;
+using System.Text;
 using System.Web.Http;
 
 using static Axis.Luna.Extensions.ExceptionExtensions;
@@ -28,9 +32,10 @@ namespace BitDiamond.Web.Controllers.Api
             .OperationResult(Request);
 
         [HttpGet, Route("api/posts/news/paged")]
-        IHttpActionResult PagedNewsPosts([FromBody] PageArg args)
-        => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
-            .Then(opr => _postService.PagedNewsPosts(args.PageSize, args.PageIndex))
+        IHttpActionResult PagedNewsPosts([FromBody] string data)
+        => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
+            .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<PageArg>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
+            .Then(argopr => _postService.PagedNewsPosts(argopr.Result.PageSize, argopr.Result.PageIndex))
             .OperationResult(Request);
 
         [HttpPost, Route("api/posts")]

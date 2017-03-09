@@ -1,6 +1,8 @@
 ﻿using Axis.Luna;
 using BitDiamond.Core.Models;
 using Microsoft.Owin.Security.OAuth;
+using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using static Axis.Luna.Extensions.ExceptionExtensions;
 using static Axis.Luna.Extensions.ObjectExtensions;
@@ -25,7 +27,9 @@ namespace BitDiamond.Web.Infrastructure.Security
                 //invalidate old logons if the request payload has any
 
                 //in future, a realtime event will notify the bearer-provider of changes to a logon, so we dont need to keep quering the database
+                var start = DateTime.Now;
                 var logon = _cache.GetOrRefresh<UserLogon>(token);
+                Debug.WriteLine($"[BearerAuthenticationProvier] Logon acquired in: {DateTime.Now - start}");
                 
                 //Note that if "logon"' is null, it means that it was not found either in the cache or in the db - but the fact that this method was called
                 //means that the token was verified by the authorization server: this is an anomaly, as the source of the token is in question. What we do

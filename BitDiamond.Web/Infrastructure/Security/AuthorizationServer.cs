@@ -110,7 +110,9 @@ namespace BitDiamond.Web.Infrastructure.Security
         public override Task TokenEndpointResponse(OAuthTokenEndpointResponseContext context)
         => Task.Run(() =>
         {
-            var _credentialAuthority = context.OwinContext.GetPerRequestValue<ICredentialAuthentication>(nameof(ICredentialAuthentication));
+            //potential bug: capturing this datacontext is dangerous because if the cache gets invalidated and this logon is requested,
+            //the datacontext will MOST LIKELY be disposed when it is queried for the logon.
+            //The solution is to find a way to get at the current owin context, to get a fresh db context from there.
             var _dataContext = context.OwinContext.GetPerRequestValue<IDataContext>(nameof(IDataContext));
 
             //cache the logon associated to the given token

@@ -94,3 +94,38 @@ declare interface ITreeViewOptions {
 declare interface JQuery {
     treeview(options: ITreeViewOptions): JQuery;
 } 
+
+
+//sumernote
+declare interface ISummernoteEvents {
+    onInit?: (t?: any) => void,
+    onEnter?: (t?: any) => void,
+    onfocus?: (t?: any) => void,
+    onblur?: (t?: any) => void,
+    onKeyup?: (t?: any) => void,
+    onKeydown?: (t?: any) => void,
+    onPaste?: (t?: any) => void,
+    onImageUpload?: (t?: any) => void,
+    onChange?: (t?: any) => void
+}
+
+declare interface ISummernoteOptions {
+    airMode?: boolean,
+    height?: number,
+    width?: number,
+    minHeight?: number,
+    minWidth?: number,
+    toolbar?: any[],
+    placeholder?: string,
+    fontNames?: string[],
+    dialogsInBody?: boolean,
+    dialogsFade?: boolean,
+    disableDragAndDrop?: boolean,
+    shortcuts?: boolean,
+    callbacks?: ISummernoteEvents
+
+}
+
+declare interface JQuery {
+    summernote(options?: (ISummernoteOptions | ISummernoteEvents | string), value?: (string | any)): JQuery;
+}

@@ -8,6 +8,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using Axis.Luna.Extensions;
+using BitDiamond.Core.Models;
 
 namespace BitDiamond.Web.Infrastructure.Services
 {
@@ -30,8 +31,11 @@ namespace BitDiamond.Web.Infrastructure.Services
         {
             if (_user != null) return _user;
 
-            else if (_owinProvider.Owin.Request.User?.Identity?.Name == null)
-                return _user = _query.GetUserById(Constants.SystemUsers_Guest);
+            else if (_owinProvider.Owin.Request.User?.Identity?.Name == null) return _user = new User
+            {
+                UserId = Constants.SystemUsers_Guest,
+                Status = (int)AccountStatus.Active
+            };
 
             else
             {

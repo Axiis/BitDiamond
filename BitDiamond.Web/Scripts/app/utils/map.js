@@ -74,7 +74,7 @@ var BitDiamond;
                 return this;
             };
             StringPairCollection.prototype.toString = function () {
-                return this._pairs.reduce('', function (sbuff, next) { return sbuff + ' ' + next.toString(); });
+                return this._pairs.aggregate('', function (sbuff, next) { return sbuff + ' ' + next.toString(); });
             };
             return StringPairCollection;
         }());

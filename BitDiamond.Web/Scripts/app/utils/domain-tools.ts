@@ -39,7 +39,7 @@ module BitDiamond.Utils.Domain {
         else {
             var parts = userId.split('@').filter(_p => _p != '');
             var hash = parts[1].asChars()
-                .reduce(17, (hash, next) => hash * 283 + next.charCodeAt(0));
+                .aggregate(17, (hash, next) => hash * 283 + next.charCodeAt(0));
             return '@' + parts[0] + '-' + hash;
         }
     }

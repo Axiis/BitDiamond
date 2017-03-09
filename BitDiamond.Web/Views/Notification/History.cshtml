@@ -34,6 +34,7 @@
     <div class="col-md-6"
          style="text-align:right;">
         <button class="btn btn-outline btn-sm btn-warning"
+                ng-show="vm.notifications.Page.length > 0"
                 ng-click="vm.clearAll()">
             <span ng-hide="vm.isClearingAll"><i class="ti-close"></i> Clear All</span>
             <ring-loader show="vm.isClearingAll" size="16" color="white"></ring-loader>

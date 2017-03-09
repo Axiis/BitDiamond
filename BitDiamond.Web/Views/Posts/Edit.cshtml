@@ -3,15 +3,64 @@
     Layout = null;
 }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
-</head>
-<body>
-    <div> 
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">Edit Post</h4>
     </div>
-</body>
-</html>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href ui-sref="list">Posts</a></li>
+            <li><a href class="active">Edit News</a></li>
+        </ol>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row" style="margin-top:20px;">
+    <div class="clearfix col-lg-12">
+        <button class="btn btn-outline btn-success btn-sm pull-right"
+                ng-click="vm.persist()">
+            <span ng-hide="vm.isSaving">
+                <i class="ti-save"></i> Save
+            </span>
+            <ring-loader size="16" color="white" show="vm.isSaving"></ring-loader>
+        </button>
+        <button class="btn btn-outline btn-default btn-sm pull-right"
+                ng-click="vm.back()">
+            <span>
+                <i class="ti-left"></i> Back
+            </span>
+        </button>
+    </div>
+</div>
+
+<div class="row" style="margin-top:20px;">
+    <div class="col-lg-offset-1 col-lg-10 col-md-offset-2 col-md-8 col-sm-12">
+        <div class="white-box">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <h4 style="margin-bottom:0">Title</h4>
+                    <small class="text-muted">Select your text to apply styles</small>
+                    <summernote style="border-bottom: 1px solid #ab8ce4; min-height:40px; padding:15px 0 0 0;"
+                                bind="vm.post.Title">
+
+                    </summernote>
+                </div>
+            </div>
+
+            <div class="row"
+                 style="margin-top:20px;">
+                <div class="col-lg-12">
+
+                    <h4 style="margin-bottom:0">Body</h4>
+                    <small class="text-muted">Select your text to apply styles</small>
+                    <summernote style="border-bottom: 1px solid #ab8ce4; min-height:40px; padding: 15px 0 0 0;">
+
+                    </summernote>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

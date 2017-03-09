@@ -62,12 +62,13 @@ namespace BitDiamond.Web.Infrastructure.DI
 
     public static class ServiceInvocationHelper
     {
+        private static LazyFakerImpl SingletonFaker = new LazyFakerImpl();
+
         public static Service CreateLazyService<Service, Impl>(this ProxyGenerator proxyGen, IServiceResolver resolver)
         where Service : class 
         where Impl: class, Service
         {
-            var faker = new LazyFakerImpl();
-            var proxy = proxyGen.CreateInterfaceProxyWithTargetInterface(typeof(ILazyServiceFaker), new[] { typeof(Service) }, faker, new ServiceInterceptor<Impl>(resolver));
+            var proxy = proxyGen.CreateInterfaceProxyWithTargetInterface(typeof(ILazyServiceFaker), new[] { typeof(Service) }, SingletonFaker, new ServiceInterceptor<Impl>(resolver));
             return proxy as Service;
         }
         

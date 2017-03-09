@@ -137,8 +137,30 @@ var BitDiamond;
                         Status: BitDiamond.Models.PostStatus.Draft,
                         '$__isNascent': true
                     };
+                    this.previous = $stateParams['previous'] || 'list';
                 }
                 Edit.prototype.persist = function () {
+                    var _this = this;
+                    if (this.isPersisting)
+                        return;
+                    else {
+                        this.isPersisting = true;
+                        var _persist = null;
+                        if (this.post['$__isNascent'])
+                            _persist = this.__posts.updatePost;
+                        else
+                            _persist = this.__posts.createPost;
+                        _persist(this.post).then(function (opr) {
+                            _this.__notify.success('Your post was saved');
+                        }, function (err) {
+                            _this.__notify.error('Something went wrong - ' + (err.Message || 'not sure'), 'Oops');
+                        }).finally(function () {
+                            _this.isPersisting = false;
+                        });
+                    }
+                };
+                Edit.prototype.back = function () {
+                    this.$state.go(this.previous, { post: this.post });
                 };
                 return Edit;
             }());

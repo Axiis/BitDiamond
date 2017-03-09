@@ -246,7 +246,7 @@ var BitDiamond;
                 };
             });
         };
-        Array.prototype.reduce = function (seed, transformFunc) {
+        Array.prototype.aggregate = function (seed, transformFunc) {
             var arr = this;
             var v = seed;
             for (var cnt = 0; cnt < arr.length; cnt++) {

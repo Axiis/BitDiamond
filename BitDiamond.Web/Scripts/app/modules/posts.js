@@ -6,6 +6,7 @@ var BitDiamond;
         //directives
         Modules.postsModule.directive('ringLoader', function () { return new BitDiamond.Directives.RingLoader(); });
         Modules.postsModule.directive('boxLoader', function () { return new BitDiamond.Directives.BoxLoader(); });
+        Modules.postsModule.directive('summernote', function ($compile) { return new BitDiamond.Directives.Summernote($compile); });
         //services
         Modules.postsModule.service('__transport', BitDiamond.Utils.Services.DomainTransport);
         Modules.postsModule.service('__notify', BitDiamond.Utils.Services.NotifyService);

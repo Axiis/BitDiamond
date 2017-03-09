@@ -367,7 +367,8 @@ namespace BitDiamond.Core.Services
         public Operation<IEnumerable<string>> GetRoles()
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
-            return _query.GetUserRoles(UserContext.CurrentUser());
+            var uc = UserContext.CurrentUser();
+            return UserContext.CurrentUserRoles() ??  _query.GetUserRoles(UserContext.CurrentUser());
         });
 
         public Operation<User> CurrentUser()

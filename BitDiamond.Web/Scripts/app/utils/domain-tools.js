@@ -41,7 +41,7 @@ var BitDiamond;
                 else {
                     var parts = userId.split('@').filter(function (_p) { return _p != ''; });
                     var hash = parts[1].asChars()
-                        .reduce(17, function (hash, next) { return hash * 283 + next.charCodeAt(0); });
+                        .aggregate(17, function (hash, next) { return hash * 283 + next.charCodeAt(0); });
                     return '@' + parts[0] + '-' + hash;
                 }
             }

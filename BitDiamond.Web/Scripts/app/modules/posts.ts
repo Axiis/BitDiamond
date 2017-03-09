@@ -6,6 +6,7 @@ module BitDiamond.Modules {
     //directives
     postsModule.directive('ringLoader', () => new BitDiamond.Directives.RingLoader());
     postsModule.directive('boxLoader', () => new BitDiamond.Directives.BoxLoader());
+    postsModule.directive('summernote', ($compile) => new BitDiamond.Directives.Summernote($compile));
 
 
     //services
@@ -29,7 +30,7 @@ module BitDiamond.Modules {
 
     //configure states
     postsModule.config(($stateProvider: angular.ui.IStateProvider, $urlRouterProvider: angular.ui.IUrlRouterProvider) => {
-        $urlRouterProvider.otherwise('/list')
+        $urlRouterProvider.otherwise('/list');
 
         $stateProvider
             .state('list', {

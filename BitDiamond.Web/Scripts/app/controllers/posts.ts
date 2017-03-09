@@ -139,10 +139,30 @@ module BitDiamond.Controllers.Posts {
     export class Edit {
 
         persist() {
+            if (this.isPersisting) return;
+            else {
+                this.isPersisting = true;
+                var _persist: (_p: Models.IPost) => ng.IPromise<Utils.Operation<Models.IPost>> = null;
+                if (this.post['$__isNascent']) _persist = this.__posts.updatePost;
+                else _persist = this.__posts.createPost;
+
+                _persist(this.post).then(opr => {
+                    this.__notify.success('Your post was saved');
+                }, err => {
+                    this.__notify.error('Something went wrong - ' + (err.Message || 'not sure'), 'Oops');
+                }).finally(() => {
+                    this.isPersisting = false;
+                });
+            }
+        }
+
+        back() {
+            this.$state.go(this.previous, { post: this.post });
         }
 
 
         post: Models.IPost;
+        previous: string;
 
         isPersisting: boolean;
 
@@ -165,6 +185,7 @@ module BitDiamond.Controllers.Posts {
                 Status: Models.PostStatus.Draft,
                 '$__isNascent': true
             };
+            this.previous = $stateParams['previous'] || 'list';
         }
     }
 

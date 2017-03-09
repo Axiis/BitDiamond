@@ -35,7 +35,7 @@ interface Array<T> {
     remove(value: T): T[];
     removeAt(index: number): T[];
     clear();
-    reduce<U>(seed: U, transformFunc: (in1: U, in2: T) => U): U;
+    aggregate<U>(seed: U, transformFunc: (in1: U, in2: T) => U): U;
     contains(value: T): boolean;
     insert(index: number, item: T): T[]
 }
@@ -306,7 +306,7 @@ module BitDiamond.Extensions {
         });
     }
 
-    Array.prototype.reduce = function <T, U>(seed: U, transformFunc: (in1: U, in2: T) => U): U {
+    Array.prototype.aggregate = function <T, U>(seed: U, transformFunc: (in1: U, in2: T) => U): U {
         var arr = this as Array<T>;
 
         var v = seed;

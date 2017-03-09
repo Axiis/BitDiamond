@@ -16,7 +16,7 @@ module BitDiamond.Directives {
             var binding = attributes.numberSpinner;
             var map: any = Utils.StringPair
                 .ParseStringPairs(binding)
-                .reduce({}, (_map, _pair) => {
+                .aggregate({}, (_map, _pair) => {
                     _map[_pair.Key.toLowerCase()] = _pair.Value;
                     return _map;
                 });

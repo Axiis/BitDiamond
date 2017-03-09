@@ -8,8 +8,8 @@ using Axis.Jupiter;
 using static Axis.Luna.Extensions.ExceptionExtensions;
 using Axis.Pollux.Authentication;
 using System;
-using Axis.Luna;
 using Axis.Pollux.RBAC.Auth;
+using System.Diagnostics;
 
 namespace BitDiamond.Data.EF.Query
 {
@@ -25,9 +25,14 @@ namespace BitDiamond.Data.EF.Query
         }
 
         public BioData GetBioData(User user)
-        => _europa.Store<BioData>().Query
+        {
+            var start = DateTime.Now;
+            var r = _europa.Store<BioData>().Query
                   .Where(_bd => _bd.OwnerId == user.UserId)
                   .FirstOrDefault();
+            Debug.WriteLine($"[AccountQuery.GetBioData] query executed in: {DateTime.Now - start}");
+            return r;
+        }
 
         public ContactData GetContactData(User user)
         => _europa.Store<ContactData>().Query

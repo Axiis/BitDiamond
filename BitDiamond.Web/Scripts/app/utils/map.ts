@@ -84,7 +84,7 @@ module BitDiamond.Utils {
         }
 
         toString(): string {
-            return this._pairs.reduce('', (sbuff, next) => sbuff + ' ' + next.toString());
+            return this._pairs.aggregate('', (sbuff, next) => sbuff + ' ' + next.toString());
         }
 
         constructor(pairs?: string) {

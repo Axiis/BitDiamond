@@ -17,7 +17,7 @@ var BitDiamond;
                 var binding = attributes.numberSpinner;
                 var map = BitDiamond.Utils.StringPair
                     .ParseStringPairs(binding)
-                    .reduce({}, function (_map, _pair) {
+                    .aggregate({}, function (_map, _pair) {
                     _map[_pair.Key.toLowerCase()] = _pair.Value;
                     return _map;
                 });

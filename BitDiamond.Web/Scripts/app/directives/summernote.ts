@@ -33,24 +33,26 @@ module BitDiamond.Directives {
 
             //now initialize summernote
             scope.parent = scope.$parent; //<--hack to enable '$eval' accross scope hierarchy
+            scope.$eval('content = parent.' + bind);
 
-            activatedDom.summernote(<ISummernoteOptions>{
-                airMode: true,
-                airPopover: [
-                    ['font', ['bold', 'italic', 'underline', 'clear']],
-                    ['style', ['strikethrough', 'superscript', 'subscript']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['table', ['table']],
-                    ['insert', ['link', 'picture']]
-                ]
-            }).on('summernote.change', (content, $editable) => {
-                if (!Object.isNullOrUndefined(bind)) {
-                    scope.content = $editable;
-                    scope.$eval('parent.' + bind + ' = content');
-                }
-            });
+            activatedDom.text(scope.content)
+                .summernote(<ISummernoteOptions>{
+                    airMode: true,
+                    airPopover: [
+                        ['font', ['bold', 'italic', 'underline', 'clear']],
+                        ['style', ['strikethrough', 'superscript', 'subscript']],
+                        ['fontsize', ['fontsize']],
+                        ['color', ['color']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['table', ['table']],
+                        ['insert', ['link', 'picture']]
+                    ]
+                }).on('summernote.change', (content, $editable) => {
+                    if (!Object.isNullOrUndefined(bind)) {
+                        scope.content = $editable;
+                        scope.$eval('parent.' + bind + ' = content');
+                    }
+                });
         }
 
 

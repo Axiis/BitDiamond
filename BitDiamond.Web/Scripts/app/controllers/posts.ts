@@ -47,7 +47,7 @@ module BitDiamond.Controllers.Posts {
         }
         displayDate(date: Apollo.Models.JsonDateTime): string {
             if (Object.isNullOrUndefined(date)) return null;
-            else return date.toMoment().format('YYYY/M/D - H:m');
+            else return date.toMoment().format('MMM D, Y');
         }
         ownerImageUrl(post: Models.IPost) {
             return '/content/images/default-user.png';
@@ -60,9 +60,9 @@ module BitDiamond.Controllers.Posts {
         }
         postStatusClass(post: Models.IPost) {
             return {
-                'label-success': post.Status == Models.PostStatus.Published,
-                'label-default': post.Status == Models.PostStatus.Draft,
-                'label-warning': post.Status == Models.PostStatus.Archived
+                'text-success': post.Status == Models.PostStatus.Published,
+                'text-muted': post.Status == Models.PostStatus.Draft,
+                'text-warning': post.Status == Models.PostStatus.Archived
             };
         }
         postActionText(post: Models.IPost) {

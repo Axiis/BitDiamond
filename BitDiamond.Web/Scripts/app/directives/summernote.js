@@ -29,7 +29,9 @@ var BitDiamond;
                 element.append(activatedDom);
                 //now initialize summernote
                 scope.parent = scope.$parent; //<--hack to enable '$eval' accross scope hierarchy
-                activatedDom.summernote({
+                scope.$eval('content = parent.' + bind);
+                activatedDom.text(scope.content)
+                    .summernote({
                     airMode: true,
                     airPopover: [
                         ['font', ['bold', 'italic', 'underline', 'clear']],

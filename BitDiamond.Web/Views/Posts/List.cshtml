@@ -5,7 +5,7 @@
 
 <div class="row bg-title">
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-        <h4 class="page-title">Posts</h4>
+        <h4 class="page-title">News</h4>
     </div>
     <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
         <ol class="breadcrumb">
@@ -43,52 +43,61 @@
 
 </div>
 
-<div class="row" ng-hide="vm.isLoadingView">
+<div class="row" ng-show="!vm.isLoadingView && vm.posts.Page.length == 0">
 
     <div class="col-sm-12 col-md-offset-2 col-md-8">
-        <div class="white-box">
-            <h3 class="box-title"><i style="font-size:20px;" class="icon-book-open"></i>&nbsp;&nbsp;&nbsp;News</h3>
-            <div ng-repeat="post in vm.posts.Page" 
-                 class="comment-center">
-                <div class="comment-body" style="width:100%;">
-                    <div class="mail-contnet">
-                        <span class="label pull-right"
-                              style="font-size:12px;"
-                              ng-class="vm.postStatusClass(post)"
-                              ng-show="vm.isAdmin">{{vm.postStatus(post)}}</span>
-                        <h5 ng-bind-html="post.Title"
-                            style="cursor:pointer; height: 1.5em; line-height:1.5em; text-overflow:ellipsis; white-space:nowrap; text-wrap:none;"
-                            ng-click="vm.showDetails(post)"></h5> 
-                        <p class="mail-desc"
-                              style="line-height: 1.5em; height:3em;"
-                              ng-bind-html="post.Message">
-                        </p> 
-                        <div class="clearfix">
-                            <button class="btn btn-outline btn-default btn-sm pull-left"
-                                    ng-show="vm.canEdit(post)"
-                                    ng-click="vm.editNews(post)">
-                                <i class="ti-pencil"></i>&nbsp;&nbsp;Edit
-                            </button>
-                            <button class="btn btn-outline btn-sm btn-default pull-left dropdown-toggle waves-effect waves-light"
-                                    style="margin-left:5px; margin-right:5px;"
-                                    data-toggle="dropdown"
-                                    ng-show="vm.canAct(post)"
-                                    ng-click="vm.postAction(post)">
-                                {{vm.postActionText(post)}}
-                            </button>
+        <p style="font-size:24px; text-align:center;" class="text-muted">
+            Oops!<br/>
+            There are no news articles to display at this time...
+        </p>
+    </div>
+</div>
 
-                            <span class="time pull-right" style="margin-top:15px; font-size:12px;">{{vm.displayDate(post.CreatedOn)}}</span>
-                        </div>
-                    </div>
+<div class="row" ng-hide="vm.isLoadingView" style="margin-top:15px;"
+     ng-repeat="post in vm.posts.Page">
+
+    <div class="col-sm-12 col-md-offset-2 col-md-8">
+        <div class="white-box bd-card-2">
+            <div>
+                <i style="font-size:20px;" class="icon-book-open"></i>
+                <h4 ng-bind-html="post.Title"
+                    style="cursor:pointer; height: 1.5em; line-height:1.5em; text-overflow:ellipsis; white-space:nowrap; text-wrap:none;"></h4>
+                <div style="margin-bottom:25px;" class="text-muted">
+                    <span class="time" style="margin-top:15px; font-size:12px;">{{vm.displayDate(post.CreatedOn)}}</span>
+                    &nbsp;/&nbsp;<span ng-class="vm.postStatusClass(post)">{{vm.postStatus(post)}}</span>
+                </div>
+                <p class="mail-desc"
+                   style="line-height: 1.5em; height:4.5em;"
+                   ng-bind-html="post.Message">
+                </p>
+                <hr/>
+                <div class="clearfix">
+                    <button class="btn btn-outline btn-default btn-sm waves-effect waves-light"
+                            ng-click="vm.showDetails(post)">
+                        Read More
+                    </button>&nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-outline btn-default btn-sm waves-effect waves-light"
+                            ng-show="vm.canEdit(post)"
+                            ng-click="vm.editNews(post)">
+                        <i class="ti-pencil"></i>&nbsp;&nbsp;Edit
+                    </button>
+                    <button class="btn btn-outline btn-sm btn-default dropdown-toggle waves-effect waves-light"
+                            style="margin-left:5px; margin-right:5px;"
+                            data-toggle="dropdown"
+                            ng-show="vm.canAct(post)"
+                            ng-click="vm.postAction(post)">
+                        {{vm.postActionText(post)}}
+                    </button>
+
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 
-<div ng-show="vm.isLoadingView"
-     style="position:absolute; left:220px; bottom:60px; right:0; top:166px;">
-    <box-loader size="40" color="white" show="true" block-loader="true"></box-loader>
-</div>
+
+            <div ng-show="vm.isLoadingView"
+                 style="position:absolute; left:220px; bottom:60px; right:0; top:166px;">
+                <box-loader size="40" color="white" show="true" block-loader="true"></box-loader>
+            </div>

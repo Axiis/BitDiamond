@@ -62,7 +62,7 @@ var BitDiamond;
                     if (Object.isNullOrUndefined(date))
                         return null;
                     else
-                        return date.toMoment().format('YYYY/M/D - H:m');
+                        return date.toMoment().format('MMM D, Y');
                 };
                 List.prototype.ownerImageUrl = function (post) {
                     return '/content/images/default-user.png';
@@ -75,9 +75,9 @@ var BitDiamond;
                 };
                 List.prototype.postStatusClass = function (post) {
                     return {
-                        'label-success': post.Status == BitDiamond.Models.PostStatus.Published,
-                        'label-default': post.Status == BitDiamond.Models.PostStatus.Draft,
-                        'label-warning': post.Status == BitDiamond.Models.PostStatus.Archived
+                        'text-success': post.Status == BitDiamond.Models.PostStatus.Published,
+                        'text-muted': post.Status == BitDiamond.Models.PostStatus.Draft,
+                        'text-warning': post.Status == BitDiamond.Models.PostStatus.Archived
                     };
                 };
                 List.prototype.postActionText = function (post) {

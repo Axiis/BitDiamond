@@ -83,5 +83,7 @@ namespace BitDiamond.Core
                       .Select(_p => _p.ParameterType)
                       .SequenceEqual(method2.GetParameters().Select(_p => _p.ParameterType));
         #endregion
+
+        public static string ResolveParameters(this string parametarized, params object[] @params) => string.Format(parametarized, @params);
     }
 }

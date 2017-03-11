@@ -63,31 +63,39 @@
                 <h4 ng-bind-html="post.Title"
                     style="cursor:pointer; height: 1.5em; line-height:1.5em; text-overflow:ellipsis; white-space:nowrap; text-wrap:none;"></h4>
                 <div style="margin-bottom:25px;" class="text-muted">
-                    <span class="time" style="margin-top:15px; font-size:12px;">{{vm.displayDate(post.CreatedOn)}}</span>
-                    &nbsp;/&nbsp;<span ng-class="vm.postStatusClass(post)">{{vm.postStatus(post)}}</span>
+                    <strong class="time" style="margin-top:15px; font-size:12px;">{{vm.displayDate(post.CreatedOn)}}</strong>
+                    &nbsp;/&nbsp;
+                    <strong class="time" ng-class="vm.postStatusClass(post)">{{vm.postStatus(post)}}</strong>
                 </div>
                 <p class="mail-desc"
-                   style="line-height: 1.5em; height:4.5em;"
+                   style="line-height: 1.5em; height:4.5em; overflow:hidden;"
                    ng-bind-html="post.Message">
                 </p>
                 <hr/>
-                <div class="clearfix">
-                    <button class="btn btn-outline btn-default btn-sm waves-effect waves-light"
-                            ng-click="vm.showDetails(post)">
-                        Read More
-                    </button>&nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-outline btn-default btn-sm waves-effect waves-light"
-                            ng-show="vm.canEdit(post)"
-                            ng-click="vm.editNews(post)">
-                        <i class="ti-pencil"></i>&nbsp;&nbsp;Edit
-                    </button>
-                    <button class="btn btn-outline btn-sm btn-default dropdown-toggle waves-effect waves-light"
-                            style="margin-left:5px; margin-right:5px;"
-                            data-toggle="dropdown"
-                            ng-show="vm.canAct(post)"
-                            ng-click="vm.postAction(post)">
-                        {{vm.postActionText(post)}}
-                    </button>
+                <div class="row">
+                    <div class="col-sm-6" style="text-align:left;">
+                        <a href ng-click="vm.showDetails(post)" class="text-muted">
+                            READ MORE
+                        </a>
+                    </div>
+
+                    <div class="col-sm-6" style="text-align:right;">
+                        <button class="btn btn-outline btn-default btn-sm waves-effect waves-light"
+                                ng-show="vm.canEdit(post)"
+                                ng-click="vm.editNews(post)">
+                            <i class="ti-pencil"></i>&nbsp;&nbsp;Edit
+                        </button>
+                        <button class="btn btn-outline btn-sm btn-default dropdown-toggle waves-effect waves-light"
+                                style="margin-left:5px; margin-right:5px;"
+                                data-toggle="dropdown"
+                                ng-show="vm.canAct(post)"
+                                ng-click="vm.postAction(post)">
+                            <span ng-hide="post.$__isActing">
+                                {{vm.postActionText(post)}}
+                            </span>
+                            <ring-loader size="16" show="post.$__isActing" color="white"></ring-loader>
+                        </button>
+                    </div>
 
                 </div>
             </div>

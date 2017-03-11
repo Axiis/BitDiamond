@@ -10,7 +10,7 @@ var BitDiamond;
                     this.isAdmin = true;
                     this.__posts = __posts;
                     this.__userContext = __userContext;
-                    this.__notify = __userContext;
+                    this.__notify = __notify;
                     this.$q = $q;
                     this.$state = $state;
                     //load the initial view
@@ -22,7 +22,7 @@ var BitDiamond;
                 List.prototype.loadHistory = function (index, size) {
                     var _this = this;
                     this.isLoadingView = true;
-                    return this.__posts.getPagedNewsPosts(index, size || this.pageSize || 30).then(function (opr) {
+                    return this.__posts.getPagedNewsPosts(size || this.pageSize || 20, index).then(function (opr) {
                         if (!Object.isNullOrUndefined(opr.Result)) {
                             opr.Result.Page = opr.Result.Page.map(function (_post) {
                                 _post.CreatedOn = new Apollo.Models.JsonDateTime(_post.CreatedOn);
@@ -102,26 +102,90 @@ var BitDiamond;
                 };
                 List.prototype.postAction = function (post) {
                     var _this = this;
-                    var action = post.Status == BitDiamond.Models.PostStatus.Draft ? this.__posts.publishPost :
-                        BitDiamond.Models.PostStatus.Published ? this.__posts.archivePost : null;
-                    if (!Object.isNullOrUndefined(action)) {
+                    if (!post['$__isActing']) {
                         post['$__isActing'] = true;
-                        action(post.Id).then(function (opr) {
-                            post.Status = opr.Result.Status;
-                            _this.__notify.success('Done');
-                        }, function (err) {
-                            _this.__notify.error('Something happened' + (err.Messaage || ''), 'Oops!');
-                        }).finally(function () {
+                        if (post.Status == BitDiamond.Models.PostStatus.Draft) {
+                            this.__posts.publishPost(post.Id).then(function (opr) {
+                                post.Status = opr.Result.Status;
+                                _this.__notify.success('Done');
+                            }, function (err) {
+                                _this.__notify.error('Something happened' + (err.Messaage || ''), 'Oops!');
+                            }).finally(function () {
+                                delete post['$__isActing'];
+                            });
+                        }
+                        else if (post.Status == BitDiamond.Models.PostStatus.Published) {
+                            this.__posts.archivePost(post.Id).then(function (opr) {
+                                post.Status = opr.Result.Status;
+                                _this.__notify.success('Done');
+                            }, function (err) {
+                                _this.__notify.error('Something happened' + (err.Messaage || ''), 'Oops!');
+                            }).finally(function () {
+                                delete post['$__isActing'];
+                            });
+                        }
+                        else {
+                            this.__notify.info('Cannot act on an archived post');
                             delete post['$__isActing'];
-                        });
+                        }
                     }
                 };
                 return List;
             }());
             Posts.List = List;
             var Details = (function () {
-                function Details() {
+                function Details($state, $stateParams, __notify, __posts) {
+                    var _this = this;
+                    this.$state = $state;
+                    this.$stateParams = $stateParams;
+                    this.__notify = __notify;
+                    this.__posts = __posts;
+                    this.previous = this.$stateParams['previous'] || 'list';
+                    var p = this.$stateParams['post'];
+                    var id = this.$stateParams['id'];
+                    if (Object.isNullOrUndefined(p) && (Object.isNullOrUndefined(id) || id <= 0)) {
+                        swal({
+                            title: 'Error',
+                            text: 'Sorry, something went wrong while trying to display the post.',
+                            type: 'error'
+                        });
+                        this.$state.go(this.previous);
+                    }
+                    else if (typeof p == 'number') {
+                        this.isLoadingView = true;
+                        this.__posts.getPostById(p).then(function (opr) {
+                            _this.post.CreatedOn = new Apollo.Models.JsonDateTime(_this.post.CreatedOn);
+                            _this.post = opr.Result;
+                        }, function (err) {
+                            _this.__notify.error('Something went wrong ' + (err.Message || ''), 'Oops');
+                        }).finally(function () {
+                            _this.isLoadingView = false;
+                        });
+                    }
+                    else
+                        this.post = p;
                 }
+                Details.prototype.back = function () {
+                    this.$state.go(this.previous, { post: this.post });
+                };
+                Details.prototype.getHeadingContainerStyle = function () {
+                    return {
+                        height: '150px',
+                        padding: '20px',
+                        display: 'flex',
+                        position: 'relative',
+                        'align-items': 'flex-end',
+                        'flex-direction': 'row',
+                        'background': 'no-repeat url(/content/images/material-backgrounds/2.jpg) top left',
+                        'background-size': 'cover'
+                    };
+                };
+                Details.prototype.displayDate = function (date) {
+                    if (Object.isNullOrUndefined(date))
+                        return null;
+                    else
+                        return date.toMoment().format('MMM D, Y');
+                };
                 return Details;
             }());
             Posts.Details = Details;
@@ -129,7 +193,7 @@ var BitDiamond;
                 function Edit(__posts, __userContext, __notify, $q, $state, $stateParams) {
                     this.__posts = __posts;
                     this.__userContext = __userContext;
-                    this.__notify = __userContext;
+                    this.__notify = __notify;
                     this.$q = $q;
                     this.$state = $state;
                     this.$stateParams = $stateParams;
@@ -139,28 +203,46 @@ var BitDiamond;
                     };
                     this.previous = $stateParams['previous'] || 'list';
                 }
+                //events
                 Edit.prototype.persist = function () {
                     var _this = this;
                     if (this.isPersisting)
                         return;
                     else {
                         this.isPersisting = true;
-                        var _persist = null;
-                        if (this.post['$__isNascent'])
-                            _persist = this.__posts.updatePost;
-                        else
-                            _persist = this.__posts.createPost;
-                        _persist(this.post).then(function (opr) {
-                            _this.__notify.success('Your post was saved');
-                        }, function (err) {
-                            _this.__notify.error('Something went wrong - ' + (err.Message || 'not sure'), 'Oops');
-                        }).finally(function () {
-                            _this.isPersisting = false;
-                        });
+                        if (this.post['$__isNascent']) {
+                            this.__posts.createPost(this.post).then(function (opr) {
+                                _this.post.Id = opr.Result.Id;
+                                delete _this.post['$__isNascent'];
+                                _this.__notify.success('Your post was saved');
+                            }, function (err) {
+                                _this.__notify.error('Something went wrong - ' + (err.Message || 'not sure'), 'Oops');
+                            }).finally(function () {
+                                _this.isPersisting = false;
+                            });
+                        }
+                        else {
+                            this.__posts.updatePost(this.post).then(function (opr) {
+                                _this.post.Id = opr.Result.Id;
+                                delete _this.post['$__isNascent'];
+                                _this.__notify.success('Your post was saved');
+                            }, function (err) {
+                                _this.__notify.error('Something went wrong - ' + (err.Message || 'not sure'), 'Oops');
+                            }).finally(function () {
+                                _this.isPersisting = false;
+                            });
+                        }
                     }
                 };
                 Edit.prototype.back = function () {
                     this.$state.go(this.previous, { post: this.post });
+                };
+                //ui states
+                Edit.prototype.editorTitle = function () {
+                    if (this.post['$__isNascent'])
+                        return 'New Post';
+                    else
+                        return 'Edit Post';
                 };
                 return Edit;
             }());
@@ -168,3 +250,4 @@ var BitDiamond;
         })(Posts = Controllers.Posts || (Controllers.Posts = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=posts.js.map

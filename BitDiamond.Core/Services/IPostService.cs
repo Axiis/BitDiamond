@@ -21,7 +21,7 @@ namespace BitDiamond.Core.Services
         [Resource(":system/posts/@publish")]
         Operation<Post> PublishPost(long id);
 
-        [Resource(":system/posts/@update")]
+        [Resource(":system/posts/@archive")]
         Operation<Post> ArchivePost(long id);
     }
 }

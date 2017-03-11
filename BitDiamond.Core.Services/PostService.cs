@@ -43,16 +43,6 @@ namespace BitDiamond.Core.Services
         {
             var post = _query.GetPostById(id).ThrowIfNull("Invalid post");
 
-            //for now, only admins can archive posts
-            var currentRoles = UserContext.CurrentUserRoles();
-            if (!currentRoles.Contains(Constants.Roles_AdminRole) ||
-                !currentRoles.Contains(Constants.Roles_RootRole))
-                throw new Exception("Access Denied");
-
-            else if (post.Status != PostStatus.Published)
-                throw new Exception("Invalid operation");
-
-            //else
             post.Status = PostStatus.Archived;
             return _pcommand.Update(post);
         });
@@ -60,6 +50,7 @@ namespace BitDiamond.Core.Services
         public Operation<Post> CreateNewsPost(Post post)
         => _auth.AuthorizeAccess(this.PermissionProfile<IPostService>(UserContext.CurrentUser()), () =>
         {
+            post.OwnerId = UserContext.CurrentUser().UserId;
             return post.Validate()
                 .Then(opr =>
                 {
@@ -98,17 +89,7 @@ namespace BitDiamond.Core.Services
         => _auth.AuthorizeAccess(this.PermissionProfile<IPostService>(UserContext.CurrentUser()), () =>
         {
             var post = _query.GetPostById(id).ThrowIfNull("Invalid post");
-
-            //for now, only admins can archive posts
-            var currentRoles = UserContext.CurrentUserRoles();
-            if (!currentRoles.Contains(Constants.Roles_AdminRole) ||
-                !currentRoles.Contains(Constants.Roles_RootRole))
-                throw new Exception("Access Denied");
-
-            else if (post.Status != PostStatus.Draft)
-                throw new Exception("Invalid operation");
-
-            //else
+            
             post.Status = PostStatus.Published;
             return _pcommand.Update(post);
         });

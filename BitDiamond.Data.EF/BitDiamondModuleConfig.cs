@@ -188,7 +188,8 @@ namespace BitDiamond.Data.EF
 
                     ":system/notifications/*",
 
-                    ":system/posts/@getPaged"
+                    ":system/posts/@getPaged",
+                    ":system/posts/@getById"
                 }
                 .Select(_selector => new Permission
                 {

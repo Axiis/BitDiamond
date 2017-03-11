@@ -381,49 +381,9 @@ module BitDiamond.Services {
         }
 
         getPagedNewsPosts(pageSize: number, pageIndex: number): ng.IPromise<Utils.Operation<Utils.SequencePage<Models.IPost>>> {
-            //return this.__transport.get<Utils.Operation<Utils.SequencePage<Models.IPost>>>('/api/posts/news/paged', {
-            //    PageSize: pageSize,
-            //    PageIndex: pageIndex
-            //});
-            return this.$q.resolve(<Utils.Operation<Utils.SequencePage<Models.IPost>>>{
-                Succeeded: true,
-                Message: '',
-                Result: new Utils.SequencePage([{
-                    Context: 'PostContext.News',
-                    Title: 'Some Title here',
-                    Message: 'Post message/article or whatever you want to call it',
-                    Status: Models.PostStatus.Archived,
-                    OwnerId: 'admin@xyz.com',
-                    CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
-                } as Models.IPost, {
-                    Context: 'PostContext.News',
-                    Title: 'Some Title here',
-                    Message: 'Post message/article or whatever you want to call it',
-                    Status: Models.PostStatus.Draft,
-                    OwnerId: 'admin@xyz.com',
-                    CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
-                } as Models.IPost, {
-                    Context: 'PostContext.News',
-                    Title: 'Some Title here',
-                    Message: 'Post message/article or whatever you want to call it',
-                    Status: Models.PostStatus.Published,
-                    OwnerId: 'admin@xyz.com',
-                    CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
-                } as Models.IPost, {
-                    Context: 'PostContext.News',
-                    Title: 'Some Title here',
-                    Message: 'Post message/article or whatever you want to call it',
-                    Status: Models.PostStatus.Published,
-                    OwnerId: 'admin@xyz.com',
-                    CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
-                } as Models.IPost, {
-                    Context: 'PostContext.News',
-                    Title: 'Some Title here',
-                    Message: 'Post message/article or whatever you want to call it',
-                    Status: Models.PostStatus.Archived,
-                    OwnerId: 'admin@xyz.com',
-                    CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
-                } as Models.IPost], 5, 3, 0)
+            return this.__transport.get<Utils.Operation<Utils.SequencePage<Models.IPost>>>('/api/posts/news/paged', {
+                PageSize: pageSize,
+                PageIndex: pageIndex
             });
         }
 

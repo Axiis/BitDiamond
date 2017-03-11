@@ -304,49 +304,9 @@ var BitDiamond;
                 });
             };
             Posts.prototype.getPagedNewsPosts = function (pageSize, pageIndex) {
-                //return this.__transport.get<Utils.Operation<Utils.SequencePage<Models.IPost>>>('/api/posts/news/paged', {
-                //    PageSize: pageSize,
-                //    PageIndex: pageIndex
-                //});
-                return this.$q.resolve({
-                    Succeeded: true,
-                    Message: '',
-                    Result: new BitDiamond.Utils.SequencePage([{
-                            Context: 'PostContext.News',
-                            Title: 'Some Title here',
-                            Message: 'Post message/article or whatever you want to call it',
-                            Status: BitDiamond.Models.PostStatus.Archived,
-                            OwnerId: 'admin@xyz.com',
-                            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
-                        }, {
-                            Context: 'PostContext.News',
-                            Title: 'Some Title here',
-                            Message: 'Post message/article or whatever you want to call it',
-                            Status: BitDiamond.Models.PostStatus.Draft,
-                            OwnerId: 'admin@xyz.com',
-                            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
-                        }, {
-                            Context: 'PostContext.News',
-                            Title: 'Some Title here',
-                            Message: 'Post message/article or whatever you want to call it',
-                            Status: BitDiamond.Models.PostStatus.Published,
-                            OwnerId: 'admin@xyz.com',
-                            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
-                        }, {
-                            Context: 'PostContext.News',
-                            Title: 'Some Title here',
-                            Message: 'Post message/article or whatever you want to call it',
-                            Status: BitDiamond.Models.PostStatus.Published,
-                            OwnerId: 'admin@xyz.com',
-                            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
-                        }, {
-                            Context: 'PostContext.News',
-                            Title: 'Some Title here',
-                            Message: 'Post message/article or whatever you want to call it',
-                            Status: BitDiamond.Models.PostStatus.Archived,
-                            OwnerId: 'admin@xyz.com',
-                            CreatedOn: new Apollo.Models.JsonDateTime(new Date().getTime())
-                        }], 5, 3, 0)
+                return this.__transport.get('/api/posts/news/paged', {
+                    PageSize: pageSize,
+                    PageIndex: pageIndex
                 });
             };
             Posts.prototype.createPost = function (post) {
@@ -370,3 +330,4 @@ var BitDiamond;
         Services.Posts = Posts;
     })(Services = BitDiamond.Services || (BitDiamond.Services = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=bit-diamond.js.map

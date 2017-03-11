@@ -14,28 +14,27 @@
             <li><a href class="active">Edit News</a></li>
         </ol>
     </div>
-    <!-- /.col-lg-12 -->
 </div>
 
 <div class="row" style="margin-top:20px;">
-    <div class="clearfix col-lg-12">
-        <button class="btn btn-outline btn-success btn-sm pull-right"
-                ng-click="vm.persist()">
-            <span ng-hide="vm.isSaving">
-                <i class="ti-save"></i> Save
-            </span>
-            <ring-loader size="16" color="white" show="vm.isSaving"></ring-loader>
-        </button>
-        <button class="btn btn-outline btn-default btn-sm pull-right"
+    <div class="clearfix col-lg-12" style="text-align:right;">
+        <button class="btn btn-outline btn-default"
                 ng-click="vm.back()">
             <span>
-                <i class="ti-left"></i> Back
+                <i class="ti-arrow-left"></i> Back
             </span>
+        </button>
+        <button class="btn btn-outline btn-success btn-sm"
+                ng-click="vm.persist()">
+            <span ng-hide="vm.isPersisting">
+                <i class="ti-save"></i> Save
+            </span>
+            <ring-loader size="16" color="white" show="vm.isPersisting"></ring-loader>
         </button>
     </div>
 </div>
 
-<div class="row" style="margin-top:20px;">
+<div class="row" style="margin-top:15px;">
     <div class="col-lg-offset-1 col-lg-10 col-md-offset-2 col-md-8 col-sm-12">
         <div class="white-box">
             <div class="row">
@@ -43,9 +42,8 @@
 
                     <h4 style="margin-bottom:0">Title</h4>
                     <small class="text-muted">Select your text to apply styles</small>
-                    <summernote style="border-bottom: 1px solid #ab8ce4; min-height:40px; padding:15px 0 0 0;"
+                    <summernote style="border-bottom: 1px solid #ab8ce4; min-height:40px; margin-top:10px; padding:15px 0 0 0;"
                                 bind="vm.post.Title">
-
                     </summernote>
                 </div>
             </div>
@@ -56,8 +54,8 @@
 
                     <h4 style="margin-bottom:0">Body</h4>
                     <small class="text-muted">Select your text to apply styles</small>
-                    <summernote style="border-bottom: 1px solid #ab8ce4; min-height:40px; padding: 15px 0 0 0;">
-
+                    <summernote style="border-bottom: 1px solid #ab8ce4; min-height:40px; margin-top:10px; padding: 15px 0 0 0;"
+                                bind="vm.post.Message">
                     </summernote>
                 </div>
             </div>

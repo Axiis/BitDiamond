@@ -31,18 +31,20 @@ var BitDiamond;
                 controllerAs: 'vm'
             })
                 .state('edit', {
-                url: '/edit/',
+                url: '/edit/:id',
                 params: {
-                    post: null
+                    post: null,
+                    id: null
                 },
                 templateUrl: '/posts/edit',
                 controller: 'Edit',
                 controllerAs: 'vm'
             })
                 .state('details', {
-                url: '/details/',
+                url: '/details/:id',
                 params: {
-                    post: null
+                    post: null,
+                    id: null
                 },
                 templateUrl: '/posts/details',
                 controller: 'Details',
@@ -51,3 +53,4 @@ var BitDiamond;
         });
     })(Modules = BitDiamond.Modules || (BitDiamond.Modules = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=posts.js.map

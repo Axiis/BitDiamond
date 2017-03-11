@@ -5,7 +5,7 @@ module BitDiamond.Controllers.Posts {
 
         loadHistory(index: number, size: number): ng.IPromise<Utils.SequencePage<Models.IPost>> {
             this.isLoadingView = true;
-            return this.__posts.getPagedNewsPosts(index, size || this.pageSize || 30).then(opr => {
+            return this.__posts.getPagedNewsPosts(size || this.pageSize || 20, index).then(opr => {
 
                 if (!Object.isNullOrUndefined(opr.Result)) {
                     opr.Result.Page = opr.Result.Page.map(_post => {
@@ -84,19 +84,34 @@ module BitDiamond.Controllers.Posts {
             this.$state.go('edit', { post: post });
         }
         postAction(post: Models.IPost) {
-            var action = post.Status == Models.PostStatus.Draft? this.__posts.publishPost:
-                Models.PostStatus.Published ? this.__posts.archivePost : null;
 
-            if (!Object.isNullOrUndefined(action)) {
+            if (!post['$__isActing']) {
                 post['$__isActing'] = true;
-                action(post.Id).then(opr => {
-                    post.Status = opr.Result.Status;
-                    this.__notify.success('Done');
-                }, err => {
-                    this.__notify.error('Something happened' + (err.Messaage || ''), 'Oops!');
-                }).finally(() => {
+
+                if (post.Status == Models.PostStatus.Draft) {
+                    this.__posts.publishPost(post.Id).then(opr => {
+                        post.Status = opr.Result.Status;
+                        this.__notify.success('Done');
+                    }, err => {
+                        this.__notify.error('Something happened' + (err.Messaage || ''), 'Oops!');
+                    }).finally(() => {
+                        delete post['$__isActing'];
+                    });
+                }
+                else if (post.Status == Models.PostStatus.Published) {
+                    this.__posts.archivePost(post.Id).then(opr => {
+                        post.Status = opr.Result.Status;
+                        this.__notify.success('Done');
+                    }, err => {
+                        this.__notify.error('Something happened' + (err.Messaage || ''), 'Oops!');
+                    }).finally(() => {
+                        delete post['$__isActing'];
+                    });
+                }
+                else {
+                    this.__notify.info('Cannot act on an archived post');
                     delete post['$__isActing'];
-                });
+                }
             }     
         }
 
@@ -106,6 +121,7 @@ module BitDiamond.Controllers.Posts {
         pageSize: number = 20;
 
         isLoadingView: boolean;
+        isActing: boolean;
         isAdmin: boolean = true;
 
         __posts: Services.Posts;
@@ -117,7 +133,7 @@ module BitDiamond.Controllers.Posts {
         constructor(__posts, __userContext, __notify, $q, $state) {
             this.__posts = __posts;
             this.__userContext = __userContext;
-            this.__notify = __userContext;
+            this.__notify = __notify;
             this.$q = $q;
             this.$state = $state;
 
@@ -133,31 +149,110 @@ module BitDiamond.Controllers.Posts {
 
     export class Details {
 
+        back() {
+            this.$state.go(this.previous, { post: this.post });
+        }
+
+        getHeadingContainerStyle() {
+            return {
+                height: '150px',
+                padding: '20px',
+                display: 'flex',
+                position: 'relative',
+                'align-items': 'flex-end',
+                'flex-direction': 'row',
+                'background': 'no-repeat url(/content/images/material-backgrounds/2.jpg) top left',
+                'background-size': 'cover'
+            };
+        }
+        displayDate(date: Apollo.Models.JsonDateTime) {
+            if (Object.isNullOrUndefined(date)) return null;
+            else return date.toMoment().format('MMM D, Y');
+        }
+
+
+        $state: ng.ui.IStateService;
+        $stateParams: ng.ui.IStateParamsService;
+
+        __notify: Utils.Services.NotifyService;
+        __posts: Services.Posts;
+        previous: string;
+        post: Models.IPost;
+        isLoadingView: boolean;
+
+        constructor($state, $stateParams, __notify, __posts) {
+            this.$state = $state;
+            this.$stateParams = $stateParams;
+            this.__notify = __notify;
+            this.__posts = __posts;
+
+            this.previous = this.$stateParams['previous'] || 'list';
+            var p = this.$stateParams['post'];
+            var id = this.$stateParams['id'];
+
+            if (Object.isNullOrUndefined(p) && (Object.isNullOrUndefined(id) || id <= 0)) {
+                swal({
+                    title: 'Error',
+                    text: 'Sorry, something went wrong while trying to display the post.',
+                    type: 'error'
+                });
+                this.$state.go(this.previous);
+            }
+            else if (typeof p == 'number') {
+                this.isLoadingView = true;
+                this.__posts.getPostById(<number>p).then(opr => {
+                    this.post.CreatedOn = new Apollo.Models.JsonDateTime(this.post.CreatedOn);
+                    this.post = opr.Result;
+                }, err => {
+                    this.__notify.error('Something went wrong ' + (err.Message || ''), 'Oops');
+                }).finally(() => {
+                    this.isLoadingView = false;
+                });
+            }
+            else this.post = p;
+        }
     }
 
 
     export class Edit {
 
+        //events
         persist() {
             if (this.isPersisting) return;
             else {
                 this.isPersisting = true;
-                var _persist: (_p: Models.IPost) => ng.IPromise<Utils.Operation<Models.IPost>> = null;
-                if (this.post['$__isNascent']) _persist = this.__posts.updatePost;
-                else _persist = this.__posts.createPost;
-
-                _persist(this.post).then(opr => {
-                    this.__notify.success('Your post was saved');
-                }, err => {
-                    this.__notify.error('Something went wrong - ' + (err.Message || 'not sure'), 'Oops');
-                }).finally(() => {
-                    this.isPersisting = false;
-                });
+                if (this.post['$__isNascent']) {
+                    this.__posts.createPost(this.post).then(opr => {
+                        this.post.Id = opr.Result.Id;
+                        delete this.post['$__isNascent'];
+                        this.__notify.success('Your post was saved');
+                    }, err => {
+                        this.__notify.error('Something went wrong - ' + (err.Message || 'not sure'), 'Oops');
+                    }).finally(() => {
+                        this.isPersisting = false;
+                    });
+                }
+                else {
+                    this.__posts.updatePost(this.post).then(opr => {
+                        this.post.Id = opr.Result.Id;
+                        delete this.post['$__isNascent'];
+                        this.__notify.success('Your post was saved');
+                    }, err => {
+                        this.__notify.error('Something went wrong - ' + (err.Message || 'not sure'), 'Oops');
+                    }).finally(() => {
+                        this.isPersisting = false;
+                    });
+                }
             }
         }
-
         back() {
             this.$state.go(this.previous, { post: this.post });
+        }
+
+        //ui states
+        editorTitle() {
+            if (this.post['$__isNascent']) return 'New Post';
+            else return 'Edit Post';
         }
 
 
@@ -176,7 +271,7 @@ module BitDiamond.Controllers.Posts {
         constructor(__posts, __userContext, __notify, $q, $state, $stateParams) {
             this.__posts = __posts;
             this.__userContext = __userContext;
-            this.__notify = __userContext;
+            this.__notify = __notify;
             this.$q = $q;
             this.$state = $state;
             this.$stateParams = $stateParams;

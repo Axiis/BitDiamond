@@ -109,6 +109,20 @@ namespace BitDiamond.Core.Services
             _pcommand.Update(bl);
 
             bl.Donation = donation;
+
+            //notify user
+            _notifier.NotifyUser(new Notification
+            {
+                Type = NotificationType.Success,
+                TargetId = targetUser.UserId,
+                Title = "Congratulations!",
+                Message = $"Well done, {targetUser.UserId}!! You are now <strong>proudly</strong> at Cycle-{nextCycle} / Level-{nextLevel}, no easy feat!<br/>"+
+                @"Now you can receive even more donations from your downlines. 
+                  <p>Remember though, that this is a race to the <strong class='text-primary'>top</strong>, and as such
+                  you may miss the donations of any of your downlines who upgrades to levels higher than yours. So dont waste much time here, Upgrade as soon as you can!</p>"
+            })
+            .Resolve();
+
             return bl;
         });
 
@@ -295,7 +309,31 @@ namespace BitDiamond.Core.Services
                      {
                          bl.SkipCount++;
                          _pcommand.Update(bl);
-                 
+
+                         //notify user
+                         _notifier.NotifyUser(new Notification
+                         {
+                             Type = NotificationType.Info,
+                             TargetId = bl.UserId,
+                             Title = "Missed donation",
+                             Message = @"
+<strong>Ouch!</strong> You just missed a donation...
+<p>
+    <span class='text-muted'>Your level</span><br />
+    {0}
+</p>
+<p>
+    <span class='text-muted'>Downline</span><br />
+    {1}
+</p>
+<p>
+    <span class='text-muted'>Downline Level</span><br />
+    {2}
+</p>
+".ResolveParameters(new BitCycle { Level = nextLvel, Cycle = nextCycle }, _rn.UserId, new BitCycle { Level = bl.Level, Cycle = bl.Cycle })
+                         })
+                         .Resolve();
+
                          return false;
                      }
                      else return true;

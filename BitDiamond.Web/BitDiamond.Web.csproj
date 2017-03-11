@@ -1205,6 +1205,7 @@
     <Compile Include="Infrastructure\Utils\NoCacheAttribute.cs" />
     <Compile Include="Infrastructure\Utils\PerRequest.cs" />
     <Compile Include="Infrastructure\Utils\WebConstants.cs" />
+    <Compile Include="Infrastructure\Utils\_Service.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

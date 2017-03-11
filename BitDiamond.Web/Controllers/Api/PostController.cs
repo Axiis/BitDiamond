@@ -26,38 +26,39 @@ namespace BitDiamond.Web.Controllers.Api
         }
 
         [HttpGet, Route("api/posts/single")]
-        IHttpActionResult GetPostById([FromBody] PostArg args)
-        => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
-            .Then(opr => _postService.GetPostById(args.Id))
+        public IHttpActionResult GetPostById(string data)
+        => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
+            .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<PostArg>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
+            .Then(argopr => _postService.GetPostById(argopr.Result.Id))
             .OperationResult(Request);
 
         [HttpGet, Route("api/posts/news/paged")]
-        IHttpActionResult PagedNewsPosts([FromBody] string data)
+        public IHttpActionResult PagedNewsPosts(string data)
         => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
             .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<PageArg>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
             .Then(argopr => _postService.PagedNewsPosts(argopr.Result.PageSize, argopr.Result.PageIndex))
             .OperationResult(Request);
 
         [HttpPost, Route("api/posts")]
-        IHttpActionResult CreateNewsPost([FromBody]Post post)
+        public IHttpActionResult CreateNewsPost([FromBody]Post post)
         => Operation.Try(() => post.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _postService.CreateNewsPost(post))
             .OperationResult(Request);
 
         [HttpPut, Route("api/posts")]
-        IHttpActionResult UpdatePost([FromBody]Post post)
+        public IHttpActionResult UpdatePost([FromBody]Post post)
         => Operation.Try(() => post.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _postService.UpdatePost(post))
             .OperationResult(Request);
 
         [HttpPut, Route("api/posts/published")]
-        IHttpActionResult PublishPost([FromBody] PostArg args)
+        public IHttpActionResult PublishPost([FromBody] PostArg args)
         => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _postService.PublishPost(args.Id))
             .OperationResult(Request);
 
         [HttpPut, Route("api/posts/archived")]
-        IHttpActionResult ArchivePost([FromBody]PostArg args)
+        public IHttpActionResult ArchivePost([FromBody]PostArg args)
         => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _postService.ArchivePost(args.Id))
             .OperationResult(Request);

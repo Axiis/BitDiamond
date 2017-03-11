@@ -90,6 +90,7 @@ namespace BitDiamond.Web.Infrastructure.DI
             c.RegisterLazyService<Core.Services.Query.ISettingsQuery, Data.EF.Query.SettingsQuery>(gen, Lifestyle.Scoped);
             c.RegisterLazyService<Core.Services.Query.IUserContextQuery, Data.EF.Query.UserContextQuery>(gen, Lifestyle.Scoped);
             c.RegisterLazyService<Core.Services.Query.IUserNotifierQuery, Data.EF.Query.UserNotifierQuery>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IPostQuery, Data.EF.Query.PostQuery>(gen, Lifestyle.Scoped);
             #endregion
 
             #region Axis.Pollux.Identity
@@ -118,9 +119,10 @@ namespace BitDiamond.Web.Infrastructure.DI
             c.RegisterLazyService<IContextVerifier, ContextVerifier>(gen, Lifestyle.Scoped);
             c.RegisterLazyService<IReferralManager, ReferralManager>(gen, Lifestyle.Scoped);
             c.RegisterLazyService<ISettingsManager, SettingsManager>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<IPostService, PostService>(gen, Lifestyle.Scoped);
             c.RegisterLazyService<IUserNotifier, UserNotifier>(gen, Lifestyle.Scoped);
             #endregion
-            
+
             #endregion
 
 

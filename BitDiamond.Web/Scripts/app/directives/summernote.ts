@@ -35,7 +35,7 @@ module BitDiamond.Directives {
             scope.parent = scope.$parent; //<--hack to enable '$eval' accross scope hierarchy
             scope.$eval('content = parent.' + bind);
 
-            activatedDom.text(scope.content)
+            activatedDom.html(scope.content)
                 .summernote(<ISummernoteOptions>{
                     airMode: true,
                     airPopover: [

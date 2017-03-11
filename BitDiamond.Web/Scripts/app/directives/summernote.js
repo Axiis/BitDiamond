@@ -30,7 +30,7 @@ var BitDiamond;
                 //now initialize summernote
                 scope.parent = scope.$parent; //<--hack to enable '$eval' accross scope hierarchy
                 scope.$eval('content = parent.' + bind);
-                activatedDom.text(scope.content)
+                activatedDom.html(scope.content)
                     .summernote({
                     airMode: true,
                     airPopover: [
@@ -54,3 +54,4 @@ var BitDiamond;
         Directives.Summernote = Summernote;
     })(Directives = BitDiamond.Directives || (BitDiamond.Directives = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=summernote.js.map

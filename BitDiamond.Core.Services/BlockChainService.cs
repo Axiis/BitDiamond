@@ -18,23 +18,27 @@ namespace BitDiamond.Core.Services
         private IBitLevelQuery _levelQuery;
         private IPersistenceCommands _pcommand;
         private IUserAuthorization _authorizer;
+        private IUserNotifier _notifier;
 
         public BlockChainService(IBlockChainQuery blQuery, IUserContext context, 
                                  IPersistenceCommands pcommand,
                                  IBitLevelQuery levelQuery,
-                                 IUserAuthorization authorizer)
+                                 IUserAuthorization authorizer,
+                                 IUserNotifier notifier)
         {
             ThrowNullArguments(() => blQuery,
                                () => context,
                                () => pcommand,
                                () => authorizer,
-                               () => levelQuery);
+                               () => levelQuery,
+                               () => notifier);
 
             this._blQuery = blQuery;
             this.UserContext = context;
             this._pcommand = pcommand;
             this._authorizer = authorizer;
             this._levelQuery = levelQuery;
+            this._notifier = notifier;
         }
 
 
@@ -86,6 +90,16 @@ namespace BitDiamond.Core.Services
             transaction.Status = BlockChainTransactionStatus.Verified;
             _pcommand.Update(transaction);
 
+            //notify user
+            _notifier.NotifyUser(new Notification
+            {
+                Type = NotificationType.Info,
+                TargetId = transaction.Sender.OwnerId,
+                Title = "Transaction Confirmation",
+                Message = $"Your transaction was <strong class='text-warning'>manually</strong> verified by the receiver."
+            })
+            .Resolve();
+
             return transaction;
         });
 
@@ -98,6 +112,16 @@ namespace BitDiamond.Core.Services
 
             transaction.Status = BlockChainTransactionStatus.Verified;
             _pcommand.Update(transaction);
+
+            //notify user
+            _notifier.NotifyUser(new Notification
+            {
+                Type = NotificationType.Info,
+                TargetId = transaction.Sender.OwnerId,
+                Title = "Transaction Confirmation",
+                Message = $"Your transaction was <strong class='text-warning'>manually</strong> verified by the receiver."
+            })
+            .Resolve();
 
             return transaction;
         });

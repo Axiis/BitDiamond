@@ -3,15 +3,57 @@
     Layout = null;
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
-<body>
-    <div> 
+<div class="row bg-title">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">Details</h4>
     </div>
-</body>
-</html>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <ol class="breadcrumb">
+            <li><a href ui-sref="list">Posts</a></li>
+            <li><a href class="active">Details</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="row" style="margin-top:20px;">
+    <div class="clearfix col-lg-12" style="text-align:right;">
+        <button class="btn btn-outline btn-default"
+                ng-click="vm.back()">
+            <span>
+                <i class="ti-arrow-left"></i> &nbsp;Back
+            </span>
+        </button>
+    </div>
+</div>
+
+<div class="row" style="margin-top:20px;">
+    <div class="col-md-offset-2 col-md-8 col-sm-12">
+        <div class="bd-card-2">
+            <div ng-style="vm.getHeadingContainerStyle()">
+
+                <div style="position:absolute; left:0; right:0; top:0; bottom:0; background-color: rgba(0, 0, 0, 0.3)"></div>
+                <h3 style="margin-bottom:0; font-weight:500; z-index:2;" ng-bind-html="vm.post.Title"></h3>
+            </div>
+
+            <div class="white-box">
+
+                <div class="row" style="height:30px;">
+                    <div class="col-xs-6">
+
+                    </div>
+                    <div class="col-xs-6" style="text-align:right;">
+                        <span class="time">{{vm.displayDate(vm.post.CreatedOn)}}</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12"
+                         style="text-align:justify;"
+                         ng-bind-html="vm.post.Message">
+                    </div>
+                </div>
+            </div>
+        </div>      
+    </div>
+</div>
+

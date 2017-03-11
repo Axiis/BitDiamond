@@ -30,6 +30,7 @@ namespace BitDiamond.Core.Services
         private ISettingsManager _settingsManager;
         private IAppUrlProvider _apiProvider;
         private IReferralManager _refManager;
+        private IUserNotifier _notifier;
 
 
         #region Init
@@ -39,8 +40,9 @@ namespace BitDiamond.Core.Services
                               IUserAuthorization accessManager,
                               IPersistenceCommands pcommands,
                               IAppUrlProvider apiProvider,
-                              IReferralManager refManager, 
+                              IReferralManager refManager,
                               IUserContext userContext,
+                              IUserNotifier notifier,
                               IEmailPush messagePush,
                               IBlobStore blobStore,
                               IAccountQuery query)
@@ -55,7 +57,8 @@ namespace BitDiamond.Core.Services
                                () => pcommands,
                                () => settingsManager,
                                () => apiProvider,
-                               () => refManager);
+                               () => refManager,
+                               () => notifier);
 
             UserContext = userContext;
             _query = query;
@@ -68,6 +71,7 @@ namespace BitDiamond.Core.Services
             _apiProvider = apiProvider;
             _refManager = refManager;
             _pcommand = pcommands;
+            _notifier = notifier;
         }
         #endregion
 
@@ -137,6 +141,38 @@ namespace BitDiamond.Core.Services
                     {
                         return RequestUserActivation(user.UserId);
                     })
+                #endregion
+
+                #region Notify User
+                    //welcome notification
+                    .Then(opr => _notifier.NotifyUser(new Notification
+                    {
+                        TargetId = user.UserId,
+                        Title = "Welcome to the BitDiamond Family!",
+                        Message = "Us here at BitDiamond warmly welcome you to our family of wealth growers and investors.",
+                        Type = NotificationType.Info
+                    }))
+
+                    //Add a Bitcoin Address
+                    .Then(_opr => _notifier.NotifyUser(new Notification
+                    {
+                        TargetId = user.UserId,
+                        Type = NotificationType.Info,
+                        Title = "Get a Bitcoin Address",
+                        Message = @"
+Already have a Bitcoin address? then go right ahead and add that address <a href='/bit-level/index#!/bitcoin-addresses'>Here</a><br/>
+If you dont have one, you can create one with any of the popular Bitcoin Wallet services. 
+"
+                    }))
+
+                    //Add a Bitcoin Address
+                    .Then(_opr => _notifier.NotifyUser(new Notification
+                    {
+                        TargetId = user.UserId,
+                        Type = NotificationType.Info,
+                        Title = "Biodata request",
+                        Message = @"Visit your <a href='/profile/home'>Profile Page</a> to supply your biodata information."
+                    }))
                 #endregion
 
                     .Then(opr => user);

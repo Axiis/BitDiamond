@@ -267,7 +267,7 @@ namespace BitDiamond.Data.EF
                     Metadata = CredentialMetadata.Password,
                     OwnerId = Constants.SystemUsers_Apex,
                     Status = CredentialStatus.Active,
-                    Value = Encoding.UTF8.GetBytes("Nuid9x11")
+                    Value = Encoding.UTF8.GetBytes("12b8exzGA5Dmq4dcCFq68Eym3maKnmN5pn")
                 };
                 var credentialAuthority = new CredentialAuthentication(cxt, new DefaultHasher());
                 credentialAuthority.AssignCredential(Constants.SystemUsers_Apex, credential).Resolve();
@@ -275,7 +275,8 @@ namespace BitDiamond.Data.EF
                 //add bit level and verified blocktransaction for apex user
                 var bcaddress = new BitcoinAddress
                 {
-                    OwnerId = Constants.SystemUsers_Apex
+                    OwnerId = Constants.SystemUsers_Apex,
+                    BlockChainAddress = ""
                 };
                 cxt.Add(bcaddress).Context.CommitChanges();
 
@@ -310,15 +311,6 @@ namespace BitDiamond.Data.EF
                     UserId = Constants.SystemUsers_Apex
                 };
                 cxt.Add(referral).Context.CommitChanges();
-
-                //contact
-                var contact = new ContactData
-                {
-                    Email = "g.jax@gmail.com",
-                    EmailConfirmed = true,
-                    OwnerId = Constants.SystemUsers_Apex
-                };
-                cxt.Add(contact).Context.CommitChanges();
 
                 cxt.CommitChanges();
             });

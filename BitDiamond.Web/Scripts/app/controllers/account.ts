@@ -365,7 +365,6 @@ module BitDiamond.Controllers.Account {
 module BitDiamond.Controllers.Account {
 
     export class Terms {
-        termsAndConditions: string = "[Terms and conditions here...]";
 
         $state: ng.ui.IStateService;
 

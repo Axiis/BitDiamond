@@ -141,7 +141,7 @@ module BitDiamond.Controllers.Posts {
             this.loadHistory(0, this.pageSize);
 
             this.__userContext.userRoles.then(r => {
-                //this.isAdmin = r.contains(Utils.Constants.Roles_AdminRole);
+                this.isAdmin = r.contains(Utils.Constants.Roles_AdminRole);
             });
         }
     }

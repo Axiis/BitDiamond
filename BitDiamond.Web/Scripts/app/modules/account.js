@@ -68,7 +68,7 @@ var BitDiamond;
             })
                 .state('termsAndConditions', {
                 url: '/terms-conditions',
-                templateUrl: '/account/terms-conditions',
+                templateUrl: '/account/terms',
                 controller: 'Terms',
                 controllerAs: 'vm'
             });

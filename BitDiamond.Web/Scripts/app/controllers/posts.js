@@ -6,6 +6,7 @@ var BitDiamond;
         (function (Posts) {
             var List = (function () {
                 function List(__posts, __userContext, __notify, $q, $state) {
+                    var _this = this;
                     this.pageSize = 20;
                     this.isAdmin = true;
                     this.__posts = __posts;
@@ -16,7 +17,7 @@ var BitDiamond;
                     //load the initial view
                     this.loadHistory(0, this.pageSize);
                     this.__userContext.userRoles.then(function (r) {
-                        //this.isAdmin = r.contains(Utils.Constants.Roles_AdminRole);
+                        _this.isAdmin = r.contains(BitDiamond.Utils.Constants.Roles_AdminRole);
                     });
                 }
                 List.prototype.loadHistory = function (index, size) {

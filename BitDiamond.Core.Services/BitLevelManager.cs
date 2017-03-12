@@ -139,6 +139,14 @@ namespace BitDiamond.Core.Services
             return _pcommand.Update(currentLevel.Donation);
         });
 
+
+        public Operation<BlockChainTransaction> Promote(string userRef, int units, string securityHash)
+        => _authorizer.AuthorizeAccess(this.PermissionProfile(UserContext.CurrentUser()), () =>
+        {
+            //verify the securityHash
+            var 
+        });
+
         public Operation<BlockChainTransaction> ConfirmUpgradeDonnation()
         => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
         {

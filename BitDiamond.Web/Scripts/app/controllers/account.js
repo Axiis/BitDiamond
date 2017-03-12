@@ -321,7 +321,6 @@ var BitDiamond;
         (function (Account) {
             var Terms = (function () {
                 function Terms($state) {
-                    this.termsAndConditions = "[Terms and conditions here...]";
                     this.$state = $state;
                 }
                 Terms.prototype.ok = function () {

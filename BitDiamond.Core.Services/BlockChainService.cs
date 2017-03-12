@@ -8,6 +8,8 @@ using Axis.Jupiter.Kore.Command;
 using System;
 using System.Collections.Generic;
 using Axis.Pollux.RBAC.Services;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace BitDiamond.Core.Services
 {
@@ -45,21 +47,33 @@ namespace BitDiamond.Core.Services
         public Operation<BlockChainTransaction> GetTransactionDetails(string transactionHash)
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
-            //use web client to call the webservice that validates the transaction hash...
-
-            //but for the interim...
             var bl = this._levelQuery.CurrentBitLevel(UserContext.CurrentUser());
-            bl.Donation.LedgerCount = 4;
-            bl.Donation.Status = BlockChainTransactionStatus.Verified;
 
-            return _pcommand.Update(bl.Donation);
+            //use web client to call the webservice that validates the transaction hash...
+            using (var client = new WebClient())
+            {
+                var trnx = client.DownloadString($"https://blockchain.info/tx/{transactionHash}?format=json");
+                var trnxContainer = JsonConvert.DeserializeObject<TransactionContainer>(trnx);
+                if (trnxContainer.block_height == 0) throw new Exception();
+
+                var currentBlockCount = long.Parse(client.DownloadString("https://blockchain.info/q/getblockcount"));
+
+                bl.Donation.LedgerCount = (int)(currentBlockCount - trnxContainer.block_height + 1);
+                if (bl.Donation.LedgerCount >= 3) bl.Donation.Status = BlockChainTransactionStatus.Verified;
+
+                return _pcommand.Update(bl.Donation);
+            }
         });
 
         public Operation<BitcoinAddress> VerifyBitcoinAddress(BitcoinAddress bitcoinAddress)
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
-            //use web client object to make a call to the web api service to verify the bitcoin addresses existence
-            return bitcoinAddress;
+            using (var client = new WebClient())
+            {
+                //any errors will throw an exception
+                var result = client.DownloadString($"https://blockchain.info/address/{bitcoinAddress}?format=json");
+                return bitcoinAddress;
+            }
         });
 
         public Operation<IEnumerable<BlockChainTransaction>> GetAllUserTransactions()
@@ -125,5 +139,39 @@ namespace BitDiamond.Core.Services
 
             return transaction;
         });
+
+
+
+        public class TransactionDescriptor
+        {
+            public bool spent { get; set; }
+            public long tx_index { get; set; }
+            public int type { get; set; }
+            public string addr { get; set; }
+            public double value { get; set; }
+            public int n { get; set; }
+            public string script { get; set; }
+        }
+        public class TransactionInput
+        {
+            public string sequence { get; set; }
+            public TransactionDescriptor prev_out { get; set; }
+            public string script { get; set; }
+        }
+        public class TransactionContainer
+        {
+            public int ver { get; set; }
+            public TransactionInput[] inputs { get; set; }
+            public long block_height { get; set; }
+            public string relayed_by { get; set; }
+            public TransactionDescriptor[] @out { get; set; }
+            public int lock_time { get; set; }
+            public int size { get; set; }
+            public bool double_spend { get; set; }
+            public long time { get; set; }
+            public int vin_sz { get; set; }
+            public string hash { get; set; }
+            public int vout_sz { get; set; }
+        }
     }
 }

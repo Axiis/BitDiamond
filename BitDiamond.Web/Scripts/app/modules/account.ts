@@ -75,7 +75,7 @@ module BitDiamond.Modules {
             })
             .state('termsAndConditions', {
                 url: '/terms-conditions',
-                templateUrl: '/account/terms-conditions', //<-- /account/verify-registration
+                templateUrl: '/account/terms',
                 controller: 'Terms',
                 controllerAs: 'vm'
             });

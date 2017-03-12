@@ -33,7 +33,7 @@ namespace BitDiamond.Core.Utils
         #region System Users
         public static readonly string SystemUsers_Root = "@root";
         public static readonly string SystemUsers_Guest = "@guest";
-        public static readonly string SystemUsers_Apex = "@apex";
+        public static readonly string SystemUsers_Apex = "nigel.ryan@protonmail.com";
         #endregion
 
         #region UserData

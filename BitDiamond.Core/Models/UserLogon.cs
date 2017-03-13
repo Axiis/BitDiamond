@@ -12,6 +12,12 @@ namespace BitDiamond.Core.Models
         public string OwinToken { get; set; }
         public bool Invalidated { get; set; }
 
+        [MaxLength(20)]
+        public string Locale { get; set; }
+
+        [MaxLength(20)]
+        public string TimeZone { get; set; }
+
         //note: implement "LastActive" using the "ModifiedOn" property
 
         private User _user;

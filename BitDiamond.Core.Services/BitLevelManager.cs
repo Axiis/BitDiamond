@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Axis.Jupiter.Kore.Command;
 using Axis.Pollux.Identity.Principal;
 using System.Linq;
+using Haxh;
 
 namespace BitDiamond.Core.Services
 {
@@ -65,8 +66,15 @@ namespace BitDiamond.Core.Services
             var maxLevelSettings = _settingsManager.GetSetting(Constants.Settings_MaxBitLevel).Resolve();
             var maxLevel = (int)maxLevelSettings.ParseData<long>();
             var targetUser = UserContext.CurrentUser();
-            var currentLevel = _query.CurrentBitLevel(targetUser) ?? new BitLevel { Level = maxLevel, Cycle = 0, Donation = new BlockChainTransaction { Status = BlockChainTransactionStatus.Verified } };
-            if (currentLevel.Donation.Status == BlockChainTransactionStatus.Unverified) throw new Exception("Current level donnation is still unverified");
+            var currentLevel = _query.CurrentBitLevel(targetUser) ??
+                               new BitLevel
+                               {
+                                   Level = maxLevel,
+                                   Cycle = 0,
+                                   Donation = new BlockChainTransaction { Status = BlockChainTransactionStatus.Verified }
+                               };
+            if (currentLevel.Donation.Status == BlockChainTransactionStatus.Unverified)
+                throw new Exception("Current level donnation is still unverified");
 
             var myAddress = _query.GetActiveBitcoinAddress(targetUser)
                                   .ThrowIfNull("You do not have a valid block chain transaction address yet.");
@@ -140,11 +148,75 @@ namespace BitDiamond.Core.Services
         });
 
 
-        public Operation<BlockChainTransaction> Promote(string userRef, int units, string securityHash)
+        public Operation<BitLevel> Promote(string userRef, int units, string securityHash)
         => _authorizer.AuthorizeAccess(this.PermissionProfile(UserContext.CurrentUser()), () =>
         {
             //verify the securityHash
-            var 
+            Haxher.IsValidHash(securityHash).ThrowIf(_v => !_v, "Access Denied");
+
+            //do promotion logic here
+            var @ref = _refQuery.GetReferalNode(userRef);
+            var targetUser = new User { EntityId = @ref.UserId };
+            var currentLevel = _query.CurrentBitLevel(targetUser);
+            var newLevel = BitCycle.Create(currentLevel.Cycle, currentLevel.Level) + units;
+            var beneficiary = NextUpgradeBeneficiary(new User { UserId = currentLevel.Donation.Receiver.OwnerId }, newLevel.Level, newLevel.Cycle)
+                .ThrowIfNull("could not find a suitable beneficiary");
+
+            var beneficiaryAddress = _query.GetActiveBitcoinAddress(beneficiary);
+            var targetUserAddress = _query.GetActiveBitcoinAddress(targetUser);
+
+            //close off the old level
+            currentLevel.Donation.Amount = 0;
+            currentLevel.Donation.Status = BlockChainTransactionStatus.Verified;
+            _pcommand.Update(currentLevel.Donation);
+
+            var bl = new BitLevel
+            {
+                Level = newLevel.Level,
+                Cycle = newLevel.Cycle,
+                DonationCount = 0,
+                SkipCount = 0,
+                UserId = @ref.UserId
+            };
+            _pcommand.Add(bl).Resolve();
+
+            var maxLevelSettings = _settingsManager.GetSetting(Constants.Settings_MaxBitLevel).Resolve();
+            var maxLevel = (int)maxLevelSettings.ParseData<long>();
+
+            var donation = new BlockChainTransaction
+            {
+                Amount = newLevel.Level == maxLevel ? 0 : GetUpgradeAmount(newLevel.Level + 1),
+                LedgerCount = newLevel.Level == maxLevel ? int.MaxValue : 0,
+                CreatedOn = DateTime.Now,
+                Sender = targetUserAddress,
+                Receiver = beneficiaryAddress,
+                ContextType = Constants.TransactionContext_UpgradeBitLevel,
+                ContextId = bl.Id.ToString(),
+                Status = newLevel.Level == maxLevel ?
+                         BlockChainTransactionStatus.Verified :
+                         BlockChainTransactionStatus.Unverified
+            };
+            _pcommand.Add(donation).Resolve();
+
+            bl.DonationId = donation.Id;
+            _pcommand.Update(bl);
+
+            bl.Donation = donation;
+
+            //notify user
+            _notifier.NotifyUser(new Notification
+            {
+                Type = NotificationType.Success,
+                TargetId = targetUser.UserId,
+                Title = "Congratulations!",
+                Message = $"Well done, {targetUser.UserId}!! You are now <strong>proudly</strong> at Cycle-{newLevel.Cycle} / Level-{newLevel.Level}, no easy feat!<br/>" +
+                @"Now you can receive even more donations from your downlines. 
+                  <p>Remember though, that this is a race to the <strong class='text-primary'>top</strong>, and as such
+                  you may miss the donations of any of your downlines who upgrades to levels higher than yours. So dont waste much time here, Upgrade as soon as you can!</p>"
+            })
+            .Resolve();
+
+            return bl;
         });
 
         public Operation<BlockChainTransaction> ConfirmUpgradeDonnation()

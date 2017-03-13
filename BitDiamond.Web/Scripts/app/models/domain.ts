@@ -223,6 +223,8 @@ module BitDiamond.Models {
 		Location: string;
 		OwinToken: string;
 		Invalidated: boolean;
+		Locale: string;
+		TimeZone: string;
 		User: Pollux.Models.IUser;
 		UserId: string;
 	}

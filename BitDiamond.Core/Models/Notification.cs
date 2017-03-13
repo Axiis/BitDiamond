@@ -21,7 +21,6 @@ namespace BitDiamond.Core.Models
 
         private User _target;
         private string _targetId;
-        [Required(ErrorMessage = "Target is Required")]
         public virtual User Target
         {
             get { return _target; }
@@ -32,6 +31,7 @@ namespace BitDiamond.Core.Models
                 else _targetId = null;
             }
         }
+        [Required(ErrorMessage = "Target id is Required")]
         public string TargetId
         {
             get { return _targetId; }

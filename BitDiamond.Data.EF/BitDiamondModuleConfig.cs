@@ -121,7 +121,9 @@ namespace BitDiamond.Data.EF
                     ":system/accounts/users/credentials/reset-tokens/@verify",
 
                     ":system/settings/@get",
-                    ":system/settings/all/@get"
+                    ":system/settings/all/@get",
+                    ":system/bit-levels/cycles/@promote",
+                    ":system/notifications/@notifyUser"
                 }
                 .Select(_selector => new Permission
                 {
@@ -267,7 +269,7 @@ namespace BitDiamond.Data.EF
                     Metadata = CredentialMetadata.Password,
                     OwnerId = Constants.SystemUsers_Apex,
                     Status = CredentialStatus.Active,
-                    Value = Encoding.UTF8.GetBytes("12b8exzGA5Dmq4dcCFq68Eym3maKnmN5pn")
+                    Value = Encoding.UTF8.GetBytes("Nuid9x11")
                 };
                 var credentialAuthority = new CredentialAuthentication(cxt, new DefaultHasher());
                 credentialAuthority.AssignCredential(Constants.SystemUsers_Apex, credential).Resolve();

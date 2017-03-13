@@ -12,15 +12,14 @@ namespace BitDiamond.Core.Utils
     {
         public static string GenerateCode(string userId)
         {
-            if (userId == Constants.SystemUsers_Apex) return userId + "-001";
-            else if (!userId.IsEmail()) throw new Exception("invalid userid");
+            if (!userId.IsEmail()) throw new Exception("invalid userid");
             else
             {
                 var parts = userId.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
                 return parts[1]
                     .Pipe(_chars => Encoding.ASCII.GetBytes(_chars.ToArray()))
-                    .Aggregate(17, (hash, next) => hash * 283 + next)
-                    .Pipe(_hash => $"@{parts[0]}-{Math.Abs(_hash)}");
+                    .Aggregate(17, (hash, next) => hash * 3 + next)
+                    .Pipe(_hash => $"@{parts[0]}-{Math.Abs(_hash).ToString("X")}");
             }
         }
 

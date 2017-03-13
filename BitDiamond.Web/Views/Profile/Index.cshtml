@@ -100,16 +100,16 @@
                             </li>
                             <li>
                                 <div class="message-center">
-                                    <a ng-repeat="n in vm.notifications">
+                                    <a href  ng-repeat="n in vm.notifications">
                                         <div class="user-img">
-                                            <div alt="user" class="img-circle" style="width:40px; height:40px; text-align: center;">
-                                                <i class="icon-bell" style="font-size:30px; color:white;"></i>
-                                            </div>
+                                            <i class="icon-bell" style="font-size:30px; color:white;"></i>
                                         </div>
                                         <div class="mail-contnet">
-                                            <h5 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
-                                                ng-bind-html="n.Title"></h5>
-                                            <span class="time text-success">{{vm.displayTime(n.CreatedOn)}}</span>
+                                            <h5 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height:1.2em;"
+                                                ng-bind-html="n.Title"></h5> 
+                                            <span class="mail-desc" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height:1.2em;"
+                                                  ng-bind-html="n.Message"></span> 
+                                            <span class="time">{{vm.displayTime(n.CreatedOn)}}</span>
                                         </div>
                                     </a>
                                 </div>

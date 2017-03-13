@@ -1,4 +1,6 @@
-﻿namespace BitDiamond.Core.Utils
+﻿using System;
+
+namespace BitDiamond.Core.Utils
 {
     public class BitCycle
     {
@@ -18,6 +20,8 @@
             scalar -= unit;
             return FromUnits(scalar);
         }
+
+        public static BitCycle Create(int cycle, int level) => FromUnits(cycle * level);
 
         public static BitCycle FromUnits(int units) => new BitCycle
         {

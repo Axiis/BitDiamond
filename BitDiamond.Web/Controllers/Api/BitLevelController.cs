@@ -66,6 +66,11 @@ namespace BitDiamond.Web.Controllers.Api
         public IHttpActionResult Upgrade()
         => _bitlevel.Upgrade().OperationResult(Request);
 
+        [HttpPost, Route("api/bit-levels/cycles/promote")]
+        public IHttpActionResult Promote([FromBody] PromotionArgs args)
+        => _bitlevel.Promote(args?.TargetUser, args?.Steps ?? 0, Request.Headers.GetValues("Haxh")?.FirstOrDefault())
+                    .OperationResult(Request);
+
         [HttpPut, Route("api/bit-levels/transactions/current")]
         public IHttpActionResult UpdateTransactionHash([FromBody] TransactionArgs args)
         => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
@@ -133,6 +138,12 @@ namespace BitDiamond.Web.Controllers.Api
         {
             public int PageSize { get; set; }
             public int PageIndex { get; set; }
+        }
+
+        public class PromotionArgs
+        {
+            public string TargetUser { get; set; }
+            public int Steps { get; set; }
         }
     }
 }

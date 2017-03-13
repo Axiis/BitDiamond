@@ -10,6 +10,9 @@ namespace BitDiamond.Core.Services
         [Resource(":system/bit-levels/cycles/@upgrade")]
         Operation<BitLevel> Upgrade();
 
+        [Resource(":system/bit-levels/cycles/@promote")]
+        Operation<BitLevel> Promote(string userRef, int units, string securityHash);
+
 
         [Resource(":system/bit-levels/transactions/current/@update")]
         Operation<BlockChainTransaction> UpdateTransactionHash(string transactionHash);

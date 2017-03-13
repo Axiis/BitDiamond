@@ -94,7 +94,7 @@ namespace BitDiamond.Core.Services
                 Cycle = nextCycle,
                 DonationCount = 0,
                 SkipCount = 0,
-                User = targetUser
+                UserId = targetUser.UserId
             };
             _pcommand.Add(bl).Resolve();
 
@@ -158,7 +158,7 @@ namespace BitDiamond.Core.Services
             var @ref = _refQuery.GetReferalNode(userRef);
             var targetUser = new User { EntityId = @ref.UserId };
             var currentLevel = _query.CurrentBitLevel(targetUser);
-            var newLevel = BitCycle.Create(currentLevel.Cycle, currentLevel.Level) + units;
+            var newLevel = BitCycle.Create(currentLevel.Cycle, currentLevel.Level).Increment(units);
             var beneficiary = NextUpgradeBeneficiary(new User { UserId = currentLevel.Donation.Receiver.OwnerId }, newLevel.Level, newLevel.Cycle)
                 .ThrowIfNull("could not find a suitable beneficiary");
 

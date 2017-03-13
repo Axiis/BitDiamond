@@ -180,6 +180,7 @@
     <Compile Include="DIRegistrationTest.cs" />
     <Compile Include="Queries\BitLevelQueryTest.cs" />
     <Compile Include="Queries\BlockChainQueryTests.cs" />
+    <Compile Include="BitLevelTest.cs" />
     <Compile Include="UnitTest2.cs" />
   </ItemGroup>
   <ItemGroup>

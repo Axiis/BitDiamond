@@ -71,7 +71,7 @@ namespace BitDiamond.Core.Services
             using (var client = new WebClient())
             {
                 //any errors will throw an exception
-                var result = client.DownloadString($"https://blockchain.info/address/{bitcoinAddress}?format=json");
+                var result = client.DownloadString($"https://blockchain.info/address/{bitcoinAddress.BlockChainAddress}?format=json");
                 return bitcoinAddress;
             }
         });

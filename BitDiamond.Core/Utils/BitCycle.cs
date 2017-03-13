@@ -7,21 +7,21 @@ namespace BitDiamond.Core.Utils
         public int Cycle { get; set; }
         public int Level { get; set; }
 
-        public static BitCycle operator +(BitCycle cycle, int unit)
+        public BitCycle Increment(int unit)
         {
-            var scalar = (cycle.Cycle * 4) + cycle.Level;
+            var scalar = (Cycle * 4) + Level;
             scalar += unit;
             return FromUnits(scalar);
         }
 
-        public static BitCycle operator -(BitCycle cycle, int unit)
+        public BitCycle Decrement(int unit)
         {
-            var scalar = (cycle.Cycle * 4) + cycle.Level;
+            var scalar = (Cycle * 4) + Level;
             scalar -= unit;
             return FromUnits(scalar);
         }
 
-        public static BitCycle Create(int cycle, int level) => FromUnits(cycle * level);
+        public static BitCycle Create(int cycle, int level) => FromUnits((cycle * 4) + level);
 
         public static BitCycle FromUnits(int units) => new BitCycle
         {

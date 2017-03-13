@@ -278,7 +278,9 @@ namespace BitDiamond.Data.EF
                 var bcaddress = new BitcoinAddress
                 {
                     OwnerId = Constants.SystemUsers_Apex,
-                    BlockChainAddress = ""
+                    BlockChainAddress = "12b8exzGA5Dmq4dcCFq68Eym3maKnmN5pn",
+                    IsActive = true,
+                    IsVerified = true
                 };
                 cxt.Add(bcaddress).Context.CommitChanges();
 

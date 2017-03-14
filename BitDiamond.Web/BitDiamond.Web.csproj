@@ -1236,6 +1236,7 @@
     <TypeScriptCompile Include="Scripts\app\directives\loaders.ts" />
     <TypeScriptCompile Include="Scripts\app\directives\numberSpinner.ts" />
     <TypeScriptCompile Include="Scripts\app\directives\summernote.ts" />
+    <TypeScriptCompile Include="Scripts\app\directives\transactionTimeline.ts" />
     <TypeScriptCompile Include="Scripts\app\models\axis-apollo.ts" />
     <TypeScriptCompile Include="Scripts\app\models\domain.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\account.ts" />

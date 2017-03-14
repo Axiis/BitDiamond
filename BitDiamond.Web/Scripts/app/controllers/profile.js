@@ -5,13 +5,45 @@ var BitDiamond;
         var Profile;
         (function (Profile) {
             var Dashboard = (function () {
-                function Dashboard(__notify, __account, __userContext, $q) {
+                function Dashboard(__notify, __account, __userContext, __systemNotification, __blockChain, $q, $scope) {
+                    var _this = this;
+                    this.notifications = [];
+                    this.transactions = [];
                     this.__notify = __notify;
                     this.__account = __account;
                     this.__userContext = __userContext;
-                    //after loading timeline data...
-                    Libs.HorizontalTimeline.initTimeline($('.cd-horizontal-timeline'));
+                    this.__systemNotification = __systemNotification;
+                    this.__blockChain = __blockChain;
+                    this.$scope = $scope;
+                    this.__userContext.user.then(function (u) { return _this.user = u; });
+                    //load notifications
+                    this.isLoadingNotifications = true;
+                    this.__systemNotification.getUnseenNotificaftions().then(function (opr) {
+                        _this.notificationCount = opr.Result.length;
+                        _this.notifications = opr.Result.slice(0, 5).map(function (_v) {
+                            _v.CreatedOn = new Apollo.Models.JsonDateTime(_v.CreatedOn);
+                            return _v;
+                        });
+                    }).finally(function () {
+                        _this.isLoadingNotifications = false;
+                    });
+                    //load transactions
+                    this.isLoadingTransactions = true;
+                    this.__blockChain.getAllTransactions().then(function (opr) {
+                        _this.transactions = opr.Result;
+                    }).finally(function () {
+                        _this.isLoadingTransactions = false;
+                    });
                 }
+                Dashboard.prototype.displayTime = function (time) {
+                    if (Object.isNullOrUndefined(time))
+                        return '';
+                    else
+                        return time.toMoment().format('YYYY/M/D  H:m');
+                };
+                Dashboard.prototype.isLastNotification = function (index) {
+                    return index == this.notifications.length - 1;
+                };
                 return Dashboard;
             }());
             Profile.Dashboard = Dashboard;

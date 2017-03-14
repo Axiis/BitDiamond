@@ -8,11 +8,13 @@ var BitDiamond;
         Modules.profileModule.directive('boxLoader', function () { return new BitDiamond.Directives.BoxLoader(); });
         Modules.profileModule.directive('binaryData', function () { return new BitDiamond.Directives.BinaryData(); });
         Modules.profileModule.directive('enumOptions', function () { return new BitDiamond.Directives.EnumOptions(); });
+        Modules.profileModule.directive('transactionTimeline', function ($compile) { return new BitDiamond.Directives.TransactionTimeline($compile); });
         //services
         Modules.profileModule.service('__transport', BitDiamond.Utils.Services.DomainTransport);
         Modules.profileModule.service('__notify', BitDiamond.Utils.Services.NotifyService);
         Modules.profileModule.service('__userContext', BitDiamond.Utils.Services.UserContext);
         Modules.profileModule.service('__systemNotification', BitDiamond.Services.Notification);
+        Modules.profileModule.service('__blockChain', BitDiamond.Services.BlockChain);
         Modules.profileModule.service('__account', BitDiamond.Services.Account);
         //controllers
         Modules.profileModule.controller('NavBar', BitDiamond.Controllers.Shared.NavBar);

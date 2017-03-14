@@ -291,6 +291,9 @@ module BitDiamond.Services {
                 PageIndex: pageIndex
             });
         }
+        getAllTransactions(): ng.IPromise<Utils.Operation<Models.IBlockChainTransaction[]>> {
+            return this.__transport.get('/api/block-chain/transactions/all');
+        }
 
         verifyManually(transactionHash: string): ng.IPromise<Utils.Operation<void>> {
             return this.__transport.put('/api/block-chain/transactions/incoming', {

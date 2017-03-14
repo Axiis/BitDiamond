@@ -3,19 +3,60 @@ module BitDiamond.Controllers.Profile {
 
     export class Dashboard {
 
+
+        displayTime(time: Apollo.Models.JsonDateTime): string {
+            if (Object.isNullOrUndefined(time)) return '';
+            else return time.toMoment().format('YYYY/M/D  H:m');
+        }
+        isLastNotification(index: number): boolean {
+            return index == this.notifications.length - 1;
+        }
+        notifications: Models.INotification[] = [];
+        notificationCount: number;
+        isLoadingNotifications: boolean;
+
+        isLoadingTransactions: boolean;
+        transactions: Models.IBlockChainTransaction[] = [];
+        user: Pollux.Models.IUser;
+
         __notify: Utils.Services.NotifyService;
         __account: Services.Account;
         __userContext: Utils.Services.UserContext;
+        __systemNotification: Services.Notification;
+        __blockChain: Services.BlockChain;
 
         $q: ng.IQService;
+        $scope: ng.IScope;
 
-        constructor(__notify, __account, __userContext, $q) {
+        constructor(__notify, __account, __userContext, __systemNotification, __blockChain, $q, $scope) {
             this.__notify = __notify;
             this.__account = __account;
             this.__userContext = __userContext;
+            this.__systemNotification = __systemNotification;
+            this.__blockChain = __blockChain;
+            this.$scope = $scope;
 
-            //after loading timeline data...
-            Libs.HorizontalTimeline.initTimeline($('.cd-horizontal-timeline'));
+            this.__userContext.user.then(u => this.user = u);
+
+            //load notifications
+            this.isLoadingNotifications = true;
+            this.__systemNotification.getUnseenNotificaftions().then(opr => {
+                this.notificationCount = opr.Result.length;
+                this.notifications = opr.Result.slice(0, 5).map(_v => {
+                    _v.CreatedOn = new Apollo.Models.JsonDateTime(_v.CreatedOn);
+                    return _v;
+                });
+            }).finally(() => {
+                this.isLoadingNotifications = false;
+            });
+
+            //load transactions
+            this.isLoadingTransactions = true;
+            this.__blockChain.getAllTransactions().then(opr => {
+                this.transactions = opr.Result;
+            }).finally(() => {
+                this.isLoadingTransactions = false;
+            });
         }
     }
 

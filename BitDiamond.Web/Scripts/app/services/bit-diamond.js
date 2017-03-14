@@ -234,6 +234,9 @@ var BitDiamond;
                     PageIndex: pageIndex
                 });
             };
+            BlockChain.prototype.getAllTransactions = function () {
+                return this.__transport.get('/api/block-chain/transactions/all');
+            };
             BlockChain.prototype.verifyManually = function (transactionHash) {
                 return this.__transport.put('/api/block-chain/transactions/incoming', {
                     TransactionHash: transactionHash

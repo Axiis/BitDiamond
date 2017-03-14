@@ -14,43 +14,30 @@
     <!-- /.col-lg-12 -->
 </div>
 
-<div class="row" style="margin-top:15px;" ng-hide="true">
+<div class="row" style="margin-top:15px;">
     <div class="col-md-12 col-lg-3 col-sm-12 col-xs-12">
         <div class="white-box" style="height: 477px !important;">
-            <h3 class="box-title">You have 5 new messages</h3>
-            <div class="message-center">
-                <a href="#">
-                    <div class="user-img"> <img src="../plugins/images/users/pawandeep.jpg" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span> </div>
-                    <div class="mail-contnet">
-                        <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:30 AM</span>
-                    </div>
-                </a>
-                <a href="#">
+
+            <box-loader size="28" color="white" show="vm.isLoadingNotifications" block-loader="true"></box-loader>
+
+            <div style="text-align:center; margin-top:60px;" ng-hide="vm.notifications.length > 0 || vm.isLoadingNotifications">
+                <h3>No new Notifications</h3>
+            </div>
+
+            <h3 class="box-title" style="text-align:center;" ng-hide="vm.isLoadingNotifications || vm.notifications.length <= 0">
+                You have {{vm.notificationCount}} new Notifications
+            </h3>
+            <div class="message-center" ng-hide="vm.isLoadingNotifications || vm.notification.length <= 0">
+                <a href ng-repeat="n in vm.notifications" ng-class="{'b-none':vm.isLastNotification($index)}">
                     <div class="user-img">
-                        <div alt="user" class="img-circle" style="width:40px; height:40px; text-align: center;">
-                            <i class="icon-bell" style="font-size:30px; color:white;"></i>
-                        </div>
+                        <i class="icon-bell" style="font-size:30px; color:white;"></i>
                     </div>
                     <div class="mail-contnet">
-                        <h5>Sonu Nigam</h5> <span class="mail-desc">I've sung a song! See you at</span> <span class="time">9:10 AM</span>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="user-img"> <img src="../plugins/images/users/arijit.jpg" alt="user" class="img-circle"> <span class="profile-status away pull-right"></span> </div>
-                    <div class="mail-contnet">
-                        <h5>Arijit Sinh</h5> <span class="mail-desc">I am a singer!</span> <span class="time">9:08 AM</span>
-                    </div>
-                </a>
-                <a href="#">
-                    <div class="user-img"> <img src="../plugins/images/users/genu.jpg" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span> </div>
-                    <div class="mail-contnet">
-                        <h5>Genelia Deshmukh</h5> <span class="mail-desc">I love to do acting and dancing</span> <span class="time">9:08 AM</span>
-                    </div>
-                </a>
-                <a href="#" class="b-none">
-                    <div class="user-img"> <img src="../plugins/images/users/pawandeep.jpg" alt="user" class="img-circle"> <span class="profile-status offline pull-right"></span> </div>
-                    <div class="mail-contnet">
-                        <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span>
+                        <h5 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height:1.2em;"
+                            ng-bind-html="n.Title"></h5>
+                        <span class="mail-desc" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height:1.2em;"
+                              ng-bind-html="n.Message"></span>
+                        <span class="time">{{vm.displayTime(n.CreatedOn)}}</span>
                     </div>
                 </a>
             </div>
@@ -60,120 +47,14 @@
     <div class="col-md-12 col-lg-9 col-sm-12 col-xs-12">
         <div class="white-box" style="height:477px !important;">
 
-            <section class="cd-horizontal-timeline"
-                     style="margin-top:20px; margin-bottom:30px;">
-                <div class="timeline">
-                    <div class="events-wrapper">
-                        <div class="events" style="width: 1800px;">
-                            <ol>
-                                <li><a href="#0" data-date="16/01/2014" class="selected" style="left: 120px;">16 Jan</a></li>
-                                <li><a href="#0" data-date="28/02/2014" style="left: 300px;">28 Feb</a></li>
-                                <li><a href="#0" data-date="20/04/2014" style="left: 480px;">20 Mar</a></li>
-                                <li><a href="#0" data-date="20/05/2014" style="left: 600px;">20 May</a></li>
-                                <li><a href="#0" data-date="09/07/2014" style="left: 780px;">09 Jul</a></li>
-                                <li><a href="#0" data-date="30/08/2014" style="left: 960px;">30 Aug</a></li>
-                                <li><a href="#0" data-date="15/09/2014" style="left: 1020px;">15 Sep</a></li>
-                                <li><a href="#0" data-date="01/11/2014" style="left: 1200px;">01 Nov</a></li>
-                                <li><a href="#0" data-date="10/12/2014" style="left: 1380px;">10 Dec</a></li>
-                                <li><a href="#0" data-date="19/01/2015" style="left: 1500px;">29 Jan</a></li>
-                                <li><a href="#0" data-date="03/03/2015" style="left: 1680px;">3 Mar</a></li>
-                            </ol> <span class="filling-line" aria-hidden="true" style="transform: scaleX(0.0775);"></span>
-                        </div>
-                        <!-- .events -->
-                    </div>
-                    <!-- .events-wrapper -->
-                    <ul class="cd-timeline-navigation">
-                        <li><a href class="prev inactive">Prev</a></li>
-                        <li><a href class="next">Next</a></li>
-                    </ul>
-                    <!-- .cd-timeline-navigation -->
-                </div>
-                <!-- .timeline -->
-                <div class="events-content">
-                    <ol>
-                        <li class="selected" data-date="16/01/2014">
-                            <h2><img class="img-responsive img-circle pull-left m-r-20 m-b-10" width="60" alt="user" src="../plugins/images/users/genu.jpg"> Horizontal Timeline<br><small>January 16th, 2014</small></h2>
-                            <hr class="m-t-40">
-                            <p class="m-t-40">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic 
-                            </p>
-                        </li>
-                        <li data-date="28/02/2014">
-                            <h2><img class="img-responsive img-circle pull-left m-r-20 m-b-10" width="60" alt="user" src="../plugins/images/users/govinda.jpg"> Horizontal Timeline<br><small>Feb 28th, 2014</small></h2>
-                            <hr class="m-t-40">
-                            <p class="m-t-40">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                
-                            </p>
-                        </li>
-                        <li data-date="20/04/2014">
-                            <h2><img class="img-responsive img-circle pull-left m-r-20 m-b-10" width="60" alt="user" src="../plugins/images/users/salman.jpg"> Horizontal Timeline<br><small>March 20th, 2014</small></h2>
-                            <hr class="m-t-40">
-                            <p class="m-t-40">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                
-                            </p>
-                        </li>
-                        <li data-date="20/05/2014">
-                            <h2><img class="img-responsive img-circle pull-left m-r-20 m-b-10" width="60" alt="user" src="../plugins/images/users/varun.jpg"> Horizontal Timeline<br><small>May 20th, 2014</small></h2>
-                            <hr class="m-t-40">
-                            <p class="m-t-40">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                
-                            </p>
-                        </li>
-                        <li data-date="09/07/2014">
-                            <h2><img class="img-responsive img-circle pull-left m-r-20 m-b-10" width="60" alt="user" src="../plugins/images/users/genu.jpg"> Horizontal Timeline<br><small>July 9th, 2014</small></h2>
-                            <hr class="m-t-40">
-                            <p class="m-t-40">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                
-                            </p>
-                        </li>
-                        <li data-date="30/08/2014">
-                            <h2><img class="img-responsive img-circle pull-left m-r-20 m-b-10" width="60" alt="user" src="../plugins/images/users/sonu.jpg"> Horizontal Timeline<br><small>August 30th, 2014</small></h2>
-                            <hr class="m-t-40">
-                            <p class="m-t-40">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                
-                            </p>
-                        </li>
-                        <li data-date="15/09/2014">
-                            <h2><img class="img-responsive img-circle pull-left m-r-20 m-b-10" width="60" alt="user" src="../plugins/images/users/hritik.jpg"> Horizontal Timeline<br><small>September 15th, 2014</small></h2>
-                            <hr class="m-t-40">
-                            <p class="m-t-40">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                
-                            </p>
-                        </li>
-                        <li data-date="01/11/2014">
-                            <h2><img class="img-responsive img-circle pull-left m-r-20 m-b-10" width="60" alt="user" src="../plugins/images/users/varun.jpg"> Horizontal Timeline<br><small>November 01st, 2014</small></h2>
-                            <hr class="m-t-40">
-                            <p class="m-t-40">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                
-                            </p>
-                        </li>
-                        <li data-date="10/12/2014">
-                            <h2><img class="img-responsive img-circle pull-left m-r-20 m-b-10" width="60" alt="user" src="../plugins/images/users/ritesh.jpg"> Horizontal Timeline<br><small>December 10th, 2014</small></h2>
-                            <hr class="m-t-40">
-                            <p class="m-t-40">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                
-                            </p>
-                        </li>
-                        <li data-date="19/01/2015">
-                            <h2>Event title here</h2> <em>January 19th, 2015</em>
-                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus. </p>
-                        </li>
-                        <li data-date="03/03/2015">
-                            <h2>Event title here</h2> <em>March 3rd, 2015</em>
-                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus. </p>
-                        </li>
-                    </ol>
-                </div>
-                <!-- .events-content -->
-            </section>
+            <box-loader size="28" color="white" show="vm.isLoadingTransactions" block-loader="true"></box-loader>
+
+            <div style="text-align:center; margin-top:60px;" ng-hide="vm.transactions.length > 0 || vm.isLoadingTransactions">
+                <h3>No Transactions</h3>
+            </div>
+            <transaction-timeline ng-hide="vm.transactions.length <= 0 || vm.isLoadingTransactions"
+                                  user="vm.user"
+                                  transactions="vm.transactions"></transaction-timeline>
         </div>
     </div>
 </div>

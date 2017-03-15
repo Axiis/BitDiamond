@@ -51,7 +51,11 @@
                     <h3 class="box-title">Total Incoming Payments</h3>
                     <ul class="list-inline two-part">
                         <li><i class="ti-arrow-down text-success"></i></li>
-                        <li class="text-right"><i class="fa fa-btc"></i> <span class="counter">23</span></li>
+                        <li class="text-right">
+                            <i class="fa fa-btc"></i> 
+                            <span class="counter" ng-hide="vm.isLoadingIncomingTransactions">{{vm.totalIncomingTransactions || 0}}</span>
+                            <box-loader size="28" color="white" show="vm.isLoadingIncomingTransactions"></box-loader>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -60,7 +64,11 @@
                     <h3 class="box-title">Total Outgoing Payments</h3>
                     <ul class="list-inline two-part">
                         <li><i class="ti-arrow-up text-danger"></i></li>
-                        <li class="text-right"><i class="fa fa-btc"></i> <span class="counter">169</span></li>
+                        <li class="text-right">
+                            <i class="fa fa-btc"></i> 
+                            <span class="counter" ng-hide="vm.isLoadingOutgoingTransactions">{{vm.totalOutgoingTransactions || 0}}</span>
+                            <box-loader size="28" color="white" show="vm.isLoadingOutgoingTransactions"></box-loader>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -72,15 +80,19 @@
     <div class="col-lg-6 col-sm-12 col-xs-12">
         <div class="row">
             <div class="col-lg-6 col-sm-6 col-xs-12">
-                <div class="white-box">
-                    <h3 class="box-title">NEW CLIENTS</h3>
+                <div class="white-box" style="height: 173px;">
+                    <h3 class="box-title">Bit Level</h3>
                     <ul class="list-inline two-part">
-                        <li><i class="icon-people text-info"></i></li>
-                        <li class="text-right"><span class="counter">23</span></li>
+                        <li><i class="ti-stats-up text-info"></i></li>
+                        <li class="text-right">
+                            <span class="counter" ng-hide="vm.isLoadingBitLevel">{{vm.bitLevel.Cycle+'/'+vm.bitLevel.Level}}</span>
+                            <box-loader size="24" color="white" show="vm.isLoadingBitLevel"></box-loader>
+                        </li>
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-6 col-sm-6 col-xs-12">
+
+            <div class="col-lg-6 col-sm-6 col-xs-12" ng-hide="true">
                 <div class="white-box">
                     <h3 class="box-title">NEW Projects</h3>
                     <ul class="list-inline two-part">
@@ -91,7 +103,8 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-6 col-sm-12 col-xs-12">
+
+    <div class="col-lg-6 col-sm-12 col-xs-12" ng-hide="true">
         <div class="row">
             <div class="col-lg-6 col-sm-6 col-xs-12">
                 <div class="white-box">
@@ -113,14 +126,4 @@
             </div>
         </div>
     </div>
-</div>
-
-<div style="text-align: center;">
-    <h3 style="text-align:center; padding-top:40px;">
-        Dashboard Services<br />
-        Coming Soon!
-    </h3>
-    <p>
-        <span class="text-muted">...but you can view your profile <a ui-sref="home">here</a></span>
-    </p>
 </div>

@@ -155,15 +155,14 @@
             <div class="white-box" style="height:162px; overflow:hidden;">
                 <div class="text-right">
                     <span class="text-muted">Receiver Name</span>
-                    <h5 style="white-space:nowrap; margin-top:0px; text-overflow:ellipsis; text-wrap:none; margin-top:10px; margin-bottom:10px;"
+                    <h5 style="white-space:nowrap; margin-top:0px; text-overflow:ellipsis; text-wrap:none; margin-top:10px; margin-bottom:10px; overflow:hidden;"
                         data-toggle="tooltip" data-original-title="{{vm.receiverName()}}">
                         {{vm.receiverName()}}
                     </h5>
                 </div>
                 <div class="text-right" style="margin-top:12px;">
                     <span class="text-muted">Receiver Address</span>
-                    <h5 style="white-space:nowrap; margin-top:0px; text-overflow:ellipsis; text-wrap:none; margin-top:10px; margin-bottom:10px;">
-                        {{vm.receiverAddress()}}
+                    <h5 style="margin-top:10px; margin-bottom:10px; white-space:nowrap; text-overflow:ellipsis; text-wrap:none; overflow:hidden;">
                         <button type="button" class="btn btn-xs btn-outline btn-success wav"
                                 ng-click="vm.addressCopied()"
                                 data-clipboard-action="copy" data-clipboard-text="{{vm.receiverAddress()}}"
@@ -171,6 +170,7 @@
                                 id="addressClipboardCopy">
                             <i class="ti-clipboard"></i>
                         </button>
+                        <span>{{vm.receiverAddress()}}</span>
                     </h5>
                 </div>
             </div>

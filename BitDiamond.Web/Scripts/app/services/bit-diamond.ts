@@ -295,6 +295,18 @@ module BitDiamond.Services {
             return this.__transport.get('/api/block-chain/transactions/all');
         }
 
+        getIncomingUserTransactionTotal(): ng.IPromise<Utils.Operation<number>> {
+            return this.__transport.get('/api/block-chain/transactions/incoming/total');
+        }
+
+        getOutgoingUserTransactionTotal(): ng.IPromise<Utils.Operation<number>> {
+            return this.__transport.get('/api/block-chain/transactions/outgoing/total');
+        }
+
+        getSystemTransactionTotal(): ng.IPromise<Utils.Operation<number>> {
+            return this.__transport.get('/api/block-chain/transactions/system/total');
+        }
+
         verifyManually(transactionHash: string): ng.IPromise<Utils.Operation<void>> {
             return this.__transport.put('/api/block-chain/transactions/incoming', {
                 TransactionHash: transactionHash

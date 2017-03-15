@@ -52,13 +52,9 @@ namespace BitDiamond.Web.Controllers.Api
         => _blockChain.GetOutgoingUserTransactionsTotal().OperationResult(Request);
 
 
-        [HttpGet, Route("api/block-chain/transactions/incoming/system-total")]
-        public IHttpActionResult GetIncomingSystemTransactionsTotal()
-        => _blockChain.GetIncomingSystemTransactionsTotal().OperationResult(Request);
-
-        [HttpGet, Route("api/block-chain/transactions/outgoing/system-total")]
-        public IHttpActionResult GetOutgoingSystemTransactionsTotal()
-        => _blockChain.GetOutgoingSystemTransactionsTotal().OperationResult(Request);
+        [HttpGet, Route("api/block-chain/transactions/system/total")]
+        public IHttpActionResult GetSystemTransactionsTotal()
+        => _blockChain.GetSystemTransactionsTotal().OperationResult(Request);
 
 
         [HttpPut, Route("api/block-chain/transactions/incoming")]

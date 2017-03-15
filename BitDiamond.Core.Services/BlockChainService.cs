@@ -157,25 +157,19 @@ namespace BitDiamond.Core.Services
         public Operation<decimal> GetIncomingUserTransactionsTotal()
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
-            throw new NotImplementedException();
+            return _blQuery.GetIncomingUserTransactionsTotal(UserContext.CurrentUser());
         });
 
         public Operation<decimal> GetOutgoingUserTransactionsTotal()
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
-            throw new NotImplementedException();
+            return _blQuery.GetOutgoingUserTransactionsTotal(UserContext.CurrentUser());
         });
 
-        public Operation<decimal> GetIncomingSystemTransactionsTotal()
+        public Operation<decimal> GetSystemTransactionsTotal()
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
-            throw new NotImplementedException();
-        });
-
-        public Operation<decimal> GetOutgoingSystemTransactionsTotal()
-        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
-        {
-            throw new NotImplementedException();
+            return _blQuery.GetSystemTransactionsTotal();
         });
 
         public class TransactionDescriptor

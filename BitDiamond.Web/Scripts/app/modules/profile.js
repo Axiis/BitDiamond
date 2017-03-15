@@ -15,6 +15,7 @@ var BitDiamond;
         Modules.profileModule.service('__userContext', BitDiamond.Utils.Services.UserContext);
         Modules.profileModule.service('__systemNotification', BitDiamond.Services.Notification);
         Modules.profileModule.service('__blockChain', BitDiamond.Services.BlockChain);
+        Modules.profileModule.service('__bitLevel', BitDiamond.Services.BitLevel);
         Modules.profileModule.service('__account', BitDiamond.Services.Account);
         //controllers
         Modules.profileModule.controller('NavBar', BitDiamond.Controllers.Shared.NavBar);

@@ -15,39 +15,50 @@ module BitDiamond.Controllers.Profile {
         notificationCount: number;
         isLoadingNotifications: boolean;
 
-        isLoadingTransactions: boolean;
+        isLoadingIncomingTransactions: boolean;
+        isLoadingOutgoingTransactions: boolean;
         totalIncomingTransactions: number;
         totalOutgoingTransactions: number;
         user: Pollux.Models.IUser;
+
+        isLoadingBitLevel: boolean;
+        bitLevel: Models.IBitLevel;
 
         __notify: Utils.Services.NotifyService;
         __account: Services.Account;
         __userContext: Utils.Services.UserContext;
         __systemNotification: Services.Notification;
         __blockChain: Services.BlockChain;
+        __bitLevel: Services.BitLevel;
 
         $q: ng.IQService;
         $scope: ng.IScope;
 
-        constructor(__notify, __account, __userContext, __systemNotification, __blockChain, $q, $scope) {
+        constructor(__notify, __account, __userContext, __systemNotification, __blockChain, __bitLevel, $q, $scope) {
             this.__notify = __notify;
             this.__account = __account;
             this.__userContext = __userContext;
             this.__systemNotification = __systemNotification;
             this.__blockChain = __blockChain;
+            this.__bitLevel = __bitLevel;
             this.$scope = $scope;
 
-            this.__userContext.user.then(u => {
+            this.__userContext.user.then(u => this.user = u);
 
-                this.user = u;
+            //load incoming transactions
+            this.isLoadingIncomingTransactions = true;
+            this.__blockChain.getIncomingUserTransactionTotal().then(opr => {
+                this.totalIncomingTransactions = opr.Result;
+            }).finally(() => {
+                this.isLoadingIncomingTransactions = false;
+            });
 
-                //load incoming transactions
-                this.isLoadingTransactions = true;
-                this.__blockChain.get().then(opr => {
-                    this.transactions = opr.Result;
-                }).finally(() => {
-                    this.isLoadingTransactions = false;
-                });
+            //load outgoing transactions
+            this.isLoadingOutgoingTransactions = true;
+            this.__blockChain.getOutgoingUserTransactionTotal().then(opr => {
+                this.totalOutgoingTransactions = opr.Result;
+            }).finally(() => {
+                this.isLoadingOutgoingTransactions = false;
             });
 
             //load notifications
@@ -61,6 +72,15 @@ module BitDiamond.Controllers.Profile {
             }).finally(() => {
                 this.isLoadingNotifications = false;
             });
+
+            //load bitlevel
+            this.isLoadingBitLevel = true;
+            this.__bitLevel.currentLevel().then(opr => {
+                this.bitLevel = opr.Result;
+            }).finally(() => {
+                this.isLoadingBitLevel = false;
+            });
+
         }
     }
 

@@ -237,6 +237,15 @@ var BitDiamond;
             BlockChain.prototype.getAllTransactions = function () {
                 return this.__transport.get('/api/block-chain/transactions/all');
             };
+            BlockChain.prototype.getIncomingUserTransactionTotal = function () {
+                return this.__transport.get('/api/block-chain/transactions/incoming/total');
+            };
+            BlockChain.prototype.getOutgoingUserTransactionTotal = function () {
+                return this.__transport.get('/api/block-chain/transactions/outgoing/total');
+            };
+            BlockChain.prototype.getSystemTransactionTotal = function () {
+                return this.__transport.get('/api/block-chain/transactions/system/total');
+            };
             BlockChain.prototype.verifyManually = function (transactionHash) {
                 return this.__transport.put('/api/block-chain/transactions/incoming', {
                     TransactionHash: transactionHash

@@ -5,7 +5,7 @@ var BitDiamond;
         var Profile;
         (function (Profile) {
             var Dashboard = (function () {
-                function Dashboard(__notify, __account, __userContext, __systemNotification, __blockChain, $q, $scope) {
+                function Dashboard(__notify, __account, __userContext, __systemNotification, __blockChain, __bitLevel, $q, $scope) {
                     var _this = this;
                     this.notifications = [];
                     this.__notify = __notify;
@@ -13,16 +13,22 @@ var BitDiamond;
                     this.__userContext = __userContext;
                     this.__systemNotification = __systemNotification;
                     this.__blockChain = __blockChain;
+                    this.__bitLevel = __bitLevel;
                     this.$scope = $scope;
-                    this.__userContext.user.then(function (u) {
-                        _this.user = u;
-                        //load incoming transactions
-                        _this.isLoadingTransactions = true;
-                        _this.__blockChain.get().then(function (opr) {
-                            _this.transactions = opr.Result;
-                        }).finally(function () {
-                            _this.isLoadingTransactions = false;
-                        });
+                    this.__userContext.user.then(function (u) { return _this.user = u; });
+                    //load incoming transactions
+                    this.isLoadingIncomingTransactions = true;
+                    this.__blockChain.getIncomingUserTransactionTotal().then(function (opr) {
+                        _this.totalIncomingTransactions = opr.Result;
+                    }).finally(function () {
+                        _this.isLoadingIncomingTransactions = false;
+                    });
+                    //load outgoing transactions
+                    this.isLoadingOutgoingTransactions = true;
+                    this.__blockChain.getOutgoingUserTransactionTotal().then(function (opr) {
+                        _this.totalOutgoingTransactions = opr.Result;
+                    }).finally(function () {
+                        _this.isLoadingOutgoingTransactions = false;
                     });
                     //load notifications
                     this.isLoadingNotifications = true;
@@ -34,6 +40,13 @@ var BitDiamond;
                         });
                     }).finally(function () {
                         _this.isLoadingNotifications = false;
+                    });
+                    //load bitlevel
+                    this.isLoadingBitLevel = true;
+                    this.__bitLevel.currentLevel().then(function (opr) {
+                        _this.bitLevel = opr.Result;
+                    }).finally(function () {
+                        _this.isLoadingBitLevel = false;
                     });
                 }
                 Dashboard.prototype.displayTime = function (time) {

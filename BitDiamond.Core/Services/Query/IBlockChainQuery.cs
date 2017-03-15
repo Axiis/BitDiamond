@@ -12,5 +12,8 @@ namespace BitDiamond.Core.Services.Query
         IEnumerable<BlockChainTransaction> GetAllUserTransactions(User user);
         SequencePage<BlockChainTransaction> GetPagedIncomingUserTransactions(User user, int pageSize, int pageIndex = 0);
         SequencePage<BlockChainTransaction> GetPagedOutgoingUserTransactions(User user, int pageSize, int pageIndex = 0);
+        decimal GetIncomingUserTransactionsTotal(User user);
+        decimal GetOutgoingUserTransactionsTotal(User user);
+        decimal GetSystemTransactionsTotal();
     }
 }

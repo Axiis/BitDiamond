@@ -35,10 +35,7 @@ namespace BitDiamond.Core.Services
         [Resource(":system/block-chain/transactions/outgoing/@userTotal")]
         Operation<decimal> GetOutgoingUserTransactionsTotal();
 
-        [Resource(":system/block-chain/transactions/incoming/@systemTotal")]
-        Operation<decimal> GetIncomingSystemTransactionsTotal();
-
-        [Resource(":system/block-chain/transactions/outgoing/@systemTotal")]
-        Operation<decimal> GetOutgoingSystemTransactionsTotal();
+        [Resource(":system/block-chain/transactions/@systemTotal")]
+        Operation<decimal> GetSystemTransactionsTotal();
     }
 }

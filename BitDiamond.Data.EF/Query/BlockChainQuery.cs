@@ -64,6 +64,23 @@ namespace BitDiamond.Data.EF.Query
                 .ToArray();
         }
 
+        public decimal GetSystemTransactionsTotal()
+        => _europa.Store<BlockChainTransaction>()
+            .Query
+            .Sum(_bc => _bc.Amount);
+
+        public decimal GetIncomingUserTransactionsTotal(User user)
+        => _europa.Store<BlockChainTransaction>()
+            .QueryWith(_bc => _bc.Receiver)
+            .Where(_bc => _bc.Receiver.OwnerId == user.UserId)
+            .Sum(_bc => _bc.Amount);
+
+        public decimal GetOutgoingUserTransactionsTotal(User user)
+        => _europa.Store<BlockChainTransaction>()
+            .QueryWith(_bc => _bc.Sender)
+            .Where(_bc => _bc.Sender.OwnerId == user.UserId)
+            .Sum(_bc => _bc.Amount);
+
         public SequencePage<BlockChainTransaction> GetPagedIncomingUserTransactions(User user, int pageSize, int pageIndex = 0)
         {
             var addresses = _europa.Store<BitcoinAddress>().Query

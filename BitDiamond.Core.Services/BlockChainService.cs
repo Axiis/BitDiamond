@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Axis.Pollux.RBAC.Services;
 using System.Net;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace BitDiamond.Core.Services
 {
@@ -54,9 +55,22 @@ namespace BitDiamond.Core.Services
             {
                 var trnx = client.DownloadString($"https://blockchain.info/tx/{transactionHash}?format=json");
                 var trnxContainer = JsonConvert.DeserializeObject<TransactionContainer>(trnx);
-                if (trnxContainer.block_height == 0) throw new Exception();
 
                 var currentBlockCount = long.Parse(client.DownloadString("https://blockchain.info/q/getblockcount"));
+
+                //has any confirmations?
+                if (trnxContainer.block_height == 0) throw new Exception();
+
+                //receiver matches?
+                else if (!trnxContainer.@out.Any(_tx => _tx.addr == bl.Donation.Receiver.BlockChainAddress)) throw new Exception("invalid receiver");
+
+                //sender matches?
+                else if (!trnxContainer.inputs.Any(_tx => _tx.prev_out.addr == bl.Donation.Sender.BlockChainAddress)) throw new Exception("invalid sender");
+
+                //amount matches?
+                else if ((trnxContainer.@out.Where(_tx => _tx.addr == bl.Donation.Receiver.BlockChainAddress).Sum(_tx => _tx.value) / 100000000) < bl.Donation.Amount)
+                    throw new Exception("invalid amount");
+
 
                 bl.Donation.LedgerCount = (int)(currentBlockCount - trnxContainer.block_height + 1);
                 if (bl.Donation.LedgerCount >= 3) bl.Donation.Status = BlockChainTransactionStatus.Verified;
@@ -140,7 +154,29 @@ namespace BitDiamond.Core.Services
             return transaction;
         });
 
+        public Operation<decimal> GetIncomingUserTransactionsTotal()
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            throw new NotImplementedException();
+        });
 
+        public Operation<decimal> GetOutgoingUserTransactionsTotal()
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            throw new NotImplementedException();
+        });
+
+        public Operation<decimal> GetIncomingSystemTransactionsTotal()
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            throw new NotImplementedException();
+        });
+
+        public Operation<decimal> GetOutgoingSystemTransactionsTotal()
+        => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
+        {
+            throw new NotImplementedException();
+        });
 
         public class TransactionDescriptor
         {
@@ -148,7 +184,7 @@ namespace BitDiamond.Core.Services
             public long tx_index { get; set; }
             public int type { get; set; }
             public string addr { get; set; }
-            public double value { get; set; }
+            public decimal value { get; set; }
             public int n { get; set; }
             public string script { get; set; }
         }

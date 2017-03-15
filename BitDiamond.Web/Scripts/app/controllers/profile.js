@@ -8,14 +8,22 @@ var BitDiamond;
                 function Dashboard(__notify, __account, __userContext, __systemNotification, __blockChain, $q, $scope) {
                     var _this = this;
                     this.notifications = [];
-                    this.transactions = [];
                     this.__notify = __notify;
                     this.__account = __account;
                     this.__userContext = __userContext;
                     this.__systemNotification = __systemNotification;
                     this.__blockChain = __blockChain;
                     this.$scope = $scope;
-                    this.__userContext.user.then(function (u) { return _this.user = u; });
+                    this.__userContext.user.then(function (u) {
+                        _this.user = u;
+                        //load incoming transactions
+                        _this.isLoadingTransactions = true;
+                        _this.__blockChain.get().then(function (opr) {
+                            _this.transactions = opr.Result;
+                        }).finally(function () {
+                            _this.isLoadingTransactions = false;
+                        });
+                    });
                     //load notifications
                     this.isLoadingNotifications = true;
                     this.__systemNotification.getUnseenNotificaftions().then(function (opr) {
@@ -26,13 +34,6 @@ var BitDiamond;
                         });
                     }).finally(function () {
                         _this.isLoadingNotifications = false;
-                    });
-                    //load transactions
-                    this.isLoadingTransactions = true;
-                    this.__blockChain.getAllTransactions().then(function (opr) {
-                        _this.transactions = opr.Result;
-                    }).finally(function () {
-                        _this.isLoadingTransactions = false;
                     });
                 }
                 Dashboard.prototype.displayTime = function (time) {
@@ -219,4 +220,3 @@ var BitDiamond;
         })(Profile = Controllers.Profile || (Controllers.Profile = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=profile.js.map

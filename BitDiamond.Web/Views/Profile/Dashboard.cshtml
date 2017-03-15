@@ -45,21 +45,30 @@
     </div>
     
     <div class="col-md-12 col-lg-9 col-sm-12 col-xs-12">
-        <div class="white-box" style="height:477px !important;">
-
-            <box-loader size="28" color="white" show="vm.isLoadingTransactions" block-loader="true"></box-loader>
-
-            <div style="text-align:center; margin-top:60px;" ng-hide="vm.transactions.length > 0 || vm.isLoadingTransactions">
-                <h3>No Transactions</h3>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="white-box" style="height:231px;">
+                    <h3 class="box-title">Total Incoming Payments</h3>
+                    <ul class="list-inline two-part">
+                        <li><i class="ti-arrow-down text-success"></i></li>
+                        <li class="text-right"><i class="fa fa-btc"></i> <span class="counter">23</span></li>
+                    </ul>
+                </div>
             </div>
-            <transaction-timeline ng-hide="vm.transactions.length <= 0 || vm.isLoadingTransactions"
-                                  user="vm.user"
-                                  transactions="vm.transactions"></transaction-timeline>
+            <div class="col-lg-12">
+                <div class="white-box" style="height:231px;">
+                    <h3 class="box-title">Total Outgoing Payments</h3>
+                    <ul class="list-inline two-part">
+                        <li><i class="ti-arrow-up text-danger"></i></li>
+                        <li class="text-right"><i class="fa fa-btc"></i> <span class="counter">169</span></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="row" ng-hide="true">
+<div class="row">
     <div class="col-lg-6 col-sm-12 col-xs-12">
         <div class="row">
             <div class="col-lg-6 col-sm-6 col-xs-12">

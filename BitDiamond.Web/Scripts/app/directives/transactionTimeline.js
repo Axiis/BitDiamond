@@ -3,8 +3,9 @@ var BitDiamond;
     var Directives;
     (function (Directives) {
         var TransactionTimeline = (function () {
-            function TransactionTimeline($compile) {
+            function TransactionTimeline($compile, $timeout) {
                 this.$compile = $compile;
+                this.$timeout = $timeout;
                 this.scope = {
                     transactions: '=',
                     user: '='
@@ -15,8 +16,7 @@ var BitDiamond;
                     '<div class="events-wrapper">' +
                     '<div class="events">' +
                     '<ol>' +
-                    '<li><a ng-repeat="g in transactionGroups" data-date="{{g.Key}}" href>{{shortDate(g.key)}}' +
-                    '</a></li>' +
+                    '<li ng-repeat="g in transactionGroups"><a data-date="{{timelineDataString(g.Key)}}" ng-class="{selected:($index==0)}" href>{{shortDate(g.Key)}}</a></li>' +
                     '</ol>' +
                     '<span class="filling-line" aria-hidden="true"></span>' +
                     '</div>' +
@@ -28,7 +28,7 @@ var BitDiamond;
                     '</div>' +
                     '<div class="events-content">' +
                     '<ol>' +
-                    '<li ng-repeat="g in transactionGroups" data-date="{{g.Key}}">' +
+                    '<li ng-repeat="g in transactionGroups" ng-class="{selected:($index==0)}" data-date="{{timelineDataString(g.Key)}}">' +
                     '<h4 class="box-title"> Transactions </h4>' +
                     '<ul class="feeds">' +
                     '<li ng-repeat="tnx in g.Value">' +
@@ -45,16 +45,15 @@ var BitDiamond;
                     '</section>';
             }
             TransactionTimeline.prototype.link = function (scope, element, attributes) {
-                //setup the scope
                 this.setupScope(scope);
                 var _link = this.$compile(this._template);
-                var linkedDom = _link(scope);
-                element.empty().append(linkedDom);
-                //hopefully, the dom has been created
-                Libs.HorizontalTimeline.initTimeline($('cd-horizontal-timeline'));
+                var activatedDom = _link(scope);
+                element.empty().append(activatedDom);
             };
             TransactionTimeline.prototype.setupScope = function (__scope) {
-                __scope.$watch('transactions.length', function (old, $new) {
+                var _this = this;
+                var hasRegisteredDigestListener = false;
+                var _initializer = function () {
                     __scope.transactionGroups = (__scope.transactions || []).map(function (_trnx) {
                         _trnx.CreatedOn = new Apollo.Models.JsonDateTime(_trnx.CreatedOn);
                         return _trnx;
@@ -65,7 +64,22 @@ var BitDiamond;
                         var _bdate = new Date(_b.Key);
                         return _adate > _bdate ? 1 : _adate < _bdate ? -1 : 0;
                     });
-                });
+                    if (hasRegisteredDigestListener)
+                        return;
+                    else {
+                        hasRegisteredDigestListener = true;
+                        _this.$timeout(function () {
+                            hasRegisteredDigestListener = false;
+                            try {
+                                Libs.HorizontalTimeline.initTimeline($('.cd-horizontal-timeline'));
+                            }
+                            catch (e) { }
+                        }, 0, false);
+                    }
+                };
+                //Directive Initializers
+                __scope.$watch('transactions.length', _initializer);
+                __scope.$watch('user', _initializer);
                 __scope.shortDate = function (date) {
                     return moment(date).format('MMM D');
                 };
@@ -92,10 +106,13 @@ var BitDiamond;
                 __scope.isOutgoingTransaction = function (tnx) {
                     return tnx.Sender.OwnerId == __scope.user.UserId;
                 };
+                __scope.timelineDataString = function (strng) {
+                    var nstr = strng.replace(/-/g, '/');
+                    return nstr;
+                };
             };
             return TransactionTimeline;
         }());
         Directives.TransactionTimeline = TransactionTimeline;
     })(Directives = BitDiamond.Directives || (BitDiamond.Directives = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=transactionTimeline.js.map

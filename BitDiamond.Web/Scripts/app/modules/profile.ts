@@ -8,7 +8,7 @@ module BitDiamond.Modules {
     profileModule.directive('boxLoader', () => new BitDiamond.Directives.BoxLoader());
     profileModule.directive('binaryData', () => new BitDiamond.Directives.BinaryData());
     profileModule.directive('enumOptions', () => new BitDiamond.Directives.EnumOptions());
-    profileModule.directive('transactionTimeline', ($compile: ng.ICompileService) => new BitDiamond.Directives.TransactionTimeline($compile));
+    profileModule.directive('transactionTimeline', ($compile: ng.ICompileService, $timeout: ng.ITimeoutService) => new BitDiamond.Directives.TransactionTimeline($compile, $timeout));
 
     //services
     profileModule.service('__transport', BitDiamond.Utils.Services.DomainTransport);

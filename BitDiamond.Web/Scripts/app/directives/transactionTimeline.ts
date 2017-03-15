@@ -11,18 +11,14 @@ module BitDiamond.Directives {
 
         link(scope, element: JQuery, attributes) {
 
-            //setup the scope
             this.setupScope(scope);
 
             var _link = this.$compile(this._template);
-            var linkedDom = _link(scope);
-            element.empty().append(linkedDom);
-
-            //hopefully, the dom has been created
-            Libs.HorizontalTimeline.initTimeline($('cd-horizontal-timeline'));
+            var activatedDom = _link(scope);
+            element.empty().append(activatedDom);
         }
 
-        constructor(private $compile: ng.ICompileService) {
+        constructor(private $compile: ng.ICompileService, private $timeout: ng.ITimeoutService) {
         }
 
         _template = ''+
@@ -31,8 +27,7 @@ module BitDiamond.Directives {
         '<div class="events-wrapper">'+
         '<div class="events">'+
         '<ol>'+
-        '<li><a ng-repeat="g in transactionGroups" data-date="{{g.Key}}" href>{{shortDate(g.key)}}'+
-        '</a></li>'+
+        '<li ng-repeat="g in transactionGroups"><a data-date="{{timelineDataString(g.Key)}}" ng-class="{selected:($index==0)}" href>{{shortDate(g.Key)}}</a></li>'+
         '</ol>' +
         '<span class="filling-line" aria-hidden="true"></span>' +
         '</div>'+
@@ -44,7 +39,7 @@ module BitDiamond.Directives {
         '</div>'+
         '<div class="events-content">'+
         '<ol>'+
-        '<li ng-repeat="g in transactionGroups" data-date="{{g.Key}}">'+
+        '<li ng-repeat="g in transactionGroups" ng-class="{selected:($index==0)}" data-date="{{timelineDataString(g.Key)}}">'+
         '<h4 class="box-title"> Transactions </h4>'+
         '<ul class="feeds">'+
         '<li ng-repeat="tnx in g.Value">'+
@@ -59,10 +54,11 @@ module BitDiamond.Directives {
         '</ol>'+
         '</div>'+
         '</section>';
-        
+
         setupScope(__scope: any) {
 
-            (__scope as ng.IScope).$watch('transactions.length', (old, $new) => {
+            var hasRegisteredDigestListener = false;
+            var _initializer = () => {
                 __scope.transactionGroups = (__scope.transactions || []).map(_trnx => {
                     _trnx.CreatedOn = new Apollo.Models.JsonDateTime(_trnx.CreatedOn);
                     return _trnx;
@@ -74,7 +70,23 @@ module BitDiamond.Directives {
 
                     return _adate > _bdate ? 1 : _adate < _bdate ? -1 : 0;
                 });
-            });
+
+                if (hasRegisteredDigestListener) return;
+                else {
+                    hasRegisteredDigestListener = true;
+                    this.$timeout(() => {
+                        hasRegisteredDigestListener = false;
+                        try {
+                            Libs.HorizontalTimeline.initTimeline($('.cd-horizontal-timeline'));
+                        } catch (e) { }
+                    }, 0, false);
+                }
+            };
+
+            //Directive Initializers
+            (__scope as ng.IScope).$watch('transactions.length', _initializer);
+            (__scope as ng.IScope).$watch('user', _initializer);
+
 
             __scope.shortDate = function(date: string) {
                 return moment(date).format('MMM D');
@@ -101,6 +113,10 @@ module BitDiamond.Directives {
             }
             __scope.isOutgoingTransaction = function(tnx: Models.IBlockChainTransaction): boolean {
                 return tnx.Sender.OwnerId == __scope.user.UserId;
+            }
+            __scope.timelineDataString = function (strng: string): string {
+                var nstr = strng.replace(/-/g, '/');
+                return nstr;
             }
         }        
     }

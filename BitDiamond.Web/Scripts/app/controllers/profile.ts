@@ -16,7 +16,8 @@ module BitDiamond.Controllers.Profile {
         isLoadingNotifications: boolean;
 
         isLoadingTransactions: boolean;
-        transactions: Models.IBlockChainTransaction[] = [];
+        totalIncomingTransactions: number;
+        totalOutgoingTransactions: number;
         user: Pollux.Models.IUser;
 
         __notify: Utils.Services.NotifyService;
@@ -36,7 +37,18 @@ module BitDiamond.Controllers.Profile {
             this.__blockChain = __blockChain;
             this.$scope = $scope;
 
-            this.__userContext.user.then(u => this.user = u);
+            this.__userContext.user.then(u => {
+
+                this.user = u;
+
+                //load incoming transactions
+                this.isLoadingTransactions = true;
+                this.__blockChain.get().then(opr => {
+                    this.transactions = opr.Result;
+                }).finally(() => {
+                    this.isLoadingTransactions = false;
+                });
+            });
 
             //load notifications
             this.isLoadingNotifications = true;
@@ -48,14 +60,6 @@ module BitDiamond.Controllers.Profile {
                 });
             }).finally(() => {
                 this.isLoadingNotifications = false;
-            });
-
-            //load transactions
-            this.isLoadingTransactions = true;
-            this.__blockChain.getAllTransactions().then(opr => {
-                this.transactions = opr.Result;
-            }).finally(() => {
-                this.isLoadingTransactions = false;
             });
         }
     }

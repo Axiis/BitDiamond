@@ -8,7 +8,7 @@ var BitDiamond;
         Modules.profileModule.directive('boxLoader', function () { return new BitDiamond.Directives.BoxLoader(); });
         Modules.profileModule.directive('binaryData', function () { return new BitDiamond.Directives.BinaryData(); });
         Modules.profileModule.directive('enumOptions', function () { return new BitDiamond.Directives.EnumOptions(); });
-        Modules.profileModule.directive('transactionTimeline', function ($compile) { return new BitDiamond.Directives.TransactionTimeline($compile); });
+        Modules.profileModule.directive('transactionTimeline', function ($compile, $timeout) { return new BitDiamond.Directives.TransactionTimeline($compile, $timeout); });
         //services
         Modules.profileModule.service('__transport', BitDiamond.Utils.Services.DomainTransport);
         Modules.profileModule.service('__notify', BitDiamond.Utils.Services.NotifyService);
@@ -40,4 +40,3 @@ var BitDiamond;
         });
     })(Modules = BitDiamond.Modules || (BitDiamond.Modules = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=profile.js.map

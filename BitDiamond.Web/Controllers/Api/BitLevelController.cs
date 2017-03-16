@@ -14,6 +14,7 @@ using System.Net.Http;
 using System.Text;
 using System.Web.Http;
 using static Axis.Luna.Extensions.ExceptionExtensions;
+using BitDiamond.Web.Infrastructure.Utils;
 
 namespace BitDiamond.Web.Controllers.Api
 {
@@ -30,90 +31,90 @@ namespace BitDiamond.Web.Controllers.Api
 
         [HttpGet, Route("api/bit-levels/bitcoin-addresses")]
         public IHttpActionResult GetAllBitcoinAddresses()
-        => _bitlevel.GetAllBitcoinAddresses().OperationResult(Request);
+        => this.LogTime(() => _bitlevel.GetAllBitcoinAddresses().OperationResult(Request));
 
         [HttpGet, Route("api/bit-levels/bitcoin-addresses/active")]
         public IHttpActionResult GetActiveBitcoinAddresses()
-        => _bitlevel.GetActiveBitcoinAddress().OperationResult(Request);
+        => this.LogTime(() => _bitlevel.GetActiveBitcoinAddress().OperationResult(Request));
 
         [HttpPost, Route("api/bit-levels/bitcoin-addresses")]
         public IHttpActionResult AddBitcoinAddress([FromBody] BitcoinAddress address)
-        => Operation.Try(() => address.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => address.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _bitlevel.AddBitcoindAddress(address))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpPut, Route("api/bit-levels/bitcoin-addresses/activate")]
         public IHttpActionResult ActivateAddress([FromBody] BitcoinAddressArgs args)
-        => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _bitlevel.ActivateAddress(args.Id))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpPut, Route("api/bit-levels/bitcoin-addresses/deactivate")]
         public IHttpActionResult DeactivateAddress([FromBody] BitcoinAddressArgs args)
-        => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _bitlevel.DeactivateAddress(args.Id))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpPut, Route("api/bit-levels/bitcoin-addresses/verify")]
         public IHttpActionResult VerifyAddress([FromBody] BitcoinAddressArgs args)
-        => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _bitlevel.VerifyAddress(args.Id))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
 
 
         [HttpPost, Route("api/bit-levels/cycles")]
         public IHttpActionResult Upgrade()
-        => _bitlevel.Upgrade().OperationResult(Request);
+        => this.LogTime(() => _bitlevel.Upgrade().OperationResult(Request));
 
         [HttpPost, Route("api/bit-levels/cycles/promote")]
         public IHttpActionResult Promote([FromBody] PromotionArgs args)
-        => _bitlevel.Promote(args?.TargetUser, args?.Steps ?? 0, Request.Headers.GetValues("Haxh")?.FirstOrDefault())
-                    .OperationResult(Request);
+        => this.LogTime(() => _bitlevel.Promote(args?.TargetUser, args?.Steps ?? 0, Request.Headers.GetValues("Haxh")?.FirstOrDefault())
+               .OperationResult(Request));
 
         [HttpPut, Route("api/bit-levels/transactions/current")]
         public IHttpActionResult UpdateTransactionHash([FromBody] TransactionArgs args)
-        => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _bitlevel.UpdateTransactionHash(args.Hash))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpPut, Route("api/bit-levels/transactions/current/confirm")]
         public IHttpActionResult ConfirmUpgradeDonation()
-        => _bitlevel.ConfirmUpgradeDonnation().OperationResult(Request);
+        => this.LogTime(() => _bitlevel.ConfirmUpgradeDonnation().OperationResult(Request));
 
         [HttpGet, Route("api/bit-levels/cycles/current")]
         public IHttpActionResult CurrentUserLevel()
-        => _bitlevel.CurrentUserLevel().OperationResult(Request);
+        => this.LogTime(() => _bitlevel.CurrentUserLevel().OperationResult(Request));
 
         [HttpGet, Route("api/bit-levels/cycles")]
         public IHttpActionResult GetBitLevelById(string data)
-        => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
             .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<BitLevelArgs>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
             .Then(argopr => _bitlevel.GetBitLevelById(argopr.Result.Id))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
 
         [HttpGet, Route("api/bit-levels/cycles/history")]
         public IHttpActionResult UserUpgradeHistory()
-        => _bitlevel.UserUpgradeHistory().OperationResult(Request);
+        => this.LogTime(() => _bitlevel.UserUpgradeHistory().OperationResult(Request));
 
 
         [HttpGet, Route("api/bit-levels/cycles/history/pages")]
         public IHttpActionResult UserUpgradeHistory(string data)
-        => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
             .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<SequencePageArgs>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
             .Then(argopr => _bitlevel.PagedUserUpgradeHistory(argopr.Result.PageSize, argopr.Result.PageIndex))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
 
         [HttpGet, Route("api/bit-levels/upgrade-fees/{level}")]
         public IHttpActionResult GetUpgradeFee(int level)
-        => _bitlevel.GetUpgradeFee(level).OperationResult(Request);
+        => this.LogTime(() => _bitlevel.GetUpgradeFee(level).OperationResult(Request));
 
 
         [HttpGet, Route("api/bit-levels/transactions/current")]
         public IHttpActionResult GetCurrentUpgradeTransaction()
-        => _bitlevel.GetCurrentUpgradeTransaction().OperationResult(Request);
+        => this.LogTime(() => _bitlevel.GetCurrentUpgradeTransaction().OperationResult(Request));
     }
 
     namespace BitLevelControllerModels

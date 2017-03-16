@@ -32,3 +32,4 @@ var BitDiamond;
         Directives.EnumOptions = EnumOptions;
     })(Directives = BitDiamond.Directives || (BitDiamond.Directives = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=enumOptions.js.map

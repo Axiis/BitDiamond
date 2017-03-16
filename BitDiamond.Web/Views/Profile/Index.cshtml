@@ -79,14 +79,12 @@
         <nav class="navbar navbar-default navbar-static-top m-b-0">
             <div class="navbar-header" ng-controller="NavBar as vm">
                 <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse"><i class="ti-menu"></i></a>
-                <div class="top-left-part">
-                    <a class="logo" href="index.html">
+                <div class="top-left-part" style="overflow:hidden;">
+                    <a class="logo" href="/index.html" style="padding:4px;">
                         <b>
-                            <img src="~/Content/images/logo-min.png" alt="home" class="dark-logo" style="height:45px; width: 45px;"/>
+                            <img src="~/Content/images/logo-min.png" alt="home" class="dark-logo hidden-lg hidden-md hidden-sm" style="height:45px; width: 45px; margin-left:-8px;" />
+                            <img src="~/Content/images/logo-text.png" alt="home" class="dark-logo hidden-xs" style="height:50px;" />
                         </b>
-                        <span class="hidden-xs">
-                            <span style="font-size:15px;">Bit Diamond</span>
-                        </span>
                     </a>
                 </div>
 

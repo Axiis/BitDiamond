@@ -11,7 +11,7 @@ using System.Text;
 using System.Web.Http;
 
 using static Axis.Luna.Extensions.ExceptionExtensions;
-using static Axis.Luna.Extensions.ObjectExtensions;
+using BitDiamond.Web.Infrastructure.Utils;
 
 namespace BitDiamond.Web.Controllers.Api
 {
@@ -31,47 +31,47 @@ namespace BitDiamond.Web.Controllers.Api
         #region Account
         [HttpPost, Route("api/accounts/users")]
         public IHttpActionResult RegisterUser([FromBody] AccountControllerModels.RegisterUserArgs data)
-        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.RegisterUser(data.TargetUser, data.Referrer, data.Credential))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpPost, Route("api/accounts/admins")]
         public IHttpActionResult RegisterAdminUser([FromBody] AccountControllerModels.RegisterUserArgs data)
-        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.RegisterAdminUser(data.TargetUser, data.Credential))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpPut, Route("api/accounts/users/deactivate")]
         public IHttpActionResult DeactivateUser([FromBody] AccountControllerModels.UserEmailArgs data)
-        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.DeactivateUser(data.TargetUser))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpPut, Route("api/accounts/users/block")]
         public IHttpActionResult BlockUser([FromBody] AccountControllerModels.UserEmailArgs data)
-        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.BlockUser(data.TargetUser))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
 
         [HttpPut, Route("api/accounts/users/activations")]
         public IHttpActionResult RequestUserActivation([FromBody] AccountControllerModels.UserEmailArgs data)
-        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.RequestUserActivation(data.TargetUser))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpPut, Route("api/accounts/users/activations/verify")]
         public IHttpActionResult VerifyUserActivation([FromBody] AccountControllerModels.UserActivationArgs data)
-        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.VerifyUserActivation(data.TargetUser, data.Token))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
 
         [HttpPut, Route("api/accounts/users/credentials/reset-tokens")]
         public IHttpActionResult RequestCredentialReset([FromBody] AccountControllerModels.CredentialUpdateArgs data)
-        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.RequestCredentialReset(data.Metadata, data.TargetUser))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpPut, Route("api/accounts/users/credentials/reset-tokens/verify")]
         public IHttpActionResult ResetCredential([FromBody] AccountControllerModels.CredentialUpdateArgs data)
@@ -81,81 +81,81 @@ namespace BitDiamond.Web.Controllers.Api
 
         [HttpPut, Route("api/accounts/users/logons/invalidate")]
         public IHttpActionResult InvalidateLogon([FromBody] AccountControllerModels.LogonArgs data)
-        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.InvalidateLogon(data.Token))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpGet, Route("api/accounts/users/roles")]
         public IHttpActionResult GetRoles()
-        => Operation.Try(() => _account.GetRoles())
-            .OperationResult(Request);
+        => this.LogTime(() => Operation.Try(() => _account.GetRoles())
+            .OperationResult(Request));
 
         [HttpGet, Route("api/accounts/users/current")]
         public IHttpActionResult GetSignedInUser()
-        => Operation.Try(() => _account.CurrentUser())
-            .OperationResult(Request);
+        => this.LogTime(() => Operation.Try(() => _account.CurrentUser())
+            .OperationResult(Request));
         #endregion
 
         #region Biodata
         [HttpPut, Route("api/accounts/biodata")]
         public IHttpActionResult UpdateBioData([FromBody] BioData data)
-        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.UpdateBioData(data))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpGet, Route("api/accounts/biodata")]
         public IHttpActionResult GetBioData()
-        => _account.GetBioData().OperationResult(Request);
+        => this.LogTime(() => _account.GetBioData().OperationResult(Request));
         #endregion
 
         #region Contact data
         [HttpPut, Route("api/accounts/contacts")]
         public IHttpActionResult UpdateContactData([FromBody] ContactData data)
-        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.UpdateContactData(data))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpGet, Route("api/accounts/contacts")]
         public IHttpActionResult GetContactData()
-        => _account.GetContactData().OperationResult(Request);
+        => this.LogTime(() => _account.GetContactData().OperationResult(Request));
         #endregion
 
         #region User data
         [HttpPost, Route("api/accounts/userdata")]
         public IHttpActionResult AddData([FromBody] AccountControllerModels.UserDataArgs data)
-        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.AddData(data.Data))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpPut, Route("api/accounts/userdata")]
         public IHttpActionResult UpdateData([FromBody] AccountControllerModels.UserDataArgs data)
-        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.UpdateData(data.Data))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpDelete, Route("api/accounts/userdata")]
         public IHttpActionResult RemoveData(string data)
-        => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
             .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<AccountControllerModels.UserDataArgs>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
             .Then(argopr => _account.RemoveData(argopr.Result.Names))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpGet, Route("api/accounts/userdata")]
         public IHttpActionResult GetUserData()
-        => _account.GetUserData().OperationResult(Request);
+        => this.LogTime(() => _account.GetUserData().OperationResult(Request));
 
         [HttpGet, Route("api/accounts/userdata/filter")]
         public IHttpActionResult GetUserData(string data)
-        => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
             .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<AccountControllerModels.UserDataArgs>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
             .Then(argopr => _account.GetUserData(argopr.Result.Name))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpPut, Route("api/accounts/profile-images")]
         public IHttpActionResult UpdateProfileImage([FromBody] AccountControllerModels.ProfileImageArgs data)
-        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.LogTime(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _account.UpdateProfileImage(data.Image, data.OldImageUrl))
-            .OperationResult(Request);
+            .OperationResult(Request));
         #endregion
     }
 

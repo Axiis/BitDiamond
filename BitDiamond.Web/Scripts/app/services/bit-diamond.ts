@@ -401,6 +401,7 @@ module BitDiamond.Services {
         }
     }
 
+
     export class Posts {
 
         getPostById(id: number): ng.IPromise<Utils.Operation<Models.IPost>> {

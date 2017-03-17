@@ -18,7 +18,7 @@ namespace BitDiamond.Web.Controllers.Api
     public class NotificationController : ApiController
     {
         private IUserNotifier _notifier = null;
-        private IEmailPush _messagePush = null;;
+        private IEmailPush _messagePush = null;
 
         #region init
         public NotificationController(IUserNotifier userNotifier, IEmailPush messagePush)
@@ -33,7 +33,7 @@ namespace BitDiamond.Web.Controllers.Api
 
 
         [HttpPost, Route("api/notifications/support")]
-        public IHttpActionResult NotifySupport([FromBody] Message data)
+        public IHttpActionResult NotifySupport([FromBody] MessageData data)
         => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr =>
             {
@@ -90,7 +90,7 @@ namespace BitDiamond.Web.Controllers.Api
             public int PageIndex { get; set; }
         }
 
-        public class Message
+        public class MessageData
         {
             public string FirstName { get; set; }
             public string LastName { get; set; }

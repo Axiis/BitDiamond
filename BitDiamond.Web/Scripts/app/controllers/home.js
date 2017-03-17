@@ -5,7 +5,7 @@ var BitDiamond;
         var Home;
         (function (Home) {
             var Landing = (function () {
-                function Landing(__blockChain, __account, __notification, $q) {
+                function Landing(__blockChain, __account, __notification, __notify, $q) {
                     var _this = this;
                     this.__blockChain = __blockChain;
                     this.__account = __account;
@@ -27,9 +27,21 @@ var BitDiamond;
                     }).finally(function () { return _this.isLoadingTransactions = false; });
                 }
                 Landing.prototype.sendMessage = function () {
+                    var _this = this;
                     //validate message...
+                    var hasError = false;
+                    if (Object.isNullOrUndefined(this.email) && (hasError = true))
+                        this.__notify.error('Your must provide your email addres', 'Oops!');
+                    if (Object.isNullOrUndefined(this.subject) && (hasError = true))
+                        this.__notify.error('Your must provide a subject', 'Oops!');
+                    if (Object.isNullOrUndefined(this.message) && (hasError = true))
+                        this.__notify.error('Your must provide a message', 'Oops!');
+                    if (hasError)
+                        return;
                     this.__notification.notifySupport(this.firstName, this.lastName, this.email, this.subject, this.message).then(function (opr) {
+                        _this.__notify.success('Your message was sent to Support.');
                     }, function (err) {
+                        _this.__notify.error('Something happened', 'Oops');
                     });
                 };
                 return Landing;

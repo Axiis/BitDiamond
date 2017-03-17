@@ -217,6 +217,10 @@ namespace BitDiamond.Data.EF
             #endregion
 
             #region 4. default users (root, guest and apex)
+            string gerald = "gerald.jax@icloud.com",
+                   onotu = "onotukivie.gbejewoh@gmail.com",
+                   valejoma = "valejoma@live.com",
+                   bunny = "bunnyrico@yahoo.co.uk";
             UsingContext(cxt =>
             {
                 if (cxt.Store<User>().Query.Any()) return;
@@ -237,6 +241,28 @@ namespace BitDiamond.Data.EF
                     {
                         EntityId = Constants.SystemUsers_Apex,
                         Status = AccountStatus.Active.As<int>()
+                    },
+
+                    //other users,
+                    new User
+                    {
+                        EntityId = gerald,
+                        Status = AccountStatus.Active.As<int>()
+                    },
+                    new User
+                    {
+                        EntityId = onotu,
+                        Status = AccountStatus.Active.As<int>()
+                    },
+                    new User
+                    {
+                        EntityId = valejoma,
+                        Status = AccountStatus.Active.As<int>()
+                    },
+                    new User
+                    {
+                        EntityId = bunny,
+                        Status = AccountStatus.Active.As<int>()
                     }
                 }
                 .ForAll((cnt, next) => cxt.Add(next));
@@ -244,7 +270,7 @@ namespace BitDiamond.Data.EF
                 cxt.CommitChanges();
 
                 //add roles
-                new UserRole[]
+                new[]
                 {
                     new UserRole
                     {
@@ -265,53 +291,225 @@ namespace BitDiamond.Data.EF
                     {
                         UserId = Constants.SystemUsers_Apex,
                         RoleName = Constants.Roles_AdminRole
+                    },
+
+                    //other roles,
+                    new UserRole
+                    {
+                        UserId = gerald,
+                        RoleName = Constants.Roles_BitMemberRole
+                    },
+                    new UserRole
+                    {
+                        UserId = onotu,
+                        RoleName = Constants.Roles_BitMemberRole
+                    },
+                    new UserRole
+                    {
+                        UserId = valejoma,
+                        RoleName = Constants.Roles_BitMemberRole
+                    },
+                    new UserRole
+                    {
+                        UserId = bunny,
+                        RoleName = Constants.Roles_BitMemberRole
                     }
                 }
                 .ForAll((cnt, next) => cxt.Add(next));
 
                 //credential
-                var credential = new Credential
+                new[] 
                 {
-                    Metadata = CredentialMetadata.Password,
-                    OwnerId = Constants.SystemUsers_Apex,
-                    Status = CredentialStatus.Active,
-                    Value = Encoding.UTF8.GetBytes("Nuid9x11")
-                };
-                var credentialAuthority = new CredentialAuthentication(cxt, new DefaultHasher());
-                credentialAuthority.AssignCredential(Constants.SystemUsers_Apex, credential).Resolve();
+                    new Credential
+                    {
+                        Metadata = CredentialMetadata.Password,
+                        OwnerId = Constants.SystemUsers_Apex,
+                        Status = CredentialStatus.Active,
+                        Value = Encoding.UTF8.GetBytes("Nuid9x11")
+                    },
+
+                    //others
+                    new Credential
+                    {
+                        Metadata = CredentialMetadata.Password,
+                        OwnerId = gerald,
+                        Status = CredentialStatus.Active,
+                        Value = Encoding.UTF8.GetBytes("YpbCR2")
+                    },
+                    new Credential
+                    {
+                        Metadata = CredentialMetadata.Password,
+                        OwnerId = onotu,
+                        Status = CredentialStatus.Active,
+                        Value = Encoding.UTF8.GetBytes("2008teflondoc")
+                    },
+                    new Credential
+                    {
+                        Metadata = CredentialMetadata.Password,
+                        OwnerId = valejoma,
+                        Status = CredentialStatus.Active,
+                        Value = Encoding.UTF8.GetBytes("@unutovogtb1912@")
+                    },
+                    new Credential
+                    {
+                        Metadata = CredentialMetadata.Password,
+                        OwnerId = bunny,
+                        Status = CredentialStatus.Active,
+                        Value = Encoding.UTF8.GetBytes("karim1986")
+                    }
+                }
+                .ForAll((cnt, next) =>
+                {
+                    var credentialAuthority = new CredentialAuthentication(cxt, new DefaultHasher());
+                    credentialAuthority.AssignCredential(Constants.SystemUsers_Apex, next).Resolve();
+                });
 
                 //add bit level and verified blocktransaction for apex user
-                var bcaddress = new BitcoinAddress
+                var addresses = new[]
                 {
-                    OwnerId = Constants.SystemUsers_Apex,
-                    BlockChainAddress = "12b8exzGA5Dmq4dcCFq68Eym3maKnmN5pn",
-                    IsActive = true,
-                    IsVerified = true
-                };
-                cxt.Add(bcaddress).Context.CommitChanges();
+                    new BitcoinAddress
+                    {
+                        OwnerId = Constants.SystemUsers_Apex,
+                        BlockChainAddress = "12b8exzGA5Dmq4dcCFq68Eym3maKnmN5pn",
+                        IsActive = true,
+                        IsVerified = true
+                    },
 
-                var bitlevel = new BitLevel
+                    //others,
+                    new BitcoinAddress
+                    {
+                        OwnerId = gerald,
+                        BlockChainAddress = "19yabtQHnu4PEd23w9dmhu5cGiQST9wnXi",
+                        IsActive = true,
+                        IsVerified = true
+                    },
+                    new BitcoinAddress
+                    {
+                        OwnerId = onotu,
+                        BlockChainAddress = "14JhghD4C1D27p7KJMro2vHQzYzEQGMTkF",
+                        IsActive = true,
+                        IsVerified = true
+                    },
+                    new BitcoinAddress
+                    {
+                        OwnerId = valejoma,
+                        BlockChainAddress = "1FXXAVYJfV2gL4juph5dfYmaC3v8tEboxY",
+                        IsActive = true,
+                        IsVerified = true
+                    },
+                    new BitcoinAddress
+                    {
+                        OwnerId = bunny,
+                        BlockChainAddress = "1MtUiijySbfihb7XcuudFo6iZxronYdgdg",
+                        IsActive = true,
+                        IsVerified = true
+                    }
+                }
+                .ToDictionary(_x => _x.OwnerId);
+                addresses.ForAll((cnt, _bcaddress) =>
                 {
-                    Cycle = int.MaxValue,
-                    Level = (int)maxBitLevelSetting.ParseData<long>(),
-                    UserId = Constants.SystemUsers_Apex
-                };
-                cxt.Add(bitlevel).Context.CommitChanges();
+                    cxt.Add(_bcaddress.Value).Context.CommitChanges();
+                });
 
-                var transaction = new BlockChainTransaction
+                var levels = new[]
                 {
-                    Amount = 0m,
-                    ContextId = bitlevel.Id.ToString(),
-                    ContextType = Constants.TransactionContext_UpgradeBitLevel,
-                    LedgerCount = int.MaxValue,
-                    SenderId = bcaddress.Id,
-                    ReceiverId = bcaddress.Id,
-                    Status = BlockChainTransactionStatus.Verified,
-                    TransactionHash = ""
-                };
-                cxt.Add(transaction).Context.CommitChanges();
+                    new BitLevel
+                    {
+                        Cycle = int.MaxValue,
+                        Level = (int)maxBitLevelSetting.ParseData<long>(),
+                        UserId = Constants.SystemUsers_Apex
+                    },
 
-                bitlevel.DonationId = transaction.Id;
+                    //others,
+                    new BitLevel
+                    {
+                        Cycle = 1,
+                        Level = 2,
+                        UserId = gerald
+                    },
+                    new BitLevel
+                    {
+                        Cycle = 1,
+                        Level = 1,
+                        UserId = onotu
+                    },
+                    new BitLevel
+                    {
+                        Cycle = 1,
+                        Level = 1,
+                        UserId = valejoma
+                    },
+                    new BitLevel
+                    {
+                        Cycle = 1,
+                        Level = 1,
+                        UserId = bunny
+                    }
+                }
+                .ToDictionary(lvl => lvl.UserId);
+                levels.ForAll((cnt, bitlevel) =>
+                {
+                    cxt.Add(bitlevel.Value).Context.CommitChanges();
+                });
+
+                new[]
+                {
+                    new BlockChainTransaction
+                    {
+                        Amount = 0m,
+                        ContextId = levels[Constants.SystemUsers_Apex].Id.ToString(),
+                        ContextType = Constants.TransactionContext_UpgradeBitLevel,
+                        LedgerCount = int.MaxValue,
+                        SenderId = addresses[Constants.SystemUsers_Apex].Id,
+                        ReceiverId = addresses[Constants.SystemUsers_Apex].Id,
+                        Status = BlockChainTransactionStatus.Verified,
+                        TransactionHash = ""
+                    },
+
+                    //others,
+                    new BlockChainTransaction
+                    {
+                        Amount = 0.3652m,
+                        ContextId = levels[gerald].Id.ToString(),
+                        ContextType = Constants.TransactionContext_UpgradeBitLevel,
+                        SenderId = addresses[gerald].Id,
+                        ReceiverId = addresses[Constants.SystemUsers_Apex].Id,
+                        Status = BlockChainTransactionStatus.Unverified
+                    },
+                    new BlockChainTransaction
+                    {
+                        Amount = 0.1826m,
+                        ContextId = levels[onotu].Id.ToString(),
+                        ContextType = Constants.TransactionContext_UpgradeBitLevel,
+                        SenderId = addresses[onotu].Id,
+                        ReceiverId = addresses[Constants.SystemUsers_Apex].Id,
+                        Status = BlockChainTransactionStatus.Unverified
+                    },
+                    new BlockChainTransaction
+                    {
+                        Amount = 0.1826m,
+                        ContextId = levels[valejoma].Id.ToString(),
+                        ContextType = Constants.TransactionContext_UpgradeBitLevel,
+                        SenderId = addresses[valejoma].Id,
+                        ReceiverId = addresses[gerald].Id,
+                        Status = BlockChainTransactionStatus.Unverified
+                    },
+                    new BlockChainTransaction
+                    {
+                        Amount = 0.1826m,
+                        ContextId = levels[bunny].Id.ToString(),
+                        ContextType = Constants.TransactionContext_UpgradeBitLevel,
+                        SenderId = addresses[bunny].Id,
+                        ReceiverId = addresses[gerald].Id,
+                        Status = BlockChainTransactionStatus.Unverified
+                    }
+                }
+                .ForAll((cnt, next) =>
+                {
+                    cxt.Add(next).Context.CommitChanges();
+                });
+
+                levels
                 cxt.Modify(bitlevel).Context.CommitChanges();
 
                 //referal manager

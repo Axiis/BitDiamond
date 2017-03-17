@@ -7,6 +7,9 @@ var BitDiamond;
                 this.__transport = __transport;
                 this.$q = $q;
             }
+            Account.prototype.getUserCount = function () {
+                return this.__transport.get('/api/accounts/users/count');
+            };
             Account.prototype.getCurrentUserRef = function () {
                 return this.__transport.get('/api/referrals/current');
             };
@@ -282,6 +285,15 @@ var BitDiamond;
                 this.__transport = __transport;
                 this.$q = $q;
             }
+            Notification.prototype.notifySupport = function (fname, lname, email, subject, message) {
+                return this.__transport.post('/api/notifications/support', {
+                    FirstName: fname,
+                    LastName: lname,
+                    Subject: subject,
+                    Message: message,
+                    Email: email
+                });
+            };
             Notification.prototype.clearNotification = function (id) {
                 return this.__transport.put('/api/notifications/single', {
                     Id: id
@@ -342,4 +354,3 @@ var BitDiamond;
         Services.Posts = Posts;
     })(Services = BitDiamond.Services || (BitDiamond.Services = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=bit-diamond.js.map

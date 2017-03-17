@@ -1,11 +1,331 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en-us">
 <head>
-    <title></title>
-	<meta charset="utf-8" />
-</head>
-<body>
 
-    <a href="/account/index" style="font-size:20px;">Login</a>
+	<meta charset="utf-8" >
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Bit Diamond</title>    
+
+  	<!-- CSS files -->
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,600,700,900,400italic|Montserrat:400,700' rel='stylesheet'>
+	<link rel="stylesheet" href="/content/theme/palas/plugins/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/content/theme/palas/plugins/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/content/theme/palas/plugins/elegant_font/html_css/style.css">
+	<link rel="stylesheet" href="/content/theme/palas/plugins/rs-plugin/css/settings.css" media="screen">
+    <link rel="stylesheet" href="/content/theme/palas/plugins/owl-carousel/owl.carousel.css">
+
+
+	<!-- Main CSS file -->
+	<link rel="stylesheet" href="/content/theme/palas/css/style.css">
+
+    <link rel="stylesheet" href="/content/loaders.css">	
+
+</head>
+
+<body ng-app="home">
+
+<div id="preloader">
+	<div id="status">&nbsp;</div>
+</div>
+
+<!-- Global Wrapper -->
+<div id="wrapper" ng-controller="Landing as vm">
+
+	<div class="h-wrapper">
+
+		<!-- Top Bar -->
+		<div class="topbar">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-6">
+					</div> 
+					<!-- This column is hidden on mobiles -->
+					<div class="col-sm-6">
+						<div class="pull-right hidden-xs">
+							<ul class="social-icon unstyled">
+								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div> 
+		</div>
+
+		<!-- Header -->
+		<header class="header-wrapper header-transparent with-topbar">
+			<div class="main-header">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-12 col-md-2">
+							<!-- Logo - Read documentation to see how to change the logo-->
+							<a href="/index.html" class="logo"></a>
+						</div>
+						<div class="col-sm-12 col-md-10">
+							<nav class="navbar-right">
+								<ul class="menu">
+									<!-- Toggle Menu - For Mobile Devices -->
+									<li class="toggle-menu"><i class="fa icon_menu"></i></li> 
+									
+									<li class="first">
+										<a href="/Index.html">Home</a>
+									</li>	
+                                    <li>
+                                        <a href="/how-it-works.html">How it works</a>
+                                    </li>
+                                    <li>
+                                        <a href="/faq.html">FAQ</a>
+                                    </li>
+                                    <li>
+                                        <a href="/contact-us.html">Reach us</a>
+                                    </li>
+                                    <li>
+                                        <a class="last" href="/account/index#!/signin">Login</a>
+                                    </li>
+								</ul>
+							</nav>
+						</div>
+					</div>
+				</div> <!-- END Container -->
+			</div> <!-- END Main Header -->
+		</header>
+
+	</div>
+
+	<!-- Do not remove this class -->
+	<div class="push-top"></div>
+
+	<!-- Slider -->
+	<div class="tp-banner-container rs_fullwidth">
+		<div class="tp-banner">
+			<ul>                
+                <!-- SLIDE 1 -->
+                <li data-transition="fade" data-masterspeed="500" data-slotamount="7" data-delay="8000" data-title="Slide 1">
+                    <!-- Background Image -->
+                    <img src="/content/images/bg01.jpg" data-bgposition="top fit" data-bgfit="cover" data-bgrepeat="no-repeat" alt="">
+
+                    <!-- Include bg-overlay class if you want some background overlay over the image -->
+                    <!-- Recomend to include it to have a dark overlay and change the opacity (op6, op4, op8 etc) so that the content inside to be visible and readalbe (text is white) -->
+                    <div class="bg-overlay op2"></div>
+
+                </li>
+				
+				<!-- SLIDE 2 -->
+				<li data-transition="fade" data-masterspeed="500" data-slotamount="7" data-delay="8000" data-title="Slide 1">
+					<!-- Background Image -->
+				   <img src="/content/images/bg01.jpg" data-bgposition="center fit" data-bgfit="cover" data-bgrepeat="no-repeat" alt="">
+
+				   <!-- Include bg-overlay class if you want some background overlay over the image -->
+				   <!-- Recomend to include it to have a dark overlay and change the opacity (op6, op4, op8 etc) so that the content inside to be visible and readalbe (text is white) -->
+				   <div class="bg-overlay op2"></div>
+					
+				</li>                
+            
+                <!-- SLIDE 3 -->
+                <li data-transition="fade" data-masterspeed="500" data-slotamount="7" data-delay="8000" data-title="Slide 1">
+                    <!-- Background Image -->
+                    <img src="/content/images/bg01.jpg" data-bgposition="center fit" data-bgfit="cover" data-bgrepeat="no-repeat" alt="">
+
+                    <!-- Include bg-overlay class if you want some background overlay over the image -->
+                    <!-- Recomend to include it to have a dark overlay and change the opacity (op6, op4, op8 etc) so that the content inside to be visible and readalbe (text is white) -->
+                    <div class="bg-overlay op2"></div>
+
+                </li>
+
+                <!-- SLIDE 4 -->
+                <li data-transition="fade" data-masterspeed="500" data-slotamount="7" data-delay="8000" data-title="Slide 1">
+                    <!-- Background Image -->
+                    <img src="/content/images/bg01.jpg" data-bgposition="center fit" data-bgfit="cover" data-bgrepeat="no-repeat" alt="">
+
+                    <!-- Include bg-overlay class if you want some background overlay over the image -->
+                    <!-- Recomend to include it to have a dark overlay and change the opacity (op6, op4, op8 etc) so that the content inside to be visible and readalbe (text is white) -->
+                    <div class="bg-overlay op2"></div>
+
+                </li>
+
+                <!-- SLIDE 5 -->
+                <li data-transition="fade" data-masterspeed="500" data-slotamount="7" data-delay="8000" data-title="Slide 1">
+                    <!-- Background Image -->
+                    <img src="/content/images/bg01.jpg" data-bgposition="center fit" data-bgfit="cover" data-bgrepeat="no-repeat" alt="">
+
+                    <!-- Include bg-overlay class if you want some background overlay over the image -->
+                    <!-- Recomend to include it to have a dark overlay and change the opacity (op6, op4, op8 etc) so that the content inside to be visible and readalbe (text is white) -->
+                    <div class="bg-overlay op2"></div>
+
+                </li>
+
+                <!-- SLIDE 6 -->
+                <li data-transition="fade" data-masterspeed="500" data-slotamount="7" data-delay="8000" data-title="Slide 1">
+                    <!-- Background Image -->
+                    <img src="/content/images/bg01.jpg" data-bgposition="center fit" data-bgfit="cover" data-bgrepeat="no-repeat" alt="">
+
+                    <!-- Include bg-overlay class if you want some background overlay over the image -->
+                    <!-- Recomend to include it to have a dark overlay and change the opacity (op6, op4, op8 etc) so that the content inside to be visible and readalbe (text is white) -->
+                    <div class="bg-overlay op2"></div>
+
+                </li>
+
+			</ul>
+		</div>
+	</div> 
+    <!-- END Slider-->
+
+ 
+	<section class="section mt40">
+		<div class="container">
+			<div class="row col-p30">
+				<div class="col-sm-6 xs-box2">
+					<div class="box-services-c">
+						<i class="fa-users fa fa-style4"></i>
+						<h3 class="title-small br-bottom-center">Total Users</h3>
+                        <p class="mb0">
+                            <h3 ng-hide="vm.isLoadingUsers">{{vm.totalUsers}}</h3>
+                            <box-loader size="24" color="black" show="vm.isLoadingUsers"></box-loader>
+                        </p>
+					</div>
+				</div>
+				<div class="col-sm-6 xs-box2">
+					<div class="box-services-c">
+						<i class="fa-btc fa fa-style4"></i>
+						<h3 class="title-small br-bottom-center">Total Transactions</h3>
+                        <p class="mb0">
+                            <h3 ng-hide="vm.isLoadingTransactions">{{vm.totalTransactions}}</h3>
+                            <box-loader size="24" color="black" show="vm.isLoadingTransactions"></box-loader>
+                        </p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section max_height sm_max_height" style="padding:0;">
+		<div class="row col-p0">
+			<div class="col-sm-12 col-md-4">
+				<div class="box-services-d box-services-e dark el_max_height">
+					<div class="bg-overlay"></div>
+					<div class="row col-p0">
+						<div class="col-sm-12">
+							<h3 class="title-medium title-shadow-a">REGISTER</h3>
+							<p class="mb0 ">Register with our email, a referee code, and your basic bio-data!</p>
+							<span class="fa montserrat">1</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-4">
+				<div class="box-services-d box-services-e el_max_height">
+					<div class="bg-overlay"></div>
+					<div class="row col-p0">
+						<div class="col-sm-12">
+							<h3 class="title-medium title-shadow-a">SETUP BITCOIN</h3>
+							<p class="mb0 ">Supply your bitcoin address for verification - once verified, you can begin leveling-up</p>
+							<span class="fa montserrat">2</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12 col-md-4">
+				<div class="box-services-d box-services-e green el_max_height">
+					<div class="bg-overlay"></div>
+					<div class="row col-p0">
+						<div class="col-sm-12">
+							<h3 class="title-medium title-shadow-a">EARN MONEY</h3>
+							<p class="mb0 ">Level-up, receive donations from downlines, watch your wealth grow!</p>
+							<span class="fa montserrat">3</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Footer wrapper -->
+	<footer class="footer-wrapper footer-bg">
+		<div class="container">
+			<div class="row col-p30">
+				<div class="col-sm-12 col-md-6">
+					<div class="footer-widget">
+						<h3 class="footer-title">BitDiamond</h3>
+						<ul class="footer-links clearfix">
+							<li><a href="/index.html">Home</a></li>
+							<li><a href="/how-it-works.html">How it works</a></li>
+							<li><a href="/faq.html">FAQ</a></li>
+                            <li><a href="/contact-us.html">Reach us</a></li>
+                            <li><a href="/account/index#!/signin">Login</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md-6">
+					<div class="footer-widget">
+						<h3 class="footer-title">Get social</h3>
+						<ul class="footer-social clearfix">
+							<li><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+							<li><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 xs-box">
+                    <p class="copyright">&copy; Copyright {{vm.currentYear}} </p>
+				</div>
+			</div>
+		</div>
+	</footer>
+	
+</div> <!-- END Global Wrapper -->
+
+
+	<!-- Javascript files -->
+	<script src="/content/theme/palas/plugins/jquery/jquery-2.1.0.min.js"></script>
+	<script src="/content/theme/palas/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/content/theme/palas/plugins/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
+	<script src="/content/theme/palas/plugins/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
+	<script src="/content/theme/palas/plugins/jquery.appear.js"></script>
+	<script src="/content/theme/palas/plugins/retina.min.js"></script>
+	<script src="/content/theme/palas/plugins/stellar.min.js"></script>
+	<script src="/content/theme/palas/plugins/sticky.min.js"></script>
+	<script src="/content/theme/palas/plugins/owl-carousel/owl.carousel.min.js"></script>
+	<script src="/content/theme/palas/plugins/isotope/isotope.pkgd.min.js"></script>
+	<script src="/content/theme/palas/plugins/isotope/imagesloaded.pkgd.min.js"></script>
+
+    <script src="/content/theme/palas/plugins/jquery.validate.min.js"></script>	
+
+	<!-- Main javascript file -->
+	<script src="/content/theme/palas/js/script.js"></script>
+
+    <script type="text/javascript" src="/scripts/libs/toastr.min.js"></script>
+    <script type="text/javascript" src="/scripts/libs/moment.min.js"></script>
+
+    <script type="text/javascript" src="/scripts/libs/angular.min.js"></script>
+    <script type="text/javascript" src="/scripts/libs/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="/scripts/libs/angular-animate.min.js"></script>
+    <script type="text/javascript" src="/scripts/libs/angular-route.min.js"></script>
+    <script type="text/javascript" src="/scripts/libs/angular-ui-router.min.js"></script>
+
+    <script type="text/javascript" src="/scripts/app/utils/constants.js"></script>
+    <script type="text/javascript" src="/scripts/app/utils/extensions.js"></script>
+    <script type="text/javascript" src="/scripts/app/utils/tools.js"></script>
+    <script type="text/javascript" src="/scripts/app/utils/map.js"></script>
+    <script type="text/javascript" src="/scripts/app/utils/operation.js"></script>
+    <script type="text/javascript" src="/scripts/app/utils/domain-tools.js"></script>
+
+    <script type="text/javascript" src="/scripts/app/models/axis-apollo.js"></script>
+    <script type="text/javascript" src="/scripts/app/models/domain.js"></script>
+
+    <script type="text/javascript" src="/scripts/app/directives/loaders.js"></script>
+
+    <script type="text/javascript" src="/scripts/app/services/utility.js"></script>
+    <script type="text/javascript" src="/scripts/app/services/bit-diamond.js"></script>
+
+    <script type="text/javascript" src="/scripts/app/controllers/home.js"></script>
+    <script type="text/javascript" src="/scripts/app/modules/home.js"></script>
+
+    <script type="text/javascript">
+    $('[data-toggle=tooltip]').tooltip();
+    </script>
+
 </body>
 </html>

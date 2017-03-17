@@ -3,6 +3,10 @@ module BitDiamond.Services {
 
     export class Account {
 
+        getUserCount(): ng.IPromise<Utils.Operation<number>> {
+            return this.__transport.get('/api/accounts/users/count');
+        }
+
         getCurrentUserRef(): ng.IPromise<Utils.Operation<Models.IReferralNode>> {
             return this.__transport.get<Utils.Operation<Models.IReferralNode>>('/api/referrals/current');
         }
@@ -353,6 +357,16 @@ module BitDiamond.Services {
 
 
     export class Notification {
+
+        notifySupport(fname: string, lname: string, email: string, subject: string, message: string): ng.IPromise<Utils.Operation<void>> {
+            return this.__transport.post('/api/notifications/support', {
+                FirstName: fname,
+                LastName: lname,
+                Subject: subject,
+                Message: message,
+                Email: email
+            });
+        }
 
         clearNotification(id: number): ng.IPromise<Utils.Operation<Models.INotification>> {
             return this.__transport.put<Utils.Operation<Models.INotification>>('/api/notifications/single', {

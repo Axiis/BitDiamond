@@ -16,12 +16,17 @@ var BitDiamond;
                     this.http = $http;
                 }
                 DomainTransport.prototype.get = function (url, data, config) {
+                    var _this = this;
                     if (data) {
                         data = this.removeSupportProperties(data);
                         config = config || {};
                         config.params = { data: Utils.ToBase64String(Utils.ToUTF8EncodedArray(JSON.stringify(data))) };
                     }
-                    return this.http.get(url, config).then(function (args) { return args.data; }, this.treatError);
+                    return this.http.get(url, config).then(function (args) {
+                        return args.data;
+                    }, function (err) {
+                        return _this.treatError(err);
+                    });
                 };
                 DomainTransport.prototype.getUrlEncoded = function (url, data, config) {
                     if (Object.isNullOrUndefined(config))
@@ -40,27 +45,39 @@ var BitDiamond;
                     return this.http.get(url, config).then(function (args) { return args.data; });
                 };
                 DomainTransport.prototype.delete = function (url, data, config) {
+                    var _this = this;
                     if (data) {
                         data = this.removeSupportProperties(data);
                         config = config || {};
                         config.params = { data: Utils.ToBase64String(Utils.ToUTF8EncodedArray(JSON.stringify(data))) };
                     }
-                    return this.http.delete(url, config).then(function (args) { return args.data; }, this.treatError);
+                    return this.http.delete(url, config).then(function (args) { return args.data; }, function (err) {
+                        return _this.treatError(err);
+                    });
                 };
                 DomainTransport.prototype.head = function (url, config) {
-                    return this.http.head(url, config).then(function (args) { return args.data; }, this.treatError);
+                    var _this = this;
+                    return this.http.head(url, config).then(function (args) { return args.data; }, function (err) {
+                        return _this.treatError(err);
+                    });
                 };
                 DomainTransport.prototype.jsonp = function (url, data, config) {
+                    var _this = this;
                     if (data) {
                         data = this.removeSupportProperties(data);
                         config = config || {};
                         config.data = data;
                     }
-                    return this.http.jsonp(url, config).then(function (args) { return args.data; }, this.treatError);
+                    return this.http.jsonp(url, config).then(function (args) { return args.data; }, function (err) {
+                        return _this.treatError(err);
+                    });
                 };
                 DomainTransport.prototype.post = function (url, data, config) {
+                    var _this = this;
                     data = this.removeSupportProperties(data);
-                    return this.http.post(url, data, config).then(function (args) { return args.data; }, this.treatError);
+                    return this.http.post(url, data, config).then(function (args) { return args.data; }, function (err) {
+                        return _this.treatError(err);
+                    });
                 };
                 DomainTransport.prototype.postUrlEncoded = function (url, data, config) {
                     if (Object.isNullOrUndefined(config))
@@ -78,12 +95,18 @@ var BitDiamond;
                     return this.http.post(url, data, config).then(function (args) { return args.data; });
                 };
                 DomainTransport.prototype.put = function (url, data, config) {
+                    var _this = this;
                     data = this.removeSupportProperties(data);
-                    return this.http.put(url, data, config).then(function (args) { return args.data; }, this.treatError);
+                    return this.http.put(url, data, config).then(function (args) { return args.data; }, function (err) {
+                        return _this.treatError(err);
+                    });
                 };
                 DomainTransport.prototype.patch = function (url, data, config) {
+                    var _this = this;
                     data = this.removeSupportProperties(data);
-                    return this.http.patch(url, data, config).then(function (args) { return args.data; }, this.treatError);
+                    return this.http.patch(url, data, config).then(function (args) { return args.data; }, function (err) {
+                        return _this.treatError(err);
+                    });
                 };
                 DomainTransport.prototype.removeSupportProperties = function (data) {
                     var _this = this;
@@ -120,12 +143,16 @@ var BitDiamond;
                     }
                 };
                 DomainTransport.prototype.treatError = function (arg) {
-                    //access denied
-                    if (arg.status == 401)
-                        window.location.href = Utils.Constants.URL_Login;
-                    else if (arg.status == 409)
-                        this.__notify.error("A Conflict was caused by your previous request.", "Oops!");
-                    //other errors...
+                    if (!Object.isNullOrUndefined(arg.status)) {
+                        //access denied
+                        if (arg.status == 401)
+                            this.__notify.error("Access Denied.", "Oops!");
+                        else if (arg.status == 409)
+                            this.__notify.error("A Conflict was caused by your previous request.", "Oops!");
+                    }
+                    else {
+                        this.__notify.error(arg.message || 'unknown error');
+                    }
                     return this.$q.reject(arg);
                 };
                 return DomainTransport;
@@ -225,4 +252,3 @@ var BitDiamond;
         })(Services = Utils.Services || (Utils.Services = {}));
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=utility.js.map

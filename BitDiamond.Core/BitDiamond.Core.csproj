@@ -73,6 +73,7 @@
     <Compile Include="Models\Email\AccountActivation.cs" />
     <Compile Include="Models\Email\MailModel.cs" />
     <Compile Include="Models\Email\PasswordRecovery.cs" />
+    <Compile Include="Models\Email\SupportMessage.cs" />
     <Compile Include="Models\Email\UserWelcome.cs" />
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\Post.cs" />

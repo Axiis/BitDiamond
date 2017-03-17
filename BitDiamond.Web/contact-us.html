@@ -1,0 +1,293 @@
+﻿<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Bit Diamond</title>
+
+    <!-- CSS files -->
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,600,700,900,400italic|Montserrat:400,700' rel='stylesheet'>
+    <link rel="stylesheet" href="/content/theme/palas/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/content/theme/palas/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/content/theme/palas/plugins/elegant_font/html_css/style.css">
+    <link rel="stylesheet" href="/content/theme/palas/plugins/rs-plugin/css/settings.css" media="screen">
+    <link rel="stylesheet" href="/content/theme/palas/plugins/owl-carousel/owl.carousel.css">
+
+
+    <!-- Main CSS file -->
+    <link rel="stylesheet" href="/content/theme/palas/css/style.css">
+
+    <link rel="stylesheet" href="/content/loaders.css">
+
+</head>
+
+<body ng-app="home">
+
+    <div id="preloader">
+        <div id="status">&nbsp;</div>
+    </div>
+
+    <!-- Global Wrapper -->
+    <div id="wrapper" ng-controller="Landing as vm">
+
+        <div class="h-wrapper">
+
+            <!-- Top Bar -->
+            <div class="topbar">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6">
+                        </div>
+                        <!-- This column is hidden on mobiles -->
+                        <div class="col-sm-6">
+                            <div class="pull-right hidden-xs">
+                                <ul class="social-icon unstyled">
+                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Header -->
+            <header class="header-wrapper header-transparent with-topbar">
+                <div class="main-header">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-2">
+                                <!-- Logo - Read documentation to see how to change the logo-->
+                                <a href="/index.html" class="logo"></a>
+                            </div>
+                            <div class="col-sm-12 col-md-10">
+                                <nav class="navbar-right">
+                                    <ul class="menu">
+                                        <!-- Toggle Menu - For Mobile Devices -->
+                                        <li class="toggle-menu"><i class="fa icon_menu"></i></li>
+
+                                        <li class="first">
+                                            <a href="/Index.html">Home</a>
+                                        </li>
+                                        <li>
+                                            <a href="/how-it-works.html">How it works</a>
+                                        </li>
+                                        <li>
+                                            <a href="/faq.html">FAQ</a>
+                                        </li>
+                                        <li>
+                                            <a href="/contact-us.html">Reach us</a>
+                                        </li>
+                                        <li>
+                                            <a class="last" href="/account/index#!/signin">Login</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div> <!-- END Container -->
+                </div> <!-- END Main Header -->
+            </header>
+
+        </div>
+
+        <!-- Do not remove this class -->
+        <div class="push-top"></div>
+
+        <section class="section-intro bg-img bg06 stellar" data-stellar-background-ratio="0.4">
+            <div class="bg-overlay op6"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5 col-sm-8">
+                        <h1 class="intro-title mb20">Get in Touch</h1>
+                        <p class="intro-p mb40">Reach us easily via any of the given channels</p>
+                        <ul class="social-icon intro-share">
+                            <li><a href="#" data-toggle="tooltip" title="Like"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#" data-toggle="tooltip" title="Tweet"><i class="fa fa-twitter"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="section mt30 page-contact mb50">
+            <div class="container">
+                <div class="row mb70">
+                    <div class="col-md-7">
+                        <div class="contact-map-wrapper form">
+                            <div class="contact-map">
+                                <form class="form ajax-contact-form" method="post" action="#">
+                                    <div class="row col-p10">
+                                        <div class="col-sm-6">
+                                            <label class="mb10"><input type="text" name="val_fname" id="val_fname" class="form-control" ng-model="vm.firstName" placeholder=" First Name"></label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="mb10"><input type="text" name="val_lname" id="val_lname" class="form-control" ng-model="vm.lastName" placeholder=" Last Name"></label>
+                                        </div>
+                                    </div>
+                                    <div class="row col-p10">
+                                        <div class="col-sm-6">
+                                            <label class="mb10"><input type="text" name="val_subject" id="val_subject" required class="form-control" ng-model="vm.subject" placeholder=" Subject *"></label>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="mb10"><input type="email" name="val_email" id="val_email" required class="form-control" ng-model="vm.email" placeholder=" Email Address *"></label>
+                                        </div>
+                                    </div>
+                                    <label>
+                                        <textarea name="val_message" id="val_message" cols="30" rows="10" required class="form-control" ng-model="vm.message" placeholder=" Message *"></textarea>
+                                    </label>
+                                    <div class="mt20 clearfix">
+                                        <button type="button" ng-click="vm.sendMessage()" class="btn btn-d">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <div class="container">
+                <div class="row col-p0 mb80 max_height xs_max_height">
+                    <div class="col-sm-12 col-md-7">
+                        <div class="box-services-d box-services-e dark el_max_height" style="height: 172px;">
+                            <div class="bg-overlay"></div>
+                            <div class="row col-p0">
+                                <div class="col-sm-12">
+                                    <p class="mb0 ">support@bitdiamond.biz</p>
+                                    <i class="fa fa-envelope-o"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 hidden">
+                        <div class="box-services-d box-services-e green el_max_height" style="height: 172px;">
+                            <div class="bg-overlay"></div>
+                            <div class="row col-p0">
+                                <div class="col-sm-12">
+                                    <p class="mb0 ">0 800-55-22-55 <br> 0 500-22-44-55</p>
+                                    <i class="fa fa-phone"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 hidden">
+                        <div class="box-services-d box-services-e el_max_height" style="height: 172px;">
+                            <div class="bg-overlay"></div>
+                            <div class="row col-p0">
+                                <div class="col-sm-12">
+                                    <p class="mb0 ">55 Cyan Avenue, Suite 65 <br> Los Angeles, CA 8008</p>
+                                    <i class="fa fa-map-marker"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 hidden">
+                        <div class="box-services-d box-services-e orange el_max_height" style="height: 172px;">
+                            <div class="bg-overlay"></div>
+                            <div class="row col-p0">
+                                <div class="col-sm-12">
+                                    <p class="mb0 ">Mon - Fri: 9:00 - 18:00 <br> Sat - Sun: Closed</p>
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- Footer wrapper -->
+        <footer class="footer-wrapper footer-bg">
+            <div class="container">
+                <div class="row col-p30">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="footer-widget">
+                            <h3 class="footer-title">BitDiamond</h3>
+                            <ul class="footer-links clearfix">
+                                <li><a href="/index.html">Home</a></li>
+                                <li><a href="/how-it-works.html">How it works</a></li>
+                                <li><a href="/faq.html">FAQ</a></li>
+                                <li><a href="/contact-us.html">Reach us</a></li>
+                                <li><a href="/account/index#!/signin">Login</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="footer-widget">
+                            <h3 class="footer-title">Get social</h3>
+                            <ul class="footer-social clearfix">
+                                <li><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 xs-box">
+                        <p class="copyright">&copy; Copyright {{vm.currentYear}} </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div> <!-- END Global Wrapper -->
+    <!-- Javascript files -->
+    <script src="/content/theme/palas/plugins/jquery/jquery-2.1.0.min.js"></script>
+    <script src="/content/theme/palas/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/content/theme/palas/plugins/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
+    <script src="/content/theme/palas/plugins/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
+    <script src="/content/theme/palas/plugins/jquery.appear.js"></script>
+    <script src="/content/theme/palas/plugins/retina.min.js"></script>
+    <script src="/content/theme/palas/plugins/stellar.min.js"></script>
+    <script src="/content/theme/palas/plugins/sticky.min.js"></script>
+    <script src="/content/theme/palas/plugins/owl-carousel/owl.carousel.min.js"></script>
+    <script src="/content/theme/palas/plugins/isotope/isotope.pkgd.min.js"></script>
+    <script src="/content/theme/palas/plugins/isotope/imagesloaded.pkgd.min.js"></script>
+
+    <script src="/content/theme/palas/plugins/jquery.validate.min.js"></script>
+
+    <!-- Main javascript file -->
+    <script src="/content/theme/palas/js/script.js"></script>
+
+    <script type="text/javascript" src="/scripts/libs/toastr.min.js"></script>
+    <script type="text/javascript" src="/scripts/libs/moment.min.js"></script>
+
+    <script type="text/javascript" src="/scripts/libs/angular.min.js"></script>
+    <script type="text/javascript" src="/scripts/libs/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="/scripts/libs/angular-animate.min.js"></script>
+    <script type="text/javascript" src="/scripts/libs/angular-route.min.js"></script>
+    <script type="text/javascript" src="/scripts/libs/angular-ui-router.min.js"></script>
+
+    <script type="text/javascript" src="/scripts/app/utils/constants.js"></script>
+    <script type="text/javascript" src="/scripts/app/utils/extensions.js"></script>
+    <script type="text/javascript" src="/scripts/app/utils/tools.js"></script>
+    <script type="text/javascript" src="/scripts/app/utils/map.js"></script>
+    <script type="text/javascript" src="/scripts/app/utils/operation.js"></script>
+    <script type="text/javascript" src="/scripts/app/utils/domain-tools.js"></script>
+
+    <script type="text/javascript" src="/scripts/app/models/axis-apollo.js"></script>
+    <script type="text/javascript" src="/scripts/app/models/domain.js"></script>
+
+    <script type="text/javascript" src="/scripts/app/directives/loaders.js"></script>
+
+    <script type="text/javascript" src="/scripts/app/services/utility.js"></script>
+    <script type="text/javascript" src="/scripts/app/services/bit-diamond.js"></script>
+
+    <script type="text/javascript" src="/scripts/app/controllers/home.js"></script>
+    <script type="text/javascript" src="/scripts/app/modules/home.js"></script>
+
+    <script type="text/javascript">
+    $('[data-toggle=tooltip]').tooltip();
+    </script>
+
+</body>
+</html>

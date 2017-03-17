@@ -80,6 +80,9 @@ namespace BitDiamond.Data.EF.Query
                   .Where(_u => _u.EntityId == userId)
                   .FirstOrDefault();
 
+        public long GetUserCount()
+        => _europa.Store<User>().Query.Count();
+
         public IEnumerable<UserData> GetUserData(User user)
         => _europa.Store<UserData>()
                   .QueryWith(_ud => _ud.Owner)

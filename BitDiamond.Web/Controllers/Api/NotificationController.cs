@@ -1,5 +1,6 @@
 ﻿using Axis.Luna;
 using Axis.Luna.Extensions;
+using BitDiamond.Core.Models.Email;
 using BitDiamond.Core.Services;
 using BitDiamond.Core.Utils;
 using BitDiamond.Web.Controllers.Api.BitLevelControllerModels;
@@ -17,15 +18,36 @@ namespace BitDiamond.Web.Controllers.Api
     public class NotificationController : ApiController
     {
         private IUserNotifier _notifier = null;
+        private IEmailPush _messagePush = null;;
 
         #region init
-        public NotificationController(IUserNotifier userNotifier)
+        public NotificationController(IUserNotifier userNotifier, IEmailPush messagePush)
         {
-            ThrowNullArguments(() => userNotifier);
+            ThrowNullArguments(() => userNotifier, 
+                               () => messagePush);
 
             _notifier = userNotifier;
+            _messagePush = messagePush;
         }
         #endregion
+
+
+        [HttpPost, Route("api/notifications/support")]
+        public IHttpActionResult NotifySupport([FromBody] Message data)
+        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+            .Then(opr =>
+            {
+                return _messagePush.SendMail(new SupportMessage
+                {
+                    FirstName = data.FirstName,
+                    LastName = data.LastName,
+                    Subject = data.Subject,
+                    Message = data.Message,
+                    From = data.Email,
+                    Recipients = new[] { "support@bitdiamond.biz" }
+                });
+            })
+            .OperationResult(Request);
 
 
         [HttpPut, Route("api/notifications/single")]
@@ -66,6 +88,15 @@ namespace BitDiamond.Web.Controllers.Api
         {
             public int PageSize { get; set; }
             public int PageIndex { get; set; }
+        }
+
+        public class Message
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string Subject { get; set; }
+            public string Email { get; set; }
+            public string Message { get; set; }
         }
     }
 }

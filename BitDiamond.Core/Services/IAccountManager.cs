@@ -27,6 +27,9 @@ namespace BitDiamond.Core.Services
         [Resource(":system/accounts/users/activations/@verify")]
         Operation<User> VerifyUserActivation(string targetUser, string contextToken);
 
+        [Resource(":system/accounts/users/@count")]
+        Operation<long> UserCount();
+
         [Resource(":system/accounts/users/credentials/reset-tokens/@verify")]
         Operation ResetCredential(Credential newCredential, string verificationToken, string targetUser);
 

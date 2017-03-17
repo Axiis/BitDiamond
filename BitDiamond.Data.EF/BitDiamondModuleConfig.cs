@@ -119,11 +119,13 @@ namespace BitDiamond.Data.EF
                     ":system/accounts/users/activations/@verify",
                     ":system/accounts/users/credentials/reset-tokens/@request",
                     ":system/accounts/users/credentials/reset-tokens/@verify",
+                    ":system/accounts/users/@count",
 
                     ":system/settings/@get",
                     ":system/settings/all/@get",
                     ":system/bit-levels/cycles/@promote",
-                    ":system/notifications/@notifyUser"
+                    ":system/notifications/@notifyUser",
+                    ":system/block-chain/transactions/@systemTotal"
                 }
                 .Select(_selector => new Permission
                 {
@@ -149,6 +151,7 @@ namespace BitDiamond.Data.EF
                     ":system/accounts/userdata/*",
                     ":system/accounts/logons/@invalidate",
                     ":system/accounts/users/roles/@get",
+                    ":system/accounts/users/@count",
 
                     ":system/settings/@get",
                     ":system/settings/all/@get",
@@ -156,7 +159,9 @@ namespace BitDiamond.Data.EF
 
                     ":system/notifications/*",
 
-                    ":system/posts/*"
+                    ":system/posts/*",
+
+                    ":system/block-chain/*"
                 }
                 .Select(_selector => new Permission
                 {
@@ -180,6 +185,7 @@ namespace BitDiamond.Data.EF
                     ":system/accounts/userdata/*",
                     ":system/accounts/logons/@invalidate",
                     ":system/accounts/users/roles/@get",
+                    ":system/accounts/users/@count",
 
                     ":system/bit-levels/*",
 

@@ -560,6 +560,13 @@ If you dont have one, you can create one with any of the popular Bitcoin Wallet 
             else
                 return _pcommand.Add(userData).Resolve().Data;
         });
+
+        public Operation<long> UserCount()
+        => _authorizer.AuthorizeAccess(this.PermissionProfile(UserContext.CurrentUser()), () =>
+        {
+            var q = _query.GetUserCount();
+            return q;
+        });
         #endregion
     }
 }

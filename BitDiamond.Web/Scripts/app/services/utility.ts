@@ -19,7 +19,11 @@ module BitDiamond.Utils.Services {
                 config = config || {};
                 config.params = { data: Utils.ToBase64String(Utils.ToUTF8EncodedArray(JSON.stringify(data))) };
             }
-            return this.http.get<T>(url, config).then(args => args.data, this.treatError);
+            return this.http.get<T>(url, config).then(args => {
+                return args.data;
+            }, err => {
+                return this.treatError(err);
+            });
         }
         getUrlEncoded<T>(url: string, data: any, config?: ng.IRequestShortcutConfig): ng.IPromise<T> {
 
@@ -46,11 +50,15 @@ module BitDiamond.Utils.Services {
                 config = config || {};
                 config.params = { data: Utils.ToBase64String(Utils.ToUTF8EncodedArray(JSON.stringify(data))) };
             }
-            return this.http.delete<T>(url, config).then(args => args.data, this.treatError);
+            return this.http.delete<T>(url, config).then(args => args.data, err => {
+                return this.treatError(err);
+            });
         }
         
         head<T>(url: string, config?: angular.IRequestShortcutConfig): ng.IPromise<T> {
-            return this.http.head<T>(url, config).then(args => args.data, this.treatError);
+            return this.http.head<T>(url, config).then(args => args.data, err => {
+                return this.treatError(err);
+            });
         }
         
         jsonp<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): ng.IPromise<T> {
@@ -59,12 +67,16 @@ module BitDiamond.Utils.Services {
                 config = config || {};
                 config.data = data;
             }         
-            return this.http.jsonp<T>(url, config).then(args => args.data, this.treatError);
+            return this.http.jsonp<T>(url, config).then(args => args.data, err => {
+                return this.treatError(err);
+            });
         }
         
         post<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): ng.IPromise<T> {
             data = this.removeSupportProperties(data);
-            return this.http.post<T>(url, data, config).then(args => args.data, this.treatError);
+            return this.http.post<T>(url, data, config).then(args => args.data, err => {
+                return this.treatError(err);
+            });
         }
         postUrlEncoded<T>(url: string, data: any, config?: ng.IRequestShortcutConfig): ng.IPromise<T> {
 
@@ -86,12 +98,16 @@ module BitDiamond.Utils.Services {
         
         put<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): ng.IPromise<T> {
             data = this.removeSupportProperties(data);
-            return this.http.put<T>(url, data, config).then(args => args.data, this.treatError);
+            return this.http.put<T>(url, data, config).then(args => args.data, err => {
+                return this.treatError(err);
+            });
         }
         
         patch<T>(url: string, data: any, config?: angular.IRequestShortcutConfig): ng.IPromise<T> {
             data = this.removeSupportProperties(data);
-            return this.http.patch<T>(url, data, config).then(args => args.data, this.treatError);
+            return this.http.patch<T>(url, data, config).then(args => args.data, err => {
+                return this.treatError(err);
+            });
         }
 
         private removeSupportProperties(data: any): any {
@@ -131,14 +147,19 @@ module BitDiamond.Utils.Services {
 
         private treatError<T>(arg: ng.IHttpPromiseCallbackArg<T>): ng.IPromise<ng.IHttpPromiseCallbackArg<T>> {
 
-            //access denied
-            if (arg.status == 401) window.location.href = Constants.URL_Login;
+            if (!Object.isNullOrUndefined(arg.status)) {
 
-            //conflict
-            else if (arg.status == 409) this.__notify.error("A Conflict was caused by your previous request.", "Oops!");
+                //access denied
+                if (arg.status == 401) this.__notify.error("Access Denied.", "Oops!");
 
-            //other errors...
+                //conflict
+                else if (arg.status == 409) this.__notify.error("A Conflict was caused by your previous request.", "Oops!");
 
+                //other errors...
+            }
+            else {
+                this.__notify.error((arg as any).message || 'unknown error');
+            }
 
             return this.$q.reject(arg) as ng.IPromise<ng.IHttpPromiseCallbackArg<T>>;
         }

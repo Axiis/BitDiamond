@@ -270,7 +270,7 @@ namespace BitDiamond.Test.Queries
 
             #region BitDiamond.Core.Models/BitDiamond.Core.Services
 
-            c.RegisterLazyService<IAccountManager, AccountManager>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<IAccountManager, Core.Services.AccountManager>(gen, Lifestyle.Scoped);
             c.RegisterLazyService<IBitLevelManager, BitLevelManager>(gen, Lifestyle.Scoped);
             c.RegisterLazyService<IBlockChainService, BlockChainService>(gen, Lifestyle.Scoped);
             c.RegisterLazyService<IContextVerifier, ContextVerifier>(gen, Lifestyle.Scoped);

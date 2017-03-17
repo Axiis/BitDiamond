@@ -29,6 +29,11 @@ namespace BitDiamond.Web.Controllers.Api
         #endregion
 
         #region Account
+        [HttpGet, Route("api/accounts/users/count")]
+        public IHttpActionResult UserCount()
+        => this.LogTime(() => _account.UserCount().OperationResult(Request));
+
+
         [HttpPost, Route("api/accounts/users")]
         public IHttpActionResult RegisterUser([FromBody] AccountControllerModels.RegisterUserArgs data)
         => this.LogTime(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))

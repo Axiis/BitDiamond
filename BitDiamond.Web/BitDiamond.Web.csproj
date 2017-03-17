@@ -295,6 +295,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="contact-us.html" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -321,8 +322,10 @@
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="how-it-works.html" />
     <Content Include="Index.html" />
     <Content Include="packages.config" />
+    <Content Include="faq.html" />
     <Content Include="Reinforced.Typings.settings.xml" />
     <Content Include="Scripts\libs\angular-animate.js" />
     <Content Include="Scripts\libs\angular-animate.min.js" />
@@ -1239,6 +1242,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\app\controllers\account.ts" />
     <TypeScriptCompile Include="Scripts\app\controllers\bitlevel.ts" />
+    <TypeScriptCompile Include="Scripts\app\controllers\home.ts" />
     <TypeScriptCompile Include="Scripts\app\controllers\notifications.ts" />
     <TypeScriptCompile Include="Scripts\app\controllers\payments.ts" />
     <TypeScriptCompile Include="Scripts\app\controllers\posts.ts" />
@@ -1255,6 +1259,9 @@
     <TypeScriptCompile Include="Scripts\app\models\domain.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\account.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\bitlevel.ts" />
+    <TypeScriptCompile Include="Scripts\app\modules\home-contact.ts" />
+    <TypeScriptCompile Include="Scripts\app\modules\home-works.ts" />
+    <TypeScriptCompile Include="Scripts\app\modules\home.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\notifications.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\posts.ts" />
     <TypeScriptCompile Include="Scripts\app\modules\referrals.ts" />

@@ -361,7 +361,7 @@ namespace BitDiamond.Data.EF
                 .ForAll((cnt, next) =>
                 {
                     var credentialAuthority = new CredentialAuthentication(cxt, new DefaultHasher());
-                    credentialAuthority.AssignCredential(Constants.SystemUsers_Apex, next).Resolve();
+                    credentialAuthority.AssignCredential(next.OwnerId, next).Resolve();
                 });
 
                 //add bit level and verified blocktransaction for apex user
@@ -452,7 +452,7 @@ namespace BitDiamond.Data.EF
                     cxt.Add(bitlevel.Value).Context.CommitChanges();
                 });
 
-                new[]
+                var transactions = new[]
                 {
                     new BlockChainTransaction
                     {
@@ -504,21 +504,61 @@ namespace BitDiamond.Data.EF
                         Status = BlockChainTransactionStatus.Unverified
                     }
                 }
+                .ToDictionary(trnx => trnx.SenderId);
+                transactions.ForAll((cnt, next) =>
+                {
+                    cxt.Add(next.Value).Context.CommitChanges();
+                });
+
+                levels.ForAll((cnt, bitlevel) =>
+                {
+                    bitlevel.Value.DonationId = transactions[addresses[bitlevel.Key].Id].Id;
+                    cxt.Modify(bitlevel.Value).Context.CommitChanges();
+                });
+
+                //referal manager
+                new[]
+                {
+                    new ReferralNode
+                    {
+                        ReferenceCode = ReferralHelper.GenerateCode(Constants.SystemUsers_Apex),
+                        UserId = Constants.SystemUsers_Apex
+                    },
+
+                    //others,
+                    new ReferralNode
+                    {
+                        ReferenceCode = ReferralHelper.GenerateCode(gerald),
+                        ReferrerCode = ReferralHelper.GenerateCode(Constants.SystemUsers_Apex),
+                        UplineCode = ReferralHelper.GenerateCode(Constants.SystemUsers_Apex),
+                        UserId = gerald
+                    },
+                    new ReferralNode
+                    {
+                        ReferenceCode = ReferralHelper.GenerateCode(onotu),
+                        ReferrerCode = ReferralHelper.GenerateCode(Constants.SystemUsers_Apex),
+                        UplineCode = ReferralHelper.GenerateCode(Constants.SystemUsers_Apex),
+                        UserId = onotu
+                    },
+                    new ReferralNode
+                    {
+                        ReferenceCode = ReferralHelper.GenerateCode(valejoma),
+                        ReferrerCode = ReferralHelper.GenerateCode(gerald),
+                        UplineCode = ReferralHelper.GenerateCode(gerald),
+                        UserId = valejoma
+                    },
+                    new ReferralNode
+                    {
+                        ReferenceCode = ReferralHelper.GenerateCode(bunny),
+                        ReferrerCode = ReferralHelper.GenerateCode(gerald),
+                        UplineCode = ReferralHelper.GenerateCode(gerald),
+                        UserId = bunny
+                    }
+                }
                 .ForAll((cnt, next) =>
                 {
                     cxt.Add(next).Context.CommitChanges();
                 });
-
-                levels
-                cxt.Modify(bitlevel).Context.CommitChanges();
-
-                //referal manager
-                var referral = new ReferralNode
-                {
-                    ReferenceCode = ReferralHelper.GenerateCode(Constants.SystemUsers_Apex),
-                    UserId = Constants.SystemUsers_Apex
-                };
-                cxt.Add(referral).Context.CommitChanges();
 
                 cxt.CommitChanges();
             });

@@ -27,6 +27,9 @@ namespace BitDiamond.Data.EF.Mappings
                 .HasMaxLength(400)
                 .IsIndex(nameof(BlockChainTransaction.ContextType))
                 .IsRequired();
+
+            this.Property(e => e.Amount)
+                .HasPrecision(12, 12);
         }
     }
 }

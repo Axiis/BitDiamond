@@ -104,6 +104,10 @@ var BitDiamond;
                         _this.tempBio.OwnerId = _this.user.UserId;
                         _this.tempContact.OwnerId = _this.user.UserId;
                     });
+                    //user ref
+                    this.__userContext.userRef.then(function (ref) {
+                        _this.userRef = ref.ReferenceCode;
+                    });
                     this.currentTab = 'profile';
                 }
                 Home.prototype.getProfileImage = function () {
@@ -118,10 +122,11 @@ var BitDiamond;
                     };
                 };
                 Home.prototype.getNames = function () {
-                    if (Object.isNullOrUndefined(this.userBio))
+                    if (Object.isNullOrUndefined(this.userBio) ||
+                        Object.isNullOrUndefined(this.userBio.FirstName) && Object.isNullOrUndefined(this.userBio.LastName))
                         return '-N/A-';
                     else
-                        return this.userBio.FirstName + ' ' + this.userBio.LastName;
+                        return (this.userBio.FirstName || '') + ' ' + (this.userBio.LastName || '');
                 };
                 Home.prototype.getFullNames = function () {
                     if (Object.isNullOrUndefined(this.userBio))
@@ -227,9 +232,13 @@ var BitDiamond;
                         });
                     });
                 };
+                Home.prototype.refCopied = function () {
+                    this.__notify.success('User Reference Code copied to clipboard');
+                };
                 return Home;
             }());
             Profile.Home = Home;
         })(Profile = Controllers.Profile || (Controllers.Profile = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=profile.js.map

@@ -37,7 +37,7 @@ namespace BitDiamond.Data.EF.Query
            join sref in _europa.Store<ReferralNode>().Query on sad.OwnerId equals sref.UserId
            join r in _europa.Store<User>().Query on rad.OwnerId equals r.EntityId
            join s in _europa.Store<User>().Query on sad.OwnerId equals s.EntityId
-           join rb in _europa.Store<BioData>().Query on bl.UserId equals rb.OwnerId into _rb
+           join rb in _europa.Store<BioData>().Query on rad.OwnerId equals rb.OwnerId into _rb
            join sb in _europa.Store<BioData>().Query on sad.OwnerId equals sb.OwnerId into _sb
            from __rb in _rb.DefaultIfEmpty()
            from __sb in _sb.DefaultIfEmpty()

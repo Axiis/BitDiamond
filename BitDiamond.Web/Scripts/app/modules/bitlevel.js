@@ -47,3 +47,4 @@ var BitDiamond;
         });
     })(Modules = BitDiamond.Modules || (BitDiamond.Modules = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=bitlevel.js.map

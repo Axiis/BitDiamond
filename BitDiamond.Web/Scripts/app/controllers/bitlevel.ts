@@ -184,7 +184,6 @@ module BitDiamond.Controllers.BitLevel {
     }
 
 
-
     export class History {
 
         levels: Utils.SequencePage<Models.IBitLevel>;
@@ -260,7 +259,6 @@ module BitDiamond.Controllers.BitLevel {
             this.loadHistory(0, this.pageSize);
         }
     }
-
 
 
     export class BitcoinAddresses {

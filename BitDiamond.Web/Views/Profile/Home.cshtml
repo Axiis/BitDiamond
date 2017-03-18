@@ -20,20 +20,10 @@
         <div class="white-box">
             <div class="user-bg" ng-style="vm.getProfileImage()">
             </div>
-            <div class="user-btm-box">
-                <hr style="margin-top:0;"/>                
+            <div class="user-btm-box">    
+                                
                 <!-- .row -->
-                <div class="row text-center m-t-10">
-                    <div class="col-md-12">
-                        <strong>Name</strong>
-                        <p>
-                            {{vm.getNames()}}
-                        </p>
-                    </div>
-                </div>         
-                       
-                <!-- .row -->
-                <div class="row text-center m-t-10">
+                <div class="row text-center m-t-10 m-b-20">
                     <div class="col-md-12">
                         <form id="profileImageSelector">
                             <label class="btn btn-success btn-circle btn-lg"
@@ -47,7 +37,32 @@
                             </label>
                         </form>
                     </div>
-                </div>
+                </div>      
+
+
+                <!-- .row -->
+                <hr style="margin-top:0;" />    
+                <div class="row text-center m-t-10">
+                    <div class="col-md-6 b-r" style="text-align:center;">
+                        <strong>Reference Code</strong>
+                        <p>
+                            {{vm.userRef}}
+                        </p>
+                        <button type="button" class="btn btn-sm btn-outline btn-success wav"
+                                ng-click="vm.refCopied()"
+                                data-clipboard-action="copy" data-clipboard-text="{{vm.userRef}}"
+                                data-toggle="tooltip" data-original-title="Copy Reference Code to clipboard"
+                                id="refClipboardCopy">
+                            <i class="ti-clipboard"></i> Copy
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Name</strong>
+                        <p>
+                            {{vm.getNames()}}
+                        </p>
+                    </div>
+                </div>   
             </div>
         </div>
     </div>
@@ -226,3 +241,8 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+
+    new Clipboard('#refClipboardCopy');
+</script>

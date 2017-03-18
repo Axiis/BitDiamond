@@ -426,6 +426,8 @@ If you dont have one, you can create one with any of the popular Bitcoin Wallet 
                             nameof(BioData.CreatedOn),
                             nameof(BioData.ModifiedOn));
 
+                if (persisted.Dob <= DateTime.Parse("1753/1/1")) persisted.Dob = null;
+
                 return _pcommand.Update(persisted);
             }
             else return _pcommand.Add(data);
@@ -547,7 +549,7 @@ If you dont have one, you can create one with any of the popular Bitcoin Wallet 
             var userData = _query.GetUserData(user, Constants.UserData_ProfileImage) ?? new UserData
             {
                 Name = Constants.UserData_ProfileImage,
-                Owner = user,
+                OwnerId = user.UserId,
                 Type = CommonDataType.Url
             };
 

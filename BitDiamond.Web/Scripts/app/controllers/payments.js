@@ -172,3 +172,4 @@ var BitDiamond;
         })(Payments = Controllers.Payments || (Controllers.Payments = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=payments.js.map

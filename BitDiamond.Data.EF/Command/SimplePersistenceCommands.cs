@@ -52,7 +52,7 @@ namespace BitDiamond.Data.EF.Command
         public Operation<Domain> Update<Domain>(Domain d)
         where Domain : class => Operation.Try(() =>
         {
-            Eval(() => d.AsDynamic().ModifiedOn = DateTime.Now);
+            if (d is BaseModel) (d as BaseModel).ModifiedOn = DateTime.Now;
 
             _context.Modify(d);
             _context.CommitChanges();

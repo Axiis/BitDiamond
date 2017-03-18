@@ -55,9 +55,9 @@ namespace BitDiamond.Web.Infrastructure.Config.WebApi
                 AuthenticationMode = Microsoft.Owin.Security.AuthenticationMode.Active,
                 //AuthorizationCodeProvider = ...,
 
-#if DEBUG
+//#if DEBUG
                 AllowInsecureHttp = true,
-#endif
+//#endif
 
                 // Authorization server provider which controls the lifecycle of Authorization Server
                 Provider = new Security.AuthorizationServer(cache)

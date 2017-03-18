@@ -80,7 +80,6 @@ module BitDiamond.Controllers.Profile {
             }).finally(() => {
                 this.isLoadingBitLevel = false;
             });
-
         }
     }
 
@@ -91,6 +90,7 @@ module BitDiamond.Controllers.Profile {
         userBio: Pollux.Models.IBioData;
         userContact: Pollux.Models.IContactData;
         user: Pollux.Models.IUser;
+        userRef: string;
 
         tempBio: any = {};
         tempContact: any = {};
@@ -118,8 +118,9 @@ module BitDiamond.Controllers.Profile {
         }
 
         getNames() {
-            if (Object.isNullOrUndefined(this.userBio)) return '-N/A-';
-            else return this.userBio.FirstName + ' ' + this.userBio.LastName;
+            if (Object.isNullOrUndefined(this.userBio) ||
+                Object.isNullOrUndefined(this.userBio.FirstName) && Object.isNullOrUndefined(this.userBio.LastName)) return '-N/A-';
+            else return (this.userBio.FirstName || '') + ' ' + (this.userBio.LastName || '');
         }
         getFullNames() {
             if (Object.isNullOrUndefined(this.userBio)) return '-';
@@ -220,6 +221,9 @@ module BitDiamond.Controllers.Profile {
                 });
             });
         }
+        refCopied() {
+            this.__notify.success('User Reference Code copied to clipboard');
+        }
 
 
         constructor(__notify, __account, __userContext) {
@@ -263,6 +267,11 @@ module BitDiamond.Controllers.Profile {
                 this.user = u;
                 this.tempBio.OwnerId = this.user.UserId;
                 this.tempContact.OwnerId = this.user.UserId;
+            });
+
+            //user ref
+            this.__userContext.userRef.then(ref => {
+                this.userRef = ref.ReferenceCode;
             });
 
             this.currentTab = 'profile';

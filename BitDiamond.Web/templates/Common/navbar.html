@@ -1,0 +1,83 @@
+﻿
+
+<nav class="navbar navbar-default navbar-static-top m-b-0">
+    <div class="navbar-header" ng-controller="NavBar as vm">
+        <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse"><i class="ti-menu"></i></a>
+
+        <div class="top-left-part hidden" style="overflow:hidden;">
+            <a class="logo" href="/index.html" style="padding:4px;">
+                <b>
+                    <img src="~/Content/images/logo-min.png" alt="home" class="dark-logo hidden-lg hidden-md hidden-sm" style="height:45px; width: 45px; margin-left:-8px;" />
+                    <img src="~/Content/images/logo-text.png" alt="home" class="dark-logo hidden-xs" style="height:50px;" />
+                </b>
+            </a>
+        </div>
+
+        <div class="top-left-part">
+            <a class="logo" href="index.html">
+                <b>
+                    <img src="../plugins/images/eliteadmin-logo.png" alt="home" class="dark-logo" />
+                    <img src="../plugins/images/eliteadmin-logo-dark.png" alt="home" class="light-logo" />
+                </b>
+                <span class="hidden-xs" style="display: inline;">
+                    <img src="../plugins/images/eliteadmin-text.png" alt="home" class="dark-logo" />
+                    <img src="../plugins/images/eliteadmin-text-dark.png" alt="home" class="light-logo" />
+                </span>
+            </a>
+        </div>
+
+        <ul class="nav navbar-top-links navbar-left hidden-xs">
+            <li><a href="javascript:void(0)" class="open-close hidden-xs waves-effect waves-light"><i class="icon-arrow-left-circle ti-menu"></i></a></li>
+        </ul>
+
+        <ul class="nav navbar-top-links navbar-right pull-right">
+            <li class="dropdown">
+                <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#">
+                    <i class="icon-bell"></i>
+                    <div class="notify" ng-hide="vm.hasSeenNotifications">
+                        <span class="heartbit"></span><span class="point">
+                        </span>
+                    </div>
+                </a>
+                <ul class="dropdown-menu mailbox animated flipInY">
+                    <li>
+                        <div class="drop-title">You have {{vm.notificationCount}} new Notifications</div>
+                    </li>
+                    <li>
+                        <div class="message-center">
+                            <a href ng-repeat="n in vm.notifications">
+                                <div class="user-img">
+                                    <i class="icon-bell" style="font-size:30px; color:white;"></i>
+                                </div>
+                                <div class="mail-contnet">
+                                    <h5 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height:1.2em;"
+                                        ng-bind-html="n.Title"></h5>
+                                    <span class="mail-desc" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height:1.2em;"
+                                          ng-bind-html="n.Message"></span>
+                                    <span class="time">{{vm.displayTime(n.CreatedOn)}}</span>
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="text-center" href="/notifications/index"> See all notifications <i class="fa fa-angle-right"></i> </a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-messages -->
+            </li>
+
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href>
+                    <div class="notify">
+                    </div>
+                </a>
+                <!-- /.dropdown-messages -->
+            </li>
+            <!-- /.dropdown -->
+
+        </ul>
+    </div>
+    <!-- /.navbar-header -->
+    <!-- /.navbar-top-links -->
+    <!-- /.navbar-static-side -->
+</nav>

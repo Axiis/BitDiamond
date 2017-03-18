@@ -26,13 +26,31 @@ var BitDiamond;
         Modules.profileModule.config(function ($stateProvider, $urlRouterProvider) {
             $urlRouterProvider.otherwise('/dashboard');
             $stateProvider
-                .state('dashboard', {
+                .state('base', {
+                abstract: true,
+                views: {
+                    'sidebar': {
+                        templateUrl: '/templates/common/sidebar.html',
+                        controller: 'SideBar',
+                        controllerAs: 'vm'
+                    },
+                    'navbar': {
+                        templateUrl: '/templates/common/navbar.html',
+                        controller: 'NavBar',
+                        controllerAs: 'vm'
+                    },
+                    'content': {
+                        template: '<ui-view/>'
+                    }
+                }
+            })
+                .state('base.dashboard', {
                 url: '/dashboard',
                 templateUrl: '/profile/dashboard',
                 controller: 'Dashboard',
                 controllerAs: 'vm'
             })
-                .state('home', {
+                .state('base.home', {
                 url: '/home',
                 templateUrl: '/profile/home',
                 controller: 'Home',

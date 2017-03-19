@@ -160,7 +160,7 @@ var BitDiamond;
                     },
                     set: function (value) {
                         if (this.tempBio) {
-                            this.tempBio.Dob = new Apollo.Models.JsonDateTime().fromMoment(moment.utc(value));
+                            this.tempBio.Dob = Apollo.Models.JsonDateTime.fromMoment(moment(value));
                             this._dobField = value;
                         }
                     },
@@ -241,4 +241,3 @@ var BitDiamond;
         })(Profile = Controllers.Profile || (Controllers.Profile = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=profile.js.map

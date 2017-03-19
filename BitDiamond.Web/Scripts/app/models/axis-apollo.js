@@ -56,14 +56,14 @@ var Apollo;
                 this.second = 0;
                 this.millisecond = 0;
                 if (typeof initArg === 'number') {
-                    this.fromMoment(moment(initArg));
+                    JsonDateTime.fromMoment(moment(initArg)).copyTo(this);
                 }
                 else if (initArg) {
                     initArg.copyTo(this);
                 }
             }
             JsonDateTime.prototype.toMoment = function () {
-                return moment.utc({
+                return moment({
                     year: this.year,
                     month: this.month - 1,
                     day: this.day,
@@ -73,17 +73,17 @@ var Apollo;
                     millisecond: this.millisecond
                 }).local();
             };
-            JsonDateTime.prototype.fromMoment = function (m) {
+            JsonDateTime.fromMoment = function (m) {
                 if (m.isValid()) {
-                    m = m.utc();
-                    this.year = m.year();
-                    this.month = m.month() + 1;
-                    this.day = m.date();
-                    this.hour = m.hour();
-                    this.minute = m.minute();
-                    this.second = m.second();
-                    this.millisecond = m.millisecond();
-                    return this;
+                    var jdt = new JsonDateTime();
+                    jdt.year = m.year();
+                    jdt.month = m.month() + 1;
+                    jdt.day = m.date();
+                    jdt.hour = m.hour();
+                    jdt.minute = m.minute();
+                    jdt.second = m.second();
+                    jdt.millisecond = m.millisecond();
+                    return jdt;
                 }
                 else
                     throw 'invalid moment object';
@@ -93,4 +93,3 @@ var Apollo;
         Models.JsonDateTime = JsonDateTime;
     })(Models = Apollo.Models || (Apollo.Models = {}));
 })(Apollo || (Apollo = {}));
-//# sourceMappingURL=axis-apollo.js.map

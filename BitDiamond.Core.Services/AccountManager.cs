@@ -421,6 +421,7 @@ If you dont have one, you can create one with any of the popular Bitcoin Wallet 
             if (persisted != null)
             {
                 data.CopyTo(persisted,
+                            nameof(BioData.EntityId),
                             nameof(BioData.OwnerId),
                             nameof(BioData.Owner),
                             nameof(BioData.CreatedOn),

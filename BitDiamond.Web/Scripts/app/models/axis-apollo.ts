@@ -68,7 +68,7 @@ module Apollo.Models {
 
 
         toMoment(): moment.Moment {
-            return moment.utc({
+            return moment({
                 year: this.year,
                 month: this.month - 1, //<-- moment uses a zero-indexed scale for months when initializing it this way
                 day: this.day,
@@ -80,27 +80,29 @@ module Apollo.Models {
         }
 
 
-        fromMoment(m: moment.Moment): JsonDateTime {
+        static fromMoment(m: moment.Moment): JsonDateTime {
 
             if (m.isValid()) {
-                m = m.utc();
-                this.year = m.year();
-                this.month = m.month() + 1;
-                this.day = m.date();
-                this.hour = m.hour();
-                this.minute = m.minute();
-                this.second = m.second();
-                this.millisecond = m.millisecond();
+                var jdt = new JsonDateTime();
+                jdt.year = m.year();
+                jdt.month = m.month() + 1;
+                jdt.day = m.date();
+                jdt.hour = m.hour();
+                jdt.minute = m.minute();
+                jdt.second = m.second();
+                jdt.millisecond = m.millisecond();
 
-                return this;
+                return jdt;
             }
             else throw 'invalid moment object';
         }
 
+
+
         constructor(initArg?: number | Object) {
 
             if (typeof initArg === 'number') {
-                this.fromMoment(moment(initArg as number));
+                JsonDateTime.fromMoment(moment(initArg as number)).copyTo(this);
             }
             else if (initArg) {
                 initArg.copyTo(this);

@@ -4332,8 +4332,8 @@
     <Content Include="Views\Account\Signin.cshtml" />
     <Content Include="Views\Account\RecoveryRequest.cshtml" />
     <Content Include="Views\Account\Signup.cshtml" />
-    <Content Include="templates\Common\navbar.html" />
-    <Content Include="templates\Common\sidebar.html" />
+    <Content Include="Templates\Common\navbar.html" />
+    <Content Include="Templates\Common\sidebar.html" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Email\AccountActivation.cshtml" />
     <Content Include="Views\Email\UserWelcome.cshtml" />

@@ -63,4 +63,3 @@ var BitDiamond;
         })(PostStatus = Models.PostStatus || (Models.PostStatus = {}));
     })(Models = BitDiamond.Models || (BitDiamond.Models = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=domain.js.map

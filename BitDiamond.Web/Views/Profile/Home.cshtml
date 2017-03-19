@@ -12,8 +12,27 @@
             <li class="active">Profile</li>
         </ol>
     </div>
-    <!-- /.col-lg-12 -->
 </div>
+
+<ul class="nav customtab nav-tabs" role="tablist"
+    style="margin-bottom:20px;">
+    <li role="presentation">
+        <a href role="tab" ui-sref="base.dashboard">
+            <span class="visible-xs">
+                <i class="icon-grid" title="Home"></i>
+            </span>
+            <span class="hidden-xs">Dashboard</span>
+        </a>
+    </li>
+    <li role="presentation" class="active">
+        <a href role="tab">
+            <span class="visible-xs">
+                <i class="icon-settings" title="Bitcoin Address"></i>
+            </span>
+            <span class="hidden-xs">Profile</span>
+        </a>
+    </li>
+</ul>
 
 <div class="row">
     <div class="col-md-4 col-xs-12">
@@ -75,7 +94,7 @@
                     <a href ng-click="vm.activateTab('profile')" data-toggle="tab" aria-expanded="true"> <span class="visible-xs"><i class="fa fa-user"></i></span> <span class="hidden-xs">Profile</span> </a>
                 </li>
                 <li class="tab" ng-class="vm.getActiveClassFor('edit')">
-                    <a href ng-click="vm.activateTab('edit')" data-toggle="tab" aria-expanded="false"> <span class="visible-xs"><i class="fa fa-home"></i></span> <span class="hidden-xs">Edit</span> </a>
+                    <a href ng-click="vm.activateTab('edit')" data-toggle="tab" aria-expanded="false"> <span class="visible-xs"><i class="icon-note"></i></span> <span class="hidden-xs">Edit</span> </a>
                 </li>
             </ul>
             <!-- /.tabs -->
@@ -133,6 +152,16 @@
                             <p class="text-muted">{{vm.userContact.Email || '-'}}</p>
                         </div>
                     </div>
+
+                    <hr/>
+                    <div class="row">
+                        <div class="col-lg-12" style="text-align:center;">
+                            <button type="button" class="btn btn-info btn-outline waves-effect waves-light"
+                                    ng-click="vm.activateTab('edit')">
+                                <i class="icon-note"></i> Edit
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.tabs1 -->
 
@@ -176,20 +205,12 @@
                         </div> 
 
                         <div class="form-group">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <label for="example-email" class="col-md-12">Nationality</label>
                                 <div class="col-md-12">
                                     <input type="text" placeholder="Country of Origin"
                                            class="form-control form-control-line"
                                            ng-model="vm.tempBio.Nationality" />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="example-email" class="col-md-12">State of Origin</label>
-                                <div class="col-md-12">
-                                    <input type="text" placeholder="State or Origin"
-                                           class="form-control form-control-line"
-                                           ng-model="vm.tempBio.StateOfOrigin" />
                                 </div>
                             </div>
                         </div>
@@ -219,13 +240,17 @@
 
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <button class="btn btn-success waves-effect waves-light" 
+                                <button type="button" class="btn btn-default btn-outline waves-effect waves-light"
+                                        ng-click="vm.activateTab('profile')">
+                                    <i class="ti-arrow-left"></i>
+                                </button>
+                                <button class="btn btn-outline btn-success waves-effect waves-light" 
                                         type="button"
                                         ng-click="vm.updateProfile()">
                                     <span ng-hide="vm.isUpdatingProfile">Update Profile</span>
                                     <ring-loader size="18" color="white" show="vm.isUpdatingProfile"></ring-loader>
                                 </button>
-                                <button class="btn btn-danger waves-effect waves-light" 
+                                <button class="btn btn-outline btn-danger waves-effect waves-light" 
                                         type="button"
                                         ng-click="vm.requestPasswordUpdate()">
                                     <span ng-hide="vm.isRequestingPasswordUpdate"><i class="ti-lock"></i> Update Password</span>

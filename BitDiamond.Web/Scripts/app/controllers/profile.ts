@@ -150,7 +150,7 @@ module BitDiamond.Controllers.Profile {
         private _dobField: Date;
         set dobBinding(value: Date) {
             if (this.tempBio) {
-                this.tempBio.Dob = new Apollo.Models.JsonDateTime().fromMoment(moment.utc(value));
+                this.tempBio.Dob = Apollo.Models.JsonDateTime.fromMoment(moment(value));
                 this._dobField = value;
             }
         }

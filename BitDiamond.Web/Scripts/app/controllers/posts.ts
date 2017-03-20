@@ -11,7 +11,7 @@ module BitDiamond.Controllers.Posts {
                     opr.Result.Page = opr.Result.Page.map(_post => {
                         _post.CreatedOn = new Apollo.Models.JsonDateTime(_post.CreatedOn);
                         _post.ModifiedOn = new Apollo.Models.JsonDateTime(_post.ModifiedOn);
-                        return _post;
+                        return _post
                     });
                     this.posts = new Utils.SequencePage<Models.IPost>(opr.Result.Page, opr.Result.SequenceLength, opr.Result.PageSize, opr.Result.PageIndex);
                 }
@@ -75,13 +75,13 @@ module BitDiamond.Controllers.Posts {
         }
 
         showDetails(post: Models.IPost) {
-            this.$state.go('details', { post: post });
+            this.$state.go('base.details', { post: post });
         }
         createNews() {
-            this.$state.go('edit');
+            this.$state.go('base.edit');
         }
         editNews(post: Models.IPost) {
-            this.$state.go('edit', { post: post });
+            this.$state.go('base.edit', { post: post });
         }
         postAction(post: Models.IPost) {
 
@@ -186,7 +186,7 @@ module BitDiamond.Controllers.Posts {
             this.__notify = __notify;
             this.__posts = __posts;
 
-            this.previous = this.$stateParams['previous'] || 'list';
+            this.previous = this.$stateParams['previous'] || 'base.list';
             var p = this.$stateParams['post'];
             var id = this.$stateParams['id'];
 
@@ -280,7 +280,7 @@ module BitDiamond.Controllers.Posts {
                 Status: Models.PostStatus.Draft,
                 '$__isNascent': true
             };
-            this.previous = $stateParams['previous'] || 'list';
+            this.previous = $stateParams['previous'] || 'base.list';
         }
     }
 

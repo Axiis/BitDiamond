@@ -26,19 +26,37 @@ var BitDiamond;
         Modules.bitlevelModules.config(function ($stateProvider, $urlRouterProvider) {
             $urlRouterProvider.otherwise('/home');
             $stateProvider
-                .state('home', {
+                .state('base', {
+                abstract: true,
+                views: {
+                    'sidebar': {
+                        templateUrl: '/templates/common/sidebar.html',
+                        controller: 'SideBar',
+                        controllerAs: 'vm'
+                    },
+                    'navbar': {
+                        templateUrl: '/templates/common/navbar.html',
+                        controller: 'NavBar',
+                        controllerAs: 'vm'
+                    },
+                    'content': {
+                        template: '<ui-view/>'
+                    }
+                }
+            })
+                .state('base.home', {
                 url: '/home',
                 templateUrl: '/bit-level/home',
                 controller: 'Home',
                 controllerAs: 'vm'
             })
-                .state('bitcoinAddresses', {
+                .state('base.bitcoinAddresses', {
                 url: '/bitcoin-addresses',
                 templateUrl: '/bit-level/bitcoin-addresses',
                 controller: 'BitcoinAddresses',
                 controllerAs: 'vm'
             })
-                .state('history', {
+                .state('base.history', {
                 url: '/history',
                 templateUrl: '/bit-level/history',
                 controller: 'History',
@@ -47,3 +65,4 @@ var BitDiamond;
         });
     })(Modules = BitDiamond.Modules || (BitDiamond.Modules = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=bitlevel.js.map

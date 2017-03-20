@@ -78,6 +78,7 @@ module BitDiamond.Controllers.Shared {
         userRoles: string[];
         userBio: Pollux.Models.IBioData;
         profileImageRef: Pollux.Models.IUserData;
+        currentYear: number;
 
         __account: Services.Account;
         __notify: Utils.Services.NotifyService;
@@ -130,6 +131,8 @@ module BitDiamond.Controllers.Shared {
             this.__notify = __notify;
             this.__userContext = __userContext;
             this.$location = $location;
+
+            this.currentYear = moment().year();
 
             //load user object
             this.__userContext.user.then(opr => {

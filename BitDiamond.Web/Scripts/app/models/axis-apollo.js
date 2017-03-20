@@ -46,6 +46,8 @@ var Apollo;
             return JsonTimeSpan;
         }());
         Models.JsonTimeSpan = JsonTimeSpan;
+        //This object ALWAYS represents LOCAL time. UTC OFFSET exists to represent the number of minutes to add or subtract to/from the current
+        //time to get back to UTC time. If utcOffset is 0, it means this object represents utc time.
         var JsonDateTime = (function () {
             function JsonDateTime(initArg) {
                 this.year = 0;
@@ -55,6 +57,9 @@ var Apollo;
                 this.minute = 0;
                 this.second = 0;
                 this.millisecond = 0;
+                //Designates number of minutes to add (or subtract pending on polarity of number) to utc time to get current time.
+                //a value of zero means we are in utc time, a value of 60 means we are in west-central-africa, berlin/germany, etc
+                this.utcOffset = 0;
                 if (typeof initArg === 'number') {
                     JsonDateTime.fromMoment(moment(initArg)).copyTo(this);
                 }
@@ -71,7 +76,7 @@ var Apollo;
                     minute: this.minute,
                     second: this.second,
                     millisecond: this.millisecond
-                }).local();
+                }).utcOffset(this.utcOffset);
             };
             JsonDateTime.fromMoment = function (m) {
                 if (m.isValid()) {
@@ -83,6 +88,7 @@ var Apollo;
                     jdt.minute = m.minute();
                     jdt.second = m.second();
                     jdt.millisecond = m.millisecond();
+                    jdt.utcOffset = m.utcOffset();
                     return jdt;
                 }
                 else
@@ -93,3 +99,4 @@ var Apollo;
         Models.JsonDateTime = JsonDateTime;
     })(Models = Apollo.Models || (Apollo.Models = {}));
 })(Apollo || (Apollo = {}));
+//# sourceMappingURL=axis-apollo.js.map

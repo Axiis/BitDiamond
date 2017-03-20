@@ -27,7 +27,7 @@
         </a>
     </li>
     <li role="presentation" class="">
-        <a href ui-sref="bitcoinAddresses" role="tab">
+        <a href ui-sref="base.bitcoinAddresses" role="tab">
             <span class="visible-xs">
                 <i class="icon-settings" title="Bitcoin Address"></i>
             </span>
@@ -35,7 +35,7 @@
         </a>
     </li>
     <li role="presentation" class="">
-        <a href ui-sref="history" role="tab">
+        <a href ui-sref="base.history" role="tab">
             <span class="visible-xs">
                 <i class="ti-time" title="History"></i>
             </span>
@@ -59,7 +59,9 @@
                                 <h5 class="text-muted vb">Current Cycle&nbsp;&nbsp;&nbsp;<strong>{{vm.cyclePercentage()}}</strong></h5>
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-6">
-                                <h3 class="counter text-right m-t-15 text-info"><sup style="font-size:12px;">cycle</sup>{{vm.currentCycle}}/<sup style="font-size:12px;">level</sup>{{vm.currentLevel}}</h3>
+                                <h3 class="counter text-right m-t-15 text-info" style="line-height:1em;">
+                                    <span style="font-size:13px; vertical-align:super;">Cycle</span>{{vm.currentCycle}}/<span style="font-size:13px; vertical-align:super;">Level</span>{{vm.currentLevel}}
+                                </h3>
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="progress">
@@ -76,7 +78,7 @@
                                 <h5 class="text-muted vb">Donations Received</h5>
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-6">
-                                <h3 class="counter text-right m-t-15 text-success">{{vm.donationsReceived}}</h3>
+                                <h3 class="counter text-right m-t-15 text-success" style="line-height:1em;">{{vm.donationsReceived}}</h3>
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="progress">
@@ -93,7 +95,7 @@
                                 <h5 class="text-muted vb">Donations Missed</h5>
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-6">
-                                <h3 class="counter text-right m-t-15 text-danger">{{vm.donationsMissed}}</h3>
+                                <h3 class="counter text-right m-t-15 text-danger" style="line-height:1em;">{{vm.donationsMissed}}</h3>
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="progress">
@@ -155,23 +157,25 @@
             <div class="white-box" style="height:162px; overflow:hidden;">
                 <div class="text-right">
                     <span class="text-muted">Receiver Name</span>
-                    <h5 style="white-space:nowrap; margin-top:0px; text-overflow:ellipsis; text-wrap:none; margin-top:10px; margin-bottom:10px; overflow:hidden;"
+                    <h5 style="white-space:nowrap; text-overflow:ellipsis; text-wrap:none; margin:0px; overflow:hidden;"
                         data-toggle="tooltip" data-original-title="{{vm.receiverName()}}">
                         {{vm.receiverName()}}
                     </h5>
                 </div>
                 <div class="text-right" style="margin-top:12px;">
                     <span class="text-muted">Receiver Address</span>
-                    <h5 style="margin-top:10px; margin-bottom:10px; white-space:nowrap; text-overflow:ellipsis; text-wrap:none; overflow:hidden;">
-                        <button type="button" class="btn btn-xs btn-outline btn-success wav"
+                    <h5 style="margin:0px; white-space:nowrap; text-overflow:ellipsis; text-wrap:none; overflow:hidden;">
+                        <span style="font-size:11px;">{{vm.receiverAddress()}}</span>
+                    </h5>
+                    <div class="text-center" style="margin-top:10px;">
+                        <button type="button" class="btn btn-block btn-outline btn-info wav"
                                 ng-click="vm.addressCopied()"
                                 data-clipboard-action="copy" data-clipboard-text="{{vm.receiverAddress()}}"
                                 data-toggle="tooltip" data-original-title="Copy Bitcoin address to clipboard"
                                 id="addressClipboardCopy">
-                            <i class="ti-clipboard"></i>
+                            <i class="ti-clipboard"></i> Copy Address
                         </button>
-                        <span>{{vm.receiverAddress()}}</span>
-                    </h5>
+                    </div>
                 </div>
             </div>
         </div>
@@ -185,7 +189,7 @@
                     <div class="form-material form-horizontal">
                         <div class="form-group">
                             <div class="col-md-12">
-                                <input type="text" class="form-control form-control-line"
+                                <input type="text" class="form-control form-control-line text-right"
                                        placeholder="Enter transaction hash"
                                        ng-model="vm.transactionHash" />
                                 <span class="text-success" ng-show="vm.hasTransactionHash">{{vm.bitLevel.Donation.TransactionHash}}</span>
@@ -193,9 +197,10 @@
                         </div>
                         <div class="col-lg-12">
                             <button class="btn btn-block btn-outline btn-info"
+                                    style="margin-top:10px;"
                                     ng-class="{disabled: !vm.hasActiveBitcoinAddress}"
                                     ng-click="vm.updateTransactionHash()">
-                                <span ng-hide="vm.isSavingTransactionHash"><i class="ti-save"></i>&nbsp;&nbsp;Save</span>
+                                <span ng-hide="vm.isSavingTransactionHash"><i class="ti-save"></i>&nbsp;Verify &amp; Save</span>
                                 <ring-loader size="18" color="white" show="vm.isSavingTransactionHash"></ring-loader>
                             </button>
                         </div>
@@ -253,7 +258,7 @@
             </div>
             <span class="text-warning" ng-hide="vm.hasActiveBitcoinAddress">
                 We noticed you haven't yet got any <strong>bitcoin transaction address</strong> setup yet.
-                Not to worry, this can easily be done by following the instructions <strong><a href ui-sref="bitcoinAddresses">Here</a></strong>.
+                Not to worry, this can easily be done by following the instructions <strong><a href ui-sref="base.bitcoinAddresses">Here</a></strong>.
             </span>
         </div>
     </div>

@@ -37,5 +37,8 @@ namespace BitDiamond.Core.Services
 
         [Resource(":system/block-chain/transactions/@systemTotal")]
         Operation<decimal> GetSystemTransactionsTotal();
+        
+        [Resource(":system/block-chain/transactions/@getByHash")]
+        Operation VerifyTransaction(string transactionHash, BitLevel currentLevel);
     }
 }

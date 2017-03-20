@@ -34,7 +34,7 @@ module BitDiamond.Controllers.Referrals {
             
             var name: string = null;
             if (Object.isNullOrUndefined(_node.UserBio)) name = _node.UserId;
-            else name = _node.UserBio.FirstName + ' ' + _node.UserBio.LastName + ' (' + _node.ReferenceCode + ')';
+            else name = _node.UserBio.FirstName + ' ' + _node.UserBio.LastName;
 
             tnode = Object.isNullOrUndefined(tnode) ? <ITreeViewNode>{} : tnode;
 

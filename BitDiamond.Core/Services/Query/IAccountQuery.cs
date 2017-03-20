@@ -19,6 +19,7 @@ namespace BitDiamond.Core.Services.Query
         IEnumerable<UserData> GetUserData(User user);
         UserData GetUserData(User user, string name);
         ReferralNode GetRefNode(string refereeCode);
+        ReferralNode GetRefNode(User owner);
         Credential GetCredential(User user, string name, Access credentialVisibility);
         IEnumerable<string> GetUserRoles(User user);
         long GetUserCount();

@@ -15,8 +15,13 @@ namespace BitDiamond.Core.Models
         [MaxLength(20)]
         public string Locale { get; set; }
 
+        /// <summary>
+        /// This should, in future, be an integer (positive or negative) denoting the number of minutes to be added (or subtracted pending on the polarity of the offset)
+        /// to client datetime objects to get UTC date. Thus, West-Central-Africa will have a value of 60, meaning add 60 minutes to UTC time to get current time.
+        /// </summary>
         [MaxLength(20)]
         public string TimeZone { get; set; }
+        public int TimeZoneOffset() => int.Parse(TimeZone);
 
         //note: implement "LastActive" using the "ModifiedOn" property
 

@@ -226,7 +226,7 @@ ORDER BY dl.[rank]
                                 Status = row.GetInt32(9),
                                 UId = row.GetGuid(10)
                             }),
-                            UserBio = new BioData
+                            UserBio = !hasBio(row)? null: new BioData
                             {
                                 FirstName = row.IsDBNull(11) ? null : row.GetString(11),
                                 LastName = row.IsDBNull(12) ? null : row.GetString(12)
@@ -300,6 +300,8 @@ ORDER BY dl.[rank]
             .AsEnumerable()
             .Select(_jo => _jo.ToAddress())
             .ToArray();
+
+        private bool hasBio(SqlDataReader row) => !row.IsDBNull(11) || !row.IsDBNull(12);
 
 
         #region Joiner helper classes

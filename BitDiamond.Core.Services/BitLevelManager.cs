@@ -134,7 +134,7 @@ namespace BitDiamond.Core.Services
             return bl;
         });
 
-        public Operation<BlockChainTransaction> UpdateTransactionHash(string transactionHash)
+        public Operation<BlockChainTransaction> VerifyAndSaveTransactionHash(string transactionHash)
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
             var currentUser = UserContext.CurrentUser();
@@ -142,6 +142,9 @@ namespace BitDiamond.Core.Services
 
             _query.GetTransactionWithHash(transactionHash)
                   .ThrowIfNotNull(new Exception("A transaction already exists in the system with the supplied hash"));
+
+            _blockChain.VerifyTransaction(transactionHash, currentLevel)
+                       .Resolve();             
 
             currentLevel.Donation.TransactionHash = transactionHash;
             return _pcommand.Update(currentLevel.Donation);

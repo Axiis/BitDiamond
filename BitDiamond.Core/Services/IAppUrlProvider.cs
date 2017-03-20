@@ -13,5 +13,7 @@ namespace BitDiamond.Core.Services
         Operation<string> GenerateUserActivationVerificationUrl(string verificationToken, string user);
         Operation<string> GenerateWelcomeMessageUrl();
         Operation<string> GenerateBlobUrl(string blobName);
+        Operation<string> LogoUri();
+        Operation<string> LogoTextUri();
     }
 }

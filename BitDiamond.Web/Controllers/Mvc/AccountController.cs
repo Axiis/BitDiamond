@@ -48,5 +48,13 @@ namespace BitDiamond.Web.Controllers.Mvc
         [HttpGet]
         [Route("terms")]
         public ActionResult Terms() => View();
+
+        [HttpGet]
+        [Route("vr")]
+        public ActionResult VerificationRedirect(string  data)
+        {
+            var ruri = Request.Url;
+            return Redirect(new Uri($"{ruri.Scheme}://{ruri.Authority}/account/index#!/verify-registration/{data}").ToString());
+        }
     }
 }

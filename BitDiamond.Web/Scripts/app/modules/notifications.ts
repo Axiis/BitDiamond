@@ -30,13 +30,31 @@ module BitDiamond.Modules {
         $urlRouterProvider.otherwise('/history')
 
         $stateProvider
-            .state('history', {
+            .state('base', {
+                abstract: true,
+                views: {
+                    'sidebar': {
+                        templateUrl: '/templates/common/sidebar.html',
+                        controller: 'SideBar',
+                        controllerAs: 'vm'
+                    },
+                    'navbar': {
+                        templateUrl: '/templates/common/navbar.html',
+                        controller: 'NavBar',
+                        controllerAs: 'vm'
+                    },
+                    'content': {
+                        template: '<ui-view/>'
+                    }
+                }
+            })
+            .state('base.history', {
                 url: '/history',
                 templateUrl: '/notifications/history',
                 controller: 'History',
                 controllerAs: 'vm'
             })
-            .state('details', {
+            .state('base.details', {
                 url: '/details/',
                 params: {
                     notification: {}

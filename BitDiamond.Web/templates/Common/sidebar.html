@@ -16,7 +16,7 @@
                     <ul class="dropdown-menu animated flipInY">
                         <li><a href="/profile/index#!/home"><i class="ti-user"></i> My Profile</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href ng-click="vm.logout()"><i class="fa fa-power-off"></i> Logout</a></li>
+                        <li><a href ng-click="vm.logout()"><i class="icon-logout"></i> Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -45,7 +45,7 @@
 
                 <li>
                     <a ng-href="{{vm.getModuleUrl('payments')}}" ng-class="vm.getActiveClass('payments')" class="waves-effect">
-                        <i class="fa fa-btc fa-fw" data-icon="v"></i>
+                        <i class="ti-time fa-fw" data-icon="v"></i>
                         <span class="hide-menu">
                             Payment History
                         </span>
@@ -82,13 +82,13 @@
                 </li>
 
 
-                <li class="nav-small-cap">
+                <li class="nav-small-cap" stsyle="padding-right:0 !important; padding-left:0 !important;">
                     <hr />
                 </li>
 
                 <li>
                     <a href="/account/index#!/signin" ng-click="vm.logout()" ng-class="{active:false}" class="waves-effect">
-                        <i class="fa fa-power-off fa-fw" data-icon="v"></i>
+                        <i class="icon-logout fa-fw" data-icon="v"></i>
                         <span class="hide-menu">
                             Logout
                         </span>
@@ -96,6 +96,7 @@
                 </li>
 
             </ul>
+            <footer class="footer text-center hidden-xs" style="left:0;"> {{vm.currentYear}} © Bit-Diamond </footer>
         </div><div class="slimScrollBar" style="background: rgb(220, 220, 220); width: 0px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 5794px;"></div><div class="slimScrollRail" style="width: 0px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
     </div>
 </div>

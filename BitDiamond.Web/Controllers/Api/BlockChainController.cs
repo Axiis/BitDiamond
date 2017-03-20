@@ -58,7 +58,7 @@ namespace BitDiamond.Web.Controllers.Api
         => this.LogTime(() => _blockChain.GetSystemTransactionsTotal().OperationResult(Request));
 
 
-        [HttpPut, Route("api/block-chain/transactions/incoming")]
+        [HttpPut, Route("api/block-chain/transactions/verify-manually")]
         public IHttpActionResult VerifyManually([FromBody] TransactionVerificationArgs args)
         => this.LogTime(() =>
         {

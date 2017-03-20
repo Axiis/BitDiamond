@@ -75,7 +75,7 @@ namespace BitDiamond.Web.Controllers.Api
         [HttpPut, Route("api/bit-levels/transactions/current")]
         public IHttpActionResult UpdateTransactionHash([FromBody] TransactionArgs args)
         => this.LogTime(() => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
-            .Then(opr => _bitlevel.UpdateTransactionHash(args.Hash))
+            .Then(opr => _bitlevel.VerifyAndSaveTransactionHash(args.Hash))
             .OperationResult(Request));
 
         [HttpPut, Route("api/bit-levels/transactions/current/confirm")]

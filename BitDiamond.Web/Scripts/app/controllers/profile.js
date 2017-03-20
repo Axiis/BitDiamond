@@ -144,7 +144,7 @@ var BitDiamond;
                 Home.prototype.getDateOfBirth = function () {
                     if (Object.isNullOrUndefined(this.userBio))
                         return '-';
-                    return moment(this.userBio.Dob).format('MMM Do YYYY');
+                    return this.userBio.Dob.toMoment().format('MMM Do YYYY');
                 };
                 Home.prototype.activateTab = function (name) {
                     this.currentTab = name;
@@ -241,3 +241,4 @@ var BitDiamond;
         })(Profile = Controllers.Profile || (Controllers.Profile = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=profile.js.map

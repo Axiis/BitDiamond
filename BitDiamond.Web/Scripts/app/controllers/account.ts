@@ -57,6 +57,21 @@ module BitDiamond.Controllers.Account {
         agreedToTerms: boolean;
         hasReferrerCode: boolean;
 
+        setHasRefCode(v: boolean) {
+            this.hasReferrerCode = v;
+        }
+
+        trueText() {
+            return 'I have a <span class="text-warning">Referrer</span> Code';
+        }
+        falseText() {
+            return 'I <span class="text-danger">don\'t</span> have a <span class="text-warning">Referrer</span> Code';
+        }
+        currentText() {
+            if (this.hasReferrerCode) return this.trueText();
+            else return this.falseText();
+        }
+
         passwordStrength(): number {
             if (!Object.isNullOrUndefined(this.password))
                 return zxcvbn(this.password).score;
@@ -162,6 +177,8 @@ module BitDiamond.Controllers.Account {
             this.__notify = __notify;
             this.$stateParams = $stateParams;
             this.$state = $state;
+
+            this.hasReferrerCode = true;
         }
 
     }

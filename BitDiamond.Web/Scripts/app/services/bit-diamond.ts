@@ -312,7 +312,7 @@ module BitDiamond.Services {
         }
 
         verifyManually(transactionHash: string): ng.IPromise<Utils.Operation<void>> {
-            return this.__transport.put('/api/block-chain/transactions/incoming', {
+            return this.__transport.put('/api/block-chain/transactions/verify-manually', {
                 TransactionHash: transactionHash
             });
         }

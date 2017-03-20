@@ -165,17 +165,23 @@ module BitDiamond.Controllers.Payments {
             if (Object.isNullOrUndefined(date)) return null;
             else return date.toMoment().format('YYYY/M/D  H:m');
         }
-        getTransactionSender(trnx: Models.IBlockChainTransaction): string {
-            if (Object.isNullOrUndefined(trnx.Sender)) return '-';
-            else if (Object.isNullOrUndefined(trnx.Sender.OwnerRef)) return trnx.Sender.BlockChainAddress;
-            else if (Object.isNullOrUndefined(trnx.Sender.OwnerRef.UserBio)) return trnx.Sender.OwnerRef.ReferenceCode;
+        getTransactionReceiver(trnx: Models.IBlockChainTransaction): string {
+            if (Object.isNullOrUndefined(trnx.Receiver)) return '-';
+            else if (Object.isNullOrUndefined(trnx.Receiver.OwnerRef)) return trnx.Receiver.BlockChainAddress;
+            else if (Object.isNullOrUndefined(trnx.Receiver.OwnerRef.UserBio)) return trnx.Receiver.OwnerRef.ReferenceCode;
             else {
-                var bio = trnx.Sender.OwnerRef.UserBio;
+                var bio = trnx.Receiver.OwnerRef.UserBio;
                 return (bio.FirstName || '') + ' ' + (bio.LastName || '');
             }
         }
         transactionStatus(trnx: Models.IBlockChainTransaction): string {
             return Models.BlockChainTransactionStatus[trnx.Status];
+        }
+        transactionStatusClass(trnx: Models.IBlockChainTransaction): any {
+            return {
+                'text-warning': trnx.Status == Models.BlockChainTransactionStatus.Unverified,
+                'text-success': trnx.Status == Models.BlockChainTransactionStatus.Verified
+            }
         }
 
         constructor(__blockChain, __userContext, __notify, $q) {

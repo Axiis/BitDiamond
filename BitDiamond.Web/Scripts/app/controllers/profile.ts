@@ -134,7 +134,7 @@ module BitDiamond.Controllers.Profile {
         }
         getDateOfBirth() {
             if (Object.isNullOrUndefined(this.userBio)) return '-';
-            return moment(this.userBio.Dob).format('MMM Do YYYY');
+            return this.userBio.Dob.toMoment().format('MMM Do YYYY');
         }
 
 

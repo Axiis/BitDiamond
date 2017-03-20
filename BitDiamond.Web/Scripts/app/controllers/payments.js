@@ -151,20 +151,26 @@ var BitDiamond;
                     else
                         return date.toMoment().format('YYYY/M/D  H:m');
                 };
-                Outgoing.prototype.getTransactionSender = function (trnx) {
-                    if (Object.isNullOrUndefined(trnx.Sender))
+                Outgoing.prototype.getTransactionReceiver = function (trnx) {
+                    if (Object.isNullOrUndefined(trnx.Receiver))
                         return '-';
-                    else if (Object.isNullOrUndefined(trnx.Sender.OwnerRef))
-                        return trnx.Sender.BlockChainAddress;
-                    else if (Object.isNullOrUndefined(trnx.Sender.OwnerRef.UserBio))
-                        return trnx.Sender.OwnerRef.ReferenceCode;
+                    else if (Object.isNullOrUndefined(trnx.Receiver.OwnerRef))
+                        return trnx.Receiver.BlockChainAddress;
+                    else if (Object.isNullOrUndefined(trnx.Receiver.OwnerRef.UserBio))
+                        return trnx.Receiver.OwnerRef.ReferenceCode;
                     else {
-                        var bio = trnx.Sender.OwnerRef.UserBio;
+                        var bio = trnx.Receiver.OwnerRef.UserBio;
                         return (bio.FirstName || '') + ' ' + (bio.LastName || '');
                     }
                 };
                 Outgoing.prototype.transactionStatus = function (trnx) {
                     return BitDiamond.Models.BlockChainTransactionStatus[trnx.Status];
+                };
+                Outgoing.prototype.transactionStatusClass = function (trnx) {
+                    return {
+                        'text-warning': trnx.Status == BitDiamond.Models.BlockChainTransactionStatus.Unverified,
+                        'text-success': trnx.Status == BitDiamond.Models.BlockChainTransactionStatus.Verified
+                    };
                 };
                 return Outgoing;
             }());
@@ -172,3 +178,4 @@ var BitDiamond;
         })(Payments = Controllers.Payments || (Controllers.Payments = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=payments.js.map

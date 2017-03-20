@@ -1,4 +1,12 @@
 ﻿
+html {
+    background-color:#3c4452;
+}
+
+body.content-wrapper div.sidebar div.sidebar-nav > footer{
+    display:none;
+}
+
 /**Loaded Content Animations**/
 .bd-slide-in-left.ng-enter {
     transition: .3s ease-out;

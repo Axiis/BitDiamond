@@ -47,7 +47,23 @@ var BitDiamond;
                     this.__notify = __notify;
                     this.$stateParams = $stateParams;
                     this.$state = $state;
+                    this.hasReferrerCode = true;
                 }
+                Signup.prototype.setHasRefCode = function (v) {
+                    this.hasReferrerCode = v;
+                };
+                Signup.prototype.trueText = function () {
+                    return 'I have a <span class="text-warning">Referrer</span> Code';
+                };
+                Signup.prototype.falseText = function () {
+                    return 'I <span class="text-danger">don\'t</span> have a <span class="text-warning">Referrer</span> Code';
+                };
+                Signup.prototype.currentText = function () {
+                    if (this.hasReferrerCode)
+                        return this.trueText();
+                    else
+                        return this.falseText();
+                };
                 Signup.prototype.passwordStrength = function () {
                     if (!Object.isNullOrUndefined(this.password))
                         return zxcvbn(this.password).score;
@@ -332,3 +348,4 @@ var BitDiamond;
         })(Account = Controllers.Account || (Controllers.Account = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=account.js.map

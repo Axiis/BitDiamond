@@ -15,7 +15,7 @@ namespace BitDiamond.Core.Services
 
 
         [Resource(":system/bit-levels/transactions/current/@update")]
-        Operation<BlockChainTransaction> UpdateTransactionHash(string transactionHash);
+        Operation<BlockChainTransaction> VerifyAndSaveTransactionHash(string transactionHash);
 
 
         [Resource(":system/bit-levels/transactions/current/@confirm")]

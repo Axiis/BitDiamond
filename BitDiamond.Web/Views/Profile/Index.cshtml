@@ -73,7 +73,7 @@
     </style>
 </head>
 
-<body ng-app="profile">
+<body ng-app="profile" class="fix-sidebar">
     <div id="wrapper">
 
         <!-- Top Navigation -->
@@ -89,10 +89,12 @@
             <div class="container-fluid bd-slide-in-left bd-fade-in" ui-view="content">
             </div>
             <!-- /.container-fluid -->
-            <footer class="footer text-center"> @DateTime.Now.Year © Bit-Diamond </footer>
+            <footer class="footer text-center hidden-lg hidden-md hidden-sm"> @DateTime.Now.Year © Bit-Diamond </footer>
         </div>
         <!-- /#page-wrapper -->
     </div>
+
+
     <!-- /#wrapper -->
     <!-- jQuery -->
     <script src="~/Content/Theme/eliteadmin/plugins/bower_components/jquery/dist/jquery.min.js"></script>

@@ -26,11 +26,9 @@ namespace BitDiamond.Data.EF.Query
 
         public BioData GetBioData(User user)
         {
-            var start = DateTime.Now;
             var r = _europa.Store<BioData>().Query
                   .Where(_bd => _bd.OwnerId == user.UserId)
                   .FirstOrDefault();
-            Debug.WriteLine($"[AccountQuery.GetBioData] query executed in: {DateTime.Now - start}");
             return r;
         }
 
@@ -67,6 +65,12 @@ namespace BitDiamond.Data.EF.Query
                   .Where(_cv => _cv.Target.EntityId == user.UserId)
                   .Where(_cv => _cv.Context == context)
                   .OrderByDescending(_cv => _cv.CreatedOn)
+                  .FirstOrDefault();
+
+        public ReferralNode GetRefNode(User owner)
+        => _europa.Store<ReferralNode>()
+                  .QueryWith(_r => _r.User)
+                  .Where(_r => _r.UserId == owner.UserId)
                   .FirstOrDefault();
 
         public ReferralNode GetRefNode(string code)

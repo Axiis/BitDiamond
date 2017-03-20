@@ -21,7 +21,7 @@ namespace BitDiamond.Web.Infrastructure.Services
             var json = $"{{\"Email\":\"{targetUser}\", \"Token\":\"{verificationToken}\"}}";
             var utf8Array = Encoding.UTF8.GetBytes(json);
             var urlB64 = Convert.ToBase64String(utf8Array).Replace("/", "_").Replace("+", "-");
-            return new Uri($"{ruri.Scheme}://{ruri.Authority}/account/index#!/verify-registration/{urlB64}").ToString();
+            return new Uri($"{ruri.Scheme}://{ruri.Authority}/account/vr?data={urlB64}").ToString();
         });
 
         public Operation<string> GenerateBlobUrl(string blobName)
@@ -46,6 +46,20 @@ namespace BitDiamond.Web.Infrastructure.Services
         {
             var ruri = _owinProvider.Owin.Request.Uri;
             return new Uri($"{ruri.Scheme}://{ruri.Authority}/account/index").ToString();
+        });
+
+        public Operation<string> LogoUri()
+        => Operation.Try(() =>
+        {
+            var ruri = _owinProvider.Owin.Request.Uri;
+            return new Uri($"{ruri.Scheme}://{ruri.Authority}/content/images/logo-black.png").ToString();
+        });
+
+        public Operation<string> LogoTextUri()
+        => Operation.Try(() =>
+        {
+            var ruri = _owinProvider.Owin.Request.Uri;
+            return new Uri($"{ruri.Scheme}://{ruri.Authority}/content/images/logo-text-black.png").ToString();
         });
     }
 }

@@ -87,11 +87,12 @@ namespace BitDiamond.Core.Services
             else if (secretCredential == null)
                 throw new Exception("user registration must contain a credential");
 
-            else if (_query.GetRefNode(referrer) == null)
-                throw new Exception("invalid referee");
-
             else
             {
+
+                if (referrer == null) referrer = _query.GetRefNode(_query.GetUserById(Constants.SystemUsers_Apex)).ReferenceCode;
+                else if (_query.GetRefNode(referrer) == null) throw new Exception("invalid referer specified");
+
                 #region Create user
                 user = new User
                 {
@@ -171,7 +172,7 @@ If you dont have one, you can create one with any of the popular Bitcoin Wallet 
                         TargetId = user.UserId,
                         Type = NotificationType.Info,
                         Title = "Biodata request",
-                        Message = @"Visit your <a href='/profile/home'>Profile Page</a> to supply your biodata information."
+                        Message = @"Visit your <a href='/profile/index#!/home'>Profile Page</a> to supply your biodata information."
                     }))
                 #endregion
 
@@ -335,7 +336,9 @@ If you dont have one, you can create one with any of the popular Bitcoin Wallet 
                             From = "donotreply@bitdiamond.com",
                             Subject = "Welcome",
                             Target = user.UserId,
-                            Link = _apiProvider.GenerateWelcomeMessageUrl().Result
+                            Link = _apiProvider.GenerateWelcomeMessageUrl().Result,
+                            LogoTextUrl = _apiProvider.LogoTextUri().Result,
+                            LogoUrl = _apiProvider.LogoUri().Result
                         })
                         .Resolve();
 
@@ -382,7 +385,9 @@ If you dont have one, you can create one with any of the popular Bitcoin Wallet 
                 From = "donotreply@bitdiamond.com",
                 Subject = "Password Reset",
                 Target = user.UserId,
-                Link = _apiProvider.GeneratePasswordUpdateVerificationUrl(verification.VerificationToken, targetUser).Result
+                Link = _apiProvider.GeneratePasswordUpdateVerificationUrl(verification.VerificationToken, targetUser).Result,
+                LogoUrl = _apiProvider.LogoUri().Result,
+                LogoTextUrl = _apiProvider.LogoTextUri().Result
             });
         });
 

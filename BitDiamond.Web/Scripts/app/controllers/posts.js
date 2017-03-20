@@ -93,13 +93,13 @@ var BitDiamond;
                     return post.Status != BitDiamond.Models.PostStatus.Archived;
                 };
                 List.prototype.showDetails = function (post) {
-                    this.$state.go('details', { post: post });
+                    this.$state.go('base.details', { post: post });
                 };
                 List.prototype.createNews = function () {
-                    this.$state.go('edit');
+                    this.$state.go('base.edit');
                 };
                 List.prototype.editNews = function (post) {
-                    this.$state.go('edit', { post: post });
+                    this.$state.go('base.edit', { post: post });
                 };
                 List.prototype.postAction = function (post) {
                     var _this = this;
@@ -141,7 +141,7 @@ var BitDiamond;
                     this.$stateParams = $stateParams;
                     this.__notify = __notify;
                     this.__posts = __posts;
-                    this.previous = this.$stateParams['previous'] || 'list';
+                    this.previous = this.$stateParams['previous'] || 'base.list';
                     var p = this.$stateParams['post'];
                     var id = this.$stateParams['id'];
                     if (Object.isNullOrUndefined(p) && (Object.isNullOrUndefined(id) || id <= 0)) {
@@ -202,7 +202,7 @@ var BitDiamond;
                         Status: BitDiamond.Models.PostStatus.Draft,
                         '$__isNascent': true
                     };
-                    this.previous = $stateParams['previous'] || 'list';
+                    this.previous = $stateParams['previous'] || 'base.list';
                 }
                 //events
                 Edit.prototype.persist = function () {
@@ -251,3 +251,4 @@ var BitDiamond;
         })(Posts = Controllers.Posts || (Controllers.Posts = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=posts.js.map

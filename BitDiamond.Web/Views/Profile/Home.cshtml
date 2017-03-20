@@ -67,7 +67,7 @@
                         <p>
                             {{vm.userRef}}
                         </p>
-                        <button type="button" class="btn btn-sm btn-outline btn-success wav"
+                        <button type="button" class="btn btn-sm btn-outline btn-info wav"
                                 ng-click="vm.refCopied()"
                                 data-clipboard-action="copy" data-clipboard-text="{{vm.userRef}}"
                                 data-toggle="tooltip" data-original-title="Copy Reference Code to clipboard"
@@ -100,15 +100,15 @@
             <!-- /.tabs -->
             <div class="tab-content">
                 <!-- .tabs 1 -->
-                <div class="tab-pane" ng-class="vm.getActiveClassFor('profile')">
+                <div class="tab-pane" ng-class="vm.getActiveClassFor('profile')" style="text-overflow:ellipsis; white-space:nowrap; overflow:hidden;">
 
                     <div class="row">
-                        <div class="col-md-6 col-xs-6 b-r">
+                        <div class="col-md-6 col-xs-12 b-r">
                             <strong>Full Name</strong>
                             <br>
                             <p class="text-muted">{{vm.getFullNames()}}</p>
                         </div>
-                        <div class="col-md-6 col-xs-6">
+                        <div class="col-md-6 col-xs-12">
                             <strong>Account ID</strong>
                             <br>
                             <p class="text-muted">{{vm.user.UserId}}</p>
@@ -117,22 +117,17 @@
 
                     <hr />
                     <div class="row" >
-                        <div class="col-md-3 col-xs-6 b-r">
+                        <div class="col-md-4 col-xs-12 b-r">
                             <strong>Nationality</strong>
                             <br>
                             <p class="text-muted">{{vm.userBio.Nationality || '-'}}</p>
                         </div>
-                        <div class="col-md-3 col-xs-6 b-r">
-                            <strong>State/Province</strong>
-                            <br>
-                            <p class="text-muted">{{vm.userBio.StateOfOrigin || '-'}}</p>
-                        </div>
-                        <div class="col-md-3 col-xs-6 b-r">
+                        <div class="col-md-4 col-xs-12 b-r">
                             <strong>Gender</strong>
                             <br>
                             <p class="text-muted">{{vm.getGender()}}</p>
                         </div>
-                        <div class="col-md-3 col-xs-6">
+                        <div class="col-md-4 col-xs-12">
                             <strong>Date of Birth</strong>
                             <br>
                             <p class="text-muted">{{vm.getDateOfBirth()}}</p>
@@ -141,12 +136,12 @@
 
                     <hr />
                     <div class="row" >
-                        <div class="col-md-6 col-xs-6 b-r">
+                        <div class="col-md-6 col-xs-12 b-r">
                             <strong>Phone</strong>
                             <br>
                             <p class="text-muted">{{vm.userContact.Phone || '-'}}</p>
                         </div>
-                        <div class="col-md-6 col-xs-6">
+                        <div class="col-md-6 col-xs-12">
                             <strong>Email</strong>
                             <br>
                             <p class="text-muted">{{vm.userContact.Email || '-'}}</p>

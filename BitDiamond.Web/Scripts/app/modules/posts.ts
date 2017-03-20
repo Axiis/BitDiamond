@@ -33,13 +33,31 @@ module BitDiamond.Modules {
         $urlRouterProvider.otherwise('/list');
 
         $stateProvider
-            .state('list', {
+            .state('base', {
+                abstract: true,
+                views: {
+                    'sidebar': {
+                        templateUrl: '/templates/common/sidebar.html',
+                        controller: 'SideBar',
+                        controllerAs: 'vm'
+                    },
+                    'navbar': {
+                        templateUrl: '/templates/common/navbar.html',
+                        controller: 'NavBar',
+                        controllerAs: 'vm'
+                    },
+                    'content': {
+                        template: '<ui-view/>'
+                    }
+                }
+            })
+            .state('base.list', {
                 url: '/list',
                 templateUrl: '/posts/list',
                 controller: 'List',
                 controllerAs: 'vm'
             })
-            .state('edit', {
+            .state('base.edit', {
                 url: '/edit/:id',
                 params: {
                     post: null,
@@ -49,7 +67,7 @@ module BitDiamond.Modules {
                 controller: 'Edit',
                 controllerAs: 'vm'
             })
-            .state('details', {
+            .state('base.details', {
                 url: '/details/:id',
                 params: {
                     post: null,

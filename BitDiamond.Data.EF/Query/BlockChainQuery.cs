@@ -68,21 +68,21 @@ namespace BitDiamond.Data.EF.Query
         => _europa.Store<BlockChainTransaction>()
             .Query
             .Where(_tnx => _tnx.Status == BlockChainTransactionStatus.Verified)
-            .Sum(_bc => _bc.Amount);
+            .Sum(_bc => (decimal?)_bc.Amount) ?? 0m;
 
         public decimal GetIncomingUserTransactionsTotal(User user)
         => _europa.Store<BlockChainTransaction>()
             .QueryWith(_bc => _bc.Receiver)
             .Where(_bc => _bc.Receiver.OwnerId == user.UserId)
             .Where(_tnx => _tnx.Status == BlockChainTransactionStatus.Verified)
-            .Sum(_bc => _bc.Amount);
+            .Sum(_bc => (decimal?)_bc.Amount) ?? 0m;
 
         public decimal GetOutgoingUserTransactionsTotal(User user)
         => _europa.Store<BlockChainTransaction>()
             .QueryWith(_bc => _bc.Sender)
             .Where(_bc => _bc.Sender.OwnerId == user.UserId)
             .Where(_tnx => _tnx.Status == BlockChainTransactionStatus.Verified)
-            .Sum(_bc => _bc.Amount);
+            .Sum(_bc => (decimal?)_bc.Amount) ?? 0m;
 
         public SequencePage<BlockChainTransaction> GetPagedIncomingUserTransactions(User user, int pageSize, int pageIndex = 0)
         {

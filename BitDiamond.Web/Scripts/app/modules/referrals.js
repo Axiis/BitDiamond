@@ -22,7 +22,25 @@ var BitDiamond;
         Modules.referralsModule.config(function ($stateProvider, $urlRouterProvider) {
             $urlRouterProvider.otherwise('/downlines');
             $stateProvider
-                .state('downlines', {
+                .state('base', {
+                abstract: true,
+                views: {
+                    'sidebar': {
+                        templateUrl: '/templates/common/sidebar.html',
+                        controller: 'SideBar',
+                        controllerAs: 'vm'
+                    },
+                    'navbar': {
+                        templateUrl: '/templates/common/navbar.html',
+                        controller: 'NavBar',
+                        controllerAs: 'vm'
+                    },
+                    'content': {
+                        template: '<ui-view/>'
+                    }
+                }
+            })
+                .state('base.downlines', {
                 url: '/downlines',
                 templateUrl: '/referrals/downlines',
                 controller: 'Downlines',
@@ -31,3 +49,4 @@ var BitDiamond;
         });
     })(Modules = BitDiamond.Modules || (BitDiamond.Modules = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=referrals.js.map

@@ -856,7 +856,7 @@
 			background-color: #292c31;
 			color: #dadde2;
 		}
-		.logo { background-image:url("/content/images/logo-text-black.png") !important; }
+		.logo { background-image:url("/content/images/logo-text-black.png") !important; background-size:contain; }
 
 		.menu.xs-toggle {
 			position:relative;

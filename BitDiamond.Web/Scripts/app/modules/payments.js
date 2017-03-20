@@ -26,13 +26,31 @@ var BitDiamond;
         Modules.paymentsModules.config(function ($stateProvider, $urlRouterProvider) {
             $urlRouterProvider.otherwise('/incoming');
             $stateProvider
-                .state('incoming', {
+                .state('base', {
+                abstract: true,
+                views: {
+                    'sidebar': {
+                        templateUrl: '/templates/common/sidebar.html',
+                        controller: 'SideBar',
+                        controllerAs: 'vm'
+                    },
+                    'navbar': {
+                        templateUrl: '/templates/common/navbar.html',
+                        controller: 'NavBar',
+                        controllerAs: 'vm'
+                    },
+                    'content': {
+                        template: '<ui-view/>'
+                    }
+                }
+            })
+                .state('base.incoming', {
                 url: '/incoming',
                 templateUrl: '/payments/incoming',
                 controller: 'Incoming',
                 controllerAs: 'vm'
             })
-                .state('outgoing', {
+                .state('base.outgoing', {
                 url: '/outgoing',
                 templateUrl: '/payments/outgoing',
                 controller: 'Outgoing',
@@ -41,3 +59,4 @@ var BitDiamond;
         });
     })(Modules = BitDiamond.Modules || (BitDiamond.Modules = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=payments.js.map

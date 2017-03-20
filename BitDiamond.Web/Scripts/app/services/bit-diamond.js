@@ -250,7 +250,7 @@ var BitDiamond;
                 return this.__transport.get('/api/block-chain/transactions/system/total');
             };
             BlockChain.prototype.verifyManually = function (transactionHash) {
-                return this.__transport.put('/api/block-chain/transactions/incoming', {
+                return this.__transport.put('/api/block-chain/transactions/verify-manually', {
                     TransactionHash: transactionHash
                 });
             };
@@ -354,3 +354,4 @@ var BitDiamond;
         Services.Posts = Posts;
     })(Services = BitDiamond.Services || (BitDiamond.Services = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=bit-diamond.js.map

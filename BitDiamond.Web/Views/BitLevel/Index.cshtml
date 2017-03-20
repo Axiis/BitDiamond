@@ -4,7 +4,7 @@
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background:#353c48;">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -70,190 +70,21 @@
     </style>
 </head>
 
-<body ng-app="bitlevel">
+<body ng-app="bitlevel" class="fix-sidebar">
     <div id="wrapper">
+
         <!-- Top Navigation -->
-        <nav class="navbar navbar-default navbar-static-top m-b-0">
-            <div class="navbar-header" ng-controller="NavBar as vm">
-                <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse"><i class="ti-menu"></i></a>
-
-                <div class="top-left-part">
-                    <a class="logo" href="/index.html">
-                        <b>
-                            <img src="/Content/Images/logo-white.png" alt="home" class="dark-logo" style="height:45px;" />
-                            <img src="/Content/Images/logo-black.png" alt="home" class="light-logo" style="height:45px;" />
-                        </b>
-                        <span class="hidden-xs" style="display: inline;">
-                            <img src="/content/images/logo-text-white.png" alt="home" class="dark-logo" style="height:25px;" />
-                            <img src="/content/images/logo-text-black.png" alt="home" class="light-logo" style="height:25px;" />
-                        </span>
-                    </a>
-                </div>
-
-                <ul class="nav navbar-top-links navbar-left hidden-xs">
-                    <li><a href="javascript:void(0)" class="open-close hidden-xs waves-effect waves-light"><i class="icon-arrow-left-circle ti-menu"></i></a></li>
-                </ul>
-
-                <ul class="nav navbar-top-links navbar-right pull-right">
-                    <li class="dropdown">
-                        <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#">
-                            <i class="icon-bell"></i>
-                            <div class="notify" ng-hide="vm.hasSeenNotifications">
-                                <span class="heartbit"></span><span class="point">
-                                </span>
-                            </div>
-                        </a>
-                        <ul class="dropdown-menu mailbox animated flipInY">
-                            <li>
-                                <div class="drop-title">You have {{vm.notificationCount}} new Notifications</div>
-                            </li>
-                            <li>
-                                <div class="message-center">
-                                    <a href ng-repeat="n in vm.notifications">
-                                        <div class="user-img">
-                                            <i class="icon-bell" style="font-size:30px; color:white;"></i>
-                                        </div>
-                                        <div class="mail-contnet">
-                                            <h5 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height:1.2em;"
-                                                ng-bind-html="n.Title"></h5>
-                                            <span class="mail-desc" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height:1.2em;"
-                                                  ng-bind-html="n.Message"></span>
-                                            <span class="time">{{vm.displayTime(n.CreatedOn)}}</span>
-                                        </div>
-                                    </a>
-                                </div>
-                            </li>
-                            <li>
-                                <a class="text-center" href="/notifications/index"> See all notifications <i class="fa fa-angle-right"></i> </a>
-                            </li>
-                        </ul>
-                        <!-- /.dropdown-messages -->
-                    </li>
-
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href>
-                            <div class="notify">
-                            </div>
-                        </a>
-                        <!-- /.dropdown-messages -->
-                    </li>
-                    <!-- /.dropdown -->
-
-                </ul>
-            </div>
-            <!-- /.navbar-header -->
-            <!-- /.navbar-top-links -->
-            <!-- /.navbar-static-side -->
-        </nav>
+        <x-view ui-view="navbar"></x-view>
         <!-- End Top Navigation -->
         <!-- Left navbar-header -->
-        <div class="navbar-default sidebar" role="navigation" ng-controller="SideBar as vm">
-            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
-                <div class="sidebar-nav navbar-collapse slimscrollsidebar" style="overflow: hidden; width: auto; height: 100%;">
-
-                    <div class="user-profile">
-                        <div class="dropdown user-pro-body">
-                            <div><img ng-src="{{vm.profileImage()}}" alt="user-img" class="img-circle"></div>
-                            <a href class="dropdown-toggle u-dropdown"
-                               data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                <span style="white-space:nowrap; text-overflow:ellipsis; position:relative; width:85%; display: inline-block; overflow:hidden;"
-                                      data-toggle="tooltip" data-original-title="{{vm.userNames()}}">{{vm.userNames()}}</span>
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu animated flipInY">
-                                <li><a href="/profile/index#!/home"><i class="ti-user"></i> My Profile</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href ng-click="vm.logout()"><i class="fa fa-power-off"></i> Logout</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <ul class="nav in" id="side-menu">
-
-                        <li>
-                            <a ng-href="{{vm.getModuleUrl('dashboard')}}" ng-class="vm.getActiveClass('dashboard')" class="waves-effect">
-                                <i class="icon-grid fa-fw" data-icon="v"></i>
-                                <span class="hide-menu">
-                                    Dashboard
-                                </span>
-                            </a>
-                        </li>
-
-                        <li class="nav-small-cap"></li>
-
-                        <li>
-                            <a ng-href="{{vm.getModuleUrl('bit-level')}}" ng-class="vm.getActiveClass('bit-level')" class="waves-effect">
-                                <i class="icon-diamond fa-fw" data-icon="v"></i>
-                                <span class="hide-menu">
-                                    Bit Level
-                                </span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a ng-href="{{vm.getModuleUrl('payments')}}" ng-class="vm.getActiveClass('payments')" class="waves-effect">
-                                <i class="fa fa-btc fa-fw" data-icon="v"></i>
-                                <span class="hide-menu">
-                                    Payment History
-                                </span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a ng-href="{{vm.getModuleUrl('family-tree')}}" ng-class="vm.getActiveClass('family-tree')" class="waves-effect">
-                                <i class="icon-people fa-fw" data-icon="v"></i>
-                                <span class="hide-menu">
-                                    Family Tree
-                                </span>
-                            </a>
-                        </li>
-
-                        <li class="nav-small-cap"></li>
-
-                        <li>
-                            <a ng-href="{{vm.getModuleUrl('news')}}" ng-class="vm.getActiveClass('news')" class="waves-effect">
-                                <i class="icon-book-open fa-fw" data-icon="v"></i>
-                                <span class="hide-menu">
-                                    News
-                                </span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a ng-href="{{vm.getModuleUrl('notifications')}}" ng-class="vm.getActiveClass('notifications')" class="waves-effect">
-                                <i class="icon-bell fa-fw" data-icon="v"></i>
-                                <span class="hide-menu">
-                                    Notifications
-                                </span>
-                            </a>
-                        </li>
-
-
-                        <li class="nav-small-cap">
-                            <hr/>
-                        </li>
-
-                        <li>
-                            <a href="/account/index#!/signin" ng-click="vm.logout()" ng-class="{active:false}" class="waves-effect">
-                                <i class="fa fa-power-off fa-fw" data-icon="v"></i>
-                                <span class="hide-menu">
-                                    Logout
-                                </span>
-                            </a>
-                        </li>
-
-                    </ul>
-                </div><div class="slimScrollBar" style="background: rgb(220, 220, 220); width: 0px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 5794px;"></div><div class="slimScrollRail" style="width: 0px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
-            </div>
-        </div>
+        <x-view ui-view="sidebar"></x-view>
         <!-- Left navbar-header end -->
         <!-- Page Content -->
         <div id="page-wrapper" style="min-height: 885px;">
-            <div class="container-fluid bd-slide-in-left bd-fade-in" ui-view>
-
+            <div class="container-fluid bd-slide-in-left bd-fade-in" ui-view="content">
             </div>
             <!-- /.container-fluid -->
-            <footer class="footer text-center"> @DateTime.Now.Year © Bit-Diamond </footer>
+            <footer class="footer text-center hidden-lg hidden-md hidden-sm"> @DateTime.Now.Year © Bit-Diamond </footer>
         </div>
         <!-- /#page-wrapper -->
     </div>

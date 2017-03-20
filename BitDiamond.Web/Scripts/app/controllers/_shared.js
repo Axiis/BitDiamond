@@ -67,6 +67,7 @@ var BitDiamond;
                     this.__notify = __notify;
                     this.__userContext = __userContext;
                     this.$location = $location;
+                    this.currentYear = moment().year();
                     //load user object
                     this.__userContext.user.then(function (opr) {
                         _this.user = opr;
@@ -147,3 +148,4 @@ var BitDiamond;
         })(Shared = Controllers.Shared || (Controllers.Shared = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=_shared.js.map

@@ -52,7 +52,7 @@ var BitDiamond;
                     if (Object.isNullOrUndefined(_node.UserBio))
                         name = _node.UserId;
                     else
-                        name = _node.UserBio.FirstName + ' ' + _node.UserBio.LastName + ' (' + _node.ReferenceCode + ')';
+                        name = _node.UserBio.FirstName + ' ' + _node.UserBio.LastName;
                     tnode = Object.isNullOrUndefined(tnode) ? {} : tnode;
                     tnode.text = name;
                     tnode.icon = 'icon-user';
@@ -67,3 +67,4 @@ var BitDiamond;
         })(Referrals = Controllers.Referrals || (Controllers.Referrals = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=referrals.js.map

@@ -19,7 +19,7 @@
 <ul class="nav customtab nav-tabs" role="tablist"
     style="margin-bottom:20px;">
     <li role="presentation">
-        <a href role="tab" ui-sref="incoming">
+        <a href role="tab" ui-sref="base.incoming">
             <span class="visible-xs">
                 <i class="ti-import" title="Incoming"></i>
             </span>
@@ -59,7 +59,7 @@
             <table class="table table-striped bd-transaction-table">
                 <thead>
                     <tr>
-                        <th style="width:20%">Sender</th>
+                        <th style="width:20%">Receiver</th>
                         <th>Amount</th>
                         <th style="width:35%">Transaction Hash</th>
                         <th>Ledger Count</th>
@@ -69,12 +69,12 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="transaction in vm.payments.Page">
-                        <td>{{vm.getTransactionSender(transaction)}}</td>
+                        <td>{{vm.getTransactionReceiver(transaction)}}</td>
                         <td><i class="fa fa-btc"></i>&nbsp;{{transaction.Amount}}</td>
                         <td class="bd-nowrap"><strong>#</strong> {{transaction.TransactionHash}}</td>
                         <td>{{transaction.LedgerCount}}</td>
                         <td>
-                            {{vm.transactionStatus(transaction)}}
+                            <span ng-class="vm.transactionStatusClass(transaction)" >{{vm.transactionStatus(transaction)}}</span>
                         </td>
                         <td>{{vm.displayDate(transaction.CreatedOn)}}</td>
                     </tr>

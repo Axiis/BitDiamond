@@ -41,7 +41,7 @@ namespace BitDiamond.Core.Utils
         #endregion
 
         #region Mail Origins
-        public static readonly string MailOrigin_DoNotReply = "donotreply@bitdiamond.com";
+        public static readonly string MailOrigin_DoNotReply = "donotreply@bitdiamond.biz";
         #endregion
 
         #region Misc

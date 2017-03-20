@@ -9,14 +9,32 @@
         <img src="~/Content/images/logo-text-white.png" alt="home" style="height:30px;" />
     </a>
 
+    <div class="btn-gorup dropdown" style="margin-top:20px;">
+        <button data-toggle="dropdown" class="btn btn-block btn-outline btn-default dropdown-toggle waves-effect waves-light clearfix" type="button">
+            <span class="pull-left" ng-bind-html="vm.currentText()"></span>
+            <span class="btn-default btn-outline pull-right" style="padding-left:10px; border: none; border-left:1px solid; background:transparent !important;">
+                <span class="caret"></span>
+            </span>
+        </button>
+        <ul role="menu" class="dropdown-menu">
+            <li ng-class="{active: vm.hasReferrerCode}">
+                <a href ng-click="vm.setHasRefCode(true)"><i class="text-muted fa fa-thumbs-o-up" style="padding-right:10px;"></i> I have a Referrer Code</a>
+            </li>
+            <li ng-class="{active: !vm.hasReferrerCode}">
+                <a href ng-click="vm.setHasRefCode(false)"><i class="text-muted fa fa-thumbs-o-down" style="padding-right:10px;"></i> I DONT have a Referrer Code</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="form-group" style="margin-top:20px;" ng-show="vm.hasReferrerCode">
+        <div class="col-xs-12">
+            <input class="form-control" type="text" required="" placeholder="Referrer Code" ng-model="vm.referrerCode">
+        </div>
+    </div>
+
     <div class="form-group" style="margin-top:20px;">
         <div class="col-xs-12">
             <input class="form-control" type="email" required="" placeholder="Email" ng-model="vm.email">
-        </div>
-    </div>
-    <div class="form-group" style="margin-top:20px;">
-        <div class="col-xs-12">
-            <input class="form-control" type="text" required="" placeholder="Referrer Code" ng-model="vm.referrerCode">
         </div>
     </div>
     <div class="form-group ">

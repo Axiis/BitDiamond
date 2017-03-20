@@ -17,5 +17,8 @@ namespace BitDiamond.Core.Models.Email
                 if (value != null) _recipients.AddRange(value);
             }
         }
+
+        public string LogoUrl { get; set; }
+        public string LogoTextUrl { get; set; }
     }
 }

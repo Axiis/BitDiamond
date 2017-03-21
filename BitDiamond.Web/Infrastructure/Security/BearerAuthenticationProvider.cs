@@ -32,6 +32,13 @@ namespace BitDiamond.Web.Infrastructure.Security
                 //means that the token was verified by the authorization server: this is an anomaly, as the source of the token is in question. What we do
                 //is reject this request.
                 if (logon?.Invalidated ?? true) context.Rejected();
+
+                //implement traditional session timeout after "WebConstants.Misc_SessionTimeoutMinutes" minutes
+                else if ((DateTime.Now - logon.ModifiedOn) >= TimeSpan.FromMinutes(WebConstants.Misc_SessionTimeoutMinutes))
+                {
+                    logon.ModifiedOn = DateTime.Now;
+                    context.Rejected();
+                }
                 else
                 {
                     context.OwinContext.Environment[WebConstants.Misc_UserLogonOwinContextKey] = logon;

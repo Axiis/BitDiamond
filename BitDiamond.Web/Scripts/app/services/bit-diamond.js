@@ -8,7 +8,11 @@ var BitDiamond;
                 this.$q = $q;
             }
             Account.prototype.validateUserLogon = function () {
-                return this.__transport.get('/api/accounts/users/logons/validate');
+                return this.__transport.get('/api/accounts/users/logons/validate', null, {
+                    headers: {
+                        'Cache-Control': 'no-cache'
+                    }
+                });
             };
             Account.prototype.getUserCount = function () {
                 return this.__transport.get('/api/accounts/users/count');
@@ -357,3 +361,4 @@ var BitDiamond;
         Services.Posts = Posts;
     })(Services = BitDiamond.Services || (BitDiamond.Services = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=bit-diamond.js.map

@@ -4,7 +4,11 @@ module BitDiamond.Services {
     export class Account {
 
         validateUserLogon(): ng.IPromise<Utils.Operation<void>> {
-            return this.__transport.get('/api/accounts/users/logons/validate');
+            return this.__transport.get('/api/accounts/users/logons/validate', null, <ng.IRequestShortcutConfig>{
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
+            });
         }
 
         getUserCount(): ng.IPromise<Utils.Operation<number>> {

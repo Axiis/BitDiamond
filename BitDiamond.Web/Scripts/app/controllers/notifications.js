@@ -116,3 +116,4 @@ var BitDiamond;
         })(Notification = Controllers.Notification || (Controllers.Notification = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=notifications.js.map

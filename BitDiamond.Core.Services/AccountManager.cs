@@ -579,7 +579,9 @@ If you dont have one, you can create one with any of the popular Bitcoin Wallet 
         public Operation ValidateUserLogon()
         => Operation.Try(() =>
         {
-            UserContext.CurrentUserLogon().ThrowIfNull(new Exception("invalid logon"));
+            UserContext.CurrentUserLogon()
+                .ThrowIfNull(new Exception("invalid logon"))
+                .ThrowIf(_logon => _logon.Invalidated, new Exception("invalid logon"));
         });
         #endregion
     }

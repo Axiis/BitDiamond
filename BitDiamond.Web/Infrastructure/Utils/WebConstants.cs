@@ -33,6 +33,8 @@ namespace BitDiamond.Web.Infrastructure.Utils
             .UsingModule(new AuthenticationAccessModuleConfig())
             .UsingModule(new RBACAccessModuleConfig())
             .UsingModule(new BitDiamondModuleConfig());
+
+        public static readonly int Misc_SessionTimeoutMinutes = 15;
         #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Axis.Pollux.Identity.Principal;
+using BitDiamond.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace BitDiamond.Core.Services
     {
         User CurrentUser();
         IEnumerable<string> CurrentUserRoles();
+        UserLogon CurrentUserLogon();
     }
 }

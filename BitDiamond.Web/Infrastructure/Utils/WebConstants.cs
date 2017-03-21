@@ -19,6 +19,7 @@ namespace BitDiamond.Web.Infrastructure.Utils
         #endregion
 
         #region Misc
+        public static readonly string Misc_UserLogonOwinContextKey = "$__BitDiamond.UserLogon";
         public static readonly TimeSpan Misc_TokenValidityDuration = TimeSpan.FromDays(365);
         public static readonly ContextConfiguration<EuropaContext> Misc_UniversalEuropaConfig = new ContextConfiguration<EuropaContext>()
             .WithConnection(ConfigurationManager.ConnectionStrings["EuropaContext"].ConnectionString)

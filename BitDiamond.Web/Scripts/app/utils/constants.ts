@@ -611,7 +611,7 @@ module BitDiamond.Utils.Constants {
 
     //URLs
     export const URL_DefaultProfileImage = '/content/images/default-user.png';
-    export const URL_Login = '/account/signin';
+    export const URL_Login = '/account/index#!/signin';
 
 
     //MISC

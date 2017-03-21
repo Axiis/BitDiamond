@@ -56,7 +56,12 @@ var BitDiamond;
                 controller: 'Home',
                 controllerAs: 'vm'
             });
+        }).run(function ($rootScope, __account) {
+            $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
+                __account.validateUserLogon().catch(function (err) {
+                    window.location.href = BitDiamond.Utils.Constants.URL_Login;
+                });
+            });
         });
     })(Modules = BitDiamond.Modules || (BitDiamond.Modules = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=profile.js.map

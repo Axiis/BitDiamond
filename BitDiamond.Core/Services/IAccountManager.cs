@@ -24,6 +24,8 @@ namespace BitDiamond.Core.Services
         [Resource(":system/accounts/users/activations/@request")]
         Operation RequestUserActivation(string targetUser);
 
+        Operation ValidateUserLogon();
+
         [Resource(":system/accounts/users/activations/@verify")]
         Operation<User> VerifyUserActivation(string targetUser, string contextToken);
 

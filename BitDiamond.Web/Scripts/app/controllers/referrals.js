@@ -67,4 +67,3 @@ var BitDiamond;
         })(Referrals = Controllers.Referrals || (Controllers.Referrals = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=referrals.js.map

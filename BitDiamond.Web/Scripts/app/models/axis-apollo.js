@@ -99,4 +99,3 @@ var Apollo;
         Models.JsonDateTime = JsonDateTime;
     })(Models = Apollo.Models || (Apollo.Models = {}));
 })(Apollo || (Apollo = {}));
-//# sourceMappingURL=axis-apollo.js.map

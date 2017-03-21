@@ -1,13 +1,10 @@
 ﻿using Axis.Luna;
-using System;
-using System.Collections.Generic;
+using BitDiamond.Web.Infrastructure.Exceptions;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 
 namespace BitDiamond.Web.Infrastructure.Utils
@@ -37,6 +34,7 @@ namespace BitDiamond.Web.Infrastructure.Utils
         private HttpStatusCode ExtractCode(Operation<V> operation)
         {
             if (operation.GetException() is ValidationException) return HttpStatusCode.Conflict;
+            else if (operation.GetException() is MalformedApiArgumentsException) return HttpStatusCode.BadRequest;
             return HttpStatusCode.InternalServerError;
         }
     }

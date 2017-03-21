@@ -64,5 +64,11 @@ module BitDiamond.Modules {
                 controller: 'Home',
                 controllerAs: 'vm'
             });
+    }).run(function ($rootScope: ng.IScope, __account: Services.Account) {
+        $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
+            __account.validateUserLogon().catch(err => {
+                window.location.href = Utils.Constants.URL_Login;
+            });
+        });
     });
 }

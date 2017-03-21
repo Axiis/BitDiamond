@@ -16,7 +16,7 @@ namespace BitDiamond.Web.Infrastructure.Utils
             }
             finally
             {
-                Debug.WriteLine($"Executed {typeName}.{name} in {DateTime.Now - start}");
+                //Debug.WriteLine($"Executed {typeName}.{name} in {DateTime.Now - start}");
             }
         }
 

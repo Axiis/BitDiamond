@@ -28,6 +28,10 @@ namespace BitDiamond.Web.Controllers.Api
         }
         #endregion
 
+        [HttpGet, Route("api/accounts/users/logons/validate")]
+        public IHttpActionResult ValidateUserLogon()
+        => _account.ValidateUserLogon().OperationResult(Request);
+
         #region Account
         [HttpGet, Route("api/accounts/users/count")]
         public IHttpActionResult UserCount()

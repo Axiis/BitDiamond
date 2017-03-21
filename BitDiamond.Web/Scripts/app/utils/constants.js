@@ -604,7 +604,7 @@ var BitDiamond;
             Constants.UserData_ProfileImage = "Profile.Image";
             //URLs
             Constants.URL_DefaultProfileImage = '/content/images/default-user.png';
-            Constants.URL_Login = '/account/signin';
+            Constants.URL_Login = '/account/index#!/signin';
             //MISC
             Constants.Misc_OAuthTokenKey = 'BitDiamonds.Security.OAuth.BearerToken'; //bearer token localstorage key
             Constants.Misc_OAuthCustomHeaders_OldToken = "OAuthOldToken"; //used for sending any current tokens to the server for invalidation
@@ -613,4 +613,3 @@ var BitDiamond;
         })(Constants = Utils.Constants || (Utils.Constants = {}));
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=constants.js.map

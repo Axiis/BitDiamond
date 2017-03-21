@@ -27,7 +27,6 @@ namespace BitDiamond.Web.Infrastructure.Utils
                         _generators.ForAll((_cnt, _gen) => list.Add(_gen.Key, new Lazy<object>(() => _gen.Value.Invoke(cxt))));
 
                         await next();
-
                     }
                     finally
                     {

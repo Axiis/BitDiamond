@@ -9,6 +9,9 @@ using System;
 using System.Collections.Generic;
 using Axis.Luna.Extensions;
 using BitDiamond.Core.Models;
+using BitDiamond.Web.Infrastructure.Utils;
+
+using static Axis.Luna.Extensions.ObjectExtensions;
 
 namespace BitDiamond.Web.Infrastructure.Services
 {
@@ -48,6 +51,8 @@ namespace BitDiamond.Web.Infrastructure.Services
                 };
             }
         }
+
+        public UserLogon CurrentUserLogon() => Eval(() => _owinProvider.Owin.Environment[WebConstants.Misc_UserLogonOwinContextKey] as UserLogon);
 
         private List<string> _userRoles = null;
         public IEnumerable<string> CurrentUserRoles()

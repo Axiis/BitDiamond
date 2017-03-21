@@ -3,6 +3,10 @@ module BitDiamond.Services {
 
     export class Account {
 
+        validateUserLogon(): ng.IPromise<Utils.Operation<void>> {
+            return this.__transport.get('/api/accounts/users/logons/validate');
+        }
+
         getUserCount(): ng.IPromise<Utils.Operation<number>> {
             return this.__transport.get('/api/accounts/users/count');
         }

@@ -5,13 +5,13 @@ var BitDiamond;
         var Profile;
         (function (Profile) {
             var Dashboard = (function () {
-                function Dashboard(__notify, __account, __userContext, __systemNotification, __blockChain, __bitLevel, $q, $scope) {
+                function Dashboard(__notify, __account, __userContext, __posts, __blockChain, __bitLevel, $q, $scope) {
                     var _this = this;
-                    this.notifications = [];
+                    this.posts = [];
                     this.__notify = __notify;
                     this.__account = __account;
                     this.__userContext = __userContext;
-                    this.__systemNotification = __systemNotification;
+                    this.__posts = __posts;
                     this.__blockChain = __blockChain;
                     this.__bitLevel = __bitLevel;
                     this.$scope = $scope;
@@ -30,16 +30,16 @@ var BitDiamond;
                     }).finally(function () {
                         _this.isLoadingOutgoingTransactions = false;
                     });
-                    //load notifications
-                    this.isLoadingNotifications = true;
-                    this.__systemNotification.getUnseenNotificaftions().then(function (opr) {
-                        _this.notificationCount = opr.Result.length;
-                        _this.notifications = opr.Result.slice(0, 5).map(function (_v) {
+                    //load posts
+                    this.isLoadingPosts = true;
+                    this.__posts.getPagedNewsPosts(5, 0).then(function (opr) {
+                        _this.postCount = opr.Result.SequenceLength;
+                        _this.posts = opr.Result.Page.map(function (_v) {
                             _v.CreatedOn = new Apollo.Models.JsonDateTime(_v.CreatedOn);
                             return _v;
                         });
                     }).finally(function () {
-                        _this.isLoadingNotifications = false;
+                        _this.isLoadingPosts = false;
                     });
                     //load bitlevel
                     this.isLoadingBitLevel = true;
@@ -55,8 +55,8 @@ var BitDiamond;
                     else
                         return time.toMoment().format('YYYY/M/D  H:m');
                 };
-                Dashboard.prototype.isLastNotification = function (index) {
-                    return index == this.notifications.length - 1;
+                Dashboard.prototype.isLastPost = function (index) {
+                    return index == this.posts.length - 1;
                 };
                 return Dashboard;
             }());
@@ -142,9 +142,12 @@ var BitDiamond;
                     return Pollux.Models.Gender[this.userBio.Gender];
                 };
                 Home.prototype.getDateOfBirth = function () {
-                    if (Object.isNullOrUndefined(this.userBio))
+                    if (Object.isNullOrUndefined(this.userBio) ||
+                        Object.isNullOrUndefined(this.userBio.Dob) ||
+                        Object.isNullOrUndefined(this.userBio.Dob.toMoment))
                         return '-';
-                    return this.userBio.Dob.toMoment().format('MMM Do YYYY');
+                    else
+                        return this.userBio.Dob.toMoment().format('MMM Do YYYY');
                 };
                 Home.prototype.activateTab = function (name) {
                     this.currentTab = name;

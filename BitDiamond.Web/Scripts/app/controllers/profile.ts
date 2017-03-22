@@ -8,12 +8,12 @@ module BitDiamond.Controllers.Profile {
             if (Object.isNullOrUndefined(time)) return '';
             else return time.toMoment().format('YYYY/M/D  H:m');
         }
-        isLastNotification(index: number): boolean {
-            return index == this.notifications.length - 1;
+        isLastPost(index: number): boolean {
+            return index == this.posts.length - 1;
         }
-        notifications: Models.INotification[] = [];
-        notificationCount: number;
-        isLoadingNotifications: boolean;
+        posts: Models.IPost[] = [];
+        postCount: number;
+        isLoadingPosts: boolean;
 
         isLoadingIncomingTransactions: boolean;
         isLoadingOutgoingTransactions: boolean;
@@ -27,18 +27,18 @@ module BitDiamond.Controllers.Profile {
         __notify: Utils.Services.NotifyService;
         __account: Services.Account;
         __userContext: Utils.Services.UserContext;
-        __systemNotification: Services.Notification;
+        __posts: Services.Posts;
         __blockChain: Services.BlockChain;
         __bitLevel: Services.BitLevel;
 
         $q: ng.IQService;
         $scope: ng.IScope;
 
-        constructor(__notify, __account, __userContext, __systemNotification, __blockChain, __bitLevel, $q, $scope) {
+        constructor(__notify, __account, __userContext, __posts, __blockChain, __bitLevel, $q, $scope) {
             this.__notify = __notify;
             this.__account = __account;
             this.__userContext = __userContext;
-            this.__systemNotification = __systemNotification;
+            this.__posts = __posts;
             this.__blockChain = __blockChain;
             this.__bitLevel = __bitLevel;
             this.$scope = $scope;
@@ -61,16 +61,16 @@ module BitDiamond.Controllers.Profile {
                 this.isLoadingOutgoingTransactions = false;
             });
 
-            //load notifications
-            this.isLoadingNotifications = true;
-            this.__systemNotification.getUnseenNotificaftions().then(opr => {
-                this.notificationCount = opr.Result.length;
-                this.notifications = opr.Result.slice(0, 5).map(_v => {
+            //load posts
+            this.isLoadingPosts = true;
+            this.__posts.getPagedNewsPosts(5, 0).then(opr => {
+                this.postCount = opr.Result.SequenceLength;
+                this.posts = opr.Result.Page.map(_v => {
                     _v.CreatedOn = new Apollo.Models.JsonDateTime(_v.CreatedOn);
                     return _v;
                 });
             }).finally(() => {
-                this.isLoadingNotifications = false;
+                this.isLoadingPosts = false;
             });
 
             //load bitlevel
@@ -133,8 +133,10 @@ module BitDiamond.Controllers.Profile {
             return Pollux.Models.Gender[this.userBio.Gender];
         }
         getDateOfBirth() {
-            if (Object.isNullOrUndefined(this.userBio)) return '-';
-            return this.userBio.Dob.toMoment().format('MMM Do YYYY');
+            if (Object.isNullOrUndefined(this.userBio) ||
+                Object.isNullOrUndefined(this.userBio.Dob) ||
+                Object.isNullOrUndefined(this.userBio.Dob.toMoment)) return '-';
+            else return this.userBio.Dob.toMoment().format('MMM Do YYYY');
         }
 
 

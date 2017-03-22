@@ -14,6 +14,7 @@ var BitDiamond;
         Modules.profileModule.service('__notify', BitDiamond.Utils.Services.NotifyService);
         Modules.profileModule.service('__userContext', BitDiamond.Utils.Services.UserContext);
         Modules.profileModule.service('__systemNotification', BitDiamond.Services.Notification);
+        Modules.profileModule.service('__posts', BitDiamond.Services.Posts);
         Modules.profileModule.service('__blockChain', BitDiamond.Services.BlockChain);
         Modules.profileModule.service('__bitLevel', BitDiamond.Services.BitLevel);
         Modules.profileModule.service('__account', BitDiamond.Services.Account);

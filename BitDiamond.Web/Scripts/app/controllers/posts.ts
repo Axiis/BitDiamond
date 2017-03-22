@@ -201,8 +201,9 @@ module BitDiamond.Controllers.Posts {
             else if (typeof p == 'number') {
                 this.isLoadingView = true;
                 this.__posts.getPostById(<number>p).then(opr => {
-                    this.post.CreatedOn = new Apollo.Models.JsonDateTime(this.post.CreatedOn);
+                    if (opr.Result.Status == Models.PostStatus.Archived) return;
                     this.post = opr.Result;
+                    this.post.CreatedOn = new Apollo.Models.JsonDateTime(this.post.CreatedOn);
                 }, err => {
                     this.__notify.error('Something went wrong ' + (err.Message || ''), 'Oops');
                 }).finally(() => {
@@ -212,8 +213,9 @@ module BitDiamond.Controllers.Posts {
             else if (!Object.isNullOrUndefined(id)) {
                 this.isLoadingView = true;
                 this.__posts.getPostById(id).then(opr => {
-                    this.post.CreatedOn = new Apollo.Models.JsonDateTime(this.post.CreatedOn);
+                    if (opr.Result.Status == Models.PostStatus.Archived) return;
                     this.post = opr.Result;
+                    this.post.CreatedOn = new Apollo.Models.JsonDateTime(this.post.CreatedOn);
                 }, err => {
                     this.__notify.error('Something went wrong ' + (err.Message || ''), 'Oops');
                 }).finally(() => {

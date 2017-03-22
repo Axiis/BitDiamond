@@ -155,8 +155,10 @@ var BitDiamond;
                     else if (typeof p == 'number') {
                         this.isLoadingView = true;
                         this.__posts.getPostById(p).then(function (opr) {
-                            _this.post.CreatedOn = new Apollo.Models.JsonDateTime(_this.post.CreatedOn);
+                            if (opr.Result.Status == BitDiamond.Models.PostStatus.Archived)
+                                return;
                             _this.post = opr.Result;
+                            _this.post.CreatedOn = new Apollo.Models.JsonDateTime(_this.post.CreatedOn);
                         }, function (err) {
                             _this.__notify.error('Something went wrong ' + (err.Message || ''), 'Oops');
                         }).finally(function () {
@@ -166,8 +168,10 @@ var BitDiamond;
                     else if (!Object.isNullOrUndefined(id)) {
                         this.isLoadingView = true;
                         this.__posts.getPostById(id).then(function (opr) {
-                            _this.post.CreatedOn = new Apollo.Models.JsonDateTime(_this.post.CreatedOn);
+                            if (opr.Result.Status == BitDiamond.Models.PostStatus.Archived)
+                                return;
                             _this.post = opr.Result;
+                            _this.post.CreatedOn = new Apollo.Models.JsonDateTime(_this.post.CreatedOn);
                         }, function (err) {
                             _this.__notify.error('Something went wrong ' + (err.Message || ''), 'Oops');
                         }).finally(function () {

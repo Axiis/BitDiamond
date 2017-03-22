@@ -52,6 +52,10 @@
                          ng-bind-html="vm.post.Message">
                     </div>
                 </div>
+
+                <div class="row" ng-show="vm.isLoadingView">
+                    <box-loader block-loader="true" color="white" size="30" show="true"></box-loader>
+                </div>
             </div>
         </div>      
     </div>

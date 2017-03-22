@@ -5,9 +5,9 @@ using System.Web.Http;
 
 namespace BitDiamond.Web.Infrastructure.Utils
 {
-    public static class SpeedLogger
+    public static class Logger
     {
-        public static R LogTime<R>(string typeName, Func<R> execute, [CallerMemberName]string name = null)
+        public static R Log<R>(string typeName, Func<R> execute, [CallerMemberName]string name = null)
         {
             var start = DateTime.Now;
             try
@@ -20,7 +20,7 @@ namespace BitDiamond.Web.Infrastructure.Utils
             }
         }
 
-        public static R LogTime<R>(this ApiController controller, Func<R> execute, [CallerMemberName] string name = null)
-        => LogTime(controller.GetType().FullName, execute, name);
+        public static R Log<R>(this ApiController controller, Func<R> execute, [CallerMemberName] string name = null)
+        => Log(controller.GetType().FullName, execute, name);
     }
 }

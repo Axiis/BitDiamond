@@ -175,31 +175,7 @@ namespace BitDiamond.Core.Services
         public Operation VerifyTransaction(string transactionHash, BitLevel currentLevel)
         => _authorizer.AuthorizeAccess(this.PermissionProfile(UserContext.CurrentUser()), () =>
         {
-            var bl = this._levelQuery.CurrentBitLevel(UserContext.CurrentUser());
-
-            //use web client to call the webservice that validates the transaction hash...
-            using (var client = new WebClient())
-            {
-                var trnx = client.DownloadString($"https://blockchain.info/tx/{transactionHash}?format=json");
-                var trnxContainer = JsonConvert.DeserializeObject<TransactionContainer>(trnx);
-
-                var currentBlockCount = long.Parse(client.DownloadString("https://blockchain.info/q/getblockcount"));
-
-                //has any confirmations?
-                if (trnxContainer.block_height == 0) throw new Exception();
-
-                //receiver matches?
-                else if (!trnxContainer.@out.Any(_tx => _tx.addr == bl.Donation.Receiver.BlockChainAddress)) throw new Exception("invalid receiver");
-
-                //sender matches?
-                else if (!trnxContainer.inputs.Any(_tx => _tx.prev_out.addr == bl.Donation.Sender.BlockChainAddress)) throw new Exception("invalid sender");
-
-                //amount matches?
-                else if ((trnxContainer.@out.Where(_tx => _tx.addr == bl.Donation.Receiver.BlockChainAddress).Sum(_tx => _tx.value) / 100000000) < bl.Donation.Amount)
-                    throw new Exception("invalid amount");
-
-                else return;
-            }
+            this.GetTransactionDetails(transactionHash).Resolve();
         });
 
         public class TransactionDescriptor

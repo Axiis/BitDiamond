@@ -27,18 +27,18 @@ namespace BitDiamond.Web.Controllers.Api
 
         [HttpGet, Route("api/block-chain/transactions/all")]
         public IHttpActionResult GetAllUserTransactions()
-        => this.LogTime(() => _blockChain.GetAllUserTransactions().OperationResult(Request));
+        => this.Log(() => _blockChain.GetAllUserTransactions().OperationResult(Request));
 
         [HttpGet, Route("api/block-chain/transactions/incoming")]
         public IHttpActionResult GetIncomingUserTransactions(string data)
-        => this.LogTime(() => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
+        => this.Log(() => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
             .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<PagedQueryArgs>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
             .Then(argopr => _blockChain.GetIncomingUserTransactions(argopr.Result.PageSize, argopr.Result.PageIndex))
             .OperationResult(Request));
 
         [HttpGet, Route("api/block-chain/transactions/outgoing")]
         public IHttpActionResult GetOutgoingUserTransactions(string data)
-        => this.LogTime(() => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
+        => this.Log(() => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
             .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<PagedQueryArgs>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
             .Then(argopr => _blockChain.GetOutgoingUserTransactions(argopr.Result.PageSize, argopr.Result.PageIndex))
             .OperationResult(Request));
@@ -46,21 +46,21 @@ namespace BitDiamond.Web.Controllers.Api
 
         [HttpGet, Route("api/block-chain/transactions/incoming/total")]
         public IHttpActionResult GetIncomingUserTransactionsTotal()
-        => this.LogTime(() => _blockChain.GetIncomingUserTransactionsTotal().OperationResult(Request));
+        => this.Log(() => _blockChain.GetIncomingUserTransactionsTotal().OperationResult(Request));
 
         [HttpGet, Route("api/block-chain/transactions/outgoing/total")]
         public IHttpActionResult GetOutgoingUserTransactionsTotal()
-        => this.LogTime(() => _blockChain.GetOutgoingUserTransactionsTotal().OperationResult(Request));
+        => this.Log(() => _blockChain.GetOutgoingUserTransactionsTotal().OperationResult(Request));
 
 
         [HttpGet, Route("api/block-chain/transactions/system/total")]
         public IHttpActionResult GetSystemTransactionsTotal()
-        => this.LogTime(() => _blockChain.GetSystemTransactionsTotal().OperationResult(Request));
+        => this.Log(() => _blockChain.GetSystemTransactionsTotal().OperationResult(Request));
 
 
         [HttpPut, Route("api/block-chain/transactions/verify-manually")]
         public IHttpActionResult VerifyManually([FromBody] TransactionVerificationArgs args)
-        => this.LogTime(() =>
+        => this.Log(() =>
         {
             Operation<BlockChainTransaction> opr;
             if (args?.TransactionId > 0) opr = _blockChain.VerifyManually(args.TransactionId ?? 0);

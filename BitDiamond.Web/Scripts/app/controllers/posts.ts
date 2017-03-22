@@ -209,6 +209,17 @@ module BitDiamond.Controllers.Posts {
                     this.isLoadingView = false;
                 });
             }
+            else if (!Object.isNullOrUndefined(id)) {
+                this.isLoadingView = true;
+                this.__posts.getPostById(id).then(opr => {
+                    this.post.CreatedOn = new Apollo.Models.JsonDateTime(this.post.CreatedOn);
+                    this.post = opr.Result;
+                }, err => {
+                    this.__notify.error('Something went wrong ' + (err.Message || ''), 'Oops');
+                }).finally(() => {
+                    this.isLoadingView = false;
+                });
+            }
             else this.post = p;
         }
     }

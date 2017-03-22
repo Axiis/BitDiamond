@@ -12,6 +12,7 @@ using Axis.Pollux.Identity.Principal;
 using BitDiamond.Core.Models;
 using Axis.Luna.Extensions;
 using BitDiamond.Core.Utils;
+using Axis.Pollux.RBAC.Auth;
 
 namespace BitDiamond.Data.EF.Query
 {
@@ -25,6 +26,13 @@ namespace BitDiamond.Data.EF.Query
 
             _europa = context;
         }
+
+        public IEnumerable<User> AllBitMembers()
+        => (from user in _europa.Store<User>().Query
+            join userRole in _europa.Store<UserRole>().Query on user.EntityId equals userRole.UserId
+            where userRole.RoleName == Constants.Roles_BitMemberRole
+            select user)
+           .ToArray();
 
         public Post GetLatestPost(User user)
         => _europa.Store<Post>()

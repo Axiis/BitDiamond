@@ -91,7 +91,25 @@ namespace BitDiamond.Core.Services
             var post = _query.GetPostById(id).ThrowIfNull("Invalid post");
             
             post.Status = PostStatus.Published;
-            return _pcommand.Update(post);
+            return _pcommand
+                .Update(post)
+                .Then(opr =>
+                {
+                    //notify everyone. 
+                    //NOTE: this should be made asynchroneous, and possibly done with a bulk insert.
+                    _query.AllBitMembers().ForAll((cnt, next) =>
+                    {
+                        _notifier.NotifyUser(new Notification
+                        {
+                            TargetId = next.UserId,
+                            Type = NotificationType.Info,
+                            Title = "New Post",
+                            Message = $"Check out this <a href='/posts/index#!/details/{opr.Result.Id}'>new post</a> by Admin."
+                        });
+                    });
+
+                    return opr;
+                });
         });
 
         public Operation<Post> UpdatePost(Post post)

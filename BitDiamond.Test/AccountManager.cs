@@ -307,6 +307,11 @@ namespace BitDiamond.Test
 
         public IEnumerable<string> CurrentUserRoles() => new[] { "#bit-member" };
 
+        public UserLogon CurrentUserLogon()
+        {
+            throw new NotImplementedException();
+        }
+
         private User _user = new User
         {
             CreatedOn = DateTime.Now,

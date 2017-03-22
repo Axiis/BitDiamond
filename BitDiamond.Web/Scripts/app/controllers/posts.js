@@ -163,6 +163,17 @@ var BitDiamond;
                             _this.isLoadingView = false;
                         });
                     }
+                    else if (!Object.isNullOrUndefined(id)) {
+                        this.isLoadingView = true;
+                        this.__posts.getPostById(id).then(function (opr) {
+                            _this.post.CreatedOn = new Apollo.Models.JsonDateTime(_this.post.CreatedOn);
+                            _this.post = opr.Result;
+                        }, function (err) {
+                            _this.__notify.error('Something went wrong ' + (err.Message || ''), 'Oops');
+                        }).finally(function () {
+                            _this.isLoadingView = false;
+                        });
+                    }
                     else
                         this.post = p;
                 }

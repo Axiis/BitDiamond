@@ -312,6 +312,8 @@
     <Content Include="Content\Images\favicon.ico" />
     <Content Include="Content\Images\how-it-works.jpg" />
     <Content Include="Content\Images\logo-black.png" />
+    <Content Include="Content\Images\logo-full-black.png" />
+    <Content Include="Content\Images\logo-full-white.png" />
     <Content Include="Content\Images\logo-min.png" />
     <Content Include="Content\Images\logo-text-black.png" />
     <Content Include="Content\Images\logo-text-white.png" />
@@ -4409,7 +4411,7 @@
     <Compile Include="Infrastructure\Utils\Extensions.cs" />
     <Compile Include="Infrastructure\Utils\NoCacheAttribute.cs" />
     <Compile Include="Infrastructure\Utils\PerRequest.cs" />
-    <Compile Include="Infrastructure\Utils\SpeedLogger.cs" />
+    <Compile Include="Infrastructure\Utils\Logger.cs" />
     <Compile Include="Infrastructure\Utils\WebConstants.cs" />
     <Compile Include="Infrastructure\Utils\_Service.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

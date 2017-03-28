@@ -160,8 +160,8 @@ namespace BitDiamond.Core.Services
                         TargetId = user.UserId,
                         Type = NotificationType.Info,
                         Title = "Get a Bitcoin Address",
-                        Message = @"
-Already have a Bitcoin address? then go right ahead and add that address <a href='/bit-level/index#!/bitcoin-addresses'>Here</a><br/>
+                        Message = 
+@"Already have a Bitcoin address? then go right ahead and add that address <a href='/bit-level/index#!/bitcoin-addresses'>Here</a><br/>
 If you dont have one, you can create one with any of the popular Bitcoin Wallet services. 
 "
                     }))

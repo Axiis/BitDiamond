@@ -5,6 +5,7 @@ using BitDiamond.Core.Services;
 using BitDiamond.Core.Utils;
 using BitDiamond.Web.Controllers.Api.PostModels;
 using BitDiamond.Web.Infrastructure.Exceptions;
+using BitDiamond.Web.Infrastructure.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Text;
@@ -27,41 +28,41 @@ namespace BitDiamond.Web.Controllers.Api
 
         [HttpGet, Route("api/posts/single")]
         public IHttpActionResult GetPostById(string data)
-        => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
+        => this.Log(() => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
             .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<PostArg>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
             .Then(argopr => _postService.GetPostById(argopr.Result.Id))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpGet, Route("api/posts/news/paged")]
         public IHttpActionResult PagedNewsPosts(string data)
-        => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
+        => this.Log(() => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
             .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<PageArg>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
             .Then(argopr => _postService.PagedNewsPosts(argopr.Result.PageSize, argopr.Result.PageIndex))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpPost, Route("api/posts")]
         public IHttpActionResult CreateNewsPost([FromBody]Post post)
-        => Operation.Try(() => post.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.Log(() => Operation.Try(() => post.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _postService.CreateNewsPost(post))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpPut, Route("api/posts")]
         public IHttpActionResult UpdatePost([FromBody]Post post)
-        => Operation.Try(() => post.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.Log(() => Operation.Try(() => post.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _postService.UpdatePost(post))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpPut, Route("api/posts/published")]
         public IHttpActionResult PublishPost([FromBody] PostArg args)
-        => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.Log(() => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _postService.PublishPost(args.Id))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpPut, Route("api/posts/archived")]
         public IHttpActionResult ArchivePost([FromBody]PostArg args)
-        => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.Log(() => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _postService.ArchivePost(args.Id))
-            .OperationResult(Request);
+            .OperationResult(Request));
     }
 
     namespace PostModels

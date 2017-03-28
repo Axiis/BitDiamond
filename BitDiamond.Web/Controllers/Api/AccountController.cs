@@ -30,12 +30,14 @@ namespace BitDiamond.Web.Controllers.Api
 
         [HttpGet, Route("api/accounts/users/logons/validate")]
         public IHttpActionResult ValidateUserLogon()
-        => _account.ValidateUserLogon().OperationResult(Request);
+        => this.Log(() => _account.ValidateUserLogon().OperationResult(Request));
 
         #region Account
         [HttpGet, Route("api/accounts/users/count")]
         public IHttpActionResult UserCount()
-        => this.Log(() => _account.UserCount().OperationResult(Request));
+        => this.Log(() => _account.UserCount()
+            .Then(opr => opr.Result + 58) //remove this later
+            .OperationResult(Request));
 
 
         [HttpPost, Route("api/accounts/users")]

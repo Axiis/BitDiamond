@@ -1,0 +1,14 @@
+[2017-03-28 05:20:35,791]  dev.bankai@gmail.com already exists
+System.Exception: See inner exception ---> Axis.Pollux.RBAC.Exceptions.AuthorizationException: See Inner Exception ---> System.Exception: dev.bankai@gmail.com already exists
+   at BitDiamond.Core.Services.AccountManager.<>c__DisplayClass16_0.<RegisterUser>b__0() in C:\_dev\Jobs\BitDiamond\Dev\Git\BitDiamond.Core.Services\AccountManager.cs:line 85
+   at Axis.Pollux.RBAC.Services.RoleAuthority.<>c__DisplayClass12_0`1.<AuthorizeAccess>b__0() in C:\_dev\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.RoleAuthorization\Services\RoleAuthority.cs:line 130
+   --- End of inner exception stack trace ---
+   at Axis.Pollux.RBAC.Services.RoleAuthority.<>c__DisplayClass12_0`1.<AuthorizeAccess>b__0() in C:\_dev\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.RoleAuthorization\Services\RoleAuthority.cs:line 138
+   at Axis.Luna.Extensions.ObjectExtensions.Eval[R](Func`1 func, Func`2 error) in C:\_dev\Projects\c#\Axis.Core\Axis.Luna\Axis.Luna\Extensions\ObjectExtensions.cs:line 44
+   --- End of inner exception stack trace ---
+   at Axis.Luna.Extensions.ExceptionExtensions.Throw[R](Exception e) in C:\_dev\Projects\c#\Axis.Core\Axis.Luna\Axis.Luna\Extensions\ExceptionExtensions.cs:line 51
+   at Axis.Luna.Operation.<>c__DisplayClass13_0`1.<Fail>b__0() in C:\_dev\Projects\c#\Axis.Core\Axis.Luna\Axis.Luna\Operation.cs:line 84
+   at Axis.Luna.Operation`1..ctor(Func`1 func) in C:\_dev\Projects\c#\Axis.Core\Axis.Luna\Axis.Luna\Operation.cs:line 23
+
+
+

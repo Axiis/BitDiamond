@@ -1,5 +1,6 @@
 ﻿using BitDiamond.Web.Infrastructure.Config.Mvc;
 using BitDiamond.Web.Infrastructure.DI;
+using log4net.Config;
 using SimpleInjector.Integration.Web;
 using System;
 using System.Web.Mvc;
@@ -20,6 +21,9 @@ namespace BitDiamond.Web
 
             //DI
             DependencyResolver.SetResolver(new MvcResolutionContext(new WebRequestLifestyle(), DIRegistrations.RegisterTypes));
+
+            //logging
+            XmlConfigurator.Configure();
         }
 
         protected void Session_Start(object sender, EventArgs e)

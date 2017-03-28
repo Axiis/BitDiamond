@@ -6,6 +6,7 @@ using BitDiamond.Core.Utils;
 using BitDiamond.Web.Controllers.Api.BitLevelControllerModels;
 using BitDiamond.Web.Controllers.Api.NotificationModels;
 using BitDiamond.Web.Infrastructure.Exceptions;
+using BitDiamond.Web.Infrastructure.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Text;
@@ -34,7 +35,7 @@ namespace BitDiamond.Web.Controllers.Api
 
         [HttpPost, Route("api/notifications/support")]
         public IHttpActionResult NotifySupport([FromBody] MessageData data)
-        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.Log(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr =>
             {
                 return _messagePush.SendMail(new SupportMessage
@@ -47,33 +48,33 @@ namespace BitDiamond.Web.Controllers.Api
                     Recipients = new[] { "support@bitdiamond.biz" }
                 });
             })
-            .OperationResult(Request);
+            .OperationResult(Request));
 
 
         [HttpPut, Route("api/notifications/single")]
         public IHttpActionResult ClearNotification([FromBody] NotificationData data)
-        => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
+        => this.Log(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
             .Then(opr => _notifier.ClearNotification(data.Id))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
         [HttpPut, Route("api/notifications")]
         public IHttpActionResult ClearAll()
-        => _notifier.ClearAll().OperationResult(Request);
+        => this.Log(() => _notifier.ClearAll().OperationResult(Request));
 
         [HttpGet, Route("api/notifications")]
         public IHttpActionResult NotificationHistory()
-        => _notifier.NotificationHistory().OperationResult(Request);
+        => this.Log(() => _notifier.NotificationHistory().OperationResult(Request));
 
         [HttpGet, Route("api/notifications/unseen")]
         public IHttpActionResult UnseenNotifications()
-        => _notifier.UnseenNotifications().OperationResult(Request);
+        => this.Log(() => _notifier.UnseenNotifications().OperationResult(Request));
 
         [HttpGet, Route("api/notifications/paged")]
         public IHttpActionResult PagedNotificationHistory(string data)
-        => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
+        => this.Log(() => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
             .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<SequencePageArgs>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
             .Then(argopr => _notifier.PagedNotificationHistory(argopr.Result.PageSize, argopr.Result.PageIndex))
-            .OperationResult(Request);
+            .OperationResult(Request));
 
     }
 

@@ -312,11 +312,26 @@ namespace BitDiamond.Core.Services
             else if(!address.IsActive)
             {
                 _query.GetActiveBitcoinAddress(UserContext.CurrentUser())
+
+                      //deactivate the old address if it exists
                       .Pipe(_bca => _bca != null ? DeactivateAddress(_bca.Id) : Operation.FromValue<BitcoinAddress>(null))
+
+                      //activate the new address
                       .Then(opr =>
                       {
                           address.IsActive = true;
                           return _pcommand.Update(address);
+                      })
+
+                      //Change the address of the donation to the next level...if the donation has not been verified
+                      .Then(opr =>
+                      {
+                          var currentLevel = _query.CurrentBitLevel(UserContext.CurrentUser());
+                          if(currentLevel.Donation.Status == BlockChainTransactionStatus.Unverified)
+                          {
+                              currentLevel.Donation.SenderId = opr.Result.Id;
+                              _pcommand.Update(currentLevel.Donation);
+                          }
                       })
                       .Resolve();
             }
@@ -387,8 +402,8 @@ namespace BitDiamond.Core.Services
                  .FirstOrDefault(_rn =>
                  {
                      var bl = _query.CurrentBitLevel(_rn.User);
-                     if (bl.Cycle < nextCycle ||
-                        bl.Cycle == nextCycle && bl.Level <= nextLvel)
+                     if (bl == null) return false;
+                     else if (bl.Cycle < nextCycle || bl.Cycle == nextCycle && bl.Level <= nextLvel)
                      {
                          bl.SkipCount++;
                          _pcommand.Update(bl);

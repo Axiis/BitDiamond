@@ -1,0 +1,9 @@
+[2017-03-27 15:17:45,161]  Access Denied
+Axis.Pollux.RBAC.Exceptions.AuthorizationException: Access Denied
+   at Axis.Luna.Extensions.ExceptionExtensions.ThrowIf[R](R value, Func`2 predicate, Exception ex) in C:\_dev\Projects\c#\Axis.Core\Axis.Luna\Axis.Luna\Extensions\ExceptionExtensions.cs:line 95
+   at Axis.Pollux.RBAC.Services.RoleAuthority.ValidatePermissionProfile(PermissionProfile authRequest) in C:\_dev\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.RoleAuthorization\Services\RoleAuthority.cs:line 152
+   at Axis.Pollux.RBAC.Services.RoleAuthority.<>c__DisplayClass10_0`1.<AuthorizeAccess>b__0() in C:\_dev\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.RoleAuthorization\Services\RoleAuthority.cs:line 112
+   at Axis.Luna.Operation`1..ctor(Func`1 func) in C:\_dev\Projects\c#\Axis.Core\Axis.Luna\Axis.Luna\Operation.cs:line 23
+
+
+

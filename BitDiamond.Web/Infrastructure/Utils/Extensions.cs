@@ -8,7 +8,7 @@ namespace BitDiamond.Web
 {
     public static class Extensions
     {
-        public static IHttpActionResult OperationResult<V>(this Operation<V> operation, HttpRequestMessage request, HttpStatusCode? code = null)
+        public static ApiOperationResult<V> OperationResult<V>(this Operation<V> operation, HttpRequestMessage request, HttpStatusCode? code = null)
             => new ApiOperationResult<V>(operation, request, code);
     }
 }

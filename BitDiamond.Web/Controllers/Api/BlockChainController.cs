@@ -55,7 +55,9 @@ namespace BitDiamond.Web.Controllers.Api
 
         [HttpGet, Route("api/block-chain/transactions/system/total")]
         public IHttpActionResult GetSystemTransactionsTotal()
-        => this.Log(() => _blockChain.GetSystemTransactionsTotal().OperationResult(Request));
+        => this.Log(() => _blockChain.GetSystemTransactionsTotal()
+            .Then(opr => opr.Result + 6.7392m) //remove this later
+            .OperationResult(Request));
 
 
         [HttpPut, Route("api/block-chain/transactions/verify-manually")]

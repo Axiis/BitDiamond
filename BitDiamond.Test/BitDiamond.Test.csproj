@@ -53,31 +53,40 @@
     <Reference Include="Axis.Narvi">
       <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Narvi\Axis.Narvi\bin\Debug\Axis.Narvi.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.Authentication">
-      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.Authentication\bin\Debug\Axis.Pollux.Authentication.dll</HintPath>
+    <Reference Include="Axis.Pollux.AttributeAuthorization">
+      <HintPath>..\..\Libs\Axis.Pollux.AttributeAuthorization.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.Authentication.OAModule">
-      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.Authentication.OAModule\bin\Debug\Axis.Pollux.Authentication.OAModule.dll</HintPath>
+    <Reference Include="Axis.Pollux.Authentication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\Axis.Pollux.Authentication.dll</HintPath>
+    </Reference>
+    <Reference Include="Axis.Pollux.Authentication.OAModule, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\Axis.Pollux.Authentication.OAModule.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Pollux.CoreAuthentication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.CoreAuthentication\bin\Debug\Axis.Pollux.CoreAuthentication.dll</HintPath>
+      <HintPath>..\..\Libs\Axis.Pollux.CoreAuthentication.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.Identity">
-      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.Identity\bin\Debug\Axis.Pollux.Identity.dll</HintPath>
+    <Reference Include="Axis.Pollux.Identity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\Axis.Pollux.Identity.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.Identity.OAModule">
-      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.Identity.OAModule\bin\Debug\Axis.Pollux.Identity.OAModule.dll</HintPath>
+    <Reference Include="Axis.Pollux.Identity.OAModule, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\Axis.Pollux.Identity.OAModule.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.RBAC">
-      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.RBAC\bin\Debug\Axis.Pollux.RBAC.dll</HintPath>
+    <Reference Include="Axis.Pollux.RBAC, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\Axis.Pollux.RBAC.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.RBAC.OAModule">
-      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.RBAC.OAModule\bin\Debug\Axis.Pollux.RBAC.OAModule.dll</HintPath>
+    <Reference Include="Axis.Pollux.RBAC.OAModule, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\Axis.Pollux.RBAC.OAModule.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Pollux.RoleAuthorization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Pollux\Axis.Pollux.RoleAuthorization\bin\Debug\Axis.Pollux.RoleAuthorization.dll</HintPath>
+      <HintPath>..\..\Libs\Axis.Pollux.RoleAuthorization.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.0.0\lib\net45\Castle.Core.dll</HintPath>

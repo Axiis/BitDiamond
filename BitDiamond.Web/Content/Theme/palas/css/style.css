@@ -4538,14 +4538,14 @@
 	    color: #d8dade;
 	    letter-spacing: 1px;
 	}
-	.footer-title:after {
+	/*.footer-title:after {
 		content:"";
 		display:block;
 		height:1px;
 		width:22px;
 		border-top:2px solid rgb(181,67,33);
 		margin:5px 0 0;
-	}
+	}*/
 
 	/* Social icons - footer */
 	.footer-social {

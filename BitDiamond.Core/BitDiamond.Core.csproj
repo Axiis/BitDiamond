@@ -30,29 +30,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Axis.Apollo.Json, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Apollo.Json.dll</HintPath>
+    <Reference Include="Axis.Apollo.Json">
+      <HintPath>..\Libs\Axis.Apollo.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Luna, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Luna.dll</HintPath>
+    <Reference Include="Axis.Luna">
+      <HintPath>..\Libs\Axis.Luna.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Narvi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Narvi.dll</HintPath>
+    <Reference Include="Axis.Narvi">
+      <HintPath>..\Libs\Axis.Narvi.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.Authentication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.Authentication.dll</HintPath>
+    <Reference Include="Axis.Pollux.Authentication">
+      <HintPath>..\Libs\Axis.Pollux.Authentication.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.Identity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.Identity.dll</HintPath>
+    <Reference Include="Axis.Pollux.Identity">
+      <HintPath>..\Libs\Axis.Pollux.Identity.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.RBAC, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.RBAC.dll</HintPath>
+    <Reference Include="Axis.Pollux.RBAC">
+      <HintPath>..\Libs\Axis.Pollux.RBAC.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>

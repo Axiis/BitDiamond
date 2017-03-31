@@ -33,60 +33,47 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Axis.Apollo.Json, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Apollo.Json.dll</HintPath>
+    <Reference Include="Axis.Apollo.Json">
+      <HintPath>..\Libs\Axis.Apollo.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Jupiter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Jupiter.dll</HintPath>
+    <Reference Include="Axis.Jupiter">
+      <HintPath>..\Libs\Axis.Jupiter.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Jupiter.Europa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Jupiter.Europa.dll</HintPath>
+    <Reference Include="Axis.Jupiter.Europa">
+      <HintPath>..\Libs\Axis.Jupiter.Europa.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Jupiter.Kore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Jupiter.Kore.dll</HintPath>
+    <Reference Include="Axis.Jupiter.Kore">
+      <HintPath>..\Libs\Axis.Jupiter.Kore.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Luna, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Luna.dll</HintPath>
+    <Reference Include="Axis.Luna">
+      <HintPath>..\Libs\Axis.Luna.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Narvi">
-      <HintPath>..\..\Libs\Axis.Narvi.dll</HintPath>
+      <HintPath>..\Libs\Axis.Narvi.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.Authentication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.Authentication.dll</HintPath>
+    <Reference Include="Axis.Pollux.Authentication">
+      <HintPath>..\Libs\Axis.Pollux.Authentication.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.Authentication.OAModule, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.Authentication.OAModule.dll</HintPath>
+    <Reference Include="Axis.Pollux.Authentication.OAModule">
+      <HintPath>..\Libs\Axis.Pollux.Authentication.OAModule.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.CoreAuthentication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.CoreAuthentication.dll</HintPath>
+    <Reference Include="Axis.Pollux.CoreAuthentication">
+      <HintPath>..\Libs\Axis.Pollux.CoreAuthentication.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.Identity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.Identity.dll</HintPath>
+    <Reference Include="Axis.Pollux.Identity">
+      <HintPath>..\Libs\Axis.Pollux.Identity.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.Identity.OAModule, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.Identity.OAModule.dll</HintPath>
+    <Reference Include="Axis.Pollux.Identity.OAModule">
+      <HintPath>..\Libs\Axis.Pollux.Identity.OAModule.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.RBAC, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.RBAC.dll</HintPath>
+    <Reference Include="Axis.Pollux.RBAC">
+      <HintPath>..\Libs\Axis.Pollux.RBAC.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.RBAC.OAModule, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.RBAC.OAModule.dll</HintPath>
+    <Reference Include="Axis.Pollux.RBAC.OAModule">
+      <HintPath>..\Libs\Axis.Pollux.RBAC.OAModule.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.RoleAuthorization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.RoleAuthorization.dll</HintPath>
+    <Reference Include="Axis.Pollux.RoleAuthorization">
+      <HintPath>..\Libs\Axis.Pollux.RoleAuthorization.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>

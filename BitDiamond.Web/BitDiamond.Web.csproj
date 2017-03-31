@@ -52,59 +52,58 @@
     </Reference>
     <Reference Include="Axis.Apollo.Json, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Apollo.Json.dll</HintPath>
+      <HintPath>..\Libs\Axis.Apollo.Json.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Jupiter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Jupiter.dll</HintPath>
+      <HintPath>..\Libs\Axis.Jupiter.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Jupiter.Europa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Jupiter.Europa.dll</HintPath>
+      <HintPath>..\Libs\Axis.Jupiter.Europa.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Jupiter.Kore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Jupiter.Kore.dll</HintPath>
+      <HintPath>..\Libs\Axis.Jupiter.Kore.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Luna, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Luna.dll</HintPath>
+      <HintPath>..\Libs\Axis.Luna.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Narvi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Narvi.dll</HintPath>
+      <HintPath>..\Libs\Axis.Narvi.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Pollux.Authentication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.Authentication.dll</HintPath>
+      <HintPath>..\Libs\Axis.Pollux.Authentication.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Pollux.Authentication.OAModule, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.Authentication.OAModule.dll</HintPath>
+      <HintPath>..\Libs\Axis.Pollux.Authentication.OAModule.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Pollux.CoreAuthentication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.CoreAuthentication.dll</HintPath>
+      <HintPath>..\Libs\Axis.Pollux.CoreAuthentication.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Pollux.Identity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.Identity.dll</HintPath>
+      <HintPath>..\Libs\Axis.Pollux.Identity.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Pollux.Identity.OAModule, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.Identity.OAModule.dll</HintPath>
+      <HintPath>..\Libs\Axis.Pollux.Identity.OAModule.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Pollux.RBAC, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.RBAC.dll</HintPath>
+      <HintPath>..\Libs\Axis.Pollux.RBAC.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Pollux.RBAC.OAModule, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.RBAC.OAModule.dll</HintPath>
+      <HintPath>..\Libs\Axis.Pollux.RBAC.OAModule.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Pollux.RoleAuthorization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Axis.Pollux.RoleAuthorization.dll</HintPath>
+    <Reference Include="Axis.Pollux.RoleAuthorization">
+      <HintPath>..\Libs\Axis.Pollux.RoleAuthorization.dll</HintPath>
     </Reference>
     <Reference Include="CAIRO.ElasticEmail, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CAIRO.ElasticEmail.1.5.0.0\lib\net45\CAIRO.ElasticEmail.dll</HintPath>

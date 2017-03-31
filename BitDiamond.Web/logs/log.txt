@@ -12,3 +12,82 @@ System.Exception: See inner exception ---> Axis.Pollux.RBAC.Exceptions.Authoriza
 
 
 
+[2017-03-29 22:22:58,218]  System.AggregateException: One or more errors occurred. ---> System.Net.WebException: The remote name could not be resolved: 'api.elasticemail.com'
+   at System.Net.WebClient.UploadValues(Uri address, String method, NameValueCollection data)
+   at System.Net.WebClient.UploadValues(String address, NameValueCollection data)
+   at CAIRO.ElasticEmail.ElasticemailWebApi.<>c__DisplayClass4_0.<Send>b__1()
+   at CAIRO.ElasticEmail.DefaultRetryStrategy.Try[T](Func`1 action, List`1 exceptions)
+   --- End of inner exception stack trace ---
+   at CAIRO.ElasticEmail.DefaultRetryStrategy.Try[T](Func`1 action, List`1 exceptions)
+   at CAIRO.ElasticEmail.RetryLogic.Execute[T](Func`1 action)
+   at CAIRO.ElasticEmail.ElasticemailWebApi.Send(ElasticemailMessage msg)
+---> (Inner Exception #0) System.Net.WebException: The remote name could not be resolved: 'api.elasticemail.com'
+   at System.Net.WebClient.UploadValues(Uri address, String method, NameValueCollection data)
+   at System.Net.WebClient.UploadValues(String address, NameValueCollection data)
+   at CAIRO.ElasticEmail.ElasticemailWebApi.<>c__DisplayClass4_0.<Send>b__1()
+   at CAIRO.ElasticEmail.DefaultRetryStrategy.Try[T](Func`1 action, List`1 exceptions)<---
+
+---> (Inner Exception #1) System.Net.WebException: The remote name could not be resolved: 'api.elasticemail.com'
+   at System.Net.WebClient.UploadValues(Uri address, String method, NameValueCollection data)
+   at System.Net.WebClient.UploadValues(String address, NameValueCollection data)
+   at CAIRO.ElasticEmail.ElasticemailWebApi.<>c__DisplayClass4_0.<Send>b__1()
+   at CAIRO.ElasticEmail.DefaultRetryStrategy.Try[T](Func`1 action, List`1 exceptions)<---
+
+---> (Inner Exception #2) System.Net.WebException: The remote name could not be resolved: 'api.elasticemail.com'
+   at System.Net.WebClient.UploadValues(Uri address, String method, NameValueCollection data)
+   at System.Net.WebClient.UploadValues(String address, NameValueCollection data)
+   at CAIRO.ElasticEmail.ElasticemailWebApi.<>c__DisplayClass4_0.<Send>b__1()
+   at CAIRO.ElasticEmail.DefaultRetryStrategy.Try[T](Func`1 action, List`1 exceptions)<---
+
+System.Exception: See inner exception ---> System.Exception: See inner exception ---> System.Exception: See inner exception ---> System.Exception: See inner exception ---> System.Exception: System.AggregateException: One or more errors occurred. ---> System.Net.WebException: The remote name could not be resolved: 'api.elasticemail.com'
+   at System.Net.WebClient.UploadValues(Uri address, String method, NameValueCollection data)
+   at System.Net.WebClient.UploadValues(String address, NameValueCollection data)
+   at CAIRO.ElasticEmail.ElasticemailWebApi.<>c__DisplayClass4_0.<Send>b__1()
+   at CAIRO.ElasticEmail.DefaultRetryStrategy.Try[T](Func`1 action, List`1 exceptions)
+   --- End of inner exception stack trace ---
+   at CAIRO.ElasticEmail.DefaultRetryStrategy.Try[T](Func`1 action, List`1 exceptions)
+   at CAIRO.ElasticEmail.RetryLogic.Execute[T](Func`1 action)
+   at CAIRO.ElasticEmail.ElasticemailWebApi.Send(ElasticemailMessage msg)
+---> (Inner Exception #0) System.Net.WebException: The remote name could not be resolved: 'api.elasticemail.com'
+   at System.Net.WebClient.UploadValues(Uri address, String method, NameValueCollection data)
+   at System.Net.WebClient.UploadValues(String address, NameValueCollection data)
+   at CAIRO.ElasticEmail.ElasticemailWebApi.<>c__DisplayClass4_0.<Send>b__1()
+   at CAIRO.ElasticEmail.DefaultRetryStrategy.Try[T](Func`1 action, List`1 exceptions)<---
+
+---> (Inner Exception #1) System.Net.WebException: The remote name could not be resolved: 'api.elasticemail.com'
+   at System.Net.WebClient.UploadValues(Uri address, String method, NameValueCollection data)
+   at System.Net.WebClient.UploadValues(String address, NameValueCollection data)
+   at CAIRO.ElasticEmail.ElasticemailWebApi.<>c__DisplayClass4_0.<Send>b__1()
+   at CAIRO.ElasticEmail.DefaultRetryStrategy.Try[T](Func`1 action, List`1 exceptions)<---
+
+---> (Inner Exception #2) System.Net.WebException: The remote name could not be resolved: 'api.elasticemail.com'
+   at System.Net.WebClient.UploadValues(Uri address, String method, NameValueCollection data)
+   at System.Net.WebClient.UploadValues(String address, NameValueCollection data)
+   at CAIRO.ElasticEmail.ElasticemailWebApi.<>c__DisplayClass4_0.<Send>b__1()
+   at CAIRO.ElasticEmail.DefaultRetryStrategy.Try[T](Func`1 action, List`1 exceptions)<---
+
+   at Axis.Luna.Extensions.ExceptionExtensions.ThrowIf[R](R value, Func`2 predicate, Exception ex)
+   at Axis.Luna.Extensions.ExceptionExtensions.ThrowIf[R](R value, Func`2 predicate, Func`2 ex)
+   at BitDiamond.Web.Infrastructure.Services.ElasticMailPushService.<>c__DisplayClass4_0.<SendMail>b__0() in C:\_dev\Jobs\BitDiamond\Dev\Git\BitDiamond.Web\Infrastructure\Services\ElasticMailPush.cs:line 77
+   at Axis.Luna.Extensions.ObjectExtensions.Void(Action action)
+   at Axis.Luna.Operation.<>c__DisplayClass0_0.<.ctor>b__0()
+   at Axis.Luna.Operation`1..ctor(Func`1 func)
+   --- End of inner exception stack trace ---
+   at Axis.Luna.Extensions.ExceptionExtensions.Throw[R](Exception e)
+   at Axis.Luna.Operation.<>c__DisplayClass13_0`1.<Fail>b__0()
+   at Axis.Luna.Operation`1..ctor(Func`1 func)
+   --- End of inner exception stack trace ---
+   at Axis.Luna.Extensions.ExceptionExtensions.Throw[R](Exception e)
+   at Axis.Luna.Operation.<>c__DisplayClass13_0`1.<Fail>b__0()
+   at Axis.Luna.Operation`1..ctor(Func`1 func)
+   --- End of inner exception stack trace ---
+   at Axis.Luna.Extensions.ExceptionExtensions.Throw[R](Exception e)
+   at Axis.Luna.Operation.<>c__DisplayClass13_0`1.<Fail>b__0()
+   at Axis.Luna.Operation`1..ctor(Func`1 func)
+   --- End of inner exception stack trace ---
+   at Axis.Luna.Extensions.ExceptionExtensions.Throw[R](Exception e)
+   at Axis.Luna.Operation.<>c__DisplayClass13_0`1.<Fail>b__0()
+   at Axis.Luna.Operation`1..ctor(Func`1 func)
+
+
+

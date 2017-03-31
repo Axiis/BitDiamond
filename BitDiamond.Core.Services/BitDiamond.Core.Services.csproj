@@ -30,15 +30,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Axis.Jupiter.Kore">
-      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Jupiter\Axis.Jupiter.Kore\bin\Debug\Axis.Jupiter.Kore.dll</HintPath>
+    <Reference Include="Axis.Jupiter.Kore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\Axis.Jupiter.Kore.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Luna, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Luna\Axis.Luna\bin\Debug\Axis.Luna.dll</HintPath>
+      <HintPath>..\..\Libs\Axis.Luna.dll</HintPath>
     </Reference>
-    <Reference Include="Axis.Narvi">
-      <HintPath>..\..\..\..\..\Projects\c#\Axis.Core\Axis.Narvi\Axis.Narvi\bin\Debug\Axis.Narvi.dll</HintPath>
+    <Reference Include="Axis.Narvi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\Axis.Narvi.dll</HintPath>
     </Reference>
     <Reference Include="Axis.Pollux.Authentication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -6,18 +6,15 @@ using CAIRO.ElasticEmail;
 using RazorEngine;
 using RazorEngine.Templating;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
-using System.Web;
 using System.Web.Hosting;
 
 namespace BitDiamond.Web.Infrastructure.Services
 {
     public class ElasticMailPushService: IEmailPush
-
     {        
         private static bool _cached;
 
@@ -37,18 +34,20 @@ namespace BitDiamond.Web.Infrastructure.Services
                 if (!_cached)
                 {
                     var mailModelType = typeof(MailModel);
+
                     //find all email models in the application
-                    AppDomain.CurrentDomain.GetAssemblies()
-                        .SelectMany(_ass => _ass.GetTypes())
+                    mailModelType.Assembly
+                        .GetTypes()
+                        .Where(_type => _type.Namespace == mailModelType.Namespace)
                         .Where(_type => _type != mailModelType)
-                        .Where(_type => !_type.IsAbstract && !_type.IsGenericTypeDefinition)
-                        .Where(_type => mailModelType.IsAssignableFrom(_type))
-                        .ToList()
-                        .ForEach(_type =>
+                        .ForAll((_cnt, _type) =>
                         {
                             //compile and cache the mail models
                             var templateSource = new MailModelTemplateSource(_type);
-                            Engine.Razor.Compile(templateSource, templateSource.Name, _type);
+                            var key = new NameOnlyTemplateKey(templateSource.Name, ResolveType.Global, null);
+
+                            if (!Engine.Razor.IsTemplateCached(key, _type))
+                                Engine.Razor.Compile(templateSource, templateSource.Name, _type);
                         });
                     _cached = true;
                 }
@@ -91,7 +90,7 @@ namespace BitDiamond.Web.Infrastructure.Services
             {
                 ModelType = modelType;
 
-                TemplateFile = HostingEnvironment.MapPath($"~/Views/Email/{TemplateFileName(modelType)}.cshtml");
+                TemplateFile = HostingEnvironment.MapPath($"~/Views/Email/{modelType.Name}.cshtml");
             }
 
             private Type ModelType { get; set; }
@@ -122,8 +121,6 @@ namespace BitDiamond.Web.Infrastructure.Services
 
                 else return $"{modelType.Namespace}_{modelType.Name}".Replace(".", "_");
             }
-
-            public static string TemplateFileName(Type modelType) => modelType.Name.TrimEnd("MailModel");
         }
     }
 }

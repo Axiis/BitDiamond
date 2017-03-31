@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BitDiamond.Core.Models.Email
 {
+    [Serializable]
     public class PasswordRecovery: MailModel
     {
         public string Target

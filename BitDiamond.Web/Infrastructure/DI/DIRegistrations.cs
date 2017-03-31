@@ -39,25 +39,6 @@ namespace BitDiamond.Web.Infrastructure.DI
 
             var cache = new WeakCache();
 
-            //authorization server is a special case where it is created in the singleton scope, but relies on some services that are registered in ScopedLifeStyles...
-            //thus we explicitly create the instance of the authorization server.
-            //c.Register<IOAuthAuthorizationServerProvider>(() => c.GetInstance<AuthorizationServer>());
-            //c.Register(() =>
-            //{
-            //    var europa = new EuropaContext(c.GetInstance<ContextConfiguration<EuropaContext>>());
-            //    var credentialAuthenticator = new CredentialAuthentication(europa, new DefaultHasher());
-            //    return new AuthorizationServer(credentialAuthenticator, europa, cache);
-            //}, Lifestyle.Singleton);
-
-            ////bearer authentication provider is a special case where it is created in the singleton scope, but relies on some services that are registered in ScopedLifeStyles...
-            ////thus we explicitly create the instance of the authentication provider.
-            //c.Register<IOAuthBearerAuthenticationProvider>(() => c.GetInstance<BearerAuthenticationProvider>());
-            //c.Register(() =>
-            //{
-            //    return new BearerAuthenticationProvider(cache);
-            //}, Lifestyle.Singleton);
-
-
             c.Register<OwinContextProvider, OwinContextProvider>(Lifestyle.Scoped);
             c.RegisterLazyService<ICredentialHasher, DefaultHasher>(gen, Lifestyle.Scoped);                   
             c.RegisterLazyService<IBlobStore, FileSystemBlobStore>(gen, Lifestyle.Scoped);
@@ -103,7 +84,7 @@ namespace BitDiamond.Web.Infrastructure.DI
             #endregion
 
             #region Axis.Pollux.RBAC
-
+            //5 stars for this, bruh!!!
             c.Register<IUserAuthorization>(() =>
             {
                 var europa = new EuropaContext(c.GetInstance<ContextConfiguration<EuropaContext>>());

@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BitDiamond.Core.Models.Email
 {
+    [Serializable]
     public abstract class MailModel
     {
         public string From { get; set; }

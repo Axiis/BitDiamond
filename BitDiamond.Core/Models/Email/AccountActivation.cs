@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BitDiamond.Core.Models.Email
 {
+    [Serializable]
     public class AccountActivation: MailModel
     {
         public string Target

@@ -266,4 +266,3 @@ var BitDiamond;
         })(Posts = Controllers.Posts || (Controllers.Posts = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=posts.js.map

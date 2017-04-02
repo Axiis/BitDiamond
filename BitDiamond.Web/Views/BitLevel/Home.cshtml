@@ -109,157 +109,198 @@
         </div>
     </div>
 
-
-    <h5 class="text-muted" ng-show="vm.hasBitLevel"><strong>Upgrade Information</strong></h5>
+    
     <div class="row" ng-show="vm.hasBitLevel">
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+
+        <div class="col-lg-6 col-xs-12" ng-hide="vm.isDonationConfirmed()">
             <div class="white-box">
-                <div class="text-right" style="height:112px;">
-                    <span class="text-muted">Next Level</span>
-                    <h1><sup><i class="ti-arrow-up text-success"></i></sup>&nbsp;&nbsp;&nbsp;{{vm.nextLevel}}</h1>
+                <h4 class="text-muted text-center">Upgrade Receiver Information</h4>
+                <div class="user-bg"
+                     style="height: 150px !important; background-repeat: no-repeat; background-position: center; margin-top:0;"
+                     ng-style="{'background-image': 'url('+vm.getReceiverProfileImage()+')', 'background-size':'contain'}">                    
                 </div>
-            </div>
-        </div>
+                <div class="user-btm-box">
 
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <div class="white-box">
-                <div class="text-right">
-                    <span class="text-muted">Amount</span>
-                    <h1><i class="fa fa-btc"></i>&nbsp;{{vm.upgradeFee}}</h1>
-                </div>
-                <div style="height:24px;">
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
-             ng-show="vm.isTransactionVerified()">
-            <div class="white-box" style="background-color: #303843; height:162px;">
-                <div class="text-right">
-                    <span class="text-muted"><sup><i class="ti-arrow-up"></i></sup>&nbsp;Upgrade</span>
-                    <button class="btn btn-block btn-rounded btn-success"
-                            style="margin-top:50px;"
-                            ng-click="vm.upgradeLevel()">
-                        <span ng-hide="vm.isUpgrading || vm.isAtMaxCycleLevel"> <i class="icon-diamond"></i> Level Up</span>
-                        <span ng-hide="vm.isUpgrading || !vm.isAtMaxCycleLevel"> <i class="icon-refresh"></i> Recycle </span>
-                        <ring-loader size="16" color="white" show="vm.isUpgrading"></ring-loader>
-                    </button>
-                </div>
-                <div style="height:24px;">
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="row" ng-show="vm.hasBitLevel">
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <div class="white-box" style="height:162px; overflow:hidden;">
-                <div class="text-right">
-                    <span class="text-muted">Receiver Name</span>
-                    <h5 style="white-space:nowrap; text-overflow:ellipsis; text-wrap:none; margin:0px; overflow:hidden;"
-                        data-toggle="tooltip" data-original-title="{{vm.receiverName()}}">
-                        {{vm.receiverName()}}
-                    </h5>
-                </div>
-                <div class="text-right" style="margin-top:12px;">
-                    <span class="text-muted">Receiver Address</span>
-                    <h5 style="margin:0px; white-space:nowrap; text-overflow:ellipsis; text-wrap:none; overflow:hidden;">
-                        <span style="font-size:11px;">{{vm.receiverAddress()}}</span>
-                    </h5>
-                    <div class="text-center" style="margin-top:10px;">
-                        <button type="button" class="btn btn-block btn-outline btn-info wav"
-                                ng-click="vm.addressCopied()"
-                                data-clipboard-action="copy" data-clipboard-text="{{vm.receiverAddress()}}"
-                                data-toggle="tooltip" data-original-title="Copy Bitcoin address to clipboard"
-                                id="addressClipboardCopy">
-                            <i class="ti-clipboard"></i> Copy Address
-                        </button>
+                    <!-- .row -->
+                    <div class="row text-center m-t-10">
+                        <div class="col-md-6 b-r">
+                            <strong>Name</strong>
+                            <p>{{vm.getReceiverName()}}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Phone</strong>
+                            <p>{{vm.getReceiverPhone()}}</p>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
-             ng-hide="vm.isAtMaxCycleLevel">
-            <div class="white-box">
-                <div class="text-right">
-                    <span class="text-muted">Transaction</span>
-                </div>
-                <div style="height:92px;" ng-hide="vm.hasTransactionHash">
-                    <div class="form-material form-horizontal">
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <input type="text" class="form-control form-control-line text-right"
-                                       placeholder="Enter transaction hash"
-                                       ng-model="vm.transactionHash" />
-                                <span class="text-success" ng-show="vm.hasTransactionHash">{{vm.bitLevel.Donation.TransactionHash}}</span>
+                    <!-- /.row -->
+                    <hr>
+
+                    <!-- .row -->
+                    <div class="row text-center m-t-10">
+                        <div class="col-md-12 b-r">
+                            <strong style="margin-bottom:20px; display:block;">Email</strong>
+                            <p>{{vm.getReceiverEmail()}}</p>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                    <hr>
+
+                    <!-- .row -->
+                    <div class="row text-center m-t-10">
+                        <div class="col-md-12 text-center">
+                            <strong style="margin-bottom:20px; display:block;">Receiving Address</strong>
+                            <p>{{vm.receiverAddress()}}</p>
+
+                            <button type="button" class="btn btn-outline btn-info wav"
+                                    ng-hide="vm.donationHasHash()"
+                                    ng-click="vm.addressCopied()"
+                                    data-clipboard-action="copy" data-clipboard-text="{{vm.receiverAddress()}}"
+                                    data-toggle="tooltip" data-original-title="Copy Bitcoin address to clipboard"
+                                    id="addressClipboardCopy">
+                                <i class="ti-clipboard"></i> Copy Address
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                    <hr>
+
+                    <!-- .row -->
+                    <div class="row text-center m-t-10"
+                         ng-hide="vm.donationHasHash()">
+                        <div class="col-md-12">
+                            <strong style="margin-bottom:20px; display:block;">Upgrade Transaction</strong>
+                            <div class="form-material form-horizontal">
+                                <div class="form-group" style="margin-bottom:5px;">
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control form-control-line text-center"
+                                               placeholder="Enter transaction hash"
+                                               ng-model="vm.transactionHash" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <button class="btn btn-outline btn-info"
+                                            style="margin-top:10px;"
+                                            ng-class="{disabled: !vm.hasActiveBitcoinAddress}"
+                                            ng-click="vm.updateTransactionHash()">
+                                        <span ng-hide="vm.isSavingTransactionHash"><i class="ti-save"></i>&nbsp;Verify</span>
+                                        <ring-loader size="18" color="white" show="vm.isSavingTransactionHash"></ring-loader>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-12">
-                            <button class="btn btn-block btn-outline btn-info"
+                    </div>
+
+                    <!-- .row -->
+                    <div class="row text-center m-t-10"
+                         ng-show="vm.donationHasHash()">
+                        <div class="col-md-12">
+                            <strong style="margin-bottom:20px; display:block;">Transaction</strong>
+                            <span class="text-success" style="display: block; margin-bottom:15px;">{{vm.bitLevel.Donation.TransactionHash}}</span>
+                            <h4><span class="text-info">{{vm.bitLevel.Donation.LedgerCount}}</span> Confirmations</h4>
+
+                            <button class="btn btn-outline btn-info"
                                     style="margin-top:10px;"
                                     ng-class="{disabled: !vm.hasActiveBitcoinAddress}"
                                     ng-click="vm.updateTransactionHash()">
-                                <span ng-hide="vm.isSavingTransactionHash"><i class="ti-save"></i>&nbsp;Verify</span>
+                                <span ng-hide="vm.isSavingTransactionHash"><i class="ti-save"></i>&nbsp;Confirm</span>
                                 <ring-loader size="18" color="white" show="vm.isSavingTransactionHash"></ring-loader>
                             </button>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="col-lg-6" ng-hide="vm.isDonationConfirmed()">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="white-box">
+                        <div class="text-right" style="height:112px;">
+                            <span class="text-muted">Next Level</span>
+                            <h1><sup><i class="ti-arrow-up text-success"></i></sup>&nbsp;&nbsp;&nbsp;{{vm.nextLevel}}</h1>
+                        </div>
+                    </div>
+                </div>
 
-                <div style="height:82px;" ng-show="vm.hasTransactionHash" class="text-right">
-                    <h6 style="white-space:nowrap; text-wrap:none; text-overflow:ellipsis; overflow:hidden; margin-bottom:20px;">
-                        {{vm.bitLevel.Donation.TransactionHash}}
-                    </h6>
-                    <span class="text-muted">Ledger Count</span>
-                    <h4>
-                        <strong><span ng-class="vm.verifiedTransactionLedgerCountClass()">{{vm.bitLevel.Donation.LedgerCount}}</span></strong>
-
-                        <button class="pull-left btn btn-sm btn-outline btn-primary"
-                                ng-hide="vm.isTransactionVerified()"
-                                type="button"
-                                ng-click="vm.verifyTransaction()">
-                            <span ng-hide="vm.isVerifyingTransaction">
-                                <i class="ti-flag-alt"></i>&nbsp;Verify
-                            </span>
-                            <ring-loader size="14" color="white" show="vm.isVerifyingTransaction"></ring-loader>
-                        </button>
-                    </h4>
+                <div class="col-lg-12">
+                    <div class="white-box">
+                        <div class="text-right">
+                            <span class="text-muted">Amount</span>
+                            <h1><i class="fa fa-btc"></i>&nbsp;{{vm.upgradeFee}}</h1>
+                        </div>
+                        <div style="height:24px;">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-6 col-lg-6 col-sm-12"
-         ng-hide="vm.hasBitLevel"
-         style="margin-top:30px;">
-        <div class="white-box bd-card-2">
-            <h3 class="box-title">
-                Welcome!
-            </h3>
-            <span class="text-muted">
-                Get started on your journey by triggering your first <strong class="text-muted">Cycle</strong>.
-                Click the button below to get things started.
-            </span>
-            <div class="row sales-report">
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                    <h3><i class="icon-diamond"></i> Begin Cycle</h3>
+    <div class="row"
+         ng-hide="vm.hasBitLevel">
+        <div class="col-md-6 col-lg-6 col-sm-12"
+             style="margin-top:30px;">
+            <div class="white-box bd-card-2">
+                <h3 class="box-title">
+                    Welcome!
+                </h3>
+                <span class="text-muted">
+                    Get started on your journey by triggering your first <strong class="text-muted">Cycle</strong>.
+                    Click the button below to get things started.
+                </span>
+                <div class="row sales-report">
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <h3><i class="icon-diamond"></i> Begin Cycle</h3>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6 ">
+                        <button class="btn btn-block btn-outline btn-rounded btn-success btn-md"
+                                ng-class="{disabled: !vm.hasActiveBitcoinAddress}"
+                                type="button"
+                                ng-click="vm.upgradeLevel()"
+                                style="margin-top:10px; margin-bottom:10px;">
+                            <span ng-hide="vm.isUpgrading"><sup><i class="ti-arrow-up"></i></sup> Level Up</span>
+                            <ring-loader size="16" color="white" show="vm.isUpgrading"></ring-loader>
+                        </button>
+                    </div>
                 </div>
-                <div class="col-md-6 col-sm-6 col-xs-6 ">
-                    <button class="btn btn-block btn-outline btn-rounded btn-success btn-md"
-                            ng-class="{disabled: !vm.hasActiveBitcoinAddress}"
-                            type="button"
-                            ng-click="vm.upgradeLevel()"
-                            style="margin-top:10px; margin-bottom:10px;">
-                        <span ng-hide="vm.isUpgrading"><sup><i class="ti-arrow-up"></i></sup> Level Up</span>
-                        <ring-loader size="16" color="white" show="vm.isUpgrading"></ring-loader>
-                    </button>
-                </div>
+                <span class="text-warning" ng-hide="vm.hasActiveBitcoinAddress">
+                    We noticed you haven't yet got any <strong>bitcoin transaction address</strong> setup yet.
+                    Not to worry, this can easily be done by following the instructions <strong><a href ui-sref="base.bitcoinAddresses">Here</a></strong>.
+                </span>
             </div>
-            <span class="text-warning" ng-hide="vm.hasActiveBitcoinAddress">
-                We noticed you haven't yet got any <strong>bitcoin transaction address</strong> setup yet.
-                Not to worry, this can easily be done by following the instructions <strong><a href ui-sref="base.bitcoinAddresses">Here</a></strong>.
-            </span>
+        </div>
+    </div>
+
+
+    <div class="row"
+         ng-show="vm.isDonationConfirmed()">
+        <div class="col-md-6 col-lg-6 col-sm-12"
+             style="margin-top:30px;">
+            <div class="white-box bd-card-2">
+                <h3 class="box-title">
+                    Congratulations!
+                </h3>
+                <span class="text-muted">
+                    You can now qualified to <strong class="text-muted">Upgrade</strong>.
+                </span>
+                <div class="row sales-report">
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <h3><i class="ti-stats-up"></i>&nbsp;&nbsp;{{vm.nextLevel}}</h3>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6 ">
+                        <button class="btn btn-block btn-outline btn-rounded btn-success btn-md"
+                                type="button"
+                                ng-click="vm.upgradeLevel()"
+                                style="margin-top:10px; margin-bottom:10px;">
+                            <span ng-hide="vm.isUpgrading"><sup><i class="ti-arrow-up"></i></sup> Level Up</span>
+                            <ring-loader size="16" color="white" show="vm.isUpgrading"></ring-loader>
+                        </button>
+                    </div>
+                </div>
+                <span class="text-warning" ng-hide="vm.hasActiveBitcoinAddress">
+                    We noticed you haven't yet got any <strong>bitcoin transaction address</strong> setup yet.
+                    Not to worry, this can easily be done by following the instructions <strong><a href ui-sref="base.bitcoinAddresses">Here</a></strong>.
+                </span>
+            </div>
         </div>
     </div>
 </div>

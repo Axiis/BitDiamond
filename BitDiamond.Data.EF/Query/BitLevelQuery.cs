@@ -10,6 +10,7 @@ using Axis.Luna.Extensions;
 using System;
 using System.Configuration;
 using Axis.Luna;
+using BitDiamond.Core.Utils;
 
 namespace BitDiamond.Data.EF.Query
 {
@@ -39,8 +40,18 @@ namespace BitDiamond.Data.EF.Query
            join s in _europa.Store<User>().Query on sad.OwnerId equals s.EntityId
            join rb in _europa.Store<BioData>().Query on rad.OwnerId equals rb.OwnerId into _rb
            join sb in _europa.Store<BioData>().Query on sad.OwnerId equals sb.OwnerId into _sb
+           join rc in _europa.Store<ContactData>().Query on rad.OwnerId equals rc.OwnerId into _rc
+           join sc in _europa.Store<ContactData>().Query on sad.OwnerId equals sc.OwnerId into _sc
+           join rpi in _europa.Store<UserData>().Query on rad.OwnerId equals rpi.OwnerId into _rpi
+           join spi in _europa.Store<UserData>().Query on sad.OwnerId equals spi.OwnerId into _spi
+           from __spi in _spi.DefaultIfEmpty()
+           from __rpi in _rpi.DefaultIfEmpty()
            from __rb in _rb.DefaultIfEmpty()
            from __sb in _sb.DefaultIfEmpty()
+           from __rc in _rc.DefaultIfEmpty()
+           from __sc in _sc.DefaultIfEmpty()
+           where __spi.Name == Constants.UserData_ProfileImage &&
+                 __rpi.Name == Constants.UserData_ProfileImage
            select new BitLevelJoiner
            {
                Level = bl,
@@ -52,7 +63,11 @@ namespace BitDiamond.Data.EF.Query
                SenderBio = __sb,
                ReceiverBio = __rb,
                Receiver = r,
-               Sender = s
+               Sender = s,
+               ReceiverContact = __rc,
+               SenderContact = __sc,
+               ReceiverProfileImage = __rpi,
+               SenderProfileImage = __spi
            };
 
         public IQueryable<TransactionJoiner> BaseBlockChainQuery()
@@ -65,8 +80,18 @@ namespace BitDiamond.Data.EF.Query
            join sref in _europa.Store<ReferralNode>().Query on sad.OwnerId equals sref.UserId
            join rb in _europa.Store<BioData>().Query on rad.OwnerId equals rb.OwnerId into _rb
            join sb in _europa.Store<BioData>().Query on sad.OwnerId equals sb.OwnerId into _sb
+           join rc in _europa.Store<ContactData>().Query on rad.OwnerId equals rc.OwnerId into _rc
+           join sc in _europa.Store<ContactData>().Query on sad.OwnerId equals sc.OwnerId into _sc
+           join rpi in _europa.Store<UserData>().Query on rad.OwnerId equals rpi.OwnerId into _rpi
+           join spi in _europa.Store<UserData>().Query on sad.OwnerId equals spi.OwnerId into _spi
+           from __spi in _spi.DefaultIfEmpty()
+           from __rpi in _rpi.DefaultIfEmpty()
            from __rb in _rb.DefaultIfEmpty()
            from __sb in _sb.DefaultIfEmpty()
+           from __rc in _rc.DefaultIfEmpty()
+           from __sc in _sc.DefaultIfEmpty()
+           where __spi.Name == Constants.UserData_ProfileImage && 
+                 __rpi.Name == Constants.UserData_ProfileImage
            select new TransactionJoiner
            {
                Transaction = btc,
@@ -77,7 +102,11 @@ namespace BitDiamond.Data.EF.Query
                SenderBio = __sb,
                ReceiverBio = __rb,
                Receiver = r,
-               Sender = s
+               Sender = s,
+               ReceiverContact = __rc,
+               SenderContact = __sc,
+               ReceiverProfileImage = __rpi,
+               SenderProfileImage = __spi
            };
 
         public IQueryable<BitcoinAddressJoiner> BaseBitcoinAddressQuery()
@@ -85,25 +114,39 @@ namespace BitDiamond.Data.EF.Query
            join rref in _europa.Store<ReferralNode>().Query on rad.OwnerId equals rref.UserId
            join rb in _europa.Store<BioData>().Query on rad.OwnerId equals rb.OwnerId into _rb
            join o in _europa.Store<User>().Query on rad.OwnerId equals o.EntityId
+           join rc in _europa.Store<ContactData>().Query on rad.OwnerId equals rc.OwnerId into _rc
+           join rpi in _europa.Store<UserData>().Query on rad.OwnerId equals rpi.OwnerId into _rpi
+           from __rpi in _rpi.DefaultIfEmpty()
+           from __rc in _rc.DefaultIfEmpty()
            from __rb in _rb.DefaultIfEmpty()
+           where __rpi.Name == Constants.UserData_ProfileImage
            select new BitcoinAddressJoiner
            {
                Address = rad,
                RefNode = rref,
                UserBio = __rb,
-               Owner = o
+               UserContact = __rc,
+               Owner = o,
+               ProfileImage = __rpi
            };
 
         public IQueryable<ReferralNodeJoiner> BaseReferralNodeQuery()
         => from rref in _europa.Store<ReferralNode>().Query
            join rb in _europa.Store<BioData>().Query on rref.UserId equals rb.OwnerId into _rb
            join o in _europa.Store<User>().Query on rref.UserId equals o.EntityId
+           join rc in _europa.Store<ContactData>().Query on rref.UserId equals rc.OwnerId into _rc
+           join rpi in _europa.Store<UserData>().Query on rref.UserId equals rpi.OwnerId into _rpi
+           from __rpi in _rpi.DefaultIfEmpty()
+           from __rc in _rc.DefaultIfEmpty()
            from __rb in _rb.DefaultIfEmpty()
+           where __rpi.Name == Constants.UserData_ProfileImage
            select new ReferralNodeJoiner
            {
                RefNode = rref,
                UserBio = __rb,
-               Owner = o
+               UserContact = __rc,
+               Owner = o,
+               ProfileImage = __rpi
            };
         #endregion
 
@@ -184,12 +227,14 @@ AS
 
 -- Statement that executes the CTE
 SELECT r.ReferenceCode, r.ReferrerCode, r.UplineCode, r.CreatedOn, r.ModifiedOn, r.Id, 
-       u.EntityId AS u_EntityId, u.CreatedOn AS u_CreatedOn, u.ModifiedOn AS u_ModifiedOn, u.Status as u_Status, u.UId AS u_UId,
-       bd.FirstName, bd.LastName
+       u.EntityId AS u_EntityId, u.CreatedOn AS u_CreatedOn, u.ModifiedOn AS u_ModifiedOn, u.Status AS u_Status, u.UId AS u_UId,
+       bd.FirstName, bd.LastName, cd.Phone AS u_Phone, ud.Data AS u_ProfileImage
 FROM dbo.ReferralNode AS r
 JOIN dbo.[User] AS u ON u.EntityId = r.UserId
 JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
 LEFT JOIN dbo.BioData AS bd ON bd.OwnerId = u.EntityId
+LEFT JOIN dbo.ContactData AS cd ON cd.OwnerId = u.EntityId
+LEFT JOIN dbo.UserData AS ud ON ud.OwnerId = u.EntityId and ud.Name = '" + Constants.UserData_ProfileImage + @"'
 ORDER BY dl.[rank]
 ";
 
@@ -230,7 +275,11 @@ ORDER BY dl.[rank]
                             {
                                 FirstName = row.IsDBNull(11) ? null : row.GetString(11),
                                 LastName = row.IsDBNull(12) ? null : row.GetString(12)
-                            }
+                            },
+                            UserContact = row.IsDBNull(13)? null: new ContactData
+                            {
+                                Phone = row.GetString(13)
+                            }                            
                         });
                     }
                     return refnodes;
@@ -315,18 +364,29 @@ ORDER BY dl.[rank]
             public ReferralNode ReceiverNode { get; set; }
             public BioData SenderBio { get; set; }
             public BioData ReceiverBio { get; set; }
+            public ContactData SenderContact { get; set; }
+            public ContactData ReceiverContact { get; set; }
             public User Receiver { get; set; }
             public User Sender { get; set; }
+            public UserData ReceiverProfileImage { get; internal set; }
+            public UserData SenderProfileImage { get; internal set; }
 
             public BitLevel ToBitLevel()
             {
-                if(SenderBio!=null) SenderBio.Owner = Sender;
+                if (SenderBio != null) SenderBio.Owner = Sender;
                 if (ReceiverBio != null) ReceiverBio.Owner = Receiver;
 
+                if (SenderContact != null) SenderContact.Owner = Sender;
+                if (ReceiverContact != null) ReceiverContact.Owner = Receiver;
+
                 SenderNode.UserBio = SenderBio;
+                SenderNode.UserContact = SenderContact;
+                SenderNode.ProfileImageUrl = SenderProfileImage?.Data;
                 SenderNode.User = Sender;
 
                 ReceiverNode.UserBio = ReceiverBio;
+                ReceiverNode.UserContact = ReceiverContact;
+                ReceiverNode.ProfileImageUrl = ReceiverProfileImage?.Data;
                 ReceiverNode.User = Receiver;
 
                 SenderAddress.OwnerRef = SenderNode;
@@ -350,18 +410,29 @@ ORDER BY dl.[rank]
             public ReferralNode ReceiverNode { get; set; }
             public BioData SenderBio { get; set; }
             public BioData ReceiverBio { get; set; }
+            public ContactData SenderContact { get; set; }
+            public ContactData ReceiverContact { get; set; }
             public User Receiver { get; set; }
             public User Sender { get; set; }
+            public UserData ReceiverProfileImage { get; internal set; }
+            public UserData SenderProfileImage { get; internal set; }
 
             public BlockChainTransaction ToBlockChainTransaction()
             {
                 if (SenderBio != null) SenderBio.Owner = Sender;
                 if (ReceiverBio != null) ReceiverBio.Owner = Receiver;
 
+                if (SenderContact != null) SenderContact.Owner = Sender;
+                if (ReceiverContact != null) ReceiverContact.Owner = Receiver;
+
                 SenderNode.UserBio = SenderBio;
+                SenderNode.UserContact = SenderContact;
+                SenderNode.ProfileImageUrl = SenderProfileImage?.Data;
                 SenderNode.User = Sender;
 
                 ReceiverNode.UserBio = ReceiverBio;
+                ReceiverNode.UserContact = ReceiverContact;
+                ReceiverNode.ProfileImageUrl = ReceiverProfileImage?.Data;
                 ReceiverNode.User = Receiver;
 
                 SenderAddress.OwnerRef = SenderNode;
@@ -379,13 +450,18 @@ ORDER BY dl.[rank]
             public BitcoinAddress Address { get; set; }
             public ReferralNode RefNode { get; set; }
             public BioData UserBio { get; set; }
+            public ContactData UserContact { get; set; }
             public User Owner { get; set; }
+            public UserData ProfileImage { get; internal set; }
 
             public BitcoinAddress ToAddress()
             {
                 if (UserBio != null) UserBio.Owner = Owner;
+                if (UserContact != null) UserContact.Owner = Owner;
 
                 RefNode.UserBio = UserBio;
+                RefNode.UserContact = UserContact;
+                RefNode.ProfileImageUrl = ProfileImage?.Data;
                 Address.OwnerRef = RefNode;
                 Address.Owner = Owner;
 
@@ -397,14 +473,19 @@ ORDER BY dl.[rank]
         {
             public ReferralNode RefNode { get; set; }
             public BioData UserBio { get; set; }
+            public ContactData UserContact { get; set; }
             public User Owner { get; set; }
+            public UserData ProfileImage { get; internal set; }
 
             public ReferralNode ToRefNode()
             {
                 if (UserBio != null) UserBio.Owner = Owner;
+                if (UserContact != null) UserContact.Owner = Owner;
 
                 RefNode.UserBio = UserBio;
+                RefNode.UserContact = UserContact;
                 RefNode.User = Owner;
+                RefNode.ProfileImageUrl = ProfileImage?.Data;
 
                 return RefNode;
             }

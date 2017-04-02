@@ -22,6 +22,7 @@ module BitDiamond.Controllers.BitLevel {
         __bitlevel: Services.BitLevel;
         __usercontext: Utils.Services.UserContext;
         __notify: Utils.Services.NotifyService;
+        __account: Services.Account;
 
         $q: ng.IQService;
 
@@ -54,6 +55,43 @@ module BitDiamond.Controllers.BitLevel {
         cyclePercentage(): string {
             return Math.round((this.currentLevel / Utils.Constants.Settings_MaxBitLevel) * 100) + '%';
         }
+        getReceiverName(): string {
+            if (Object.isNullOrUndefined(this.bitLevel)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver.OwnerRef)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver.OwnerRef.UserBio)) return '-';
+            else {
+                var bio = this.bitLevel.Donation.Receiver.OwnerRef.UserBio;
+                return bio.FirstName + ' ' + bio.LastName;
+            }
+        }
+        getReceiverEmail(): string {
+            if (Object.isNullOrUndefined(this.bitLevel)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver)) return '-';
+            else return this.bitLevel.Donation.Receiver.OwnerId;
+
+        }
+        getReceiverPhone(): string {
+            if (Object.isNullOrUndefined(this.bitLevel)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver.OwnerRef)) return '-';
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver.OwnerRef.UserContact)) return '-';
+            else {
+                return this.bitLevel.Donation.Receiver.OwnerRef.UserContact.Phone || '-';
+            }
+        }
+        getReceiverProfileImage(): string {
+            if (Object.isNullOrUndefined(this.bitLevel)) return null;
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation)) return null;
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver)) return null;
+            else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver.OwnerRef)) return null;
+            else {
+                return this.bitLevel.Donation.Receiver.OwnerRef.ProfileImageUrl;
+            }
+        }
         receiverName(): string {
             if (Object.isNullOrUndefined(this.bitLevel)) return '-';
             else if (Object.isNullOrUndefined(this.bitLevel.Donation)) return '-';
@@ -77,6 +115,16 @@ module BitDiamond.Controllers.BitLevel {
             else if (Object.isNullOrUndefined(this.bitLevel.Donation)) return '-';
             else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver)) return '-';
             else return this.bitLevel.Donation.Receiver.BlockChainAddress;
+        }
+        donationHasHash(): boolean {
+            return !Object.isNullOrUndefined(this.bitLevel) &&
+                !Object.isNullOrUndefined(this.bitLevel.Donation) &&
+                !Object.isNullOrUndefined(this.bitLevel.Donation.TransactionHash);
+        }
+        isDonationConfirmed(): boolean {
+            return this.donationHasHash() &&
+                this.bitLevel.Donation.Status == Models.BlockChainTransactionStatus.Verified &&
+                this.bitLevel.Donation.LedgerCount > 3;
         }
 
 
@@ -104,7 +152,7 @@ module BitDiamond.Controllers.BitLevel {
                     this.transactionHash = null;
                     this.__notify.success('Your transaction hash was verified!');
                 }, err => {
-                    this.__notify.error('Something went wrong - could not save the transaction hash.', 'Oops!');
+                    this.__notify.error('Something went wrong.', 'Oops!');
                 }).finally(() => {
                     this.isSavingTransactionHash = false;
                 });
@@ -167,10 +215,11 @@ module BitDiamond.Controllers.BitLevel {
             this.__notify.info('Bitcoin address Copied to clipboard');
         }
 
-        constructor(__bitlevel, __userContext, __notify, $q) {
+        constructor(__bitlevel, __account, __userContext, __notify, $q) {
             this.__bitlevel = __bitlevel;
             this.__usercontext = __userContext;
             this.__notify = __notify;
+            this.__account = __account;
             this.$q = $q;
 
             this.hasActiveBitcoinAddress = false;

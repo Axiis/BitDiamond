@@ -48,7 +48,7 @@ namespace BitDiamond.Core.Services
         public Operation<BlockChainTransaction> GetTransactionDetails(string transactionHash)
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
-            var bl = this._levelQuery.CurrentBitLevel(UserContext.CurrentUser());
+            var bl = _levelQuery.CurrentBitLevel(UserContext.CurrentUser());
 
             //use web client to call the webservice that validates the transaction hash...
             using (var client = new WebClient())
@@ -65,7 +65,7 @@ namespace BitDiamond.Core.Services
                 else if (!trnxContainer.@out.Any(_tx => _tx.addr == bl.Donation.Receiver.BlockChainAddress)) throw new Exception("invalid receiver");
 
                 //sender matches?
-                else if (!trnxContainer.inputs.Any(_tx => _tx.prev_out.addr == bl.Donation.Sender.BlockChainAddress)) throw new Exception("invalid sender");
+                //else if (!trnxContainer.inputs.Any(_tx => _tx.prev_out.addr == bl.Donation.Sender.BlockChainAddress)) throw new Exception("invalid sender");
 
                 //amount matches?
                 else if ((trnxContainer.@out.Where(_tx => _tx.addr == bl.Donation.Receiver.BlockChainAddress).Sum(_tx => _tx.value) / 100000000) < bl.Donation.Amount)

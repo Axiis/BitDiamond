@@ -252,4 +252,3 @@ var BitDiamond;
         })(Services = Utils.Services || (Utils.Services = {}));
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=utility.js.map

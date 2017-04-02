@@ -15,6 +15,7 @@ module BitDiamond.Modules {
     bitlevelModules.service('__dom', BitDiamond.Utils.Services.DomModelService);
     bitlevelModules.service('__notify', BitDiamond.Utils.Services.NotifyService);
     bitlevelModules.service('__userContext', BitDiamond.Utils.Services.UserContext);
+    bitlevelModules.service('__account', BitDiamond.Services.Account);
 
     bitlevelModules.service('__bitlevel', BitDiamond.Services.BitLevel);
     bitlevelModules.service('__account', BitDiamond.Services.Account);

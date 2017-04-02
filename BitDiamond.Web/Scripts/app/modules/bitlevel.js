@@ -13,6 +13,7 @@ var BitDiamond;
         Modules.bitlevelModules.service('__dom', BitDiamond.Utils.Services.DomModelService);
         Modules.bitlevelModules.service('__notify', BitDiamond.Utils.Services.NotifyService);
         Modules.bitlevelModules.service('__userContext', BitDiamond.Utils.Services.UserContext);
+        Modules.bitlevelModules.service('__account', BitDiamond.Services.Account);
         Modules.bitlevelModules.service('__bitlevel', BitDiamond.Services.BitLevel);
         Modules.bitlevelModules.service('__account', BitDiamond.Services.Account);
         Modules.bitlevelModules.service('__systemNotification', BitDiamond.Services.Notification);
@@ -65,4 +66,3 @@ var BitDiamond;
         });
     })(Modules = BitDiamond.Modules || (BitDiamond.Modules = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=bitlevel.js.map

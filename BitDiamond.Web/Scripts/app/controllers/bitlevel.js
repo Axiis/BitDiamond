@@ -5,7 +5,7 @@ var BitDiamond;
         var BitLevel;
         (function (BitLevel) {
             var Home = (function () {
-                function Home(__bitlevel, __userContext, __notify, $q) {
+                function Home(__bitlevel, __account, __userContext, __notify, $q) {
                     var _this = this;
                     this.donationsMissed = 0;
                     this.donationsReceived = 0;
@@ -13,6 +13,7 @@ var BitDiamond;
                     this.__bitlevel = __bitlevel;
                     this.__usercontext = __userContext;
                     this.__notify = __notify;
+                    this.__account = __account;
                     this.$q = $q;
                     this.hasActiveBitcoinAddress = false;
                     this.isLoadingView = true;
@@ -73,6 +74,60 @@ var BitDiamond;
                 Home.prototype.cyclePercentage = function () {
                     return Math.round((this.currentLevel / BitDiamond.Utils.Constants.Settings_MaxBitLevel) * 100) + '%';
                 };
+                Home.prototype.getReceiverName = function () {
+                    if (Object.isNullOrUndefined(this.bitLevel))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver.OwnerRef))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver.OwnerRef.UserBio))
+                        return '-';
+                    else {
+                        var bio = this.bitLevel.Donation.Receiver.OwnerRef.UserBio;
+                        return bio.FirstName + ' ' + bio.LastName;
+                    }
+                };
+                Home.prototype.getReceiverEmail = function () {
+                    if (Object.isNullOrUndefined(this.bitLevel))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver))
+                        return '-';
+                    else
+                        return this.bitLevel.Donation.Receiver.OwnerId;
+                };
+                Home.prototype.getReceiverPhone = function () {
+                    if (Object.isNullOrUndefined(this.bitLevel))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver.OwnerRef))
+                        return '-';
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver.OwnerRef.UserContact))
+                        return '-';
+                    else {
+                        return this.bitLevel.Donation.Receiver.OwnerRef.UserContact.Phone || '-';
+                    }
+                };
+                Home.prototype.getReceiverProfileImage = function () {
+                    if (Object.isNullOrUndefined(this.bitLevel))
+                        return null;
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation))
+                        return null;
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver))
+                        return null;
+                    else if (Object.isNullOrUndefined(this.bitLevel.Donation.Receiver.OwnerRef))
+                        return null;
+                    else {
+                        return this.bitLevel.Donation.Receiver.OwnerRef.ProfileImageUrl;
+                    }
+                };
                 Home.prototype.receiverName = function () {
                     if (Object.isNullOrUndefined(this.bitLevel))
                         return '-';
@@ -111,6 +166,16 @@ var BitDiamond;
                     else
                         return this.bitLevel.Donation.Receiver.BlockChainAddress;
                 };
+                Home.prototype.donationHasHash = function () {
+                    return !Object.isNullOrUndefined(this.bitLevel) &&
+                        !Object.isNullOrUndefined(this.bitLevel.Donation) &&
+                        !Object.isNullOrUndefined(this.bitLevel.Donation.TransactionHash);
+                };
+                Home.prototype.isDonationConfirmed = function () {
+                    return this.donationHasHash() &&
+                        this.bitLevel.Donation.Status == BitDiamond.Models.BlockChainTransactionStatus.Verified &&
+                        this.bitLevel.Donation.LedgerCount > 3;
+                };
                 Home.prototype.upgradeLevel = function () {
                     var _this = this;
                     if (this.isUpgrading || !this.hasActiveBitcoinAddress)
@@ -139,7 +204,7 @@ var BitDiamond;
                             _this.transactionHash = null;
                             _this.__notify.success('Your transaction hash was verified!');
                         }, function (err) {
-                            _this.__notify.error('Something went wrong - could not save the transaction hash.', 'Oops!');
+                            _this.__notify.error('Something went wrong.', 'Oops!');
                         }).finally(function () {
                             _this.isSavingTransactionHash = false;
                         });
@@ -426,4 +491,3 @@ var BitDiamond;
         })(BitLevel = Controllers.BitLevel || (Controllers.BitLevel = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=bitlevel.js.map

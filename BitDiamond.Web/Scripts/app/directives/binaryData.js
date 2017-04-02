@@ -33,4 +33,3 @@ var BitDiamond;
         Directives.BinaryData = BinaryData;
     })(Directives = BitDiamond.Directives || (BitDiamond.Directives = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=binaryData.js.map

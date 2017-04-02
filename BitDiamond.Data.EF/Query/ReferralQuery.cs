@@ -10,6 +10,7 @@ using static Axis.Luna.Extensions.ExceptionExtensions;
 using System.Data.SqlClient;
 using Axis.Luna.Extensions;
 using System.Configuration;
+using BitDiamond.Core.Utils;
 
 namespace BitDiamond.Data.EF.Query
 {
@@ -47,11 +48,13 @@ AS
 -- Statement that executes the CTE
 SELECT r.ReferenceCode, r.ReferrerCode, r.UplineCode, r.CreatedOn, r.ModifiedOn, r.Id, 
        u.EntityId AS u_EntityId, u.CreatedOn AS u_CreatedOn, u.ModifiedOn AS u_ModifiedOn, u.Status as u_Status, u.UId AS u_UId,
-       bd.FirstName, bd.LastName
+       bd.FirstName, bd.LastName, cd.Phone as u_Phone, ud.Data AS u_ProfileImage
 FROM dbo.ReferralNode AS r
 JOIN dbo.[User] AS u ON u.EntityId = r.UserId
 JOIN DownLinesCTE AS dl ON dl.ReferenceCode = r.ReferenceCode
 LEFT JOIN dbo.BioData AS bd ON bd.OwnerId = u.EntityId
+LEFT JOIN dbo.ContactData AS cd ON cd.OwnerId = u.EntityId
+LEFT JOIN dbo.UserData AS ud ON ud.OwnerId = u.EntityId and ud.Name = '" + Constants.UserData_ProfileImage + @"'
 ORDER BY dl.[rank]
 ";
 
@@ -92,6 +95,10 @@ ORDER BY dl.[rank]
                             {
                                 FirstName = row.IsDBNull(11) ? null : row.GetString(11),
                                 LastName = row.IsDBNull(12) ? null : row.GetString(12)
+                            },
+                            UserContact = row.IsDBNull(13) ? null : new ContactData
+                            {
+                                Phone = row.GetString(13)
                             }
                         });
                     }
@@ -147,11 +154,13 @@ AS
 -- Statement that executes the CTE
 SELECT r.ReferenceCode, r.ReferrerCode, r.UplineCode, r.CreatedOn, r.ModifiedOn, r.Id, 
        u.EntityId AS u_EntityId, u.CreatedOn AS u_CreatedOn, u.ModifiedOn AS u_ModifiedOn, u.Status as u_Status, u.UId AS u_UId,
-       bd.FirstName, bd.LastName
+       bd.FirstName, bd.LastName, cd.Phone as u_Phone, ud.Data AS u_ProfileImage
 FROM dbo.ReferralNode AS r
 JOIN dbo.[User] AS u ON u.EntityId = r.UserId
 JOIN UplinesCTE AS ul ON ul.ReferenceCode = r.ReferenceCode
 LEFT JOIN dbo.BioData AS bd ON bd.OwnerId = u.EntityId
+LEFT JOIN dbo.ContactData AS cd ON cd.OwnerId = u.EntityId
+LEFT JOIN dbo.UserData AS ud ON ud.OwnerId = u.EntityId and ud.Name = '" + Constants.UserData_ProfileImage + @"'
 ORDER BY ul.[rank]
 ";
             
@@ -192,6 +201,10 @@ ORDER BY ul.[rank]
                             {
                                 FirstName = row.IsDBNull(11) ? null : row.GetString(11),
                                 LastName = row.IsDBNull(12) ? null : row.GetString(12)
+                            },
+                            UserContact = row.IsDBNull(13) ? null : new ContactData
+                            {
+                                Phone = row.GetString(13)
                             }
                         });
                     }

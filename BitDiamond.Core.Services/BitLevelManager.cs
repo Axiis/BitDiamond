@@ -294,7 +294,8 @@ namespace BitDiamond.Core.Services
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
             if (address == null || address.Id != 0) throw new Exception("Invalid bit address given");
-            else return address.With(new {OwnerId = UserContext.CurrentUser().UserId }).Validate()
+            else if (_query.AddressExists(address.BlockChainAddress)) throw new Exception("This address has already been used");
+            else return address.With(new { OwnerId = UserContext.CurrentUser().UserId }).Validate()
             .Then(opr =>
             {
                 address.IsVerified = false;

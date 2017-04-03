@@ -116,6 +116,7 @@
             <div class="white-box">
                 <h4 class="text-muted text-center">Upgrade Receiver Information</h4>
                 <div class="user-bg"
+                     ng-show="vm.hasReceiverProfileImage()"
                      style="height: 150px !important; background-repeat: no-repeat; background-position: center; margin-top:0;"
                      ng-style="{'background-image': 'url('+vm.getReceiverProfileImage()+')', 'background-size':'contain'}">                    
                 </div>
@@ -133,7 +134,7 @@
                         </div>
                     </div>
                     <!-- /.row -->
-                    <hr>
+                    <hr style="border-top-width:3px;">
 
                     <!-- .row -->
                     <div class="row text-center m-t-10">
@@ -143,7 +144,7 @@
                         </div>
                     </div>
                     <!-- /.row -->
-                    <hr>
+                    <hr style="border-top-width:3px;">
 
                     <!-- .row -->
                     <div class="row text-center m-t-10">
@@ -162,7 +163,7 @@
                         </div>
                     </div>
                     <!-- /.row -->
-                    <hr>
+                    <hr style="border-top-width:3px;">
 
                     <!-- .row -->
                     <div class="row text-center m-t-10"
@@ -210,7 +211,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6" ng-hide="vm.isDonationConfirmed()">
+
+        <div class="col-lg-6 col-xs-12" ng-hide="vm.isDonationConfirmed()">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="white-box">
@@ -296,10 +298,6 @@
                         </button>
                     </div>
                 </div>
-                <span class="text-warning" ng-hide="vm.hasActiveBitcoinAddress">
-                    We noticed you haven't yet got any <strong>bitcoin transaction address</strong> setup yet.
-                    Not to worry, this can easily be done by following the instructions <strong><a href ui-sref="base.bitcoinAddresses">Here</a></strong>.
-                </span>
             </div>
         </div>
     </div>

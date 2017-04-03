@@ -128,6 +128,9 @@ var BitDiamond;
                         return this.bitLevel.Donation.Receiver.OwnerRef.ProfileImageUrl;
                     }
                 };
+                Home.prototype.hasReceiverProfileImage = function () {
+                    return !Object.isNullOrUndefined(this.getReceiverProfileImage());
+                };
                 Home.prototype.receiverName = function () {
                     if (Object.isNullOrUndefined(this.bitLevel))
                         return '-';
@@ -491,3 +494,4 @@ var BitDiamond;
         })(BitLevel = Controllers.BitLevel || (Controllers.BitLevel = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=bitlevel.js.map

@@ -219,3 +219,4 @@ var Libs;
         }
     })(HorizontalTimeline = Libs.HorizontalTimeline || (Libs.HorizontalTimeline = {}));
 })(Libs || (Libs = {}));
+//# sourceMappingURL=horizontal-timeline.js.map

@@ -92,6 +92,9 @@ module BitDiamond.Controllers.BitLevel {
                 return this.bitLevel.Donation.Receiver.OwnerRef.ProfileImageUrl;
             }
         }
+        hasReceiverProfileImage(): boolean {
+            return !Object.isNullOrUndefined(this.getReceiverProfileImage());
+        }
         receiverName(): string {
             if (Object.isNullOrUndefined(this.bitLevel)) return '-';
             else if (Object.isNullOrUndefined(this.bitLevel.Donation)) return '-';

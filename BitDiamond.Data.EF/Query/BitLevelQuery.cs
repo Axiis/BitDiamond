@@ -42,16 +42,14 @@ namespace BitDiamond.Data.EF.Query
            join sb in _europa.Store<BioData>().Query on sad.OwnerId equals sb.OwnerId into _sb
            join rc in _europa.Store<ContactData>().Query on rad.OwnerId equals rc.OwnerId into _rc
            join sc in _europa.Store<ContactData>().Query on sad.OwnerId equals sc.OwnerId into _sc
-           join rpi in _europa.Store<UserData>().Query on rad.OwnerId equals rpi.OwnerId into _rpi
-           join spi in _europa.Store<UserData>().Query on sad.OwnerId equals spi.OwnerId into _spi
+           join rpi in _europa.Store<UserData>().Query on new { rad.OwnerId, Name = Constants.UserData_ProfileImage } equals new { rpi.OwnerId, rpi.Name } into _rpi
+           join spi in _europa.Store<UserData>().Query on new { sad.OwnerId, Name = Constants.UserData_ProfileImage } equals new { spi.OwnerId, spi.Name } into _spi
            from __spi in _spi.DefaultIfEmpty()
            from __rpi in _rpi.DefaultIfEmpty()
            from __rb in _rb.DefaultIfEmpty()
            from __sb in _sb.DefaultIfEmpty()
            from __rc in _rc.DefaultIfEmpty()
            from __sc in _sc.DefaultIfEmpty()
-           where __spi.Name == Constants.UserData_ProfileImage &&
-                 __rpi.Name == Constants.UserData_ProfileImage
            select new BitLevelJoiner
            {
                Level = bl,
@@ -82,16 +80,14 @@ namespace BitDiamond.Data.EF.Query
            join sb in _europa.Store<BioData>().Query on sad.OwnerId equals sb.OwnerId into _sb
            join rc in _europa.Store<ContactData>().Query on rad.OwnerId equals rc.OwnerId into _rc
            join sc in _europa.Store<ContactData>().Query on sad.OwnerId equals sc.OwnerId into _sc
-           join rpi in _europa.Store<UserData>().Query on rad.OwnerId equals rpi.OwnerId into _rpi
-           join spi in _europa.Store<UserData>().Query on sad.OwnerId equals spi.OwnerId into _spi
+           join rpi in _europa.Store<UserData>().Query on new { rad.OwnerId, Name = Constants.UserData_ProfileImage } equals new { rpi.OwnerId, rpi.Name } into _rpi
+           join spi in _europa.Store<UserData>().Query on new { sad.OwnerId, Name = Constants.UserData_ProfileImage } equals new { spi.OwnerId, spi.Name } into _spi
            from __spi in _spi.DefaultIfEmpty()
            from __rpi in _rpi.DefaultIfEmpty()
            from __rb in _rb.DefaultIfEmpty()
            from __sb in _sb.DefaultIfEmpty()
            from __rc in _rc.DefaultIfEmpty()
            from __sc in _sc.DefaultIfEmpty()
-           where __spi.Name == Constants.UserData_ProfileImage && 
-                 __rpi.Name == Constants.UserData_ProfileImage
            select new TransactionJoiner
            {
                Transaction = btc,
@@ -115,11 +111,10 @@ namespace BitDiamond.Data.EF.Query
            join rb in _europa.Store<BioData>().Query on rad.OwnerId equals rb.OwnerId into _rb
            join o in _europa.Store<User>().Query on rad.OwnerId equals o.EntityId
            join rc in _europa.Store<ContactData>().Query on rad.OwnerId equals rc.OwnerId into _rc
-           join rpi in _europa.Store<UserData>().Query on rad.OwnerId equals rpi.OwnerId into _rpi
+           join rpi in _europa.Store<UserData>().Query on new { rad.OwnerId, Name = Constants.UserData_ProfileImage } equals new { rpi.OwnerId, rpi.Name } into _rpi
            from __rpi in _rpi.DefaultIfEmpty()
            from __rc in _rc.DefaultIfEmpty()
            from __rb in _rb.DefaultIfEmpty()
-           where __rpi.Name == Constants.UserData_ProfileImage
            select new BitcoinAddressJoiner
            {
                Address = rad,
@@ -135,11 +130,10 @@ namespace BitDiamond.Data.EF.Query
            join rb in _europa.Store<BioData>().Query on rref.UserId equals rb.OwnerId into _rb
            join o in _europa.Store<User>().Query on rref.UserId equals o.EntityId
            join rc in _europa.Store<ContactData>().Query on rref.UserId equals rc.OwnerId into _rc
-           join rpi in _europa.Store<UserData>().Query on rref.UserId equals rpi.OwnerId into _rpi
+           join rpi in _europa.Store<UserData>().Query on new { OwnerId = rref.UserId, Name = Constants.UserData_ProfileImage } equals new { rpi.OwnerId, rpi.Name } into _rpi
            from __rpi in _rpi.DefaultIfEmpty()
            from __rc in _rc.DefaultIfEmpty()
            from __rb in _rb.DefaultIfEmpty()
-           where __rpi.Name == Constants.UserData_ProfileImage
            select new ReferralNodeJoiner
            {
                RefNode = rref,
@@ -234,7 +228,7 @@ JOIN dbo.[User] AS u ON u.EntityId = r.UserId
 JOIN DownLinesCTE  AS dl ON dl.ReferenceCode = r.ReferenceCode
 LEFT JOIN dbo.BioData AS bd ON bd.OwnerId = u.EntityId
 LEFT JOIN dbo.ContactData AS cd ON cd.OwnerId = u.EntityId
-LEFT JOIN dbo.UserData AS ud ON ud.OwnerId = u.EntityId and ud.Name = '" + Constants.UserData_ProfileImage + @"'
+LEFT JOIN dbo.UserData AS ud ON ud.OwnerId = u.EntityId AND ud.Name = '" + Constants.UserData_ProfileImage + @"'
 ORDER BY dl.[rank]
 ";
 
@@ -351,6 +345,9 @@ ORDER BY dl.[rank]
             .ToArray();
 
         private bool hasBio(SqlDataReader row) => !row.IsDBNull(11) || !row.IsDBNull(12);
+
+        public bool AddressExists(string blockChainAddress)
+        => _europa.Store<BitcoinAddress>().Query.Any(_bc => _bc.BlockChainAddress == blockChainAddress);
 
 
         #region Joiner helper classes

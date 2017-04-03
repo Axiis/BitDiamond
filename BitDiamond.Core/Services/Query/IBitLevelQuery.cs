@@ -28,5 +28,6 @@ namespace BitDiamond.Core.Services.Query
         BitLevel GetBitLevelHavingTransaction(long id);
         BlockChainTransaction GetBlockChainTransaction(long transactionId);
         IEnumerable<BitcoinAddress> GetAllBitcoinAddresses(User user);
+        bool AddressExists(string blockChainAddress);
     }
 }

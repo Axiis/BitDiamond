@@ -50,3 +50,4 @@ var BitDiamond;
         })(Home = Controllers.Home || (Controllers.Home = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=home.js.map

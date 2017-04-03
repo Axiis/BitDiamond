@@ -405,3 +405,17 @@ System.Exception: See inner exception ---> System.Exception: See inner exception
 
 
 
+[2017-04-03 12:45:00,867]  This address has already been used
+System.Exception: See inner exception ---> Axis.Pollux.RBAC.Exceptions.AuthorizationException: See Inner Exception ---> System.Exception: This address has already been used
+   at BitDiamond.Core.Services.BitLevelManager.<>c__DisplayClass22_0.<AddBitcoindAddress>b__0() in C:\_dev\Jobs\BitDiamond\Dev\Git\BitDiamond.Core.Services\BitLevelManager.cs:line 297
+   at Axis.Pollux.RBAC.Services.RoleAuthority.<>c__DisplayClass12_0`1.<AuthorizeAccess>b__0()
+   --- End of inner exception stack trace ---
+   at Axis.Pollux.RBAC.Services.RoleAuthority.<>c__DisplayClass12_0`1.<AuthorizeAccess>b__0()
+   at Axis.Luna.Extensions.ObjectExtensions.Eval[R](Func`1 func, Func`2 error)
+   --- End of inner exception stack trace ---
+   at Axis.Luna.Extensions.ExceptionExtensions.Throw[R](Exception e)
+   at Axis.Luna.Operation.<>c__DisplayClass13_0`1.<Fail>b__0()
+   at Axis.Luna.Operation`1..ctor(Func`1 func)
+
+
+

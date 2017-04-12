@@ -30,7 +30,7 @@ var BitDiamond;
                 }
                 Downlines.prototype.generateTree = function () {
                     var _this = this;
-                    var nodeMap = (_a = this.downlines).concat.apply(_a, [this.userRef]).group(function (_node) { return _node.UplineCode; })
+                    var nodeMap = (_a = this.downlines).concat.apply(_a, [this.userRef]).group(function (_node) { return _node.UplineCode || '@apex'; })
                         .aggregate({}, function (acc, next) {
                         var parent = Object.isNullOrUndefined(acc[next.Key]) ? acc[next.Key] = { text: '', nodes: [], tags: [] } : acc[next.Key];
                         parent.tags.push(next.Value.length.toString());

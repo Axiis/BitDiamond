@@ -81,6 +81,7 @@
     <Compile Include="Models\UserLogon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IAppUrlProvider.cs" />
+    <Compile Include="Services\IBackgroundOperationScheduler.cs" />
     <Compile Include="Services\IBlobStore.cs" />
     <Compile Include="Services\IBlockChainService.cs" />
     <Compile Include="Services\IContextVerifier.cs" />

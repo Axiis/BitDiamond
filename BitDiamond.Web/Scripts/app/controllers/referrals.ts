@@ -12,7 +12,7 @@ module BitDiamond.Controllers.Referrals {
 
             var nodeMap = this.downlines
                 .concat(...[this.userRef])
-                .group(_node => _node.UplineCode)
+                .group(_node => _node.UplineCode || '@apex')
                 .aggregate({}, (acc, next) => {
                     var parent = Object.isNullOrUndefined(acc[next.Key]) ? acc[next.Key] = <ITreeViewNode>{ text: '', nodes: [], tags: [] } : <ITreeViewNode>acc[next.Key];
                     parent.tags.push(next.Value.length.toString());

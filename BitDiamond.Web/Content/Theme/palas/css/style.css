@@ -4536,7 +4536,15 @@
 	    color: #d8dade;
 	    letter-spacing: 1px;
 	}
-	.footer-title:after {
+	footer div.col-md-6 .footer-title:after {
+		content:"";
+		display:block;
+		height:1px;
+		width:0;
+		border-top:2px solid rgb(181,67,33);
+		margin:5px 0 0;
+	}
+	footer div.col-sm-12 .footer-title:after {
 		content:"";
 		display:block;
 		height:1px;

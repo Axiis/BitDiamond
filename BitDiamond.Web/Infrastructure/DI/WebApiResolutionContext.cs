@@ -9,7 +9,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Http.Dependencies;
-    using Microsoft.Owin;
     using SimpleInjector.Extensions.ExecutionContextScoping;
     using Owin;
     using Microsoft.Owin.BuilderProperties;
@@ -60,7 +59,7 @@
         }
         #endregion
 
-        public SimpleInjectorOwinResolutionContext(ScopedLifestyle lifeStyle, Action<Container> serviceRegistration)
+        public SimpleInjectorOwinResolutionContext(ScopedLifestyle lifeStyle, Func<Container, Container> serviceRegistration)
         {
             ThrowNullArguments(() => serviceRegistration);
 
@@ -136,7 +135,7 @@
         public static SimpleInjectorOwinResolutionContext GetSimpleInjectorResolver(this IAppBuilder app)
             => Eval(() => app.Properties[OWINResolutionContext] as SimpleInjectorOwinResolutionContext);
 
-        public static IAppBuilder UseSimpleInjectorResolver(this IAppBuilder app, ScopedLifestyle lifestyle, Action<Container> serviceRegistration)
+        public static IAppBuilder UseSimpleInjectorResolver(this IAppBuilder app, ScopedLifestyle lifestyle, Func<Container, Container> serviceRegistration)
         {
             if (app.GetSimpleInjectorResolver() == null)
             {

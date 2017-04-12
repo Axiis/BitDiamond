@@ -349,6 +349,15 @@ ORDER BY dl.[rank]
         public bool AddressExists(string blockChainAddress)
         => _europa.Store<BitcoinAddress>().Query.Any(_bc => _bc.BlockChainAddress == blockChainAddress);
 
+        public IEnumerable<BitcoinAddress> GetReferencedAddressesFor(User user)
+        => (from bct in _europa.Store<BlockChainTransaction>().Query
+           from bca in _europa.Store<BitcoinAddress>().Query
+           where bca.Id == bct.ReceiverId || bca.Id == bct.SenderId
+           where bca.OwnerId == user.UserId
+           select bca)
+           .ToArray();
+
+
 
         #region Joiner helper classes
         public class BitLevelJoiner

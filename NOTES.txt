@@ -26,7 +26,7 @@
     the user registration process.
 3.	Move all css for the loaders into the directive class so there will be no dependency on external files
 4.	Create an "invalidate logon" operation in the AccountService. See the implementation in the "bit-diamond.ts" file for
-	guidance.
+	guidance. [DONE]
 5.  RunPerRequest MUST dispose the services in reverse order of registration [DONE]
 
 
@@ -36,6 +36,6 @@
 	upgrades to the highest level, he/she isn't given any new transaction objects, until a recycle is done. This means i 
 	will have to make changes to the BitLevel Manager.
 2.	Part of activating a Bitcoin address is SETTING it as the CURRENT BIT-LEVEL's DONATION SENDER address. This is 
-	VITAL.
+	VITAL. [Done]
 3.	Remove receiver-confirmation from the bit-level controller/manager/etc. There is an implementation in block-chain, that
 	is where the implemenation rightly belongs. [DONE]

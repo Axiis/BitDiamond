@@ -29,5 +29,6 @@ namespace BitDiamond.Core.Services.Query
         BlockChainTransaction GetBlockChainTransaction(long transactionId);
         IEnumerable<BitcoinAddress> GetAllBitcoinAddresses(User user);
         bool AddressExists(string blockChainAddress);
+        IEnumerable<BitcoinAddress> GetReferencedAddressesFor(User user);
     }
 }

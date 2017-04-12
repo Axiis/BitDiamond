@@ -26,12 +26,16 @@ namespace BitDiamond.Web.Controllers.Api
         {
             ThrowNullArguments(() => bitlevel);
 
-            this._bitlevel = bitlevel;
+            _bitlevel = bitlevel;
         }
 
         [HttpGet, Route("api/bit-levels/bitcoin-addresses")]
         public IHttpActionResult GetAllBitcoinAddresses()
         => this.Log(() => _bitlevel.GetAllBitcoinAddresses().OperationResult(Request));
+
+        [HttpGet, Route("api/bit-levels/bitcoin-addresses/referenced")]
+        public IHttpActionResult GetReferencedAddresses()
+        => this.Log(() => _bitlevel.GetReferencedAddresses().OperationResult(Request));
 
         [HttpGet, Route("api/bit-levels/bitcoin-addresses/active")]
         public IHttpActionResult GetActiveBitcoinAddresses()

@@ -37,6 +37,15 @@ var BitDiamond;
 (function (BitDiamond) {
     var Models;
     (function (Models) {
+        var ScheduleInterval;
+        (function (ScheduleInterval) {
+            ScheduleInterval[ScheduleInterval["Minutely"] = 0] = "Minutely";
+            ScheduleInterval[ScheduleInterval["Hourly"] = 1] = "Hourly";
+            ScheduleInterval[ScheduleInterval["Daily"] = 2] = "Daily";
+            ScheduleInterval[ScheduleInterval["Weekly"] = 3] = "Weekly";
+            ScheduleInterval[ScheduleInterval["Monthly"] = 4] = "Monthly";
+            ScheduleInterval[ScheduleInterval["Yearly"] = 5] = "Yearly";
+        })(ScheduleInterval = Models.ScheduleInterval || (Models.ScheduleInterval = {}));
         var AccountStatus;
         (function (AccountStatus) {
             AccountStatus[AccountStatus["Active"] = 0] = "Active";

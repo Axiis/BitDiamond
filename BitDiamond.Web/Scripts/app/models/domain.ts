@@ -230,6 +230,14 @@ module BitDiamond.Models {
 		User: Pollux.Models.IUser;
 		UserId: string;
 	}
+	export enum ScheduleInterval { 
+		Minutely = 0, 
+		Hourly = 1, 
+		Daily = 2, 
+		Weekly = 3, 
+		Monthly = 4, 
+		Yearly = 5, 
+	}
 	export enum AccountStatus { 
 		Active = 0, 
 		InActive = 1, 

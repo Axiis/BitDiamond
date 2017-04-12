@@ -7,6 +7,7 @@ using Axis.Pollux.RBAC.OAModule;
 using BitDiamond.Data.EF;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Playground
 {
@@ -29,10 +30,26 @@ namespace Playground
 
             new EuropaContext(config).Using(europa =>
             {
-                europa.Store<User>().Query.ForAll((cnt, next) =>
+                var tar = new[]
                 {
-                    Console.WriteLine(next.EntityId);
-                });
+                    Task.Run(() =>
+                    {
+                        var r = new Random();
+                        for(int cnt=0;cnt<1000;cnt++)
+                        {
+                            var _char = (((char)r.Next(26))+'a').ToString();
+                            var _users = europa.Store<User>().Query.Where(_u => _u.EntityId.Contains(_char));
+                            var count = _users.Count();
+                            if(count>0)Console.WriteLine(count);
+                        }
+                        Console.WriteLine("task 1 ended");
+                    })
+                };
+
+                Task.WaitAll(tar);
+
+                Console.WriteLine("done");
+                Console.ReadKey();
             });
         }
     }

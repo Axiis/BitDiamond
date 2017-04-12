@@ -90,7 +90,7 @@ var BitDiamond;
                         return '';
                 };
                 List.prototype.canAct = function (post) {
-                    return post.Status != BitDiamond.Models.PostStatus.Archived;
+                    return this.isAdmin && post.Status != BitDiamond.Models.PostStatus.Archived;
                 };
                 List.prototype.showDetails = function (post) {
                     this.$state.go('base.details', { post: post });
@@ -103,7 +103,9 @@ var BitDiamond;
                 };
                 List.prototype.postAction = function (post) {
                     var _this = this;
-                    if (!post['$__isActing']) {
+                    if (!this.isAdmin)
+                        return;
+                    else if (!post['$__isActing']) {
                         post['$__isActing'] = true;
                         if (post.Status == BitDiamond.Models.PostStatus.Draft) {
                             this.__posts.publishPost(post.Id).then(function (opr) {

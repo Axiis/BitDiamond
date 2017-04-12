@@ -13,11 +13,13 @@ using BitDiamond.Core.Models;
 using BitDiamond.Core.Services;
 using BitDiamond.Core.Services.Services;
 using BitDiamond.Data.EF.Command;
+using BitDiamond.Web.Infrastructure.Config.Hangfire;
 using BitDiamond.Web.Infrastructure.Services;
 using BitDiamond.Web.Infrastructure.Utils;
 using Castle.DynamicProxy;
 using SimpleInjector;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Web.Http;
 using System.Web.Mvc;
 
@@ -25,7 +27,7 @@ namespace BitDiamond.Web.Infrastructure.DI
 {
     public static class DIRegistrations
     {
-        public static void RegisterTypes(Container c)
+        public static Container RegisterTypes(Container c)
         {
             var gen = new ProxyGenerator(); //proxy generator that enables lazy service loading
 
@@ -40,12 +42,13 @@ namespace BitDiamond.Web.Infrastructure.DI
             var cache = new WeakCache();
 
             c.Register<OwinContextProvider, OwinContextProvider>(Lifestyle.Scoped);
-            c.RegisterLazyService<ICredentialHasher, DefaultHasher>(gen, Lifestyle.Scoped);                   
-            c.RegisterLazyService<IBlobStore, FileSystemBlobStore>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IEmailPush, ElasticMailPushService>(gen, Lifestyle.Singleton);
-            c.RegisterLazyService<IAppUrlProvider, UrlProvider>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IPersistenceCommands, SimplePersistenceCommands>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IUserContext, UserContext>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<ICredentialHasher, DefaultHasher>(Lifestyle.Scoped);                   
+            c.RegisterLazyService<IBlobStore, FileSystemBlobStore>(Lifestyle.Scoped);
+            c.RegisterLazyService<IEmailPush, ElasticMailPushService>(Lifestyle.Singleton);
+            c.RegisterLazyService<IAppUrlProvider, UrlProvider>(Lifestyle.Scoped);
+            c.RegisterLazyService<IPersistenceCommands, SimplePersistenceCommands>(Lifestyle.Scoped);
+            c.RegisterLazyService<IBackgroundOperationScheduler, Services.Hangfire.HangfireJobScheduler>(Lifestyle.Scoped);
+            c.RegisterLazyService<IUserContext, UserContext>(Lifestyle.Scoped);
             #endregion
 
 
@@ -63,15 +66,15 @@ namespace BitDiamond.Web.Infrastructure.DI
             #endregion
 
             #region queries
-            c.RegisterLazyService<Core.Services.Query.IAccountQuery, Data.EF.Query.AccountQuery>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<Core.Services.Query.IBlockChainQuery, Data.EF.Query.BlockChainQuery>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<Core.Services.Query.IBitLevelQuery, Data.EF.Query.BitLevelQuery>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<Core.Services.Query.IContextVerifierQuery, Data.EF.Query.ContextVerifierQuery>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<Core.Services.Query.IReferralQuery, Data.EF.Query.ReferralQuery>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<Core.Services.Query.ISettingsQuery, Data.EF.Query.SettingsQuery>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<Core.Services.Query.IUserContextQuery, Data.EF.Query.UserContextQuery>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<Core.Services.Query.IUserNotifierQuery, Data.EF.Query.UserNotifierQuery>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<Core.Services.Query.IPostQuery, Data.EF.Query.PostQuery>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IAccountQuery, Data.EF.Query.AccountQuery>(Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IBlockChainQuery, Data.EF.Query.BlockChainQuery>(Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IBitLevelQuery, Data.EF.Query.BitLevelQuery>(Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IContextVerifierQuery, Data.EF.Query.ContextVerifierQuery>(Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IReferralQuery, Data.EF.Query.ReferralQuery>(Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.ISettingsQuery, Data.EF.Query.SettingsQuery>(Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IUserContextQuery, Data.EF.Query.UserContextQuery>(Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IUserNotifierQuery, Data.EF.Query.UserNotifierQuery>(Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IPostQuery, Data.EF.Query.PostQuery>(Lifestyle.Scoped);
             #endregion
 
             #region Axis.Pollux.Identity
@@ -80,7 +83,7 @@ namespace BitDiamond.Web.Infrastructure.DI
 
             #region Axis.Pollux.Authentication
 
-            c.RegisterLazyService<ICredentialAuthentication, CredentialAuthentication>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<ICredentialAuthentication, CredentialAuthentication>(Lifestyle.Scoped);
             #endregion
 
             #region Axis.Pollux.RBAC
@@ -93,15 +96,14 @@ namespace BitDiamond.Web.Infrastructure.DI
             #endregion
 
             #region BitDiamond.Core.Models/BitDiamond.Core.Services
-
-            c.RegisterLazyService<IAccountManager, AccountManager>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IBitLevelManager, BitLevelManager>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IBlockChainService, BlockChainService>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IContextVerifier, ContextVerifier>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IReferralManager, ReferralManager>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<ISettingsManager, SettingsManager>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IPostService, PostService>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IUserNotifier, UserNotifier>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<IAccountManager, AccountManager>(Lifestyle.Scoped);
+            c.RegisterLazyService<IBitLevelManager, BitLevelManager>(Lifestyle.Scoped);
+            c.RegisterLazyService<IBlockChainService, BlockChainService>(Lifestyle.Scoped);
+            c.RegisterLazyService<IContextVerifier, ContextVerifier>(Lifestyle.Scoped);
+            c.RegisterLazyService<IReferralManager, ReferralManager>(Lifestyle.Scoped);
+            c.RegisterLazyService<ISettingsManager, SettingsManager>(Lifestyle.Scoped);
+            c.RegisterLazyService<IPostService, PostService>(Lifestyle.Scoped);
+            c.RegisterLazyService<IUserNotifier, UserNotifier>(Lifestyle.Scoped);
             #endregion
 
             #endregion
@@ -121,6 +123,18 @@ namespace BitDiamond.Web.Infrastructure.DI
                                    .ForAll((_cnt, _t) => c.Register(_t, _t, Lifestyle.Scoped));
             #endregion
 
+            return c;
+
         }
+
+        public static Container RegisterHangfireTypes(Container container) => container.UsingValue(c =>
+        {
+            //register all possible types
+            c = RegisterTypes(c);
+
+            //override necessary registrations
+            //1. IUserContext
+            c.Register(() => CallContext.LogicalGetData(Interceptor.CallContextParameters).As<IUserContext>(), Lifestyle.Scoped);
+        });
     }
 }

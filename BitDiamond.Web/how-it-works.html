@@ -213,7 +213,7 @@
         <footer class="footer-wrapper footer-bg">
             <div class="container">
                 <div class="row col-p30">
-                    <div class="col-sm-12 col-md-6">
+                    <div class="col-md-6 hidden-sm hidden-xs">
                         <div class="footer-widget">
                             <h3 class="footer-title">BitDiamond</h3>
                             <ul class="footer-links clearfix">
@@ -225,7 +225,29 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-6 text-right">
+                    <div class="col-sm-12 hidden-lg hidden-md">
+                        <div class="footer-widget">
+                            <h3 class="footer-title">BitDiamond</h3>
+                            <ul class="footer-links clearfix">
+                                <li><a href="/index.html">Home</a></li>
+                                <li><a href="/how-it-works.html">How it works</a></li>
+                                <li><a href="/faq.html">FAQ</a></li>
+                                <li><a href="/contact-us.html">Reach us</a></li>
+                                <li><a href="/account/index#!/signin">Login</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 text-right  hidden-sm hidden-xs">
+                        <div class="footer-widget">
+                            <h3 class="footer-title">Get social</h3>
+                            <ul class="footer-social clearfix">
+                                <li><a href="https://mobile.twitter.com/Bit_Diamond" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="https://www.facebook.com/bitdiamondAlphaClub/" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 hidden-lg hidden-md">
                         <div class="footer-widget">
                             <h3 class="footer-title">Get social</h3>
                             <ul class="footer-social clearfix">
@@ -236,7 +258,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-12 xs-box">
+                    <div class="col-lg-12 xs-box text-center hidden-sm hidden-xs">
+                        <p class="copyright">&copy; Copyright {{vm.currentYear}} </p>
+                    </div>
+
+                    <div class="col-sm-12 xs-box hidden-lg hidden-md">
                         <p class="copyright">&copy; Copyright {{vm.currentYear}} </p>
                     </div>
                 </div>

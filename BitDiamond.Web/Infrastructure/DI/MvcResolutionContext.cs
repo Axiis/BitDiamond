@@ -19,18 +19,17 @@ namespace BitDiamond.Web.Infrastructure.DI
 
         #region Init
 
-        public MvcResolutionContext(Action<Container> serviceRegistration) : this(null, serviceRegistration)
+        public MvcResolutionContext(Func<Container, Container> serviceRegistration) : this(null, serviceRegistration)
         { }
 
-        public MvcResolutionContext(ScopedLifestyle defaultScope, Action<Container> serviceRegistration)
+        public MvcResolutionContext(ScopedLifestyle defaultScope, Func<Container, Container> serviceRegistration)
         {
             ThrowNullArguments(() => serviceRegistration);
 
-            var container = new SimpleInjector.Container();
+            var container = new Container();
             if (defaultScope != null) container.Options.DefaultScopedLifestyle = defaultScope;
-
-            serviceRegistration.Invoke(container);
-            this._resolver = new SimpleInjectorDependencyResolver(container);
+            
+            _resolver = new SimpleInjectorDependencyResolver(serviceRegistration.Invoke(container));
         }
 
         #endregion

@@ -63,21 +63,22 @@ namespace BitDiamond.Web.Infrastructure.DI
     public static class ServiceInvocationHelper
     {
         private static LazyFakerImpl SingletonFaker = new LazyFakerImpl();
+        private static Dictionary<Container, ProxyGenerator> GeneratorMap = new Dictionary<Container, ProxyGenerator>();
 
-        public static Service CreateLazyService<Service, Impl>(this ProxyGenerator proxyGen, IServiceResolver resolver)
+        internal static Service CreateLazyService<Service, Impl>(this ProxyGenerator proxyGen, IServiceResolver resolver)
         where Service : class 
         where Impl: class, Service
         {
             var proxy = proxyGen.CreateInterfaceProxyWithTargetInterface(typeof(ILazyServiceFaker), new[] { typeof(Service) }, SingletonFaker, new ServiceInterceptor<Impl>(resolver));
             return proxy as Service;
         }
-        
-        public static Container RegisterLazyService<Service, Impl>(this Container container, ProxyGenerator proxyGenerator, Lifestyle scope)
+
+        public static Container RegisterLazyService<Service, Impl>(this Container container, Lifestyle scope)
         where Service : class
         where Impl : class, Service
         {
             container.Register<Impl, Impl>(scope);
-            container.Register(() => proxyGenerator.CreateLazyService<Service, Impl>(new SimpleContainerResolver(container)), scope);
+            container.Register(() => GeneratorMap.GetOrAdd(container, _c => new ProxyGenerator()).CreateLazyService<Service, Impl>(new SimpleContainerResolver(container)), scope);
             return container;
         }
     }

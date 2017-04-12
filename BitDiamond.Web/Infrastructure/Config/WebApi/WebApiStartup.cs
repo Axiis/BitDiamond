@@ -1,7 +1,6 @@
 ﻿using Axis.Jupiter;
 using Axis.Jupiter.Europa;
 using Axis.Luna;
-using Axis.Luna.Extensions;
 using Axis.Pollux.Authentication.Service;
 using Axis.Pollux.CoreAuthentication;
 using Axis.Pollux.CoreAuthentication.Services;
@@ -15,6 +14,11 @@ using Owin;
 using SimpleInjector.Integration.WebApi;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using Hangfire;
+using Hangfire.SimpleInjector;
+using Axis.Luna.Extensions;
+using SimpleInjector.Extensions.ExecutionContextScoping;
+using SimpleInjector;
 
 [assembly: OwinStartup(typeof(BitDiamond.Web.Infrastructure.Config.WebApi.WebApiStartup))]
 
@@ -29,6 +33,8 @@ namespace BitDiamond.Web.Infrastructure.Config.WebApi
             ConfigureAuth(app);
             ConfigureRequestDI(app);
             ConfigureWebApi(app, config);
+
+            ConfigureHangfire(app);
         }
 
         private void ConfigureAuth(IAppBuilder app)
@@ -98,6 +104,23 @@ namespace BitDiamond.Web.Infrastructure.Config.WebApi
 
             //apply the configuration
             app.UseWebApi(config);
+        }
+
+        private void ConfigureHangfire(IAppBuilder app)
+        {
+            Container c = null;
+            global::Hangfire.GlobalConfiguration.Configuration
+                .UseActivator(new SimpleInjectorJobActivator(DIRegistrations.RegisterHangfireTypes(c = new Container().UsingValue(_c =>
+                {
+                    _c.Options.DefaultScopedLifestyle = new ExecutionContextScopeLifestyle();
+                    _c.Options.AllowOverridingRegistrations = true;
+                }))))
+                .UseFilter(new Hangfire.Interceptor(c.BeginExecutionContextScope))
+                .UseSqlServerStorage("HangfireDb")
+                .UseLog4NetLogProvider();
+            
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();            
         }
 
     }

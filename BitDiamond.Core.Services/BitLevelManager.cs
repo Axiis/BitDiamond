@@ -438,5 +438,11 @@ namespace BitDiamond.Core.Services
                      else return true;
                  })?.User
                  ?? lastBeneficiary;
+
+        public Operation<IEnumerable<BitcoinAddress>> GetReferencedAddresses()
+        => _authorizer.AuthorizeAccess(this.PermissionProfile(UserContext.CurrentUser()), () =>
+        {
+            return _query.GetReferencedAddressesFor(UserContext.CurrentUser());
+        });
     }
 }

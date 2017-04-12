@@ -419,3 +419,19 @@ System.Exception: See inner exception ---> Axis.Pollux.RBAC.Exceptions.Authoriza
 
 
 
+[2017-04-10 09:50:35,172]  Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at BitDiamond.Core.Services.BitLevelManager.<>c__DisplayClass14_0.<Promote>b__0() in C:\_dev\Jobs\BitDiamond\Dev\Git\BitDiamond.Core.Services\BitLevelManager.cs:line 162
+   at Axis.Pollux.RBAC.Services.RoleAuthority.<>c__DisplayClass10_0`1.<AuthorizeAccess>b__0()
+   at Axis.Luna.Operation`1..ctor(Func`1 func)
+
+
+
+[2017-04-10 09:51:09,021]  Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at BitDiamond.Core.Services.BitLevelManager.<>c__DisplayClass14_0.<Promote>b__0() in C:\_dev\Jobs\BitDiamond\Dev\Git\BitDiamond.Core.Services\BitLevelManager.cs:line 162
+   at Axis.Pollux.RBAC.Services.RoleAuthority.<>c__DisplayClass10_0`1.<AuthorizeAccess>b__0()
+   at Axis.Luna.Operation`1..ctor(Func`1 func)
+
+
+

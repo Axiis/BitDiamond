@@ -71,7 +71,7 @@ module BitDiamond.Controllers.Posts {
             else return '';
         }
         canAct(post: Models.IPost) {
-            return post.Status != Models.PostStatus.Archived;
+            return this.isAdmin &&  post.Status != Models.PostStatus.Archived;
         }
 
         showDetails(post: Models.IPost) {
@@ -85,7 +85,8 @@ module BitDiamond.Controllers.Posts {
         }
         postAction(post: Models.IPost) {
 
-            if (!post['$__isActing']) {
+            if (!this.isAdmin) return;
+            else if (!post['$__isActing']) {
                 post['$__isActing'] = true;
 
                 if (post.Status == Models.PostStatus.Draft) {

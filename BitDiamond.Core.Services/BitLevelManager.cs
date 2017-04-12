@@ -444,5 +444,11 @@ namespace BitDiamond.Core.Services
         {
             return _query.GetReferencedAddressesFor(UserContext.CurrentUser());
         });
+
+        public Operation DeleteUnreferencedAddress(long id)
+        => _authorizer.AuthorizeAccess(this.PermissionProfile(UserContext.CurrentUser()), () =>
+        {
+            throw new NotImplementedException();
+        });
     }
 }

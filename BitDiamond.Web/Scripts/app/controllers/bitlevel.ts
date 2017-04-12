@@ -339,6 +339,9 @@ module BitDiamond.Controllers.BitLevel {
         isVerifyingAddress(address: Models.IBitcoinAddress): boolean {
             return address['$__isVerifying'];
         }
+        isDeletingAddress(address: Models.IBitcoinAddress): boolean {
+            return address['$__isDeleting'];
+        }
         canShowActiveAddress(): boolean {
             return !Object.isNullOrUndefined(this.activeAddress) && !this.isEditingAddress;
         }
@@ -355,6 +358,14 @@ module BitDiamond.Controllers.BitLevel {
         }
         canShowDeactivatedFlag(address: Models.IBitcoinAddress): boolean {
             return address.IsVerified && !address.IsActive;
+        }
+        cancelEdit() {
+            if (this.isPersistingAddress) return;
+
+            this.tempAddress = null;
+        }
+        canDeleteAddress(_add: Models.IBitcoinAddress): boolean {
+            return _add['$__isReferenced'];
         }
 
         //events
@@ -381,11 +392,6 @@ module BitDiamond.Controllers.BitLevel {
                     this.isPersistingAddress = false;
                 });
             }
-        }
-        cancelEdit() {
-            if (this.isPersistingAddress) return;
-
-            this.tempAddress = null;
         }
         activateAddress(address: Models.IBitcoinAddress) {
             if (this.isActivatingAddress(address)) return;
@@ -446,6 +452,22 @@ module BitDiamond.Controllers.BitLevel {
             }
 
         }
+        deleteAddress(address: Models.IBitcoinAddress) {
+            if (Object.isNullOrUndefined(address)) return;
+            else if (!address['$__isReferenced']) return;
+            else if (address['$__isDeleting']) return;
+            else {
+                address['$__isDeleting'] = true;
+                this.__bitlevel
+                    .deleteUnreferencedAddress(address.Id)
+                    .then(opr => {
+                        this.addresses.remove(address);
+                        this.__notify.success('The address was deleted successfully');
+                    }, err => {
+                        this.__notify.error('Something went wrong: couldnt delete the address', 'Oops!');
+                    });
+            }
+        }
 
         //utils
         initAddressList() {
@@ -461,17 +483,28 @@ module BitDiamond.Controllers.BitLevel {
 
             //load the addresses
             this.isLoadingView = true;
-            this.__bitlevel.getAllBitcoinAddresses().then(opr => {
-                if (Object.isNullOrUndefined(opr.Result)) this.addresses = [];
-                else {
-                    this.addresses = opr.Result;
+            this.__bitlevel
+                .getAllBitcoinAddresses()
+                .then(opr => {
+                    if (Object.isNullOrUndefined(opr.Result)) this.addresses = [];
+                    else this.addresses = opr.Result;
+
+                    return this.__bitlevel.getReferencedBitcoinAddress();
+                })
+                .then(opr => {
+                    this.addresses.forEach(_add => {
+                        opr.Result
+                            .filter(_referenced => _referenced.BlockChainAddress == _add.BlockChainAddress)
+                            .forEach(_referenced => _add['$__isReferenced'] = true);
+                    });
+
                     this.initAddressList();
-                }
-            }, err => {
-                this.__notify.error('Something went wrong - could not load your bitcoin addresses', 'Oops!');
-            }).finally(() => {
-                this.isLoadingView = false;
-            });
+                }, err => {
+                    this.__notify.error('Something went wrong - could not load your bitcoin addresses', 'Oops!');
+                })
+                .finally(() => {
+                    this.isLoadingView = false;
+                });
         }
     }
 }

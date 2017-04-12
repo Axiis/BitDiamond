@@ -7,10 +7,7 @@ using BitDiamond.Web.Controllers.Api.BitLevelControllerModels;
 using BitDiamond.Web.Infrastructure.Exceptions;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Web.Http;
 using static Axis.Luna.Extensions.ExceptionExtensions;
@@ -36,6 +33,10 @@ namespace BitDiamond.Web.Controllers.Api
         [HttpGet, Route("api/bit-levels/bitcoin-addresses/referenced")]
         public IHttpActionResult GetReferencedAddresses()
         => this.Log(() => _bitlevel.GetReferencedAddresses().OperationResult(Request));
+
+        [HttpDelete, Route("api/bit-levels/bitcoin-addresses/unreferenced")]
+        public IHttpActionResult DeleteUnreferencedAddresses([FromBody] BitcoinAddress addressArg)
+        => this.Log(() => _bitlevel.DeleteUnreferencedAddress(addressArg.Id).OperationResult(Request));
 
         [HttpGet, Route("api/bit-levels/bitcoin-addresses/active")]
         public IHttpActionResult GetActiveBitcoinAddresses()

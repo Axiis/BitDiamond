@@ -205,6 +205,12 @@ module BitDiamond.Services {
 
     export class BitLevel {
 
+        deleteUnreferencedAddress(addressId: number): ng.IPromise<Utils.Operation<Models.IBitcoinAddress>> {
+            return this.__transport.delete('/api/bit-levels/bitcoin-addresses/unreferenced', {
+                Id: addressId
+            });
+        }
+
         upgrade(): ng.IPromise<Utils.Operation<Models.IBitLevel>> {
             return this.__transport.post<Utils.Operation<Models.IBitLevel>>('/api/bit-levels/cycles', null);
         }
@@ -252,6 +258,10 @@ module BitDiamond.Services {
 
         getActiveBitcoinAddress(): ng.IPromise<Utils.Operation<Models.IBitcoinAddress>> {
             return this.__transport.get<Utils.Operation<Models.IBitcoinAddress>>('/api/bit-levels/bitcoin-addresses/active');
+        }
+
+        getReferencedBitcoinAddress(): ng.IPromise<Utils.Operation<Models.IBitcoinAddress[]>> {
+            return this.__transport.get<Utils.Operation<Models.IBitcoinAddress[]>>('/api/bit-levels/bitcoin-addresses/referenced');
         }
 
         addBitcoinAddress(address: Models.IBitcoinAddress): ng.IPromise<Utils.Operation<Models.IBitcoinAddress>> {

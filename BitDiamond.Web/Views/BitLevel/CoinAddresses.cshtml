@@ -111,8 +111,17 @@
                     </div>
                 </div>
             </div>
+            <button class="btn btn-outline btn-danger"
+                    ng-show="vm.canDeleteAddress(vm.activeAddress)"
+                    ng-click="vm.deleteAddress(vm.activeAddress)">
+                <span ng-hide="vm.isDeletingAddress(vm.activeAddress)">
+                    <i class="ti-trash"></i>&nbsp;&nbsp;Delete
+                </span>
+                <ring-loader size="18" color="white" show="vm.isDeletingAddress(vm.activeAddress)"></ring-loader>
+            </button>
         </div>
     </div>
+
 
     <div class="row bd-slide-in-left bd-fade-in"
          ng-hide="vm.isEditingAddress"
@@ -149,6 +158,14 @@
                         <i class="ti-flag-alt"></i> Verify
                     </span>
                     <ring-loader size="18" color="white" show="vm.isVerifyingAddress(address)"></ring-loader>
+                </button>
+                <button class="btn btn-outline btn-danger"
+                        ng-show="vm.canDeleteAddress(address)"
+                        ng-click="vm.deleteAddress(address)">
+                    <span ng-hide="vm.isDeletingAddress(address)">
+                        <i class="ti-trash"></i>&nbsp;&nbsp;Delete
+                    </span>
+                    <ring-loader size="18" color="white" show="vm.isDeletingAddress(address)"></ring-loader>
                 </button>
             </div>
         </div>

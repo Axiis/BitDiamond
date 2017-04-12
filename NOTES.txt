@@ -39,3 +39,8 @@
 	VITAL. [Done]
 3.	Remove receiver-confirmation from the bit-level controller/manager/etc. There is an implementation in block-chain, that
 	is where the implemenation rightly belongs. [DONE]
+4.	Add the following permissions to the #BitMember role:
+	:system/bit-levels/bitcoin-addresses/@get
+	:system/bit-levels/bitcoin-addresses/referenced/@get
+	:system/bit-levels/bitcoin-addresses/referenced/@delete
+5.	Add delete user to Account Manager

@@ -32,15 +32,18 @@ namespace BitDiamond.Core.Services
 
         [Resource(":system/bit-levels/cycles/@get")]
         Operation<BitLevel> GetBitLevelById(long id);
-        
-        //[Resource(":system/bit-levels/bitcoin-addresses/@get")]
-        Operation<IEnumerable<BitcoinAddress>> GetAllBitcoinAddresses();
 
         [Resource(":system/bit-levels/cycles/history/@get")]
         Operation<IEnumerable<BitLevel>> UserUpgradeHistory();
 
+        //[Resource(":system/bit-levels/bitcoin-addresses/@get")]
+        Operation<IEnumerable<BitcoinAddress>> GetAllBitcoinAddresses();
+
         //[Resource(":system/bit-levels/bitcoin-addresses/referenced/@get")]
         Operation<IEnumerable<BitcoinAddress>> GetReferencedAddresses();
+        
+        //[Resource(":system/bit-levels/bitcoin-addresses/referenced/@delete")]
+        Operation DeleteUnreferencedAddress(long id);
 
         [Resource(":system/bit-levels/cycles/history/@get-paged")]
         Operation<SequencePage<BitLevel>> PagedUserUpgradeHistory(int pageSize, long pageIndex = 0L);

@@ -168,6 +168,11 @@ var BitDiamond;
                 this.__transport = __transport;
                 this.$q = $q;
             }
+            BitLevel.prototype.deleteUnreferencedAddress = function (addressId) {
+                return this.__transport.delete('/api/bit-levels/bitcoin-addresses/unreferenced', {
+                    Id: addressId
+                });
+            };
             BitLevel.prototype.upgrade = function () {
                 return this.__transport.post('/api/bit-levels/cycles', null);
             };
@@ -205,6 +210,9 @@ var BitDiamond;
             };
             BitLevel.prototype.getActiveBitcoinAddress = function () {
                 return this.__transport.get('/api/bit-levels/bitcoin-addresses/active');
+            };
+            BitLevel.prototype.getReferencedBitcoinAddress = function () {
+                return this.__transport.get('/api/bit-levels/bitcoin-addresses/referenced');
             };
             BitLevel.prototype.addBitcoinAddress = function (address) {
                 return this.__transport.post('/api/bit-levels/bitcoin-addresses', address);
@@ -361,4 +369,3 @@ var BitDiamond;
         Services.Posts = Posts;
     })(Services = BitDiamond.Services || (BitDiamond.Services = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=bit-diamond.js.map

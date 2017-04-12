@@ -350,16 +350,26 @@ var BitDiamond;
                     this.$q = $q;
                     //load the addresses
                     this.isLoadingView = true;
-                    this.__bitlevel.getAllBitcoinAddresses().then(function (opr) {
+                    this.__bitlevel
+                        .getAllBitcoinAddresses()
+                        .then(function (opr) {
                         if (Object.isNullOrUndefined(opr.Result))
                             _this.addresses = [];
-                        else {
+                        else
                             _this.addresses = opr.Result;
-                            _this.initAddressList();
-                        }
+                        return _this.__bitlevel.getReferencedBitcoinAddress();
+                    })
+                        .then(function (opr) {
+                        _this.addresses.forEach(function (_add) {
+                            opr.Result
+                                .filter(function (_referenced) { return _referenced.BlockChainAddress == _add.BlockChainAddress; })
+                                .forEach(function (_referenced) { return _add['$__isReferenced'] = true; });
+                        });
+                        _this.initAddressList();
                     }, function (err) {
                         _this.__notify.error('Something went wrong - could not load your bitcoin addresses', 'Oops!');
-                    }).finally(function () {
+                    })
+                        .finally(function () {
                         _this.isLoadingView = false;
                     });
                 }
@@ -377,6 +387,9 @@ var BitDiamond;
                 BitcoinAddresses.prototype.isVerifyingAddress = function (address) {
                     return address['$__isVerifying'];
                 };
+                BitcoinAddresses.prototype.isDeletingAddress = function (address) {
+                    return address['$__isDeleting'];
+                };
                 BitcoinAddresses.prototype.canShowActiveAddress = function () {
                     return !Object.isNullOrUndefined(this.activeAddress) && !this.isEditingAddress;
                 };
@@ -393,6 +406,14 @@ var BitDiamond;
                 };
                 BitcoinAddresses.prototype.canShowDeactivatedFlag = function (address) {
                     return address.IsVerified && !address.IsActive;
+                };
+                BitcoinAddresses.prototype.cancelEdit = function () {
+                    if (this.isPersistingAddress)
+                        return;
+                    this.tempAddress = null;
+                };
+                BitcoinAddresses.prototype.canDeleteAddress = function (_add) {
+                    return _add['$__isReferenced'];
                 };
                 //events
                 BitcoinAddresses.prototype.editNewAddress = function () {
@@ -420,11 +441,6 @@ var BitDiamond;
                             _this.isPersistingAddress = false;
                         });
                     }
-                };
-                BitcoinAddresses.prototype.cancelEdit = function () {
-                    if (this.isPersistingAddress)
-                        return;
-                    this.tempAddress = null;
                 };
                 BitcoinAddresses.prototype.activateAddress = function (address) {
                     var _this = this;
@@ -483,6 +499,26 @@ var BitDiamond;
                         });
                     }
                 };
+                BitcoinAddresses.prototype.deleteAddress = function (address) {
+                    var _this = this;
+                    if (Object.isNullOrUndefined(address))
+                        return;
+                    else if (!address['$__isReferenced'])
+                        return;
+                    else if (address['$__isDeleting'])
+                        return;
+                    else {
+                        address['$__isDeleting'] = true;
+                        this.__bitlevel
+                            .deleteUnreferencedAddress(address.Id)
+                            .then(function (opr) {
+                            _this.addresses.remove(address);
+                            _this.__notify.success('The address was deleted successfully');
+                        }, function (err) {
+                            _this.__notify.error('Something went wrong: couldnt delete the address', 'Oops!');
+                        });
+                    }
+                };
                 //utils
                 BitcoinAddresses.prototype.initAddressList = function () {
                     this.activeAddress = this.addresses.firstOrDefault(function (_addr) { return _addr.IsActive; });
@@ -494,4 +530,3 @@ var BitDiamond;
         })(BitLevel = Controllers.BitLevel || (Controllers.BitLevel = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=bitlevel.js.map

@@ -17,4 +17,3 @@ var BitDiamond;
         Modules.homeModlue.controller('Landing', BitDiamond.Controllers.Home.Landing);
     })(Modules = BitDiamond.Modules || (BitDiamond.Modules = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=home.js.map

@@ -382,13 +382,16 @@ var BitDiamond;
                     configurable: true
                 });
                 BitcoinAddresses.prototype.isActivatingAddress = function (address) {
-                    return address['$__isActivating'];
+                    var _address = address;
+                    return !Object.isNullOrUndefined(address) && (_address.$__isActivating || false);
                 };
                 BitcoinAddresses.prototype.isVerifyingAddress = function (address) {
-                    return address['$__isVerifying'];
+                    var _address = address;
+                    return !Object.isNullOrUndefined(address) && (_address.$__isVerifying || false);
                 };
                 BitcoinAddresses.prototype.isDeletingAddress = function (address) {
-                    return address['$__isDeleting'];
+                    var _address = address;
+                    return !Object.isNullOrUndefined(address) && (_address.$__isDeleting || false);
                 };
                 BitcoinAddresses.prototype.canShowActiveAddress = function () {
                     return !Object.isNullOrUndefined(this.activeAddress) && !this.isEditingAddress;
@@ -412,8 +415,9 @@ var BitDiamond;
                         return;
                     this.tempAddress = null;
                 };
-                BitcoinAddresses.prototype.canDeleteAddress = function (_add) {
-                    return _add['$__isReferenced'];
+                BitcoinAddresses.prototype.canDeleteAddress = function (address) {
+                    var _address = address;
+                    return !Object.isNullOrUndefined(address) && (!_address.$__isReferenced || false);
                 };
                 //events
                 BitcoinAddresses.prototype.editNewAddress = function () {
@@ -503,7 +507,7 @@ var BitDiamond;
                     var _this = this;
                     if (Object.isNullOrUndefined(address))
                         return;
-                    else if (!address['$__isReferenced'])
+                    else if (address['$__isReferenced'])
                         return;
                     else if (address['$__isDeleting'])
                         return;
@@ -516,6 +520,9 @@ var BitDiamond;
                             _this.__notify.success('The address was deleted successfully');
                         }, function (err) {
                             _this.__notify.error('Something went wrong: couldnt delete the address', 'Oops!');
+                        })
+                            .finally(function () {
+                            address['$__isDeleting'] = false;
                         });
                     }
                 };

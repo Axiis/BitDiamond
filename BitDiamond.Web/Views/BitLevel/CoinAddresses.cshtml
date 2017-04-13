@@ -110,15 +110,15 @@
                         <h6>{{vm.activeAddress.BlockChainAddress}}</h6>
                     </div>
                 </div>
+                <button class="btn btn-outline btn-danger"
+                        ng-show="vm.canDeleteAddress(vm.activeAddress)"
+                        ng-click="vm.deleteAddress(vm.activeAddress)">
+                    <span ng-hide="vm.isDeletingAddress(vm.activeAddress)">
+                        <i class="ti-trash"></i>&nbsp;&nbsp;Delete
+                    </span>
+                    <ring-loader size="18" color="white" show="vm.isDeletingAddress(vm.activeAddress)"></ring-loader>
+                </button>
             </div>
-            <button class="btn btn-outline btn-danger"
-                    ng-show="vm.canDeleteAddress(vm.activeAddress)"
-                    ng-click="vm.deleteAddress(vm.activeAddress)">
-                <span ng-hide="vm.isDeletingAddress(vm.activeAddress)">
-                    <i class="ti-trash"></i>&nbsp;&nbsp;Delete
-                </span>
-                <ring-loader size="18" color="white" show="vm.isDeletingAddress(vm.activeAddress)"></ring-loader>
-            </button>
         </div>
     </div>
 

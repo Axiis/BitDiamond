@@ -4346,6 +4346,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Config\Hangfire\DBInitializer.cs" />
     <Compile Include="Infrastructure\Services\Hangfire\HangfireJobScheduler.cs" />
     <Compile Include="Infrastructure\Config\Hangfire\Interceptor.cs" />
     <Compile Include="Infrastructure\Services\Hangfire\SerializableUserContext.cs" />

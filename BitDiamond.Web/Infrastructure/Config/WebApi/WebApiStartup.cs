@@ -19,6 +19,7 @@ using Hangfire.SimpleInjector;
 using Axis.Luna.Extensions;
 using SimpleInjector.Extensions.ExecutionContextScoping;
 using SimpleInjector;
+using BitDiamond.Web.Infrastructure.Config.Hangfire;
 
 [assembly: OwinStartup(typeof(BitDiamond.Web.Infrastructure.Config.WebApi.WebApiStartup))]
 
@@ -108,19 +109,18 @@ namespace BitDiamond.Web.Infrastructure.Config.WebApi
 
         private void ConfigureHangfire(IAppBuilder app)
         {
-            Container c = null;
+            Container c = new Container();
+            c.Options.DefaultScopedLifestyle = new ExecutionContextScopeLifestyle();
+            c.Options.AllowOverridingRegistrations = true;
+
             global::Hangfire.GlobalConfiguration.Configuration
-                .UseActivator(new SimpleInjectorJobActivator(DIRegistrations.RegisterHangfireTypes(c = new Container().UsingValue(_c =>
-                {
-                    _c.Options.DefaultScopedLifestyle = new ExecutionContextScopeLifestyle();
-                    _c.Options.AllowOverridingRegistrations = true;
-                }))))
+                .UseActivator(new SimpleInjectorJobActivator(DIRegistrations.RegisterHangfireTypes(c)))
                 .UseFilter(new Hangfire.Interceptor(c.BeginExecutionContextScope))
-                .UseSqlServerStorage("HangfireDb")
+                .UseSqlServerStorage(Hangfire.DBInitializer.InitDb("HangfireDb"))
                 .UseLog4NetLogProvider();
             
             app.UseHangfireDashboard();
-            app.UseHangfireServer();            
+            app.UseHangfireServer();
         }
 
     }

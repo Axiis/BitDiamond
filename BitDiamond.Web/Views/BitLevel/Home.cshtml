@@ -152,7 +152,7 @@
                             <strong style="margin-bottom:20px; display:block;">Receiving Address</strong>
                             <p>{{vm.receiverAddress()}}</p>
 
-                            <button type="button" class="btn btn-outline btn-info wav"
+                            <button type="button" class="btn btn-outline btn-info btn-sm wav"
                                     ng-hide="vm.donationHasHash()"
                                     ng-click="vm.addressCopied()"
                                     data-clipboard-action="copy" data-clipboard-text="{{vm.receiverAddress()}}"
@@ -179,7 +179,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
-                                    <button class="btn btn-outline btn-info"
+                                    <button class="btn btn-outline btn-info btn-sm wav"
                                             style="margin-top:10px;"
                                             ng-class="{disabled: !vm.hasActiveBitcoinAddress}"
                                             ng-click="vm.updateTransactionHash()">

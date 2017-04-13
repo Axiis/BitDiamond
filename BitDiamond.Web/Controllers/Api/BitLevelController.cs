@@ -35,8 +35,10 @@ namespace BitDiamond.Web.Controllers.Api
         => this.Log(() => _bitlevel.GetReferencedAddresses().OperationResult(Request));
 
         [HttpDelete, Route("api/bit-levels/bitcoin-addresses/unreferenced")]
-        public IHttpActionResult DeleteUnreferencedAddresses([FromBody] BitcoinAddress addressArg)
-        => this.Log(() => _bitlevel.DeleteUnreferencedAddress(addressArg.Id).OperationResult(Request));
+        public IHttpActionResult DeleteUnreferencedAddresses(string data)
+        => this.Log(() => data.DecodeUrlData<BitcoinAddressArgs>(Encoding.UTF8)
+               .Then(opr => _bitlevel.DeleteUnreferencedAddress(opr.Result.Id))
+               .OperationResult(Request));
 
         [HttpGet, Route("api/bit-levels/bitcoin-addresses/active")]
         public IHttpActionResult GetActiveBitcoinAddresses()
@@ -45,8 +47,8 @@ namespace BitDiamond.Web.Controllers.Api
         [HttpPost, Route("api/bit-levels/bitcoin-addresses")]
         public IHttpActionResult AddBitcoinAddress([FromBody] BitcoinAddress address)
         => this.Log(() => Operation.Try(() => address.ThrowIfNull(new MalformedApiArgumentsException()))
-            .Then(opr => _bitlevel.AddBitcoindAddress(address))
-            .OperationResult(Request));
+               .Then(opr => _bitlevel.AddBitcoindAddress(address))
+               .OperationResult(Request));
 
         [HttpPut, Route("api/bit-levels/bitcoin-addresses/activate")]
         public IHttpActionResult ActivateAddress([FromBody] BitcoinAddressArgs args)
@@ -93,10 +95,9 @@ namespace BitDiamond.Web.Controllers.Api
 
         [HttpGet, Route("api/bit-levels/cycles")]
         public IHttpActionResult GetBitLevelById(string data)
-        => this.Log(() => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
-            .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<BitLevelArgs>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
-            .Then(argopr => _bitlevel.GetBitLevelById(argopr.Result.Id))
-            .OperationResult(Request));
+        => this.Log(() => data.DecodeUrlData<BitcoinAddressArgs>(Encoding.UTF8)
+               .Then(opr => _bitlevel.GetBitLevelById(opr.Result.Id))
+               .OperationResult(Request));
 
 
         [HttpGet, Route("api/bit-levels/cycles/history")]
@@ -106,8 +107,7 @@ namespace BitDiamond.Web.Controllers.Api
 
         [HttpGet, Route("api/bit-levels/cycles/history/pages")]
         public IHttpActionResult UserUpgradeHistory(string data)
-        => this.Log(() => Operation.Try(() => ThrowIfFail(() => Encoding.UTF8.GetString(Convert.FromBase64String(data)), ex => new MalformedApiArgumentsException()))
-            .Then(_jopr => ThrowIfFail(() => JsonConvert.DeserializeObject<SequencePageArgs>(_jopr.Result, Constants.Misc_DefaultJsonSerializerSettings), ex => new MalformedApiArgumentsException()))
+        => this.Log(() => data.DecodeUrlData<SequencePageArgs>(Encoding.UTF8)
             .Then(argopr => _bitlevel.PagedUserUpgradeHistory(argopr.Result.PageSize, argopr.Result.PageIndex))
             .OperationResult(Request));
 

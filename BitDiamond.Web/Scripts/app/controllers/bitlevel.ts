@@ -334,13 +334,16 @@ module BitDiamond.Controllers.BitLevel {
         }
 
         isActivatingAddress(address: Models.IBitcoinAddress): boolean {
-            return address['$__isActivating'];
+            var _address: any = address;
+            return !Object.isNullOrUndefined(address) && (_address.$__isActivating || false);
         }
         isVerifyingAddress(address: Models.IBitcoinAddress): boolean {
-            return address['$__isVerifying'];
+            var _address: any = address;
+            return !Object.isNullOrUndefined(address) && (_address.$__isVerifying || false);
         }
         isDeletingAddress(address: Models.IBitcoinAddress): boolean {
-            return address['$__isDeleting'];
+            var _address: any = address;
+            return !Object.isNullOrUndefined(address) && (_address.$__isDeleting || false);
         }
         canShowActiveAddress(): boolean {
             return !Object.isNullOrUndefined(this.activeAddress) && !this.isEditingAddress;
@@ -364,8 +367,9 @@ module BitDiamond.Controllers.BitLevel {
 
             this.tempAddress = null;
         }
-        canDeleteAddress(_add: Models.IBitcoinAddress): boolean {
-            return _add['$__isReferenced'];
+        canDeleteAddress(address: Models.IBitcoinAddress): boolean {
+            var _address: any = address;
+            return !Object.isNullOrUndefined(address) && (!_address.$__isReferenced || false);
         }
 
         //events
@@ -454,7 +458,7 @@ module BitDiamond.Controllers.BitLevel {
         }
         deleteAddress(address: Models.IBitcoinAddress) {
             if (Object.isNullOrUndefined(address)) return;
-            else if (!address['$__isReferenced']) return;
+            else if (address['$__isReferenced']) return;
             else if (address['$__isDeleting']) return;
             else {
                 address['$__isDeleting'] = true;
@@ -465,6 +469,9 @@ module BitDiamond.Controllers.BitLevel {
                         this.__notify.success('The address was deleted successfully');
                     }, err => {
                         this.__notify.error('Something went wrong: couldnt delete the address', 'Oops!');
+                    })
+                    .finally(() => {
+                        address['$__isDeleting'] = false;
                     });
             }
         }

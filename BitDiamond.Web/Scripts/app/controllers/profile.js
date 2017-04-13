@@ -58,6 +58,9 @@ var BitDiamond;
                 Dashboard.prototype.isLastPost = function (index) {
                     return index == this.posts.length - 1;
                 };
+                Dashboard.prototype.hasBitLevel = function () {
+                    return !Object.isNullOrUndefined(this.bitLevel);
+                };
                 return Dashboard;
             }());
             Profile.Dashboard = Dashboard;

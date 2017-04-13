@@ -327,8 +327,8 @@ namespace BitDiamond.Core.Services
                       //Change the address of the donation to the next level...if the donation has not been verified
                       .Then(opr =>
                       {
-                          var currentLevel = _query.CurrentBitLevel(UserContext.CurrentUser());
-                          if(currentLevel.Donation.Status == BlockChainTransactionStatus.Unverified)
+                          var currentLevel = _query.CurrentBitLevel(UserContext.CurrentUser()); //<-- may return null for new users
+                          if(currentLevel?.Donation.Status == BlockChainTransactionStatus.Unverified)
                           {
                               currentLevel.Donation.SenderId = opr.Result.Id;
                               _pcommand.Update(currentLevel.Donation);
@@ -448,7 +448,10 @@ namespace BitDiamond.Core.Services
         public Operation DeleteUnreferencedAddress(long id)
         => _authorizer.AuthorizeAccess(this.PermissionProfile(UserContext.CurrentUser()), () =>
         {
-            throw new NotImplementedException();
+            if (_query.IsReferencedAddress(UserContext.CurrentUser(), id)) throw new Exception("Cannot delete a referenced address");
+
+            var address = _query.GetBitcoinAddressById(id);
+            _pcommand.Delete(address).Resolve();
         });
     }
 }

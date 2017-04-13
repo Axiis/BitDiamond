@@ -3,14 +3,6 @@ module BitDiamond.Controllers.Profile {
 
     export class Dashboard {
 
-
-        displayTime(time: Apollo.Models.JsonDateTime): string {
-            if (Object.isNullOrUndefined(time)) return '';
-            else return time.toMoment().format('YYYY/M/D  H:m');
-        }
-        isLastPost(index: number): boolean {
-            return index == this.posts.length - 1;
-        }
         posts: Models.IPost[] = [];
         postCount: number;
         isLoadingPosts: boolean;
@@ -33,6 +25,18 @@ module BitDiamond.Controllers.Profile {
 
         $q: ng.IQService;
         $scope: ng.IScope;
+
+
+        displayTime(time: Apollo.Models.JsonDateTime): string {
+            if (Object.isNullOrUndefined(time)) return '';
+            else return time.toMoment().format('YYYY/M/D  H:m');
+        }
+        isLastPost(index: number): boolean {
+            return index == this.posts.length - 1;
+        }
+        hasBitLevel(): boolean {
+            return !Object.isNullOrUndefined(this.bitLevel);
+        }
 
         constructor(__notify, __account, __userContext, __posts, __blockChain, __bitLevel, $q, $scope) {
             this.__notify = __notify;

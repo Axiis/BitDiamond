@@ -3,6 +3,7 @@ using Axis.Luna.Extensions;
 using Castle.DynamicProxy;
 using SimpleInjector;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using static Axis.Luna.Extensions.ExceptionExtensions;
@@ -63,7 +64,7 @@ namespace BitDiamond.Web.Infrastructure.DI
     public static class ServiceInvocationHelper
     {
         private static LazyFakerImpl SingletonFaker = new LazyFakerImpl();
-        private static Dictionary<Container, ProxyGenerator> GeneratorMap = new Dictionary<Container, ProxyGenerator>();
+        private static ConcurrentDictionary<Container, ProxyGenerator> GeneratorMap = new ConcurrentDictionary<Container, ProxyGenerator>();
 
         internal static Service CreateLazyService<Service, Impl>(this ProxyGenerator proxyGen, IServiceResolver resolver)
         where Service : class 

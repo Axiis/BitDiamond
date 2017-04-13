@@ -350,12 +350,25 @@ ORDER BY dl.[rank]
         => _europa.Store<BitcoinAddress>().Query.Any(_bc => _bc.BlockChainAddress == blockChainAddress);
 
         public IEnumerable<BitcoinAddress> GetReferencedAddressesFor(User user)
-        => (from bct in _europa.Store<BlockChainTransaction>().Query
-           from bca in _europa.Store<BitcoinAddress>().Query
-           where bca.Id == bct.ReceiverId || bca.Id == bct.SenderId
-           where bca.OwnerId == user.UserId
-           select bca)
-           .ToArray();
+        {
+            var bctStore = _europa.Store<BlockChainTransaction>().Query;
+            var bcaStore = _europa.Store<BitcoinAddress>().Query;
+            return (from bct in bctStore
+                 from bca in bcaStore
+                 where bca.Id == bct.ReceiverId || bca.Id == bct.SenderId
+                 where bca.OwnerId == user.UserId
+                 select bca)
+                .Distinct()
+                .ToArray();
+        }
+
+        public bool IsReferencedAddress(User user, long id)
+        => _europa
+            .Store<BlockChainTransaction>()
+            .QueryWith(_bct => _bct.Receiver, _bct => _bct.Sender)
+            .Where(_bct => (_bct.SenderId == id && _bct.Sender.OwnerId == user.UserId) ||
+                           (_bct.ReceiverId == id && _bct.Receiver.OwnerId == user.UserId))
+            .Any();
 
 
 

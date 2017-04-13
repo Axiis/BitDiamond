@@ -30,5 +30,6 @@ namespace BitDiamond.Core.Services.Query
         IEnumerable<BitcoinAddress> GetAllBitcoinAddresses(User user);
         bool AddressExists(string blockChainAddress);
         IEnumerable<BitcoinAddress> GetReferencedAddressesFor(User user);
+        bool IsReferencedAddress(User user, long id);
     }
 }

@@ -114,9 +114,10 @@ namespace BitDiamond.Web.Infrastructure.Config.WebApi
             c.Options.AllowOverridingRegistrations = true;
 
             global::Hangfire.GlobalConfiguration.Configuration
-                .UseActivator(new SimpleInjectorJobActivator(DIRegistrations.RegisterHangfireTypes(c)))
                 .UseFilter(new Hangfire.Interceptor(c.BeginExecutionContextScope))
                 .UseSqlServerStorage(Hangfire.DBInitializer.InitDb("HangfireDb"))
+                .UsingValue(_storage => _storage
+                .UseActivator(new SimpleInjectorJobActivator(DIRegistrations.RegisterHangfireTypes(c, _storage.Entry.GetConnection()))))
                 .UseLog4NetLogProvider();
             
             app.UseHangfireDashboard();

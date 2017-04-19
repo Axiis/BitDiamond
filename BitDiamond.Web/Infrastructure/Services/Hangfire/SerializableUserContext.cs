@@ -17,5 +17,10 @@ namespace BitDiamond.Web.Infrastructure.Services.Hangfire
         public User CurrentUser() => _currentUser;
         public UserLogon CurrentUserLogon() => _currentUserLogon;
         public IEnumerable<string> CurrentUserRoles() => _currentUserRoles;
+
+        public IUserContext Impersonate(string userId)
+        {
+            throw new NotSupportedException();
+        }
     }
 }

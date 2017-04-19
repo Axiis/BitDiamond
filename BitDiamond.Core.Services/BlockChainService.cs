@@ -45,7 +45,7 @@ namespace BitDiamond.Core.Services
         }
 
 
-        public Operation<BlockChainTransaction> GetTransactionDetails(string transactionHash)
+        public Operation<BlockChainTransaction> AcquireTransactionDetails(string transactionHash)
         => _authorizer.AuthorizeAccess(UserContext.CurrentPPP(), () =>
         {
             var bl = _levelQuery.CurrentBitLevel(UserContext.CurrentUser());
@@ -175,7 +175,7 @@ namespace BitDiamond.Core.Services
         public Operation VerifyTransaction(string transactionHash, BitLevel currentLevel)
         => _authorizer.AuthorizeAccess(this.PermissionProfile(UserContext.CurrentUser()), () =>
         {
-            this.GetTransactionDetails(transactionHash).Resolve();
+            this.AcquireTransactionDetails(transactionHash).Resolve();
         });
 
         public class TransactionDescriptor

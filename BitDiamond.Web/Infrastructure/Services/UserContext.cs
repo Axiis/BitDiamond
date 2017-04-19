@@ -73,5 +73,31 @@ namespace BitDiamond.Web.Infrastructure.Services
 
             else return new string[0];
         }
+
+        public IUserContext Impersonate(string userId) => new ImporsonatedUserContext(_query.GetUserById(userId), _query);
+    }
+
+    public class ImporsonatedUserContext : IUserContext
+    {
+        private IUserContextQuery _query = null;
+        private User _user = null;
+        private List<string> _userRoles = null;
+
+        public ImporsonatedUserContext(User user, IUserContextQuery query)
+        {
+            ThrowNullArguments(() => user, () => query);
+
+            _user = user;
+            _query = query;
+        }
+
+        public User CurrentUser() => _user;
+
+        public UserLogon CurrentUserLogon() => null;
+
+        public IEnumerable<string> CurrentUserRoles()
+        => _userRoles ?? (_userRoles = _query.GetUserRoles(_user.UserId).ToList());
+
+        public IUserContext Impersonate(string userId) => new ImporsonatedUserContext(_query.GetUserById(userId), _query);
     }
 }

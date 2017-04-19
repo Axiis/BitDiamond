@@ -8,7 +8,7 @@ namespace BitDiamond.Core.Services
     public interface IBlockChainService
     {
         [Resource(":system/block-chain/transactions/@getByHash")]
-        Operation<BlockChainTransaction> GetTransactionDetails(string transactionHash);
+        Operation<BlockChainTransaction> AcquireTransactionDetails(string transactionHash);
 
         [Resource(":system/block-chain/addresses/@verify")]
         Operation<BitcoinAddress> VerifyBitcoinAddress(BitcoinAddress bitcoinAddress);

@@ -13,5 +13,7 @@ namespace BitDiamond.Core.Services
         User CurrentUser();
         IEnumerable<string> CurrentUserRoles();
         UserLogon CurrentUserLogon();
+
+        IUserContext Impersonate(string userId);
     }
 }

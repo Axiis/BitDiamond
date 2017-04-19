@@ -70,6 +70,7 @@
     <Compile Include="Models\ContextVerification.cs" />
     <Compile Include="Models\BitLevel.cs" />
     <Compile Include="Models\Email\AccountActivation.cs" />
+    <Compile Include="Models\Email\GenericMessage.cs" />
     <Compile Include="Models\Email\MailModel.cs" />
     <Compile Include="Models\Email\PasswordRecovery.cs" />
     <Compile Include="Models\Email\SupportMessage.cs" />

@@ -17,6 +17,8 @@ using BitDiamond.Web.Infrastructure.Config.Hangfire;
 using BitDiamond.Web.Infrastructure.Services;
 using BitDiamond.Web.Infrastructure.Utils;
 using Castle.DynamicProxy;
+using Hangfire.SqlServer;
+using Hangfire.Storage;
 using SimpleInjector;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -42,6 +44,7 @@ namespace BitDiamond.Web.Infrastructure.DI
             var cache = new WeakCache();
 
             c.Register<OwinContextProvider, OwinContextProvider>(Lifestyle.Scoped);
+            c.Register<IStorageConnection>(() => new SqlServerStorage("HangfireDb").GetConnection(), Lifestyle.Scoped);
             c.RegisterLazyService<ICredentialHasher, DefaultHasher>(Lifestyle.Scoped);                   
             c.RegisterLazyService<IBlobStore, FileSystemBlobStore>(Lifestyle.Scoped);
             c.RegisterLazyService<IEmailPush, ElasticMailPushService>(Lifestyle.Singleton);
@@ -127,14 +130,14 @@ namespace BitDiamond.Web.Infrastructure.DI
 
         }
 
-        public static Container RegisterHangfireTypes(Container container) => container.UsingValue(c =>
+        public static Container RegisterHangfireTypes(Container container, IStorageConnection hangfireStorageConnection) => container.UsingValue(c =>
         {
             //register all possible types
             c = RegisterTypes(c);
 
             //override necessary registrations
             //1. IUserContext
-            c.Register(() => CallContext.LogicalGetData(Interceptor.CallContextParameters).As<IUserContext>(), Lifestyle.Scoped);
+            c.Register(() => CallContext.LogicalGetData(Interceptor.CallContextParameters_UserContext).As<IUserContext>(), Lifestyle.Scoped);
         });
     }
 }

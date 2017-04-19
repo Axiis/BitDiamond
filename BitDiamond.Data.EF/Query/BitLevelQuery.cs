@@ -370,6 +370,29 @@ ORDER BY dl.[rank]
                            (_bct.ReceiverId == id && _bct.Receiver.OwnerId == user.UserId))
             .Any();
 
+        public IEnumerable<BitLevel> GetDonorLevels(User targetUser)
+        => BaseBitLevelQuery()
+            .Where(_x => _x.Receiver.EntityId == targetUser.UserId)
+            .Where(_x => _x.Transaction.TransactionHash == null)
+            .AsEnumerable()
+            .Select(_x => _x.Level)
+            .ToArray();
+
+        public IEnumerable<BlockChainTransaction> GetAllDonationsWithReceiverAddress(string blockChainAddress)
+        => _europa
+            .Store<BlockChainTransaction>()
+            .QueryWith(_bct => _bct.Receiver, _bct => _bct.Sender)
+            .Where(_bct => _bct.Receiver.BlockChainAddress == blockChainAddress)
+            .ToArray();
+
+        public IEnumerable<User> GetUsersWithUnconfirmedTransactions()
+        => BaseBlockChainQuery()
+            .Where(_bbcq => _bbcq.Transaction.Status == BlockChainTransactionStatus.Unverified ||
+                            _bbcq.Transaction.LedgerCount < 3)
+            .AsEnumerable()
+            .Select(_bbcq => _bbcq.Sender)
+            .ToArray();
+
 
 
         #region Joiner helper classes

@@ -185,7 +185,7 @@ namespace BitDiamond.Test
         }
 
 
-        public static void RegisterTypes(Container c)
+        public static Container RegisterTypes(Container c)
         {
             var gen = new ProxyGenerator(); //proxy generator that enables lazy service loading
 
@@ -219,12 +219,12 @@ namespace BitDiamond.Test
 
 
             c.Register<OwinContextProvider, OwinContextProvider>(Lifestyle.Scoped);
-            c.RegisterLazyService<ICredentialHasher, DefaultHasher>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IBlobStore, FileSystemBlobStore>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IEmailPush, ElasticMailPushService>(gen, Lifestyle.Singleton);
-            c.RegisterLazyService<IAppUrlProvider, UrlProvider>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IPersistenceCommands, SimplePersistenceCommands>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IUserContext, _UserContext>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<ICredentialHasher, DefaultHasher>(Lifestyle.Scoped);
+            c.RegisterLazyService<IBlobStore, FileSystemBlobStore>(Lifestyle.Scoped);
+            c.RegisterLazyService<IEmailPush, ElasticMailPushService>(Lifestyle.Singleton);
+            c.RegisterLazyService<IAppUrlProvider, UrlProvider>(Lifestyle.Scoped);
+            c.RegisterLazyService<IPersistenceCommands, SimplePersistenceCommands>(Lifestyle.Scoped);
+            c.RegisterLazyService<IUserContext, _UserContext>(Lifestyle.Scoped);
             #endregion
 
 
@@ -242,14 +242,14 @@ namespace BitDiamond.Test
             #endregion
 
             #region queries
-            c.RegisterLazyService<Core.Services.Query.IAccountQuery, Data.EF.Query.AccountQuery>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<Core.Services.Query.IBlockChainQuery, Data.EF.Query.BlockChainQuery>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<Core.Services.Query.IBitLevelQuery, Data.EF.Query.BitLevelQuery>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<Core.Services.Query.IContextVerifierQuery, Data.EF.Query.ContextVerifierQuery>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<Core.Services.Query.IReferralQuery, Data.EF.Query.ReferralQuery>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<Core.Services.Query.ISettingsQuery, Data.EF.Query.SettingsQuery>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<Core.Services.Query.IUserContextQuery, Data.EF.Query.UserContextQuery>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<Core.Services.Query.IUserNotifierQuery, Data.EF.Query.UserNotifierQuery>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IAccountQuery, Data.EF.Query.AccountQuery>(Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IBlockChainQuery, Data.EF.Query.BlockChainQuery>(Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IBitLevelQuery, Data.EF.Query.BitLevelQuery>(Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IContextVerifierQuery, Data.EF.Query.ContextVerifierQuery>(Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IReferralQuery, Data.EF.Query.ReferralQuery>(Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.ISettingsQuery, Data.EF.Query.SettingsQuery>(Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IUserContextQuery, Data.EF.Query.UserContextQuery>(Lifestyle.Scoped);
+            c.RegisterLazyService<Core.Services.Query.IUserNotifierQuery, Data.EF.Query.UserNotifierQuery>(Lifestyle.Scoped);
             #endregion
 
             #region Axis.Pollux.Identity
@@ -258,7 +258,7 @@ namespace BitDiamond.Test
 
             #region Axis.Pollux.Authentication
 
-            c.RegisterLazyService<ICredentialAuthentication, CredentialAuthentication>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<ICredentialAuthentication, CredentialAuthentication>(Lifestyle.Scoped);
             #endregion
 
             #region Axis.Pollux.RBAC
@@ -272,13 +272,13 @@ namespace BitDiamond.Test
 
             #region BitDiamond.Core.Models/BitDiamond.Core.Services
 
-            c.RegisterLazyService<IAccountManager, Core.Services.AccountManager>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IBitLevelManager, BitLevelManager>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IBlockChainService, BlockChainService>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IContextVerifier, ContextVerifier>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IReferralManager, ReferralManager>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<ISettingsManager, SettingsManager>(gen, Lifestyle.Scoped);
-            c.RegisterLazyService<IUserNotifier, UserNotifier>(gen, Lifestyle.Scoped);
+            c.RegisterLazyService<IAccountManager, Core.Services.AccountManager>(Lifestyle.Scoped);
+            c.RegisterLazyService<IBitLevelManager, BitLevelManager>(Lifestyle.Scoped);
+            c.RegisterLazyService<IBlockChainService, BlockChainService>(Lifestyle.Scoped);
+            c.RegisterLazyService<IContextVerifier, ContextVerifier>(Lifestyle.Scoped);
+            c.RegisterLazyService<IReferralManager, ReferralManager>(Lifestyle.Scoped);
+            c.RegisterLazyService<ISettingsManager, SettingsManager>(Lifestyle.Scoped);
+            c.RegisterLazyService<IUserNotifier, UserNotifier>(Lifestyle.Scoped);
             #endregion
 
             #endregion
@@ -298,6 +298,7 @@ namespace BitDiamond.Test
                                    .ForAll((_cnt, _t) => c.Register(_t, _t, Lifestyle.Scoped));
             #endregion
 
+            return c;
         }
     }
 
@@ -308,6 +309,11 @@ namespace BitDiamond.Test
         public IEnumerable<string> CurrentUserRoles() => new[] { "#bit-member" };
 
         public UserLogon CurrentUserLogon()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IUserContext Impersonate(string userId)
         {
             throw new NotImplementedException();
         }

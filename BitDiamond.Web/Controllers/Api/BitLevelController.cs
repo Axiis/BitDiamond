@@ -79,6 +79,11 @@ namespace BitDiamond.Web.Controllers.Api
         => this.Log(() => _bitlevel.Promote(args?.TargetUser, args?.Steps ?? 0, Request.Headers.GetValues("Haxh")?.FirstOrDefault())
                .OperationResult(Request));
 
+        [HttpPost, Route("api/bit-levels/cycles/demote")]
+        public IHttpActionResult Demote([FromBody] PromotionArgs args)
+        => this.Log(() => _bitlevel.Promote(args?.TargetUser, args?.Steps ?? 0, Request.Headers.GetValues("Haxh")?.FirstOrDefault())
+               .OperationResult(Request));
+
         [HttpPut, Route("api/bit-levels/transactions/current")]
         public IHttpActionResult UpdateTransactionHash([FromBody] TransactionArgs args)
         => this.Log(() => Operation.Try(() => args.ThrowIfNull(new MalformedApiArgumentsException()))
@@ -87,7 +92,7 @@ namespace BitDiamond.Web.Controllers.Api
 
         [HttpPut, Route("api/bit-levels/transactions/current/confirm")]
         public IHttpActionResult ConfirmUpgradeDonation()
-        => this.Log(() => _bitlevel.ConfirmUpgradeDonnation().OperationResult(Request));
+        => this.Log(() => _bitlevel.ConfirmUpgradeDonation().OperationResult(Request));
 
         [HttpGet, Route("api/bit-levels/cycles/current")]
         public IHttpActionResult CurrentUserLevel()

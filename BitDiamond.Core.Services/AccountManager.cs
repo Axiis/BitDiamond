@@ -304,7 +304,7 @@ If you dont have one, you can create one with any of the popular Bitcoin Wallet 
 
             return _messagePush.SendMail(new AccountActivation
             {
-                From = "donotreply@bitdiamond.com",
+                From = Constants.MailOrigin_DoNotReply,
                 Subject = "Account - Email Verification",
                 Target = user.UserId,
                 Link = _apiProvider.GenerateUserActivationVerificationUrl(verification.VerificationToken, targetUser).Result

@@ -43,4 +43,5 @@
 	:system/bit-levels/bitcoin-addresses/@get
 	:system/bit-levels/bitcoin-addresses/referenced/@get
 	:system/bit-levels/bitcoin-addresses/referenced/@delete
-5.	Add delete user to Account Manager
+5.	Add upgrade count down for new users. And also a mechanism for deactivated users to be reactivated.
+6.	Add, in the BitLevel SPA, widgets that show all the expected incoming transactions

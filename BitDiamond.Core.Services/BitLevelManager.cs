@@ -13,11 +13,14 @@ using Axis.Jupiter.Kore.Command;
 using Axis.Pollux.Identity.Principal;
 using System.Linq;
 using Haxh;
+using BitDiamond.Core.Models.Email;
 
 namespace BitDiamond.Core.Services
 {
     public class BitLevelManager : IBitLevelManager, IUserContextAware
     {
+        public static readonly string BackgroundJob_AutomaticConfirmation = "BitDiamond.BitLevel.AutoConfirmation";
+
         private IBitLevelQuery _query = null;
         private IReferralQuery _refQuery = null;
         private IPersistenceCommands _pcommand = null;
@@ -25,12 +28,17 @@ namespace BitDiamond.Core.Services
         private IUserNotifier _notifier = null;
         private IBlockChainService _blockChain = null;
         private ISettingsManager _settingsManager = null;
+        private IEmailPush _emailService = null;
+        private IBackgroundOperationScheduler _backgroundProcessor;
+        private IAppUrlProvider _urlProvider;
 
         public IUserContext UserContext { get; private set; }
 
         public BitLevelManager(IUserAuthorization authorizer, IUserContext userContext, IBitLevelQuery query, 
                                IPersistenceCommands pcommand, IUserNotifier notifier, IBlockChainService blockChain,
-                               ISettingsManager settingsManager, IReferralQuery refQuery)
+                               ISettingsManager settingsManager, IReferralQuery refQuery,
+                               IEmailPush emailService, IBackgroundOperationScheduler backgroundProcessor,
+                               IAppUrlProvider urlProvider)
         {
             ThrowNullArguments(() => userContext,
                                () => query,
@@ -38,7 +46,10 @@ namespace BitDiamond.Core.Services
                                () => notifier,
                                () => blockChain,
                                () => settingsManager,
-                               () => refQuery);
+                               () => refQuery,
+                               () => emailService,
+                               () => backgroundProcessor,
+                               () => urlProvider);
 
             _query = query;
             _pcommand = pcommand;
@@ -47,6 +58,9 @@ namespace BitDiamond.Core.Services
             _blockChain = blockChain;
             _refQuery = refQuery;
             _settingsManager = settingsManager;
+            _emailService = emailService;
+            _backgroundProcessor = backgroundProcessor;
+            _urlProvider = urlProvider;
 
             UserContext = userContext;
         }
@@ -59,20 +73,23 @@ namespace BitDiamond.Core.Services
         public Operation<BitLevel> Upgrade()
         => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
         {
-            //attempt to confirm the upgrade donation first...
-            //note that this method returns "null" for new users without bitlevels
-            ConfirmUpgradeDonnation().Resolve();
 
             var maxLevelSettings = _settingsManager.GetSetting(Constants.Settings_MaxBitLevel).Resolve();
             var maxLevel = (int)maxLevelSettings.ParseData<long>();
             var targetUser = UserContext.CurrentUser();
-            var currentLevel = _query.CurrentBitLevel(targetUser) ??
-                               new BitLevel
-                               {
-                                   Level = maxLevel,
-                                   Cycle = 0,
-                                   Donation = new BlockChainTransaction { Status = BlockChainTransactionStatus.Verified }
-                               };
+            var currentLevel = _query.CurrentBitLevel(targetUser);
+
+            if (currentLevel != null)
+                ConfirmUpgradeDonation().Resolve();
+
+            else currentLevel = new BitLevel
+            {
+                Level = maxLevel,
+                Cycle = 0,
+                Donation = new BlockChainTransaction { Status = BlockChainTransactionStatus.Verified }
+            };
+
+
             if (currentLevel.Donation.Status == BlockChainTransactionStatus.Unverified)
                 throw new Exception("Current level donnation is still unverified");
 
@@ -143,11 +160,57 @@ namespace BitDiamond.Core.Services
             _query.GetTransactionWithHash(transactionHash)
                   .ThrowIfNotNull(new Exception("A transaction already exists in the system with the supplied hash"));
 
-            _blockChain.VerifyTransaction(transactionHash, currentLevel)
-                       .Resolve();             
+            return _blockChain
+                .VerifyTransaction(transactionHash, currentLevel)
+                .Then(opr =>
+                {
+                    currentLevel.Donation.TransactionHash = transactionHash;
+                    return _pcommand.Update(currentLevel.Donation);
+                })
+                .Then(opr => _backgroundProcessor.RepeatOperation(BackgroundJob_AutomaticConfirmation, UserContext.Impersonate(Constants.SystemUsers_Root), () => AutoConfirmDonations(), ScheduleInterval.Hourly)
+                .Then(_opr => opr.Result));
+        });
 
-            currentLevel.Donation.TransactionHash = transactionHash;
-            return _pcommand.Update(currentLevel.Donation);
+        public Operation AutoConfirmDonations()
+        => _authorizer.AuthorizeAccess(this.PermissionProfile(UserContext.CurrentUser()), () =>
+        {
+            _query.GetUsersWithUnconfirmedTransactions()
+                  .ForAll((_cnt, _user) => ConfirmDonation(_user));
+        });
+
+        public Operation<BitLevel> Demote(string userRef, int units, string haxh)
+        => _authorizer.AuthorizeAccess(this.PermissionProfile(UserContext.CurrentUser()), () =>
+        {
+            Haxher.IsValidHash(haxh).ThrowIf(_v => !_v, "Access Denied");
+
+            var @ref = _refQuery.GetReferalNode(userRef);
+            var targetUser = new User { EntityId = @ref.UserId };
+            var currentLevel = _query.CurrentBitLevel(targetUser).ThrowIfNull("User has not begun cycling");
+            var newLevel = BitCycle.Create(currentLevel.Cycle, currentLevel.Level).Decrement(units);
+
+            currentLevel.Cycle = newLevel.Cycle;
+            currentLevel.Level = newLevel.Level;
+            _pcommand.Update(currentLevel);
+
+            currentLevel.Donation.Amount = GetUpgradeAmount(newLevel.Level + 1);
+            _pcommand.Update(currentLevel.Donation);
+
+            //move all current donnors to the next available beneficiary
+            _query.GetDonorLevels(targetUser)
+                  .Where(_lvl => newLevel > new BitCycle { Cycle = _lvl.Cycle, Level = _lvl.Level })
+                  .Select(_lvl =>
+                  {
+                      var nextLevel = new BitCycle { Cycle = _lvl.Cycle, Level = _lvl.Level }.Increment(1);
+                      var beneficiary = NextUpgradeBeneficiary(targetUser, nextLevel.Level, nextLevel.Cycle);
+                      var address = _query.GetActiveBitcoinAddress(beneficiary);
+
+                      _lvl.Donation.ReceiverId = address.Id;
+
+                      return _pcommand.Update(_lvl.Donation);
+                  })
+                  .ThrowIf(_ops => !_ops.Any(_op => _op.Succeeded), "failed to reassign some donors");
+
+            return currentLevel;
         });
 
 
@@ -222,49 +285,16 @@ namespace BitDiamond.Core.Services
             return bl;
         });
 
-        public Operation<BlockChainTransaction> ConfirmUpgradeDonnation()
-        => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(), () =>
-        {
-            var currentUser = UserContext.CurrentUser();
-            var currentLevel = _query.CurrentBitLevel(currentUser);
-
-            // for a new user...
-            if (currentLevel == null) return null;
-
-            //for a donation without receiver and sender
-            else if (currentLevel.Donation.SenderId <= 0 ||
-                    currentLevel.Donation.ReceiverId <= 0)
-                throw new Exception("Invalid Donation transaction Receiver/Sender");
-
-            var blockChainTransaction = _blockChain
-                .GetTransactionDetails(currentLevel.Donation.TransactionHash)
-                .Resolve()
-                .ThrowIf(_bct => _bct.LedgerCount < 3, "Transaction ledger count is less than threshold");
-
-            if (IsSameTransaction(currentLevel.Donation, blockChainTransaction) &&
-                blockChainTransaction.Status == BlockChainTransactionStatus.Verified)
-            {
-                currentLevel.Donation.Status = BlockChainTransactionStatus.Verified;
-                currentLevel.Donation.LedgerCount = blockChainTransaction.LedgerCount;
-                _pcommand.Update(currentLevel.Donation);
-
-                //increment receiver's donnation count
-                var receiverLevel = _query.CurrentBitLevel(blockChainTransaction.Receiver.Owner);
-                receiverLevel.DonationCount++;
-                _pcommand.Update(receiverLevel);
-
-                return currentLevel.Donation;
-            }
-            else throw new Exception("Invalid transaction hash");
-        });
+        public Operation<BlockChainTransaction> ConfirmUpgradeDonation()
+        => _authorizer.AuthorizeAccess(this.PermissionProfile(UserContext.CurrentUser()), () => ConfirmDonation(UserContext.CurrentUser()));
 
 
         public Operation<BitLevel> CurrentUserLevel()
-            => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(),() =>
-            {
-                var level =_query.CurrentBitLevel(UserContext.CurrentUser());
-                return level;
-            });
+        => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(),() =>
+        {
+            var level =_query.CurrentBitLevel(UserContext.CurrentUser());
+            return level;
+        });
 
         public Operation<BitLevel> GetBitLevelById(long id)
             => _authorizer.AuthorizeAccess(UserContext.CurrentProcessPermissionProfile(),
@@ -317,6 +347,18 @@ namespace BitDiamond.Core.Services
                       //deactivate the old address if it exists
                       .Pipe(_bca => _bca != null ? DeactivateAddress(_bca.Id) : Operation.FromValue<BitcoinAddress>(null))
 
+                      //Change the address of all donations coming to my address that are not verified
+                      .Then(opr =>
+                      {
+                          _query.GetAllDonationsWithReceiverAddress(opr.Result.BlockChainAddress)
+                                .Where(_bct => _bct.Status == BlockChainTransactionStatus.Unverified)
+                                .ForAll((_cnt, _bct) =>
+                                {
+                                    _bct.Receiver = address;
+                                    _pcommand.Update(_bct).Resolve();
+                                });
+                      })
+
                       //activate the new address
                       .Then(opr =>
                       {
@@ -328,12 +370,13 @@ namespace BitDiamond.Core.Services
                       .Then(opr =>
                       {
                           var currentLevel = _query.CurrentBitLevel(UserContext.CurrentUser()); //<-- may return null for new users
-                          if(currentLevel?.Donation.Status == BlockChainTransactionStatus.Unverified)
+                          if (currentLevel?.Donation.Status == BlockChainTransactionStatus.Unverified)
                           {
                               currentLevel.Donation.SenderId = opr.Result.Id;
                               _pcommand.Update(currentLevel.Donation);
                           }
                       })
+
                       .Resolve();
             }
 
@@ -409,13 +452,7 @@ namespace BitDiamond.Core.Services
                          bl.SkipCount++;
                          _pcommand.Update(bl);
 
-                         //notify user
-                         _notifier.NotifyUser(new Notification
-                         {
-                             Type = NotificationType.Info,
-                             TargetId = bl.UserId,
-                             Title = "Missed donation",
-                             Message = @"
+                         var message = @"
 <strong>Ouch!</strong> You just missed a donation...
 <p>
     <span class='text-muted'>Your level</span><br />
@@ -429,9 +466,28 @@ namespace BitDiamond.Core.Services
     <span class='text-muted'>Downline Level</span><br />
     {2}
 </p>
-".ResolveParameters(new BitCycle { Level = nextLvel, Cycle = nextCycle }, _rn.UserId, new BitCycle { Level = bl.Level, Cycle = bl.Cycle })
+".ResolveParameters(new BitCycle { Level = nextLvel, Cycle = nextCycle }, _rn.UserId, new BitCycle { Level = bl.Level, Cycle = bl.Cycle });
+
+                         //notify user
+                         _notifier.NotifyUser(new Notification
+                         {
+                             Type = NotificationType.Info,
+                             TargetId = bl.UserId,
+                             Title = "Missed donation",
+                             Message = message
                          })
                          .Resolve();
+
+                         //send email
+                         _emailService.SendMail(new GenericMessage
+                         {
+                             From = Constants.MailOrigin_DoNotReply,
+                             Recipients = new[] { bl.UserId },
+                             Subject = "Missed donation",
+                             LogoUrl = _urlProvider.LogoUri().Resolve(),
+                             LogoTextUrl = _urlProvider.LogoTextUri().Resolve(),
+                             Message = message
+                         });
 
                          return false;
                      }
@@ -453,5 +509,74 @@ namespace BitDiamond.Core.Services
             var address = _query.GetBitcoinAddressById(id);
             _pcommand.Delete(address).Resolve();
         });
+
+
+        private string AddressOwnerName(BitcoinAddress address)
+        {
+            if (address.OwnerRef == null) return address.OwnerId;
+            else if (address.OwnerRef.UserBio == null) return address.OwnerRef.ReferenceCode;
+            else if (!string.IsNullOrWhiteSpace(address.OwnerRef.UserBio.FirstName) ||
+                    !string.IsNullOrWhiteSpace(address.OwnerRef.UserBio.LastName))
+                return $"{address.OwnerRef.UserBio.FirstName} {address.OwnerRef.UserBio.LastName}";
+            else return address.OwnerId;
+        }
+
+        private BlockChainTransaction ConfirmDonation(User currentUser)
+        {
+
+            var currentLevel = _query
+                .CurrentBitLevel(currentUser)
+                .ThrowIfNull("User has no BitLevel yet");
+
+            //for a donation without receiver and sender
+            if (currentLevel.Donation.SenderId <= 0 ||
+                    currentLevel.Donation.ReceiverId <= 0)
+                throw new Exception("Invalid Donation transaction Receiver/Sender");
+
+            var blockChainTransaction = _blockChain
+                .AcquireTransactionDetails(currentLevel.Donation.TransactionHash)
+                .Resolve()
+                .ThrowIf(_bct => _bct.LedgerCount < 3, "Transaction ledger count is less than threshold");
+
+            if (IsSameTransaction(currentLevel.Donation, blockChainTransaction) &&
+                blockChainTransaction.Status == BlockChainTransactionStatus.Verified)
+            {
+                currentLevel.Donation.Status = BlockChainTransactionStatus.Verified;
+                currentLevel.Donation.LedgerCount = blockChainTransaction.LedgerCount;
+                _pcommand.Update(currentLevel.Donation);
+
+                //increment receiver's donnation count
+                var receiverLevel = _query.CurrentBitLevel(blockChainTransaction.Receiver.Owner);
+                receiverLevel.DonationCount++;
+                _pcommand.Update(receiverLevel);
+
+                //notify the receiver
+                var message = @"
+<h3>Congratulations!</h3>
+<p>You just received a donation of " + blockChainTransaction.Amount + @" from " + AddressOwnerName(blockChainTransaction.Receiver) + @"</p>
+Cheers.
+";
+                _emailService.SendMail(new GenericMessage
+                {
+                    From = Constants.MailOrigin_DoNotReply,
+                    Recipients = new[] { blockChainTransaction.Receiver.OwnerId },
+                    Subject = "Donation Received",
+                    LogoUrl = _urlProvider.LogoUri().Resolve(),
+                    LogoTextUrl = _urlProvider.LogoTextUri().Resolve(),
+                    Message = message
+                });
+
+                _notifier.NotifyUser(new Notification
+                {
+                    Message = message,
+                    TargetId = blockChainTransaction.Receiver.OwnerId,
+                    Title = "Donation Received",
+                    Type = NotificationType.Info
+                });
+
+                return currentLevel.Donation;
+            }
+            else throw new Exception("Invalid transaction hash");
+        }
     }
 }

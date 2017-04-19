@@ -31,5 +31,8 @@ namespace BitDiamond.Core.Services.Query
         bool AddressExists(string blockChainAddress);
         IEnumerable<BitcoinAddress> GetReferencedAddressesFor(User user);
         bool IsReferencedAddress(User user, long id);
+        IEnumerable<BitLevel> GetDonorLevels(User targetUser);
+        IEnumerable<BlockChainTransaction> GetAllDonationsWithReceiverAddress(string blockChainAddress);
+        IEnumerable<User> GetUsersWithUnconfirmedTransactions();
     }
 }

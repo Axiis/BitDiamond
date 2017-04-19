@@ -4,42 +4,36 @@ using Hangfire.Server;
 using System.Runtime.Remoting.Messaging;
 using Axis.Luna.Extensions;
 using Newtonsoft.Json;
-using BitDiamond.Core.Utils;
 using BitDiamond.Web.Infrastructure.Services.Hangfire;
 using System;
 
 using static Axis.Luna.Extensions.ExceptionExtensions;
+using Axis.Luna;
+using System.Linq;
 
 namespace BitDiamond.Web.Infrastructure.Config.Hangfire
 {
     public class Interceptor : JobFilterAttribute, IClientFilter, IServerFilter
     {
-        public static readonly string CallContextParameters = "Bitdiamond.Hangfire.CallContextParams";
+        public static readonly string CallContextParameters_UserContext = "Bitdiamond.Hangfire.CallContextParams.UserContext";
+
         public static readonly string DependencyResolverScope = "Bitdiamond.Hangfire.DependencyResolverScope";
 
-        public void OnCreating(CreatingContext filterContext)
-        {
-            //extract contextual data
-            var _userContext = CallContext
-                .LogicalGetData(HangfireJobScheduler.CustomJobParameterKey)
-                .As<SerializableUserContext>()
-                .ThrowIfNull("invalid user context");
 
-            //free up the slot in the call context param map
-            CallContext.FreeNamedDataSlot(HangfireJobScheduler.CustomJobParameterKey);
-
-            //serialise the context data
-            var json = JsonConvert.SerializeObject(_userContext, Constants.Misc_DefaultJsonSerializerSettings);
-
-            filterContext.SetJobParameter(CallContextParameters, json);
-        }
         public void OnPerforming(PerformingContext filterContext)
         {
-            //get the usercontext from the job's custom param and set it in the call context
-            var json = filterContext.GetJobParameter<string>(HangfireJobScheduler.CustomJobParameterKey);
-            var contextData = JsonConvert.DeserializeObject<SerializableUserContext>(json, Constants.Misc_DefaultJsonSerializerSettings);
-            CallContext.LogicalSetData(CallContextParameters, contextData);
-            
+            //for recurring jobs
+            var uniqueOpId = filterContext.GetJobParameter<string>("RecurringJobId");
+            if (!string.IsNullOrWhiteSpace(uniqueOpId))
+            {
+                filterContext.Connection
+                    .GetAllEntriesFromHash($"{HangfireJobScheduler.RecurrentJobKeyPrefix}::{uniqueOpId}")
+                    .Where(_kvp => _kvp.Key == HangfireJobScheduler.CustomJobProperty_UserContext)
+                    .Select(_kvp => _kvp.Value)
+                    .FirstOrDefault()
+                    .Do(_v => CallContext.LogicalSetData(CallContextParameters_UserContext, JsonConvert.DeserializeObject<SerializableUserContext>(_v)));
+            }
+
             //create a new resolution scope for use while invoking the job function
             CallContext.LogicalSetData(DependencyResolverScope, _scopeGenerator.Invoke());
         }
@@ -47,6 +41,10 @@ namespace BitDiamond.Web.Infrastructure.Config.Hangfire
         {
             try
             {
+                //if we are dealing with an operation, resolve it so its failures, if any, are "visible" to hangfire
+                if (filterContext.Result?.GetType().HasGenericAncestor(typeof(Operation<>)) == true)
+                    filterContext.Result.AsDynamic().Resolve();
+
                 //dispose the resolution scope
                 CallContext.LogicalGetData(DependencyResolverScope)
                            .As<IDisposable>()
@@ -56,6 +54,7 @@ namespace BitDiamond.Web.Infrastructure.Config.Hangfire
             {
                 //free the data slot in the call context
                 CallContext.FreeNamedDataSlot(DependencyResolverScope);
+                CallContext.FreeNamedDataSlot(CallContextParameters_UserContext);
             }
         }
 
@@ -63,6 +62,10 @@ namespace BitDiamond.Web.Infrastructure.Config.Hangfire
         public void OnCreated(CreatedContext filterContext)
         {
         }
+        public void OnCreating(CreatingContext filterContext)
+        {
+        }
+
 
         private Func<IDisposable> _scopeGenerator;
         public Interceptor(Func<IDisposable> dependencyScopeGenerator)

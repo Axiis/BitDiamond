@@ -13,13 +13,16 @@ namespace BitDiamond.Core.Services
         [Resource(":system/bit-levels/cycles/@promote")]
         Operation<BitLevel> Promote(string userRef, int units, string securityHash);
 
+        [Resource(":system/bit-levels/cycles/@promote")]
+        Operation<BitLevel> Demote(string userRef, int units, string securityHash);
+
 
         [Resource(":system/bit-levels/transactions/current/@update")]
         Operation<BlockChainTransaction> VerifyAndSaveTransactionHash(string transactionHash);
 
 
         [Resource(":system/bit-levels/transactions/current/@confirm")]
-        Operation<BlockChainTransaction> ConfirmUpgradeDonnation();
+        Operation<BlockChainTransaction> ConfirmUpgradeDonation();
 
 
         [Resource(":system/bit-levels/transactions/current/@get")]

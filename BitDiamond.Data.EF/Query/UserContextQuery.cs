@@ -8,6 +8,7 @@ using Axis.Pollux.Identity.Principal;
 using Axis.Jupiter;
 
 using static Axis.Luna.Extensions.ExceptionExtensions;
+using Axis.Pollux.RBAC.Auth;
 
 namespace BitDiamond.Data.EF.Query
 {
@@ -24,5 +25,12 @@ namespace BitDiamond.Data.EF.Query
 
         public User GetUserById(string userId)
         => _europa.Store<User>().Query.FirstOrDefault(_user => _user.EntityId == userId);
+
+        public IEnumerable<string> GetUserRoles(string userId)
+        => _europa
+            .Store<UserRole>().Query
+            .Where(_ur => _ur.UserId == userId)
+            .Select(_ur => _ur.RoleName)
+            .ToArray();
     }
 }

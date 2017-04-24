@@ -28,7 +28,7 @@ namespace BitDiamond.Core.Services
         private IUserNotifier _notifier = null;
         private IBlockChainService _blockChain = null;
         private ISettingsManager _settingsManager = null;
-        private IEmailPush _emailService = null;
+        //private IEmailPush _emailService = null;
         private IBackgroundOperationScheduler _backgroundProcessor;
         private IAppUrlProvider _urlProvider;
 
@@ -37,7 +37,8 @@ namespace BitDiamond.Core.Services
         public BitLevelManager(IUserAuthorization authorizer, IUserContext userContext, IBitLevelQuery query, 
                                IPersistenceCommands pcommand, IUserNotifier notifier, IBlockChainService blockChain,
                                ISettingsManager settingsManager, IReferralQuery refQuery,
-                               IEmailPush emailService, IBackgroundOperationScheduler backgroundProcessor,
+                               //IEmailPush emailService, 
+                               IBackgroundOperationScheduler backgroundProcessor,
                                IAppUrlProvider urlProvider)
         {
             ThrowNullArguments(() => userContext,
@@ -47,7 +48,7 @@ namespace BitDiamond.Core.Services
                                () => blockChain,
                                () => settingsManager,
                                () => refQuery,
-                               () => emailService,
+                               //() => emailService,
                                () => backgroundProcessor,
                                () => urlProvider);
 
@@ -58,7 +59,7 @@ namespace BitDiamond.Core.Services
             _blockChain = blockChain;
             _refQuery = refQuery;
             _settingsManager = settingsManager;
-            _emailService = emailService;
+            //_emailService = emailService;
             _backgroundProcessor = backgroundProcessor;
             _urlProvider = urlProvider;
 
@@ -167,7 +168,7 @@ namespace BitDiamond.Core.Services
                     currentLevel.Donation.TransactionHash = transactionHash;
                     return _pcommand.Update(currentLevel.Donation);
                 })
-                .Then(opr => _backgroundProcessor.RepeatOperation(BackgroundJob_AutomaticConfirmation, UserContext.Impersonate(Constants.SystemUsers_Root), () => AutoConfirmDonations(), ScheduleInterval.Hourly)
+                .Then(opr => _backgroundProcessor.RepeatOperation<IBitLevelManager>(BackgroundJob_AutomaticConfirmation, UserContext.Impersonate(Constants.SystemUsers_Root), _blm => _blm.AutoConfirmDonations(), ScheduleInterval.Hourly)
                 .Then(_opr => opr.Result));
         });
 
@@ -175,7 +176,7 @@ namespace BitDiamond.Core.Services
         => _authorizer.AuthorizeAccess(this.PermissionProfile(UserContext.CurrentUser()), () =>
         {
             _query.GetUsersWithUnconfirmedTransactions()
-                  .ForAll((_cnt, _user) => ConfirmDonation(_user));
+                  .ForAll((_cnt, _user) => Operation.Try(() => ConfirmDonation(_user)));
         });
 
         public Operation<BitLevel> Demote(string userRef, int units, string haxh)
@@ -479,7 +480,7 @@ namespace BitDiamond.Core.Services
                          .Resolve();
 
                          //send email
-                         _emailService.SendMail(new GenericMessage
+                         _backgroundProcessor.EnqueueOperation<IEmailPush>(_mp => _mp.SendMail(new GenericMessage
                          {
                              From = Constants.MailOrigin_DoNotReply,
                              Recipients = new[] { bl.UserId },
@@ -487,7 +488,8 @@ namespace BitDiamond.Core.Services
                              LogoUrl = _urlProvider.LogoUri().Resolve(),
                              LogoTextUrl = _urlProvider.LogoTextUri().Resolve(),
                              Message = message
-                         });
+                         }))
+                         .Resolve();
 
                          return false;
                      }
@@ -556,7 +558,7 @@ namespace BitDiamond.Core.Services
 <p>You just received a donation of " + blockChainTransaction.Amount + @" from " + AddressOwnerName(blockChainTransaction.Receiver) + @"</p>
 Cheers.
 ";
-                _emailService.SendMail(new GenericMessage
+                _backgroundProcessor.EnqueueOperation<IEmailPush>(_mp => _mp.SendMail(new GenericMessage
                 {
                     From = Constants.MailOrigin_DoNotReply,
                     Recipients = new[] { blockChainTransaction.Receiver.OwnerId },
@@ -564,7 +566,8 @@ Cheers.
                     LogoUrl = _urlProvider.LogoUri().Resolve(),
                     LogoTextUrl = _urlProvider.LogoTextUri().Resolve(),
                     Message = message
-                });
+                }))
+                .Resolve();
 
                 _notifier.NotifyUser(new Notification
                 {

@@ -12,6 +12,8 @@ using System.Web.Http;
 
 using static Axis.Luna.Extensions.ExceptionExtensions;
 using BitDiamond.Web.Infrastructure.Utils;
+using System.IO;
+using System.Web.Hosting;
 
 namespace BitDiamond.Web.Controllers.Api
 {
@@ -36,7 +38,18 @@ namespace BitDiamond.Web.Controllers.Api
         [HttpGet, Route("api/accounts/users/count")]
         public IHttpActionResult UserCount()
         => this.Log(() => _account.UserCount()
-            .Then(opr => opr.Result + 58) //remove this later
+            .Then(opr =>//remove this later
+            {
+                var x = opr.Result;
+                new StreamReader(new FileStream(HostingEnvironment.MapPath("~/App_Data/pad.json"), FileMode.OpenOrCreate)).Using(_r =>
+                {
+                    var json = _r.ReadToEnd();
+                    var pad = JsonConvert.DeserializeObject<Pad>(json);
+                    x +=  pad.users;
+                });
+
+                return x;
+            }) 
             .OperationResult(Request));
 
 

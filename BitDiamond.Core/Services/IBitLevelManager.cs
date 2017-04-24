@@ -7,6 +7,8 @@ namespace BitDiamond.Core.Services
 {
     public interface IBitLevelManager
     {
+        Operation AutoConfirmDonations();
+
         [Resource(":system/bit-levels/cycles/@upgrade")]
         Operation<BitLevel> Upgrade();
 

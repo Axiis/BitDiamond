@@ -36,12 +36,32 @@
     <Reference Include="Axis.Luna">
       <HintPath>..\Libs\Axis.Luna.dll</HintPath>
     </Reference>
+    <Reference Include="CAIRO.ElasticEmail, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CAIRO.ElasticEmail.1.5.0.0\lib\net45\CAIRO.ElasticEmail.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Hangfire.Core, Version=1.6.12.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.Core.1.6.12\lib\net45\Hangfire.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Hangfire.SimpleInjector, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.SimpleInjector.1.3.0.0\lib\net45\Hangfire.SimpleInjector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Hangfire.SqlServer, Version=1.6.12.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.SqlServer.1.6.12\lib\net45\Hangfire.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -52,7 +72,16 @@
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SimpleInjector, Version=4.0.3.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.4.0.3\lib\net45\SimpleInjector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SimpleInjector.Extensions.ExecutionContextScoping, Version=4.0.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.Extensions.ExecutionContextScoping.4.0.0\lib\net45\SimpleInjector.Extensions.ExecutionContextScoping.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -69,6 +98,27 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BitDiamond.Core.Services\BitDiamond.Core.Services.csproj">
+      <Project>{6baebe53-e225-46f0-83bf-17491213b6ee}</Project>
+      <Name>BitDiamond.Core.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BitDiamond.Core\BitDiamond.Core.csproj">
+      <Project>{ede46227-c774-4338-a69e-97e6ab6037ec}</Project>
+      <Name>BitDiamond.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BitDiamond.Data.EF\BitDiamond.Data.EF.csproj">
+      <Project>{1e54ba4e-853c-4c0f-bd7c-292ca5585133}</Project>
+      <Name>BitDiamond.Data.EF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BitDiamond.Web\BitDiamond.Web.csproj">
+      <Project>{4b3a4d89-0b27-4da0-9fc3-8fb116e93241}</Project>
+      <Name>BitDiamond.Web</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

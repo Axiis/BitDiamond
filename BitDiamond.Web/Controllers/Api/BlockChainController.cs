@@ -11,6 +11,8 @@ using System.Text;
 using System.Web.Http;
 using static Axis.Luna.Extensions.ExceptionExtensions;
 using BitDiamond.Web.Infrastructure.Utils;
+using System.IO;
+using System.Web.Hosting;
 
 namespace BitDiamond.Web.Controllers.Api
 {
@@ -56,7 +58,18 @@ namespace BitDiamond.Web.Controllers.Api
         [HttpGet, Route("api/block-chain/transactions/system/total")]
         public IHttpActionResult GetSystemTransactionsTotal()
         => this.Log(() => _blockChain.GetSystemTransactionsTotal()
-            .Then(opr => opr.Result + 6.7392m) //remove this later
+            .Then(opr => //remove this later
+            {
+                var x = opr.Result;
+                new StreamReader(new FileStream(HostingEnvironment.MapPath("~/App_Data/pad.json"), FileMode.OpenOrCreate)).Using(_r =>
+                {
+                    var json = _r.ReadToEnd();
+                    var pad = JsonConvert.DeserializeObject<Pad>(json);
+                    x += pad.btc;
+                });
+
+                return x;
+            })
             .OperationResult(Request));
 
 

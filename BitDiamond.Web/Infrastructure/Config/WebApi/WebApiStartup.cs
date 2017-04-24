@@ -20,6 +20,7 @@ using Axis.Luna.Extensions;
 using SimpleInjector.Extensions.ExecutionContextScoping;
 using SimpleInjector;
 using BitDiamond.Web.Infrastructure.Config.Hangfire;
+using Newtonsoft.Json;
 
 [assembly: OwinStartup(typeof(BitDiamond.Web.Infrastructure.Config.WebApi.WebApiStartup))]
 
@@ -113,12 +114,18 @@ namespace BitDiamond.Web.Infrastructure.Config.WebApi
             c.Options.DefaultScopedLifestyle = new ExecutionContextScopeLifestyle();
             c.Options.AllowOverridingRegistrations = true;
 
+            JsonConvert.DefaultSettings = () => Constants.Misc_DefaultJsonSerializerSettings
+            .CopyTo(new JsonSerializerSettings())
+            .UsingValue(_s =>
+            {
+                _s.TypeNameHandling = TypeNameHandling.Objects;
+            });
+
             global::Hangfire.GlobalConfiguration.Configuration
                 .UseFilter(new Hangfire.Interceptor(c.BeginExecutionContextScope))
                 .UseSqlServerStorage(Hangfire.DBInitializer.InitDb("HangfireDb"))
                 .UsingValue(_storage => _storage
-                .UseActivator(new SimpleInjectorJobActivator(DIRegistrations.RegisterHangfireTypes(c, _storage.Entry.GetConnection()))))
-                .UseLog4NetLogProvider();
+                .UseActivator(new SimpleInjectorJobActivator(DIRegistrations.RegisterHangfireTypes(c, _storage.Entry.GetConnection()))));
             
             app.UseHangfireDashboard();
             app.UseHangfireServer();

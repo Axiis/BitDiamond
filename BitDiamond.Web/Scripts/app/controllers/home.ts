@@ -4,8 +4,8 @@ module BitDiamond.Controllers.Home {
     export class Landing {
 
         currentYear: string;
-        totalUsers: string;
-        totalTransactions: string;
+        totalUsers: string = '-';
+        totalTransactions: string = '-';
         isLoadingTransactions: boolean;
         isLoadingUsers: boolean;
 
@@ -36,30 +36,32 @@ module BitDiamond.Controllers.Home {
         __notification: Services.Notification;
         __notify: Utils.Services.NotifyService;
         $q: ng.IQService;
+        $interval: ng.IIntervalService;
 
 
-        constructor(__blockChain, __account, __notification, __notify, $q) {
+        constructor(__blockChain, __account, __notification, __notify, $q, $interval) {
             this.__blockChain = __blockChain;
             this.__account = __account;
             this.$q = $q;
+            this.$interval = $interval;
 
             this.currentYear = moment().format('YYYY');
 
-            //note that after the initial loading, set a 1minute timer to refresh the user count, but without the boxloader
-            this.isLoadingUsers = true;
-            this.__account.getUserCount().then(opr => {
-                this.totalUsers = opr.Result.toString();
-            }, err => {
-                this.totalUsers = '-';
-            }).finally(() => this.isLoadingUsers = false);
-
             //note that after the initial loading, set a 1 minute timer to refresh the transaction total, but without the boxloader
             this.isLoadingTransactions = true;
-            this.__blockChain.getSystemTransactionTotal().then(opr => {
-                this.totalTransactions = opr.Result.toString();
-            }, err => {
-                this.totalTransactions = '-';
-            }).finally(() => this.isLoadingTransactions = false);
+            this.isLoadingUsers = true;
+            this.$interval(() => {
+                this.__blockChain.getSystemTransactionTotal().then(opr => {
+                    this.totalTransactions = opr.Result.toString();
+                    this.__account.getUserCount().then(opr => {
+                        this.totalUsers = opr.Result.toString();
+                    }).finally(() => {
+                        this.isLoadingUsers = false;
+                    });
+                }).finally(() => {
+                    this.isLoadingTransactions = false;
+                });
+            }, 30000);
         }
 
     }

@@ -30,9 +30,9 @@ namespace BitDiamond.Web.Infrastructure.Services.Hangfire
             _connection = connection;
         }
 
-        public Operation<string> EnqueueOperation(Expression<Action> opInvocation, TimeSpan? delay = default(TimeSpan?)) => EnqueueOperation(_userContext, opInvocation, delay);
+        public Operation<string> EnqueueOperation<Service>(Expression<Action<Service>> opInvocation, TimeSpan? delay = default(TimeSpan?)) => EnqueueOperation(_userContext, opInvocation, delay);
 
-        public Operation<string> EnqueueOperation(IUserContext principal, Expression<Action> opInvocation, TimeSpan? delay = default(TimeSpan?)) => Operation.Try(() =>
+        public Operation<string> EnqueueOperation<Service>(IUserContext principal, Expression<Action<Service>> opInvocation, TimeSpan? delay = default(TimeSpan?)) => Operation.Try(() =>
         {
             //Cache all necessary contextual data
             var json = JsonConvert.SerializeObject(new SerializableUserContext
@@ -42,9 +42,11 @@ namespace BitDiamond.Web.Infrastructure.Services.Hangfire
                 _currentUser = principal.CurrentUser()
             });
 
-            var jid = delay == null ?
-                      BackgroundJob.Enqueue(opInvocation) :
-                      BackgroundJob.Schedule(opInvocation, delay.Value);
+            string jid = null;
+            if (delay == null)
+                jid = BackgroundJob.Enqueue(opInvocation);
+            else
+                jid = BackgroundJob.Schedule(opInvocation, delay.Value);
 
             //persist the user context
             _connection.SetJobParameter(jid, CustomJobProperty_UserContext, json);
@@ -52,9 +54,9 @@ namespace BitDiamond.Web.Infrastructure.Services.Hangfire
             return jid;
         });
 
-        public Operation RepeatOperation(string uniqueOpId, Expression<Action> opInvocation, ScheduleInterval interval) => RepeatOperation(uniqueOpId, _userContext, opInvocation, interval);
+        public Operation RepeatOperation<Service>(string uniqueOpId, Expression<Action<Service>> opInvocation, ScheduleInterval interval) => RepeatOperation(uniqueOpId, _userContext, opInvocation, interval);
 
-        public Operation RepeatOperation(string uniqueOpId, IUserContext principal, Expression<Action> opInvocation, ScheduleInterval interval) => Operation.Try(() =>
+        public Operation RepeatOperation<Service>(string uniqueOpId, IUserContext principal, Expression<Action<Service>> opInvocation, ScheduleInterval interval) => Operation.Try(() =>
         {
             //Cache all necessary contextual data
             var json = JsonConvert.SerializeObject(new SerializableUserContext

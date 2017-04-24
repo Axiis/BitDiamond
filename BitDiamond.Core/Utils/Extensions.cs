@@ -6,6 +6,7 @@ using BitDiamond.Core.Services;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -16,6 +17,15 @@ namespace BitDiamond.Core
     {
         private static ConcurrentDictionary<MethodInfo, IEnumerable<string>> CachedDescriptors = new ConcurrentDictionary<MethodInfo, IEnumerable<string>>();
         private static WeakCache Cache = new WeakCache();
+
+        #region io extensions
+        public static IEnumerable<string> ReadLines(this TextReader reader)
+        {
+            if (reader == null) yield break;
+            string line = null;
+            while ((line = reader.ReadLine()) != null) yield return line;
+        }
+        #endregion
 
         #region UserContext Extensions
         public static PermissionProfile CurrentProcessPermissionProfile(this IUserContext context)

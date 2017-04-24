@@ -1,7 +1,8 @@
-﻿@model BitDiamond.Core.Models.Email.UserWelcome
+﻿@model BitDiamond.Core.Models.Email.GenericMessage
 @{
     Layout = null;
 }
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -28,7 +29,7 @@
             <table border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
                 <tbody>
                     <tr>
-                        <td style="background:#00c0c8; padding:20px; color:#fff; text-align:center;"> <h3>Congratulations!</h3> </td>
+                        <td style="background:#00c0c8; padding:20px; color:#fff; text-align:center;"> <h3>@Model.Subject</h3> </td>
                     </tr>
                 </tbody>
             </table>
@@ -37,13 +38,10 @@
                     <tbody>
                         <tr>
                             <td>
-                                <p>Welcome to the <strong>Bit Diamond </strong> Family of wealth harvesters!<b /></p>
-                                <p>Follow the links below to understand how the system works, and make sure to go through the FAQ section also.<br /><br /></p>
-                                <small>If the button above does not work, try copying and pasting the URL into your browser. If you continue to have problems, please feel free to contact us at support@bitdiamond.biz</small>
-                                <center>
-                                    <a href="@Model.Link" style="display: inline-block; padding: 11px 30px; margin: 20px 0px 30px; font-size: 15px; color: #fff; background: #00c0c8; border-radius: 60px; text-decoration:none;">Sign In</a>
-                                </center>
-                                <b> Thanks (Bit Diamond team)</b>
+                                <p>@Model.Message</p>
+
+                                Sincerely
+                                <strong>(Bit Diamond team)</strong>
                             </td>
                         </tr>
                     </tbody>

@@ -36,19 +36,19 @@ namespace BitDiamond.Web.Controllers.Api
         [HttpPost, Route("api/notifications/support")]
         public IHttpActionResult NotifySupport([FromBody] MessageData data)
         => this.Log(() => Operation.Try(() => data.ThrowIfNull(new MalformedApiArgumentsException()))
-            .Then(opr =>
+        .Then(opr =>
+        {
+            return _messagePush.SendMail(new SupportMessage
             {
-                return _messagePush.SendMail(new SupportMessage
-                {
-                    FirstName = data.FirstName,
-                    LastName = data.LastName,
-                    Subject = data.Subject,
-                    Message = data.Message,
-                    From = data.Email,
-                    Recipients = new[] { "support@bitdiamond.biz" }
-                });
-            })
-            .OperationResult(Request));
+                FirstName = data.FirstName,
+                LastName = data.LastName,
+                Subject = data.Subject,
+                Message = data.Message,
+                From = data.Email,
+                Recipients = new[] { "support@bitdiamond.biz" }
+            });
+        })
+        .OperationResult(Request));
 
 
         [HttpPut, Route("api/notifications/single")]

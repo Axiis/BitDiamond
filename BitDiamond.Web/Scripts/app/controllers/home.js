@@ -5,26 +5,30 @@ var BitDiamond;
         var Home;
         (function (Home) {
             var Landing = (function () {
-                function Landing(__blockChain, __account, __notification, __notify, $q) {
+                function Landing(__blockChain, __account, __notification, __notify, $q, $interval) {
                     var _this = this;
+                    this.totalUsers = '-';
+                    this.totalTransactions = '-';
                     this.__blockChain = __blockChain;
                     this.__account = __account;
                     this.$q = $q;
+                    this.$interval = $interval;
                     this.currentYear = moment().format('YYYY');
-                    //note that after the initial loading, set a 1minute timer to refresh the user count, but without the boxloader
-                    this.isLoadingUsers = true;
-                    this.__account.getUserCount().then(function (opr) {
-                        _this.totalUsers = opr.Result.toString();
-                    }, function (err) {
-                        _this.totalUsers = '-';
-                    }).finally(function () { return _this.isLoadingUsers = false; });
                     //note that after the initial loading, set a 1 minute timer to refresh the transaction total, but without the boxloader
                     this.isLoadingTransactions = true;
-                    this.__blockChain.getSystemTransactionTotal().then(function (opr) {
-                        _this.totalTransactions = opr.Result.toString();
-                    }, function (err) {
-                        _this.totalTransactions = '-';
-                    }).finally(function () { return _this.isLoadingTransactions = false; });
+                    this.isLoadingUsers = true;
+                    this.$interval(function () {
+                        _this.__blockChain.getSystemTransactionTotal().then(function (opr) {
+                            _this.totalTransactions = opr.Result.toString();
+                            _this.__account.getUserCount().then(function (opr) {
+                                _this.totalUsers = opr.Result.toString();
+                            }).finally(function () {
+                                _this.isLoadingUsers = false;
+                            });
+                        }).finally(function () {
+                            _this.isLoadingTransactions = false;
+                        });
+                    }, 30000);
                 }
                 Landing.prototype.sendMessage = function () {
                     var _this = this;

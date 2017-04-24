@@ -24,17 +24,19 @@ namespace BitDiamond.Core.Services
         private ICredentialAuthentication _credentialAuth ;
         private IContextVerifier _contextVerifier ;
         private IBlobStore _blobStore ;
-        private IEmailPush _messagePush ;
+        //private IEmailPush _messagePush ;
         private IUserAuthorization _authorizer;
         private IPersistenceCommands _pcommand;
         private ISettingsManager _settingsManager;
         private IAppUrlProvider _apiProvider;
         private IReferralManager _refManager;
         private IUserNotifier _notifier;
+        private IBackgroundOperationScheduler _backgroundProcessor;
 
 
         #region Init
         public AccountManager(ICredentialAuthentication credentialAuthentication,
+                              IBackgroundOperationScheduler backgroundProcessor,
                               IContextVerifier contextVerifier,
                               ISettingsManager settingsManager,
                               IUserAuthorization accessManager,
@@ -43,17 +45,18 @@ namespace BitDiamond.Core.Services
                               IReferralManager refManager,
                               IUserContext userContext,
                               IUserNotifier notifier,
-                              IEmailPush messagePush,
+                              //IEmailPush messagePush,
                               IBlobStore blobStore,
                               IAccountQuery query)
         {
             ThrowNullArguments(() => userContext,
                                () => query,
                                () => credentialAuthentication,
+                               () => backgroundProcessor,
                                () => contextVerifier,
                                () => accessManager,
                                () => blobStore,
-                               () => messagePush,
+                               //() => messagePush,
                                () => pcommands,
                                () => settingsManager,
                                () => apiProvider,
@@ -66,12 +69,13 @@ namespace BitDiamond.Core.Services
             _contextVerifier = contextVerifier;
             _authorizer = accessManager;
             _blobStore = blobStore;
-            _messagePush = messagePush;
+            //_messagePush = messagePush;
             _settingsManager = settingsManager;
             _apiProvider = apiProvider;
             _refManager = refManager;
             _pcommand = pcommands;
             _notifier = notifier;
+            _backgroundProcessor = backgroundProcessor;
         }
         #endregion
 
@@ -302,13 +306,14 @@ If you dont have one, you can create one with any of the popular Bitcoin Wallet 
                 _pcommand.Add(verification).Resolve();
             }
 
-            return _messagePush.SendMail(new AccountActivation
+            return _backgroundProcessor.EnqueueOperation<IEmailPush>(_mp => _mp.SendMail(new AccountActivation
             {
                 From = Constants.MailOrigin_DoNotReply,
                 Subject = "Account - Email Verification",
                 Target = user.UserId,
                 Link = _apiProvider.GenerateUserActivationVerificationUrl(verification.VerificationToken, targetUser).Result
-            });
+            }))
+            .Then(opr => { });
         });
 
         public Operation<User> VerifyUserActivation(string targetUser, string contextToken)
@@ -329,21 +334,16 @@ If you dont have one, you can create one with any of the popular Bitcoin Wallet 
                         user.Status = AccountStatus.Active.As<int>();
                         return _pcommand.Update(user);
                     })
-                    .Then(opr =>
+                    .Then(opr => _backgroundProcessor.EnqueueOperation<IEmailPush>(_mp => _mp.SendMail(new UserWelcome
                     {
-                        _messagePush.SendMail(new UserWelcome
-                        {
-                            From = "donotreply@bitdiamond.com",
-                            Subject = "Welcome",
-                            Target = user.UserId,
-                            Link = _apiProvider.GenerateWelcomeMessageUrl().Result,
-                            LogoTextUrl = _apiProvider.LogoTextUri().Result,
-                            LogoUrl = _apiProvider.LogoUri().Result
-                        })
-                        .Resolve();
-
-                        return opr.Result;
-                    });
+                        From = "donotreply@bitdiamond.com",
+                        Subject = "Welcome",
+                        Target = user.UserId,
+                        Link = _apiProvider.GenerateWelcomeMessageUrl().Result,
+                        LogoTextUrl = _apiProvider.LogoTextUri().Result,
+                        LogoUrl = _apiProvider.LogoUri().Result
+                    }))
+                    .Then(_opr => opr.Result));
             }
         });
 
@@ -380,7 +380,7 @@ If you dont have one, you can create one with any of the popular Bitcoin Wallet 
                 _pcommand.Add(verification).Resolve();
             }
 
-            return _messagePush.SendMail(new AccountActivation
+            return _backgroundProcessor.EnqueueOperation<IEmailPush>(_mp => _mp.SendMail(new AccountActivation
             {
                 From = "donotreply@bitdiamond.com",
                 Subject = "Password Reset",
@@ -388,7 +388,8 @@ If you dont have one, you can create one with any of the popular Bitcoin Wallet 
                 Link = _apiProvider.GeneratePasswordUpdateVerificationUrl(verification.VerificationToken, targetUser).Result,
                 LogoUrl = _apiProvider.LogoUri().Result,
                 LogoTextUrl = _apiProvider.LogoTextUri().Result
-            });
+            }))
+            .Then(opr => { });
         });
 
 

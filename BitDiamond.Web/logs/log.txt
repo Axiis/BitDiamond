@@ -1230,3 +1230,15 @@ System.Exception: See inner exception ---> System.Exception: See inner exception
 
 
 
+[2017-04-20 12:22:29,530]  The process cannot access the file 'C:\_dev\Jobs\BitDiamond\Dev\Git\BitDiamond.Web\App_Data\pad.json' because it is being used by another process.
+System.IO.IOException: The process cannot access the file 'C:\_dev\Jobs\BitDiamond\Dev\Git\BitDiamond.Web\App_Data\pad.json' because it is being used by another process.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode)
+   at BitDiamond.Web.Controllers.Api.BlockChainController.<>c.<GetSystemTransactionsTotal>b__7_1(Operation`1 opr) in C:\_dev\Jobs\BitDiamond\Dev\Git\BitDiamond.Web\Controllers\Api\BlockChainController.cs:line 64
+   at Axis.Luna.Extensions.OperationExtensions.<>c__DisplayClass3_0`2.<Then>b__0()
+   at Axis.Luna.Operation`1..ctor(Func`1 func)
+
+
+

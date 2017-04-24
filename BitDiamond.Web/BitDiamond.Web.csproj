@@ -4247,6 +4247,7 @@
     <Content Include="Content\Theme\palas\plugins\tweetie\api\tweet.php" />
     <Content Include="Content\Theme\palas\plugins\tweetie\api\twitteroauth\OAuth.php" />
     <Content Include="Content\Theme\palas\plugins\tweetie\api\twitteroauth\twitteroauth.php" />
+    <Content Include="App_Data\pad.json" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Scripts\libs\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\libs\clipboardjs\clipboard.min.js" />
@@ -4318,6 +4319,7 @@
     <Content Include="Views\Posts\Edit.cshtml" />
     <Content Include="Views\Posts\List.cshtml" />
     <Content Include="Views\Email\SupportMessage.cshtml" />
+    <Content Include="Views\Email\GenericMessage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4333,6 +4335,7 @@
     <Compile Include="Controllers\Api\BitLevelController.cs" />
     <Compile Include="Controllers\Api\BlockChainController.cs" />
     <Compile Include="Controllers\Api\NotificationController.cs" />
+    <Compile Include="Controllers\Api\PadController.cs" />
     <Compile Include="Controllers\Api\PostController.cs" />
     <Compile Include="Controllers\Api\ReferralsController.cs" />
     <Compile Include="Controllers\Api\SettingsController.cs" />

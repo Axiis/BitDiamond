@@ -31,6 +31,21 @@ module BitDiamond.Controllers.Home {
             });
         }
 
+        refreshCounters() {
+            this.isLoadingTransactions = true;
+            this.isLoadingUsers = true;
+            return this.__blockChain.getSystemTransactionTotal().then(opr => {
+                this.totalTransactions = opr.Result.toString();
+                this.__account.getUserCount().then(opr => {
+                    this.totalUsers = opr.Result.toString();
+                }).finally(() => {
+                    this.isLoadingUsers = false;
+                });
+            }).finally(() => {
+                this.isLoadingTransactions = false;
+            });
+        }
+
         __blockChain: Services.BlockChain;
         __account: Services.Account;
         __notification: Services.Notification;
@@ -48,22 +63,10 @@ module BitDiamond.Controllers.Home {
             this.currentYear = moment().format('YYYY');
 
             //note that after the initial loading, set a 1 minute timer to refresh the transaction total, but without the boxloader
-            this.isLoadingTransactions = true;
-            this.isLoadingUsers = true;
-            this.$interval(() => {
-                this.__blockChain.getSystemTransactionTotal().then(opr => {
-                    this.totalTransactions = opr.Result.toString();
-                    this.__account.getUserCount().then(opr => {
-                        this.totalUsers = opr.Result.toString();
-                    }).finally(() => {
-                        this.isLoadingUsers = false;
-                    });
-                }).finally(() => {
-                    this.isLoadingTransactions = false;
-                });
-            }, 30000);
+            this.refreshCounters().then(() => {
+                this.$interval(() => this.refreshCounters(), 30000);
+            });
         }
-
     }
 
 }

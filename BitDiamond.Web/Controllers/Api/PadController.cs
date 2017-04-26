@@ -10,7 +10,7 @@ namespace BitDiamond.Web.Controllers.Api
     [RoutePrefix("pad")]
     public class PadController : ApiController
     {
-        [HttpPut, Route("users/{value}")]
+        [HttpPut, Route("users")]
         public IHttpActionResult IncrementUsers(int value)
         {
             Operation.Try(() =>

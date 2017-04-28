@@ -351,13 +351,14 @@ namespace BitDiamond.Core.Services
                       //Change the address of all donations coming to my address that are not verified
                       .Then(opr =>
                       {
-                          _query.GetAllDonationsWithReceiverAddress(opr.Result.BlockChainAddress)
-                                .Where(_bct => _bct.Status == BlockChainTransactionStatus.Unverified)
-                                .ForAll((_cnt, _bct) =>
-                                {
-                                    _bct.Receiver = address;
-                                    _pcommand.Update(_bct).Resolve();
-                                });
+                          if (opr.Result != null)
+                              _query.GetAllDonationsWithReceiverAddress(opr.Result.BlockChainAddress)
+                             .Where(_bct => _bct.Status == BlockChainTransactionStatus.Unverified)
+                             .ForAll((_cnt, _bct) =>
+                             {
+                                 _bct.Receiver = address;
+                                 _pcommand.Update(_bct).Resolve();
+                             });
                       })
 
                       //activate the new address

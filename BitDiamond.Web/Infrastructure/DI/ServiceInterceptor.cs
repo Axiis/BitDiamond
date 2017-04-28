@@ -5,6 +5,7 @@ using SimpleInjector;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using static Axis.Luna.Extensions.ExceptionExtensions;
 
@@ -29,6 +30,7 @@ namespace BitDiamond.Web.Infrastructure.DI
             _resolver = resolver;
         }
 
+        [DebuggerHidden]
         public void Intercept(IInvocation invocation)
         {
             if (serviceImpl == null) serviceImpl = _resolver.Resolve<Impl>();

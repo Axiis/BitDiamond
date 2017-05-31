@@ -34,7 +34,7 @@ module BitDiamond.Controllers.Shared {
 
     export class NavBar {
 
-        hasNotifications
+        exchangeRate: number;
 
         notifications: Models.INotification[];
         notificationCount: number;
@@ -50,12 +50,21 @@ module BitDiamond.Controllers.Shared {
 
         __userContext: Utils.Services.UserContext;
         __systemNotification: Services.Notification;
+        __xe: Services.XE;
         $q: ng.IQService;
+        $interval: ng.IIntervalService;
 
-        constructor(__systemNotification, __userContext, $q) {
+        constructor(__systemNotification, __userContext, __xe, $q, $interval) {
             this.__systemNotification = __systemNotification;
             this.__userContext = __userContext
+            this.__xe = __xe;
             this.$q = $q;
+            this.$interval = $interval;
+            var ex = () => {
+                this.__xe.getCurrentRate().then(r => this.exchangeRate = r);
+            };
+            ex();
+            this.$interval(ex, 60000);
 
             this.__systemNotification.getUnseenNotificaftions().then(opr => {
                 this.notifications = opr.Result.slice(0, 5).map(n => {

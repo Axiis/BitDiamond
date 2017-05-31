@@ -17,6 +17,7 @@ module BitDiamond.Modules {
     referralsModule.service('__account', BitDiamond.Services.Account);
     referralsModule.service('__referrals', BitDiamond.Services.Referrals);
     referralsModule.service('__systemNotification', BitDiamond.Services.Notification);
+    referralsModule.service('__xe', BitDiamond.Services.XE);
 
 
     //controllers

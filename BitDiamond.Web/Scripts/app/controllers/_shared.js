@@ -25,11 +25,18 @@ var BitDiamond;
             }());
             Shared.Message = Message;
             var NavBar = (function () {
-                function NavBar(__systemNotification, __userContext, $q) {
+                function NavBar(__systemNotification, __userContext, __xe, $q, $interval) {
                     var _this = this;
                     this.__systemNotification = __systemNotification;
                     this.__userContext = __userContext;
+                    this.__xe = __xe;
                     this.$q = $q;
+                    this.$interval = $interval;
+                    var ex = function () {
+                        _this.__xe.getCurrentRate().then(function (r) { return _this.exchangeRate = r; });
+                    };
+                    ex();
+                    this.$interval(ex, 60000);
                     this.__systemNotification.getUnseenNotificaftions().then(function (opr) {
                         _this.notifications = opr.Result.slice(0, 5).map(function (n) {
                             n.CreatedOn = new Apollo.Models.JsonDateTime(n.CreatedOn);
@@ -148,4 +155,3 @@ var BitDiamond;
         })(Shared = Controllers.Shared || (Controllers.Shared = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=_shared.js.map

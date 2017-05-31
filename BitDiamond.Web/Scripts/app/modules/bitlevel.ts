@@ -20,6 +20,7 @@ module BitDiamond.Modules {
     bitlevelModules.service('__bitlevel', BitDiamond.Services.BitLevel);
     bitlevelModules.service('__account', BitDiamond.Services.Account);
     bitlevelModules.service('__systemNotification', BitDiamond.Services.Notification);
+    bitlevelModules.service('__xe', BitDiamond.Services.XE);
 
 
     //controllers

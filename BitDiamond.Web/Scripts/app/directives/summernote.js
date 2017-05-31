@@ -54,4 +54,3 @@ var BitDiamond;
         Directives.Summernote = Summernote;
     })(Directives = BitDiamond.Directives || (BitDiamond.Directives = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=summernote.js.map

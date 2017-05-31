@@ -39,4 +39,3 @@ var BitDiamond;
         Directives.NumberSpinner = NumberSpinner;
     })(Directives = BitDiamond.Directives || (BitDiamond.Directives = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=numberSpinner.js.map

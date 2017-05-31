@@ -15,6 +15,7 @@ module BitDiamond.Modules {
     homeModlue.service('__blockChain', BitDiamond.Services.BlockChain);
     homeModlue.service('__account', BitDiamond.Services.Account);
     homeModlue.service('__notification', BitDiamond.Services.Notification);
+    homeModlue.service('__xe', BitDiamond.Services.XE);
 
 
     //controllers

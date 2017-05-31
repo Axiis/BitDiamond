@@ -15,6 +15,7 @@ module BitDiamond.Modules {
 
     notificationModule.service('__systemNotification', BitDiamond.Services.Notification);
     notificationModule.service('__account', BitDiamond.Services.Account);
+    notificationModule.service('__xe', BitDiamond.Services.XE);
 
 
     //controllers

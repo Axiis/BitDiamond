@@ -20,6 +20,7 @@ module BitDiamond.Modules {
     paymentsModules.service('__blockChain', BitDiamond.Services.BlockChain);
     paymentsModules.service('__account', BitDiamond.Services.Account);
     paymentsModules.service('__systemNotification', BitDiamond.Services.Notification);
+    paymentsModules.service('__xe', BitDiamond.Services.XE);
 
 
     //controllers

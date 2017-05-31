@@ -146,7 +146,19 @@ module BitDiamond.Services {
         }
 
         getUser(): ng.IPromise<Utils.Operation<Pollux.Models.IUser>>{
-            return this.__transport.get<Utils.Operation<Pollux.Models.IUser>>('/api/accounts/users/current');
+            var jsonUser = window.localStorage.getItem(Utils.Constants.Misc_User);
+
+            if (!Object.isNullOrUndefined(jsonUser))
+                return this.$q.resolve(<Utils.Operation<Pollux.Models.IUser>>{ Result: JSON.parse(jsonUser), Succeeded: true });
+
+            else
+                return this
+                    .__transport
+                    .get<Utils.Operation<Pollux.Models.IUser>>('/api/accounts/users/current')
+                    .then(opr => {
+                        window.localStorage.setItem(Utils.Constants.Misc_User, JSON.stringify(opr.Result));
+                        return opr;
+                    });
         }
 
 
@@ -176,6 +188,7 @@ module BitDiamond.Services {
                     Token: tokenObj.access_token
                 }).finally( () => {
                     window.localStorage.removeItem(Utils.Constants.Misc_OAuthTokenKey);
+                    window.localStorage.removeItem(Utils.Constants.Misc_User);
                     window.location.href = '/account/index';
                 });
             }
@@ -460,6 +473,22 @@ module BitDiamond.Services {
         constructor(__transport, $q) {
             this.__transport = __transport;
             this.$q = $q;
+        }
+    }
+
+    export class XE {
+
+        $q: ng.IQService;
+        __transport: Utils.Services.DomainTransport;
+
+        getCurrentRate(): ng.IPromise<number> {
+            return this.__transport.get<string>('/api/block-chain/btc-xe')
+                .then(r => parseFloat(r));
+        }
+
+        constructor(__transport, $q) {
+            this.$q = $q;
+            this.__transport = __transport;
         }
     }
 }

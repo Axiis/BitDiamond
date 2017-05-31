@@ -608,9 +608,9 @@ var BitDiamond;
             //MISC
             Constants.Misc_OAuthTokenKey = 'BitDiamonds.Security.OAuth.BearerToken'; //bearer token localstorage key
             Constants.Misc_OAuthCustomHeaders_OldToken = "OAuthOldToken"; //used for sending any current tokens to the server for invalidation
+            Constants.Misc_User = 'BitDiamond.Principal.User';
             ///Settings
             Constants.Settings_MaxBitLevel = 3;
         })(Constants = Utils.Constants || (Utils.Constants = {}));
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=constants.js.map

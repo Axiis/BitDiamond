@@ -103,4 +103,3 @@ var BitDiamond;
         Utils.EncodedBinaryData = EncodedBinaryData;
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=encodedBinaryData.js.map

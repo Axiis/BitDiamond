@@ -121,7 +121,17 @@ var BitDiamond;
                 return this.__transport.get('/api/accounts/users/roles');
             };
             Account.prototype.getUser = function () {
-                return this.__transport.get('/api/accounts/users/current');
+                var jsonUser = window.localStorage.getItem(BitDiamond.Utils.Constants.Misc_User);
+                if (!Object.isNullOrUndefined(jsonUser))
+                    return this.$q.resolve({ Result: JSON.parse(jsonUser), Succeeded: true });
+                else
+                    return this
+                        .__transport
+                        .get('/api/accounts/users/current')
+                        .then(function (opr) {
+                        window.localStorage.setItem(BitDiamond.Utils.Constants.Misc_User, JSON.stringify(opr.Result));
+                        return opr;
+                    });
             };
             Account.prototype.signin = function (email, password) {
                 var oldToken = JSON.parse(window.localStorage.getItem(BitDiamond.Utils.Constants.Misc_OAuthTokenKey));
@@ -148,6 +158,7 @@ var BitDiamond;
                         Token: tokenObj.access_token
                     }).finally(function () {
                         window.localStorage.removeItem(BitDiamond.Utils.Constants.Misc_OAuthTokenKey);
+                        window.localStorage.removeItem(BitDiamond.Utils.Constants.Misc_User);
                         window.location.href = '/account/index';
                     });
                 }
@@ -367,6 +378,17 @@ var BitDiamond;
             return Posts;
         }());
         Services.Posts = Posts;
+        var XE = (function () {
+            function XE(__transport, $q) {
+                this.$q = $q;
+                this.__transport = __transport;
+            }
+            XE.prototype.getCurrentRate = function () {
+                return this.__transport.get('/api/block-chain/btc-xe')
+                    .then(function (r) { return parseFloat(r); });
+            };
+            return XE;
+        }());
+        Services.XE = XE;
     })(Services = BitDiamond.Services || (BitDiamond.Services = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=bit-diamond.js.map

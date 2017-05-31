@@ -18,6 +18,7 @@ module BitDiamond.Modules {
     profileModule.service('__posts', BitDiamond.Services.Posts);
     profileModule.service('__blockChain', BitDiamond.Services.BlockChain);
     profileModule.service('__bitLevel', BitDiamond.Services.BitLevel);
+    profileModule.service('__xe', BitDiamond.Services.XE);
 
     profileModule.service('__account', BitDiamond.Services.Account);
 

@@ -116,4 +116,3 @@ var BitDiamond;
         Directives.TransactionTimeline = TransactionTimeline;
     })(Directives = BitDiamond.Directives || (BitDiamond.Directives = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=transactionTimeline.js.map

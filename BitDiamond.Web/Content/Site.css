@@ -139,3 +139,31 @@ table.bd-transaction-table td.bd-nowrap{
 .bd-marker.active {
     border-left-width:8px !important;
 }
+
+ul.navbar-nav.nav.pull-left > li{
+    background-color: rgba(255, 255, 255, 0.1)
+}
+ul.navbar-nav.nav > li > span.bd-exchange-rate{
+    padding:15px;
+    line-height:30px;
+    font-size:14px;
+    color:white;
+    font-weight:500;
+    display:block;
+    max-width:350px;
+    height:60px;
+    vertical-align:middle;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-wrap: none;
+    text-overflow:ellipsis;
+    color:aquamarine;
+}
+ul.navbar-nav.nav > li > span > i{
+     font-size:13px;
+}
+
+.page-header.navbar .top-menu .navbar-nav{
+    margin-right:0;
+}

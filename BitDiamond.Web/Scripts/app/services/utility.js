@@ -221,9 +221,7 @@ var BitDiamond;
                     this.__account = __account;
                     this.$q = $q;
                     //load user object
-                    this.user = this.__account.getUser().then(function (opr) {
-                        return _this.$q.resolve(opr.Result);
-                    });
+                    this.user = this.__account.getUser().then(function (opr) { return opr.Result; });
                     //load profile image
                     this.profileImageRef = this.__account.getUserDataByName(Utils.Constants.UserData_ProfileImage).then(function (opr) {
                         return _this.$q.resolve(opr.Result);
@@ -252,4 +250,3 @@ var BitDiamond;
         })(Services = Utils.Services || (Utils.Services = {}));
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=utility.js.map

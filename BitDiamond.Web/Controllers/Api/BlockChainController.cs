@@ -13,6 +13,9 @@ using static Axis.Luna.Extensions.ExceptionExtensions;
 using BitDiamond.Web.Infrastructure.Utils;
 using System.IO;
 using System.Web.Hosting;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace BitDiamond.Web.Controllers.Api
 {
@@ -25,6 +28,20 @@ namespace BitDiamond.Web.Controllers.Api
             ThrowNullArguments(() => blockChain);
 
             this._blockChain = blockChain;
+        }
+
+        [HttpGet, Route("api/block-chain/btc-xe")]
+        public HttpResponseMessage GetExchangeRate()
+        {
+            using (var client = new WebClient())
+            {
+                var v = client.DownloadString("https://blockchain.info/tobtc?currency=USD&value=1");
+
+                var response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Content = new StringContent(v);
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
+                return response;
+            }
         }
 
         [HttpGet, Route("api/block-chain/transactions/all")]

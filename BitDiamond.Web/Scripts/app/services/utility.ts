@@ -246,9 +246,7 @@ module BitDiamond.Utils.Services {
             this.$q = $q;
 
             //load user object
-            this.user = this.__account.getUser().then(opr => {
-                return this.$q.resolve(opr.Result);
-            });
+            this.user = this.__account.getUser().then(opr => opr.Result);
 
             //load profile image
             this.profileImageRef = this.__account.getUserDataByName(Utils.Constants.UserData_ProfileImage).then(opr => {

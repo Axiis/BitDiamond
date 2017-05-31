@@ -21,6 +21,15 @@
             <li><a href="javascript:void(0)" class="open-close hidden-xs waves-effect waves-light"><i class="icon-arrow-left-circle ti-menu"></i></a></li>
         </ul>
 
+        <ul class="nav navbar-nav pull-left hidden-xs">
+            <li>
+                <span class="bd-exchange-rate" href="javascript:void(0);">
+                    <i class="fa fa-btc"></i>
+                    BTC/USD - <i class="fa fa-usd"></i> {{1/vm.exchangeRate | currency: ""}}
+                </span>
+            </li>
+        </ul>
+
         <ul class="nav navbar-top-links navbar-right pull-right" style="margin-right:10px;">
 
             <li class="dropdown">

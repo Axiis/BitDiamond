@@ -12,6 +12,7 @@ var BitDiamond;
         Modules.notificationModule.service('__userContext', BitDiamond.Utils.Services.UserContext);
         Modules.notificationModule.service('__systemNotification', BitDiamond.Services.Notification);
         Modules.notificationModule.service('__account', BitDiamond.Services.Account);
+        Modules.notificationModule.service('__xe', BitDiamond.Services.XE);
         //controllers
         Modules.notificationModule.controller('NavBar', BitDiamond.Controllers.Shared.NavBar);
         Modules.notificationModule.controller('SideBar', BitDiamond.Controllers.Shared.SideBar);
@@ -57,4 +58,3 @@ var BitDiamond;
         });
     })(Modules = BitDiamond.Modules || (BitDiamond.Modules = {}));
 })(BitDiamond || (BitDiamond = {}));
-//# sourceMappingURL=notifications.js.map

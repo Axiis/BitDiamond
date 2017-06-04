@@ -159,29 +159,6 @@ var BitDiamond;
             }());
             DomainTransport.inject = ['$http', '$q', '__notify'];
             Services.DomainTransport = DomainTransport;
-            var DomModelService = (function () {
-                function DomModelService() {
-                    var _this = this;
-                    this.simpleModel = {};
-                    this.complexModel = null;
-                    var $element = angular.element('#local-models');
-                    //simple model
-                    $element.attr('simple-models')
-                        .project(function (v) { return BitDiamond.Utils.StringPair.ParseStringPairs(v); })
-                        .forEach(function (v) {
-                        _this.simpleModel[v.Key] = v.Value;
-                    });
-                    //complex model
-                    try {
-                        this.complexModel = JSON.parse($element.text());
-                    }
-                    catch (e) {
-                        this.complexModel = {};
-                    }
-                }
-                return DomModelService;
-            }());
-            Services.DomModelService = DomModelService;
             var NotifyService = (function () {
                 function NotifyService() {
                     toastr.options['closeButton'] = true;
@@ -214,6 +191,29 @@ var BitDiamond;
                 return NotifyService;
             }());
             Services.NotifyService = NotifyService;
+            var DomModelService = (function () {
+                function DomModelService() {
+                    var _this = this;
+                    this.simpleModel = {};
+                    this.complexModel = null;
+                    var $element = angular.element('#local-models');
+                    //simple model
+                    $element.attr('simple-models')
+                        .project(function (v) { return BitDiamond.Utils.StringPair.ParseStringPairs(v); })
+                        .forEach(function (v) {
+                        _this.simpleModel[v.Key] = v.Value;
+                    });
+                    //complex model
+                    try {
+                        this.complexModel = JSON.parse($element.text());
+                    }
+                    catch (e) {
+                        this.complexModel = {};
+                    }
+                }
+                return DomModelService;
+            }());
+            Services.DomModelService = DomModelService;
             var UserContext = (function () {
                 function UserContext(__notify, __account, $q) {
                     var _this = this;
@@ -250,3 +250,4 @@ var BitDiamond;
         })(Services = Utils.Services || (Utils.Services = {}));
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=utility.js.map

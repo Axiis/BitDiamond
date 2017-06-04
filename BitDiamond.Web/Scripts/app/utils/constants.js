@@ -614,3 +614,4 @@ var BitDiamond;
         })(Constants = Utils.Constants || (Utils.Constants = {}));
     })(Utils = BitDiamond.Utils || (BitDiamond.Utils = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=constants.js.map

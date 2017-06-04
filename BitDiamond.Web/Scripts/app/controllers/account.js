@@ -348,3 +348,4 @@ var BitDiamond;
         })(Account = Controllers.Account || (Controllers.Account = {}));
     })(Controllers = BitDiamond.Controllers || (BitDiamond.Controllers = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=account.js.map

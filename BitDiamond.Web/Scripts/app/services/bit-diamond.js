@@ -392,3 +392,4 @@ var BitDiamond;
         Services.XE = XE;
     })(Services = BitDiamond.Services || (BitDiamond.Services = {}));
 })(BitDiamond || (BitDiamond = {}));
+//# sourceMappingURL=bit-diamond.js.map

@@ -23,7 +23,7 @@
 
         <ul class="nav navbar-nav pull-left hidden-xs">
             <li>
-                <span class="bd-exchange-rate" href="javascript:void(0);">
+                <span class="bd-exchange-rate" href="javascript:void(0);" style="color:aquamarine !important;">
                     <i class="fa fa-btc"></i>
                     BTC/USD - <i class="fa fa-usd"></i> {{1/vm.exchangeRate | currency: ""}}
                 </span>
@@ -32,11 +32,26 @@
 
         <ul class="nav navbar-top-links navbar-right pull-right" style="margin-right:10px;">
 
+            <li class="dropdown hidden-lg hidden-md hidden-sm">
+                <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#">
+                    <i class="ti-pulse"></i>
+                </a>
+                <ul class="dropdown-menu animated flipInY pull-right" style="left: auto !important;">
+                    <li>
+                        <a class="text-left" href="javascript:void(0);" style="color:aquamarine !important;">
+                            <i class="fa fa-btc"></i>
+                            BTC/USD - <i class="fa fa-usd"></i> {{1/vm.exchangeRate | currency: ""}}
+                        </a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-messages -->
+            </li>
+
             <li class="dropdown">
                 <a class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#">
                     <i class="ti-user"></i>
                 </a>
-                <ul class="dropdown-menu animated flipInY pull-right" style="left: auto !important;">                    
+                <ul class="dropdown-menu animated flipInY pull-right" style="left: auto !important;">
                     <li>
                         <a class="text-left" href="/profile/index#!/home"><i class="ti-star text-warning"></i> My Profile</a>
                     </li>

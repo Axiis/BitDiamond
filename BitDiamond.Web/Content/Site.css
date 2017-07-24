@@ -164,6 +164,10 @@ ul.navbar-nav.nav > li > span > i{
      font-size:13px;
 }
 
+div.sidebar-nav > ul.nav > li.bd-exchange-rate{
+    font-weight:600;
+}
+
 .page-header.navbar .top-menu .navbar-nav{
     margin-right:0;
 }

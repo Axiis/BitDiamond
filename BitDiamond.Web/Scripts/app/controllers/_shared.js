@@ -68,13 +68,20 @@ var BitDiamond;
             }());
             Shared.NavBar = NavBar;
             var SideBar = (function () {
-                function SideBar(__account, __notify, __userContext, $location) {
+                function SideBar(__account, __notify, __userContext, __xe, $interval, $location) {
                     var _this = this;
                     this.__account = __account;
                     this.__notify = __notify;
                     this.__userContext = __userContext;
                     this.$location = $location;
+                    this.__xe = __xe;
+                    this.$interval = $interval;
                     this.currentYear = moment().year();
+                    var ex = function () {
+                        _this.__xe.getCurrentRate().then(function (r) { return _this.exchangeRate = r; });
+                    };
+                    ex();
+                    this.$interval(ex, 60000);
                     //load user object
                     this.__userContext.user.then(function (opr) {
                         _this.user = opr;

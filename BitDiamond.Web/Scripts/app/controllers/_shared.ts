@@ -92,8 +92,12 @@ module BitDiamond.Controllers.Shared {
         __account: Services.Account;
         __notify: Utils.Services.NotifyService;
         __userContext: Utils.Services.UserContext;
+        __xe: Services.XE;
 
         $location: ng.ILocationService;
+        $interval: ng.IIntervalService;
+
+        exchangeRate: number;
 
         profileImage() {
             //for now
@@ -134,14 +138,22 @@ module BitDiamond.Controllers.Shared {
         }
 
 
-        constructor(__account, __notify, __userContext, $location) {
+        constructor(__account, __notify, __userContext, __xe, $interval, $location) {
 
             this.__account = __account;
             this.__notify = __notify;
             this.__userContext = __userContext;
             this.$location = $location;
+            this.__xe = __xe;
+            this.$interval = $interval;
 
             this.currentYear = moment().year();
+
+            var ex = () => {
+                this.__xe.getCurrentRate().then(r => this.exchangeRate = r);
+            };
+            ex();
+            this.$interval(ex, 60000);
 
             //load user object
             this.__userContext.user.then(opr => {
